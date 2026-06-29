@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>四专家整合分析：潜在金融危机引爆点</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0f1117; color: #e0e0e0; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; line-height: 1.8; }
+.container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+
+/* Hero */
+.hero { text-align: center; padding: 60px 20px; background: linear-gradient(135deg, #1a1d2e 0%, #0f1117 50%, #1a1020 100%); border-radius: 16px; margin-bottom: 30px; border: 1px solid #2a2d3e; }
+.hero h1 { font-size: 2.8em; background: linear-gradient(135deg, #ff4757, #ff6b81, #ffa502); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+.hero .subtitle { font-size: 1.3em; color: #888; margin-bottom: 30px; }
+.hero .date { color: #666; font-size: 0.9em; }
+
+/* Cards */
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 20px 0 30px; }
+.card { background: #1a1d2e; border-radius: 12px; padding: 20px; border: 1px solid #2a2d3e; text-align: center; }
+.card .label { font-size: 0.85em; color: #888; margin-bottom: 6px; }
+.card .value { font-size: 1.8em; font-weight: bold; }
+.card .change { font-size: 0.9em; margin-top: 4px; }
+.up { color: #2ed573; }
+.down { color: #ff4757; }
+.warn { color: #ffa502; }
+
+/* Section */
+.section { background: #1a1d2e; border-radius: 16px; padding: 30px; margin-bottom: 24px; border: 1px solid #2a2d3e; }
+.section h2 { font-size: 1.6em; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #2a2d3e; }
+.section h3 { font-size: 1.2em; margin: 16px 0 10px; }
+.yang { border-left: 4px solid #4a9eff; }
+.yang h2 { color: #4a9eff; }
+.lu { border-left: 4px solid #a855f7; }
+.lu h2 { color: #a855f7; }
+.cai { border-left: 4px solid #e8b84b; }
+.cai h2 { color: #e8b84b; }
+.niao { border-left: 4px solid #2ed573; }
+.niao h2 { color: #2ed573; }
+.logic { border-left: 4px solid #ff6b81; }
+.logic h2 { color: #ff6b81; }
+.news { border-left: 4px solid #70a1ff; }
+.news h2 { color: #70a1ff; }
+.conclusion { border-left: 4px solid #ffa502; }
+.conclusion h2 { color: #ffa502; }
+
+/* Chart */
+.chart-container { position: relative; width: 100%; max-width: 700px; margin: 20px auto; }
+.chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 800px) { .chart-row { grid-template-columns: 1fr; } }
+
+/* Table */
+table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #2a2d3e; }
+th { background: #252839; color: #ccc; font-weight: 600; }
+tr:hover { background: #1f2233; }
+
+/* Tags */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.8em; margin: 2px 4px; }
+.tag-danger { background: rgba(255,71,87,0.2); color: #ff4757; border: 1px solid rgba(255,71,87,0.3); }
+.tag-warn { background: rgba(255,165,2,0.2); color: #ffa502; border: 1px solid rgba(255,165,2,0.3); }
+.tag-safe { background: rgba(46,213,115,0.2); color: #2ed573; border: 1px solid rgba(46,213,115,0.3); }
+
+/* Radar */
+.radar-container { max-width: 500px; margin: 20px auto; }
+
+/* List */
+.risk-list { list-style: none; padding: 0; }
+.risk-list li { padding: 10px 16px; margin: 8px 0; background: #252839; border-radius: 8px; border-left: 3px solid #ff4757; }
+.risk-list li.warn-item { border-left-color: #ffa502; }
+.risk-list li.info-item { border-left-color: #70a1ff; }
+
+/* Disclaimer */
+.disclaimer { background: #15171f; border: 1px solid #333; border-radius: 12px; padding: 20px; margin-top: 30px; font-size: 0.85em; color: #888; }
+
+/* Indicator list */
+.indicator-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+.indicator-item { background: #252839; padding: 14px; border-radius: 8px; }
+.indicator-item .name { font-weight: bold; color: #ccc; }
+.indicator-item .desc { font-size: 0.85em; color: #888; margin-top: 4px; }
+
+/* Chain */
+.chain { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 12px 0; }
+.chain-item { background: #252839; padding: 6px 14px; border-radius: 20px; font-size: 0.9em; }
+.chain-arrow { color: #ff4757; font-size: 1.2em; }
+
+p { margin: 8px 0; }
+strong { color: #fff; }
+.highlight-red { color: #ff4757; font-weight: bold; }
+.highlight-green { color: #2ed573; font-weight: bold; }
+.highlight-gold { color: #e8b84b; font-weight: bold; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Hero -->
+<div class="hero">
+  <h1>潜在金融危机引爆点</h1>
+  <div class="subtitle">四专家整合视角 · 深度系统分析</div>
+  <div class="date">2026年6月6日 · 杨世光 🔵 · 卢麒元 🟣 · 蔡森 🟠 · 笨鸟 🟢</div>
+</div>
+
+<!-- Key Indicators -->
+<div class="cards-grid">
+  <div class="card">
+    <div class="label">🇺🇸 美国国债总额</div>
+    <div class="value down">$38.4万亿</div>
+    <div class="change down">接近法定上限$41.1万亿</div>
+  </div>
+  <div class="card">
+    <div class="label">📊 S&P 500 Shiller CAPE</div>
+    <div class="value warn">39.8x</div>
+    <div class="change down">高于历史均值32.2x达23.6%</div>
+  </div>
+  <div class="card">
+    <div class="label">🇯🇵 日央行基准利率</div>
+    <div class="value down">0.75%</div>
+    <div class="change warn">30年新高 · 套利交易解除风险</div>
+  </div>
+  <div class="card">
+    <div class="label">🇨🇳 中国LGFV债务</div>
+    <div class="value down">60万亿+</div>
+    <div class="change down">占GDP约35% · 通缩持续</div>
+  </div>
+  <div class="card">
+    <div class="label">💰 美债年利息支出</div>
+    <div class="value down">$1.3万亿+</div>
+    <div class="change down">已超军费预算</div>
+  </div>
+  <div class="card">
+    <div class="label">📉 美国经济衰退概率</div>
+    <div class="value warn">55-60%</div>
+    <div class="change">摩根大通/RSM预估</div>
+  </div>
+</div>
+
+<!-- Section: News Background -->
+<div class="section news">
+  <h2>📰 新闻背景与市场舆情</h2>
+  
+  <h3>一、全球债务海啸</h3>
+  <p>IMF警告：全球公共债务在本十年末可能超过GDP的100%。各国政府负债已接近<span class="highlight-red">$100万亿</span>，较十年前几乎翻倍。美国国债于2025年8月突破$37万亿，2025财年赤字预计达$1.9万亿，其中强制性支出（社保、医保、利息）占比持续攀升。</p>
+  
+  <h3>二、贸易战与地缘裂变</h3>
+  <p>特朗普重返白宫后对华加征高额关税，90天暂缓期于2025年7月到期。摩根大通将美国经济衰退概率上调至<span class="highlight-red">60%</span>。全球供应链重构加速，本土产能建设和资源囤积推高资本需求。</p>
+  
+  <h3>三、日元套利交易解除</h3>
+  <p>日本央行加息至0.75%（30年最高），2025年12月预计进一步加息。日元套利交易规模估计达数万亿美元，解除过程可能引发全球流动性冲击，类似2024年8月的"闪电崩盘"。</p>
+  
+  <h3>四、AI泡沫争议</h3>
+  <p>Mag-7占美股总市值35%，Shiller CAPE达39.8x（接近2000年互联网泡沫水平）。学术论文已确认Nasdaq和Mag-7存在投机泡沫特征。AI投资是否产生真实回报成为核心争议。</p>
+  
+  <h3>五、中国通缩与地产危机</h3>
+  <p>地方融资平台（LGFV）债务超60万亿人民币，房地产调整持续拖累内需。CPI/PPI持续走弱，资金空转问题严重。人民币面临升值压力以解决S-I=X-M恒等式失衡。</p>
+
+  <div class="chart-container">
+    <canvas id="newsTimeline"></canvas>
+  </div>
+</div>
+
+<!-- Section: Yang Shiguang -->
+<div class="section yang">
+  <h2>🔵 杨世光视角：宏观六步法分析</h2>
+  
+  <h3>第一步：经济周期判断——晚期扩张向滞胀过渡</h3>
+  <p>全球经济正处于<span class="highlight-red">晚期扩张向滞胀过渡</span>的危险阶段。美国GDP增速虽然尚未转负，但PMI持续走弱，消费者信心下滑。关税政策推高进口价格，通胀粘性增强。这是一个"经济减速+通胀不降"的典型滞胀前兆。</p>
+  
+  <h3>第二步：货币政策——美联储进退两难</h3>
+  <p>美联储面临"不可能三角"：降息→通胀反弹；不降息→经济衰退；缩表→流动性枯竭。联邦基金利率维持高位，实质利率已转正并持续走高。期限溢价上升反映市场对美债供给过剩的担忧。2025年市场预期仅两次降息，远不足以应对经济下行。</p>
+  
+  <h3>第三步：美元周期——强美元的黄昏</h3>
+  <p>美元仍处强势周期末端，但三大支撑正在松动：①贸易战削弱"全球最大买方"地位；②财政恶化侵蚀"全球最大卖场"信心；③地缘多极化削弱"保安"角色。去美元化趋势加速，各国央行增持黄金、减持美债。</p>
+  
+  <h3>第四步：流动性分析——三重收紧</h3>
+  <p>全球流动性面临三重收紧：①美联储缩表持续回收流动性；②日本央行加息引发日元套利交易解除；③信用利差走阔反映信贷市场紧张。这是2008年以来最脆弱的流动性环境。</p>
+
+  <h3>第五步：大类资产方向</h3>
+  <table>
+    <tr><th>资产</th><th>方向</th><th>核心理由</th></tr>
+    <tr><td>美股</td><td class="down">偏空</td><td>估值过高+利率高企+盈利下修风险</td></tr>
+    <tr><td>美债</td><td class="warn">震荡</td><td>避险需求vs信用担忧，长端利率可能继续走高</td></tr>
+    <tr><td>黄金</td><td class="up">偏多</td><td>实质利率见顶+央行购金+去美元化</td></tr>
+    <tr><td>原油</td><td class="warn">分化</td><td>供给收缩vs需求走弱，地缘风险溢价是变量</td></tr>
+    <tr><td>美元</td><td class="warn">短强长弱</td><td>短期利差支撑，长期财政恶化拖累</td></tr>
+  </table>
+  
+  <h3>第六步：地缘政治——最大引爆点</h3>
+  <p>中美贸易战升级、台海紧张、中东局势三条线索都可能成为"黑天鹅"触发器。特别关注7月关税暂缓到期后的政策走向。</p>
+
+  <div class="chart-row">
+    <div class="chart-container"><canvas id="yangCycle"></canvas></div>
+    <div class="chart-container"><canvas id="yangLiquidity"></canvas></div>
+  </div>
+</div>
+
+<!-- Section: Lu Qiyuan -->
+<div class="section lu">
+  <h2>🟣 卢麒元视角：制度结构与向心坍缩</h2>
+  
+  <h3>一、明斯基三阶段：美国已进入庞氏融资</h3>
+  <p>美国国债已从对冲性融资→投机性融资→<span class="highlight-red">庞氏融资</span>：2025年新借债务连利息都无法覆盖，必须持续"借新还旧"。年利息支出超$1.3万亿，超过军费预算，接近"明斯基时刻"的临界条件。</p>
+  
+  <h3>二、向心坍缩的三流逆变</h3>
+  <table>
+    <tr><th>维度</th><th>当前状态</th><th>风险等级</th></tr>
+    <tr><td>流量失控</td><td>全球美元供给远超实体经济需求，各类泡沫膨胀</td><td><span class="tag tag-danger">极高</span></td></tr>
+    <tr><td>流向逆转</td><td>美联储高利率吸引全球资本回流美国核心资产</td><td><span class="tag tag-danger">已发生</span></td></tr>
+    <tr><td>流速冻结</td><td>信用利差走阔，银行惜贷，流动性枯竭迹象</td><td><span class="tag tag-warn">正在恶化</span></td></tr>
+  </table>
+  
+  <h3>三、广义财政健康度：美国"灰黑色"财政膨胀</h3>
+  <p>美国白色财政（正规税收）增速远低于灰色财政（QE/定向放水）和黑色财政（搜刮政府体系最后资金，如房地美$2004亿紧急购买MBS）。广义财政总量已接近GDP的<span class="highlight-red">80%死亡底线</span>。川普政府所有政策都在用"未来收益"换"当下现金"，这是<span class="highlight-red">财政流动性枯竭的典型信号</span>。</p>
+  
+  <h3>四、卡莱斯基利润视角：政府赤字构成企业利润</h3>
+  <p>美国企业利润表面强劲，但本质上完全依赖政府赤字支撑（卡莱斯基恒等式：总利润=投资+政府赤字+净出口）。一旦财政紧缩被迫发生（债务上限或市场逼空），企业利润将断崖式下跌。</p>
+  
+  <h3>五、美债重置 vs 向心坍缩</h3>
+  <p>美国正尝试三条路径避免坍缩：①黄金重估（扩大资产端）；②比特币战略储备；③稳定币吸纳美债。这是一场"金融工程能力"vs"物理规律"的赌局。卢麒元认为<span class="highlight-red">明斯基时刻终将到来</span>，金融工程只能推迟而无法避免。</p>
+
+  <h3>六、中国经济诊断</h3>
+  <p>中国三大病症——走资、资本沉没、资金空转——仍在恶化。LGFV债务超60万亿人民币是"金融癌症"。但中国提前主动处置恒大等债务问题（中段干预），相比美国拖延至末段，长期更有优势。人民币升值是解决通缩的唯一可行路径（S-I=X-M恒等式）。</p>
+
+  <div class="chart-row">
+    <div class="chart-container"><canvas id="luMinsky"></canvas></div>
+    <div class="chart-container"><canvas id="luCapitalFlow"></canvas></div>
+  </div>
+</div>
+
+<!-- Section: Cai Sen -->
+<div class="section cai">
+  <h2>🟠 蔡森视角：技术面形态学分析</h2>
+  
+  <h3>一、S&P 500 大盘形态</h3>
+  <p>S&P 500 Shiller CAPE处于39.8x，仅次于2000年互联网泡沫时期的44.2x。从月线级别来看，2024-2026年的走势呈现出<span class="highlight-gold">高位圆弧顶</span>的雏形：上涨速度放缓、波动加大、每次反弹力度递减。如果跌破关键颈线支撑，测幅满足指向大幅回调。</p>
+  
+  <h3>二、纳斯达克/Mag-7 头部形态</h3>
+  <p>Mag-7占美股市值35%，集中度接近2000年"漂亮50"泡沫。多只巨头已出现<span class="highlight-gold">M头</span>或<span class="highlight-gold">头肩顶</span>雏形：第一次冲高后回落，第二次反弹无法有效突破前高。量价背离（量缩价涨）是危险信号。</p>
+  
+  <h3>三、关键技术指标</h3>
+  <table>
+    <tr><th>指标</th><th>当前状态</th><th>形态学含义</th></tr>
+    <tr><td>S&P 500 月线</td><td>高位震荡，上涨动能衰减</td><td>圆弧顶/大型M头风险</td></tr>
+    <tr><td>VIX</td><td>从低位反弹，波动率抬升</td><td>头部确认的伴随信号</td></tr>
+    <tr><td>信用利差</td><td>4月急扩后回缩但仍偏高</td><td>市场"假突破"式反弹</td></tr>
+    <tr><td>黄金月线</td><td>多头趋势完好，回踩即买</td><td>底部形态坚实，上升趋势</td></tr>
+    <tr><td>美元指数DXY</td><td>100关口附近震荡</td><td>矩形整理，向下突破风险大</td></tr>
+  </table>
+  
+  <h3>四、交易策略建议</h3>
+  <p><strong>做空信号：</strong>若S&P 500跌破月线颈线支撑（约5200区域），将确认大型头部形态，测幅满足可能指向4500-4800区间。这是一个"假突破"做空机会——如果指数创新高后迅速回落跌破前高阻力，则确认假突破成立。</p>
+  <p><strong>做多信号：</strong>黄金回踩均线支撑后的"破底翻"是绝佳做多机会。月线级别的底部形态极其坚实。</p>
+  <p><strong>纪律：</strong>形态不明确时，宁可错过也不做错。当前最重要的操作纪律是<span class="highlight-gold">耐心等待头部形态确认</span>。</p>
+
+  <div class="chart-row">
+    <div class="chart-container"><canvas id="caiPattern"></canvas></div>
+    <div class="chart-container"><canvas id="caiRiskMeter"></canvas></div>
+  </div>
+</div>
+
+<!-- Section: Benniao -->
+<div class="section niao">
+  <h2>🟢 笨鸟视角：数据拆解法分析</h2>
+  
+  <h3>一、核心数据拆解：非农就业（2026年6月6日最新）</h3>
+  <div style="display: flex; flex-wrap: wrap; gap: 20px; margin: 12px 0;">
+    <div style="flex: 1; min-width: 280px;">
+      <h3 style="color: #2ed573;">数量维度 ↑</h3>
+      <p>就业数据强劲，总量表现好于预期 → 降息预期降温 → 美元走强 → 贵金属承压</p>
+    </div>
+    <div style="flex: 1; min-width: 280px;">
+      <h3 style="color: #ff4757;">质量维度 ↓</h3>
+      <p>金融/保险就业下降（AI替代）、信息/运输萎缩；仅政府/石油/社会救助就业增长 → 结构性恶化</p>
+    </div>
+  </div>
+  
+  <h3>二、因果链传导</h3>
+  <div class="chain">
+    <span class="chain-item">就业数量强</span><span class="chain-arrow">→</span>
+    <span class="chain-item">不降息</span><span class="chain-arrow">→</span>
+    <span class="chain-item">美元走强</span><span class="chain-arrow">→</span>
+    <span class="chain-item">黄金暴跌-3.3%</span>
+  </div>
+  <div class="chain">
+    <span class="chain-item">就业质量差</span><span class="chain-arrow">→</span>
+    <span class="chain-item">AI替代白领</span><span class="chain-arrow">→</span>
+    <span class="chain-item">消费结构变化</span><span class="chain-arrow">→</span>
+    <span class="chain-item">长期通缩压力</span>
+  </div>
+  <div class="chain">
+    <span class="chain-item">财政赤字扩张</span><span class="chain-arrow">→</span>
+    <span class="chain-item">政府就业↑</span><span class="chain-arrow">→</span>
+    <span class="chain-item">虚假繁荣</span><span class="chain-arrow">→</span>
+    <span class="chain-item">卡莱斯基利润依赖</span>
+  </div>
+  
+  <h3>三、七大资产联动信号</h3>
+  <table>
+    <tr><th>资产</th><th>6月6日表现</th><th>信号含义</th></tr>
+    <tr><td>COMEX黄金</td><td class="down">-3.31% ($4356)</td><td>不降息预期打压，但长期避险需求未消退</td></tr>
+    <tr><td>COMEX白银</td><td class="down">-6.84% ($68.91)</td><td>工业属性+货币属性双重承压</td></tr>
+    <tr><td>COMEX铜</td><td class="down">-3.98% ($6.275)</td><td>经济预期走弱+AI需求预期已Price in</td></tr>
+    <tr><td>美元指数</td><td class="up">+0.60% (100.05)</td><td>短期走强但100关口是心理防线</td></tr>
+    <tr><td>美股</td><td class="down">先撑后跌</td><td>"好消息就是坏消息"——利好出尽</td></tr>
+  </table>
+  
+  <h3>四、关键反常信号</h3>
+  <p><span class="highlight-red">反常信号1：</span>就业数据强劲，但美股"刚撑了一会儿就跌"——市场认为好消息就是坏消息，说明<span class="highlight-red">真正的担忧不是就业而是估值过高+利率不降</span>。</p>
+  <p><span class="highlight-red">反常信号2：</span>黄金单日暴跌3.3%但央行购金需求未减、地缘风险未消退——说明这是短期流动性冲击而非趋势反转，<span class="highlight-gold">黄金回调即是买入机会</span>。</p>
+  <p><span class="highlight-red">反常信号3：</span>白银跌幅（-6.84%）远超黄金（-3.31%）——白银弹性更大意味着如果恐慌加深，白银的反弹力度也会更大。</p>
+
+  <div class="chart-row">
+    <div class="chart-container"><canvas id="niaoAsset"></canvas></div>
+    <div class="chart-container"><canvas id="niaoChain"></canvas></div>
+  </div>
+</div>
+
+<!-- Section: Bottom Logic -->
+<div class="section logic">
+  <h2>📐 底层逻辑关联</h2>
+  
+  <h3>1. 国民经济恒等式：S-I = X-M</h3>
+  <p>美国巨额贸易赤字（X-M < 0）对应储蓄缺口（S-I < 0），必须依赖外部融资弥补。$38.4万亿美债就是这个缺口的累积。<span class="highlight-red">当外部融资（外国购买美债）意愿下降时，整个等式面临崩溃</span>——这就是金融危机的恒等式根源。</p>
+  
+  <h3>2. 真金白银 vs 虚拟财富</h3>
+  <p>美国当前的所有政策都是在用"未来收益"换"当下现金"：搁置房地美IPO换取$2004亿流动资金；定向QE绕过美联储。<span class="highlight-red">这是财政流动性枯竭的极端表现</span>，类似个人/企业资金链断裂前"到处找私房钱"。</p>
+  
+  <h3>3. 向心坍缩 vs 美债重置</h3>
+  <p>美国试图通过"布雷顿森林3.0"（黄金重估+比特币储备+稳定币）实现债务重置。但卢麒元的向心坍缩理论认为，明斯基时刻不可被金融工程永久推迟。<span class="highlight-red">关键变量：中国是否继续配合美元体系</span>。</p>
+  
+  <h3>4. 费雪债务通缩传导</h3>
+  <p>中国已经走在费雪债务通缩的路上：债务到天花板 → 无法新增债务 → m收缩 → 抛售资产 → 价格下跌 → 银行惜贷 → v断崖 → P全面下跌。人民币升值是唯一出路。</p>
+
+  <div class="chart-container">
+    <canvas id="logicDebt"></canvas>
+  </div>
+</div>
+
+<!-- Section: Comprehensive Conclusion -->
+<div class="section conclusion">
+  <h2>🎯 四人综合结论</h2>
+  
+  <h3>共识区域</h3>
+  <table>
+    <tr><th>共识点</th><th>四位专家</th><th>确定性</th></tr>
+    <tr><td>美债庞氏融资不可持续</td><td>四人一致</td><td><span class="tag tag-danger">极高</span></td></tr>
+    <tr><td>全球流动性面临系统性收紧</td><td>四人一致</td><td><span class="tag tag-danger">极高</span></td></tr>
+    <tr><td>AI/科技股估值泡沫风险</td><td>杨/蔡/笨一致</td><td><span class="tag tag-danger">高</span></td></tr>
+    <tr><td>黄金长期看涨</td><td>四人一致</td><td><span class="tag tag-safe">高</span></td></tr>
+    <tr><td>日元套利解除是短期最大冲击</td><td>杨/笨一致</td><td><span class="tag tag-warn">高</span></td></tr>
+    <tr><td>中国经济面临通缩+债务双重压力</td><td>四人一致</td><td><span class="tag tag-warn">高</span></td></tr>
+  </table>
+  
+  <h3>分歧区域</h3>
+  <table>
+    <tr><th>分歧点</th><th>观点A</th><th>观点B</th></tr>
+    <tr><td>危机会否爆发？</td><td>卢麒元：明斯基时刻必然到来</td><td>雷倩：美国金融工程可能延缓</td></tr>
+    <tr><td>美股何时崩？</td><td>蔡森：等技术形态确认</td><td>杨世光：宏观恶化就会崩</td></tr>
+    <tr><td>比特币定位</td><td>卢麒元：美国金融战工具</td><td>雷倩：战略储备资产</td></tr>
+  </table>
+  
+  <h3>综合多空判断</h3>
+  <table>
+    <tr><th>资产</th><th>短期(1-3月)</th><th>中期(3-12月)</th><th>长期(1年+)</th></tr>
+    <tr><td>美股</td><td class="warn">震荡偏空</td><td class="down">看空</td><td class="down">重大回调风险</td></tr>
+    <tr><td>美债</td><td class="warn">震荡</td><td class="down">信用恶化</td><td class="down">庞氏不可持续</td></tr>
+    <tr><td>黄金</td><td class="warn">短期回调</td><td class="up">看涨</td><td class="up">核心配置</td></tr>
+    <tr><td>原油</td><td class="warn">地缘定价</td><td class="down">需求走弱</td><td class="warn">不确定</td></tr>
+    <tr><td>美元</td><td class="up">短期强势</td><td class="warn">见顶回落</td><td class="down">长期贬值</td></tr>
+    <tr><td>A股/港股</td><td class="warn">反弹非反转</td><td class="warn">等待升值</td><td class="up">若升值则牛</td></tr>
+  </table>
+
+  <div class="chart-row">
+    <div class="radar-container"><canvas id="radarExpert"></canvas></div>
+    <div class="chart-container"><canvas id="riskHeatmap"></canvas></div>
+  </div>
+</div>
+
+<!-- Section: Time Decay -->
+<div class="section" style="border-left: 4px solid #70a1ff;">
+  <h2 style="color: #70a1ff;">⏱ 时间衰减权重标注</h2>
+  <table>
+    <tr><th>专家/来源</th><th>时间</th><th>权重</th><th>核心观点</th></tr>
+    <tr><td>🟢 笨鸟</td><td>2026-06-06</td><td>100%</td><td>非农数据带崩全市场，质量分化暴露AI替代</td></tr>
+    <tr><td>📰 IMF</td><td>2025-05</td><td>80%</td><td>全球80%经济体债务更高且增速更快</td></tr>
+    <tr><td>🔵 杨世光</td><td>2026-06</td><td>100%</td><td>低利率终结+弃债转股+弃资管债</td></tr>
+    <tr><td>🟣 卢麒元</td><td>2025-2026</td><td>80-100%</td><td>庞氏融资+向心坍缩+卧石妙计</td></tr>
+    <tr><td>📰 摩根大通</td><td>2025-05</td><td>80%</td><td>美国经济衰退概率60%</td></tr>
+    <tr><td>📰 雷倩</td><td>2025-10</td><td>60%</td><td>美债重置三路径（黄金重估+BTC+稳定币）</td></tr>
+  </table>
+</div>
+
+<!-- Section: Leading Indicators -->
+<div class="section" style="border-left: 4px solid #ffa502;">
+  <h2 style="color: #ffa502;">🔭 先行指标跟踪清单</h2>
+  <div class="indicator-grid">
+    <div class="indicator-item">
+      <div class="name">🇺🇸 美债拍卖中标利率</div>
+      <div class="desc">尾部利差扩大=需求恶化=庞氏融资加速的信号</div>
+    </div>
+    <div class="indicator-item">
+      <div class="name">🇯🇵 日央行下次加息</div>
+      <div class="desc">12月预期加息至0.75%+，触发套利交易大规模解除</div>
+    </div>
+    <div class="indicator-item">
+      <div class="name">📊 信用利差（HY OAS）</div>
+      <div class="desc">高收益债利差急扩=信贷市场冻结的前兆</div>
+    </div>
+    <div class="indicator-item">
+      <div class="name">💵 美元指数DXY</div>
+      <div class="desc">跌破98=美元弱势周期启动，利好黄金/商品</div>
+    </div>
+    <div class="indicator-item">
+      <div class="name">🏛 美国7月关税暂缓到期</div>
+      <div class="desc">若恢复征收=全球贸易战升级+供应链冲击</div>
+    </div>
+    <div class="indicator-item">
+      <div class="name">🇨🇳 人民币汇率</div>
+      <div class="desc">实质性升值=中国通缩解决+股市牛市前提</div>
+    </div>
+    <div class="indicator-item">
+      <div class="name">📈 VIX恐慌指数</div>
+      <div class="desc">突破30=市场进入恐慌模式，头部形态确认</div>
+    </div>
+    <div class="indicator-item">
+      <div class="name">🪙 央行黄金购买量</div>
+      <div class="desc">持续高位=去美元化加速，长期金价支撑</div>
+    </div>
+    <div class="indicator-item">
+      <div class="name">💻 Mag-7财报季</div>
+      <div class="desc">AI投资回报率不达预期=泡沫破裂导火索</div>
+    </div>
+    <div class="indicator-item">
+      <div class="name">🇨🇳 中国LGFV债务处置</div>
+      <div class="desc">任何大型城投平台违约=系统性风险信号</div>
+    </div>
+  </div>
+</div>
+
+<!-- War Game Scenarios -->
+<div class="section" style="border-left: 4px solid #ff4757;">
+  <h2 style="color: #ff4757;">⚔️ 兵棋推演：危机引爆情景树</h2>
+  <h3>情景一：日元套利交易全面解除（概率35%）</h3>
+  <div class="chain">
+    <span class="chain-item">日央行12月加息</span><span class="chain-arrow">→</span>
+    <span class="chain-item">日元急升</span><span class="chain-arrow">→</span>
+    <span class="chain-item">套利交易平仓潮</span><span class="chain-arrow">→</span>
+    <span class="chain-item">全球股市闪崩</span><span class="chain-arrow">→</span>
+    <span class="chain-item">信用市场冻结</span><span class="chain-arrow">→</span>
+    <span class="chain-item">央行紧急救市</span>
+  </div>
+  
+  <h3>情景二：美债拍卖失败/尾部事件（概率25%）</h3>
+  <div class="chain">
+    <span class="chain-item">大型美债拍卖需求惨淡</span><span class="chain-arrow">→</span>
+    <span class="chain-item">收益率飙升</span><span class="chain-arrow">→</span>
+    <span class="chain-item">利息负担暴增</span><span class="chain-arrow">→</span>
+    <span class="chain-item">信用评级下调</span><span class="chain-arrow">→</span>
+    <span class="chain-item">全球资产重定价</span>
+  </div>
+  
+  <h3>情景三：AI泡沫破裂（概率20%）</h3>
+  <div class="chain">
+    <span class="chain-item">Mag-7财报AI回报不达预期</span><span class="chain-arrow">→</span>
+    <span class="chain-item">科技股暴跌30%+</span><span class="chain-arrow">→</span>
+    <span class="chain-item">ETF被动抛售</span><span class="chain-arrow">→</span>
+    <span class="chain-item">财富效应逆转</span><span class="chain-arrow">→</span>
+    <span class="chain-item">消费衰退</span>
+  </div>
+  
+  <h3>情景四：中国房地产/LGFV连锁违约（概率15%）</h3>
+  <div class="chain">
+    <span class="chain-item">大型城投平台违约</span><span class="chain-arrow">→</span>
+    <span class="chain-item">银行坏账暴增</span><span class="chain-arrow">→</span>
+    <span class="chain-item">信贷紧缩</span><span class="chain-arrow">→</span>
+    <span class="chain-item">费雪债务通缩</span><span class="chain-arrow">→</span>
+    <span class="chain-item">全球商品需求崩塌</span>
+  </div>
+  
+  <h3>情景五：地缘黑天鹅（概率5%）</h3>
+  <div class="chain">
+    <span class="chain-item">台海/中东冲突升级</span><span class="chain-arrow">→</span>
+    <span class="chain-item">油价暴涨至$200+</span><span class="chain-arrow">→</span>
+    <span class="chain-item">全球滞胀</span><span class="chain-arrow">→</span>
+    <span class="chain-item">央行被迫加息</span><span class="chain-arrow">→</span>
+    <span class="chain-item">全面危机</span>
+  </div>
+
+  <div class="chart-container">
+    <canvas id="scenarioTree"></canvas>
+  </div>
+</div>
+
+<!-- Disclaimer -->
+<div class="disclaimer">
+  <p><strong>⚠️ 风险提示与免责声明</strong></p>
+  <p>以上分析融合了杨世光、卢麒元、蔡森、笨鸟四位专家的理论框架，仅为经济学教学与经验分享，不构成任何投资建议。投资有风险，交易请独立判断并自负盈亏。</p>
+  <p>分析中引用的专家观点已应用时间衰减权重。市场瞬息万变，所有判断需根据最新数据持续验证和修正。</p>
+</div>
+
+</div><!-- end container -->
+
+<script>
+// Chart.js defaults
+Chart.defaults.color = '#aaa';
+Chart.defaults.borderColor = '#2a2d3e';
+Chart.defaults.font.family = "'PingFang SC', 'Microsoft YaHei', sans-serif";
+
+// 1. News Timeline - Crisis Risk Score Over Time
+new Chart(document.getElementById('newsTimeline'), {
+  type: 'line',
+  data: {
+    labels: ['2024 Q1','2024 Q2','2024 Q3','2024 Q4','2025 Q1','2025 Q2','2025 Q3','2025 Q4','2026 Q1','2026 Q2'],
+    datasets: [{
+      label: '全球系统性风险指数（模拟）',
+      data: [45, 48, 55, 58, 65, 72, 78, 82, 85, 88],
+      borderColor: '#ff4757',
+      backgroundColor: 'rgba(255,71,87,0.1)',
+      fill: true,
+      tension: 0.4,
+      pointRadius: 5,
+      pointBackgroundColor: '#ff4757'
+    },{
+      label: '2008年危机对照线',
+      data: [30, 35, 55, 85, 95, 90, 70, 55, 45, 40],
+      borderColor: '#666',
+      borderDash: [5,5],
+      pointRadius: 3,
+      fill: false,
+      tension: 0.4
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: { display: true, text: '全球系统性风险指数趋势（模拟数据）', color: '#ccc', font: { size: 14 } },
+      legend: { position: 'bottom' }
+    },
+    scales: {
+      y: { beginAtZero: true, max: 100, title: { display: true, text: '风险指数' } }
+    }
+  }
+});
+
+// 2. Yang: Business Cycle Position
+new Chart(document.getElementById('yangCycle'), {
+  type: 'polarArea',
+  data: {
+    labels: ['GDP增速', 'PMI', 'CPI', '消费者信心', '失业率'],
+    datasets: [{
+      data: [40, 35, 65, 30, 55],
+      backgroundColor: ['rgba(74,158,255,0.6)','rgba(74,158,255,0.5)','rgba(255,71,87,0.5)','rgba(255,165,2,0.5)','rgba(255,165,2,0.4)'],
+      borderColor: '#4a9eff'
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: { display: true, text: '美国经济周期仪表盘（越低越危险）', color: '#ccc', font: { size: 14 } },
+      legend: { position: 'bottom' }
+    },
+    scales: { r: { beginAtZero: true, max: 100, ticks: { color: '#666' }, grid: { color: '#2a2d3e' } } }
+  }
+});
+
+// 3. Yang: Liquidity Indicators
+new Chart(document.getElementById('yangLiquidity'), {
+  type: 'bar',
+  data: {
+    labels: ['Fed资产负债表', '银行准备金', '逆回购RRP', 'M2增速', '信用利差'],
+    datasets: [{
+      label: '当前状态（标准化评分）',
+      data: [-30, -20, -80, -15, 45],
+      backgroundColor: ['#ff4757','#ff4757','#ff4757','#ffa502','#ff4757']
+    },{
+      label: '2020年对照',
+      data: [80, 60, 90, 70, -20],
+      backgroundColor: ['rgba(46,213,115,0.5)','rgba(46,213,115,0.5)','rgba(46,213,115,0.5)','rgba(46,213,115,0.5)','rgba(46,213,115,0.5)']
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: { display: true, text: '流动性指标对比（正=宽松 负=紧缩）', color: '#ccc', font: { size: 14 } },
+      legend: { position: 'bottom' }
+    },
+    scales: { y: { title: { display: true, text: '标准化评分' } } }
+  }
+});
+
+// 4. Lu: Minsky Stages
+new Chart(document.getElementById('luMinsky'), {
+  type: 'line',
+  data: {
+    labels: ['2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026E'],
+    datasets: [{
+      label: '美国债务/GDP (%)',
+      data: [100, 104, 103, 106, 107, 131, 126, 120, 120, 122, 125, 130],
+      borderColor: '#a855f7',
+      backgroundColor: 'rgba(168,85,247,0.1)',
+      fill: true,
+      tension: 0.3
+    },{
+      label: '利息支出/财政收入 (%)',
+      data: [6, 6.5, 7, 8, 8.5, 8, 7, 9, 12, 15, 18, 22],
+      borderColor: '#ff4757',
+      tension: 0.3,
+      fill: false
+    },{
+      label: '庞氏融资警戒线',
+      data: [15,15,15,15,15,15,15,15,15,15,15,15],
+      borderColor: '#ffa502',
+      borderDash: [8,4],
+      pointRadius: 0,
+      fill: false
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: { display: true, text: '明斯基融资阶段演进', color: '#ccc', font: { size: 14 } },
+      legend: { position: 'bottom' }
+    },
+    scales: { y: { beginAtZero: false } }
+  }
+});
+
+// 5. Lu: Capital Three Flows
+new Chart(document.getElementById('luCapitalFlow'), {
+  type: 'radar',
+  data: {
+    labels: ['流量（美元供给过剩）', '流向（回流美国）', '流速（周转加速）', '新兴市场压力', '美元信用侵蚀', '去美元化程度'],
+    datasets: [{
+      label: '当前状态',
+      data: [90, 85, 70, 80, 65, 55],
+      borderColor: '#a855f7',
+      backgroundColor: 'rgba(168,85,247,0.2)',
+      pointBackgroundColor: '#a855f7'
+    },{
+      label: '2008年危机前',
+      data: [75, 60, 85, 70, 40, 20],
+      borderColor: '#666',
+      backgroundColor: 'rgba(100,100,100,0.1)',
+      pointBackgroundColor: '#666'
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: { display: true, text: '资本三流风险评估雷达图', color: '#ccc', font: { size: 14 } },
+      legend: { position: 'bottom' }
+    },
+    scales: { r: { beginAtZero: true, max: 100, ticks: { color: '#666' }, grid: { color: '#2a2d3e' }, angleLines: { color: '#2a2d3e' } } }
+  }
+});
+
+// 6. Cai: Pattern Risk
+new Chart(document.getElementById('caiPattern'), {
+  type: 'bar',
+  data: {
+    labels: ['S&P 500\n圆弧顶', 'Nasdaq\nM头', 'Mag-7\n头肩顶', '黄金\n上升趋势', '美元指数\n矩形整理', 'VIX\n底部抬升'],
+    datasets: [{
+      label: '形态确认度 (%)',
+      data: [55, 50, 45, 80, 60, 65],
+      backgroundColor: ['#ff4757','#ff4757','#ff4757','#2ed573','#ffa502','#ff4757']
+    },{
+      label: '危险度 (%)',
+      data: [75, 80, 85, 15, 55, 70],
+      backgroundColor: ['rgba(255,71,87,0.4)','rgba(255,71,87,0.4)','rgba(255,71,87,0.4)','rgba(46,213,115,0.3)','rgba(255,165,2,0.3)','rgba(255,71,87,0.3)']
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: { display: true, text: '蔡森形态学：各市场形态评估', color: '#ccc', font: { size: 14 } },
+      legend: { position: 'bottom' }
+    },
+    scales: { y: { beginAtZero: true, max: 100 } }
+  }
+});
+
+// 7. Cai: Risk Meter
+new Chart(document.getElementById('caiRiskMeter'), {
+  type: 'doughnut',
+  data: {
+    labels: ['头部形态风险', '流动性风险', '估值风险', '地缘风险', '政策风险'],
+    datasets: [{
+      data: [28, 25, 22, 15, 10],
+      backgroundColor: ['#ff4757','#ffa502','#e8b84b','#a855f7','#4a9eff'],
+      borderColor: '#1a1d2e',
+      borderWidth: 3
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: { display: true, text: '技术面风险构成', color: '#ccc', font: { size: 14 } },
+      legend: { position: 'bottom' }
+    }
+  }
+});
+
+// 8. Niao: Asset Performance
+new Chart(document.getElementById('niaoAsset'), {
+  type: 'bar',
+  data: {
+    labels: ['COMEX黄金', 'COMEX白银', 'COMEX铜', '美元指数', '美股(先涨后跌)'],
+    datasets: [{
+      label: '6月6日涨跌幅 (%)',
+      data: [-3.31, -6.84, -3.98, 0.60, -0.5],
+      backgroundColor: ['#ff4757','#ff4757','#ff4757','#2ed573','#ff4757']
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: { display: true, text: '笨鸟七大资产：6月6日市场反应', color: '#ccc', font: { size: 14 } },
+      legend: { display: false }
+    },
+    scales: { y: { title: { display: true, text: '涨跌幅 (%)' } } }
+  }
+});
+
+// 9. Niao: Causal Chain Impact
+new Chart(document.getElementById('niaoChain'), {
+  type: 'radar',
+  data: {
+    labels: ['就业数量', '就业质量', '降息预期', '美元强度', 'AI替代冲击', '财政依赖度'],
+    datasets: [{
+      label: '当前评分',
+      data: [75, 35, 25, 70, 65, 85],
+      borderColor: '#2ed573',
+      backgroundColor: 'rgba(46,213,115,0.2)',
+      pointBackgroundColor: '#2ed573'
+    },{
+      label: '健康阈值',
+      data: [60, 60, 50, 50, 30, 40],
+      borderColor: '#666',
+      borderDash: [5,5],
+      pointRadius: 2,
+      fill: false
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: { display: true, text: '笨鸟因果链健康度评估', color: '#ccc', font: { size: 14 } },
+      legend: { position: 'bottom' }
+    },
+    scales: { r: { beginAtZero: true, max: 100, ticks: { color: '#666' }, grid: { color: '#2a2d3e' }, angleLines: { color: '#2a2d3e' } } }
+  }
+});
+
+// 10. Logic: Debt Comparison
+new Chart(document.getElementById('logicDebt'), {
+  type: 'line',
+  data: {
+    labels: ['2010','2012','2014','2016','2018','2020','2022','2024','2025','2026E'],
+    datasets: [{
+      label: '美国联邦债务 (万亿美元)',
+      data: [13.6, 16.1, 17.8, 19.6, 21.5, 27.7, 31.4, 35.0, 37.0, 38.4],
+      borderColor: '#ff4757',
+      backgroundColor: 'rgba(255,71,87,0.1)',
+      fill: true,
+      tension: 0.3
+    },{
+      label: '中国地方政府+LGFV债务 (万亿人民币)',
+      data: [15, 20, 28, 35, 42, 50, 55, 58, 62, 65],
+      borderColor: '#ffa502',
+      backgroundColor: 'rgba(255,165,2,0.1)',
+      fill: true,
+      tension: 0.3
+    },{
+      label: '全球公共债务 (万亿美元)',
+      data: [40, 48, 55, 60, 67, 83, 90, 95, 98, 100],
+      borderColor: '#a855f7',
+      borderDash: [5,5],
+      tension: 0.3,
+      fill: false
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: { display: true, text: '全球主要经济体债务膨胀趋势', color: '#ccc', font: { size: 14 } },
+      legend: { position: 'bottom' }
+    }
+  }
+});
+
+// 11. Radar: Expert Consensus
+new Chart(document.getElementById('radarExpert'), {
+  type: 'radar',
+  data: {
+    labels: ['美债危机', '流动性风险', 'AI泡沫', '地缘冲击', '中国风险', '日元套利'],
+    datasets: [{
+      label: '🔵 杨世光',
+      data: [80, 85, 70, 75, 50, 80],
+      borderColor: '#4a9eff',
+      backgroundColor: 'rgba(74,158,255,0.1)',
+      pointBackgroundColor: '#4a9eff'
+    },{
+      label: '🟣 卢麒元',
+      data: [95, 90, 60, 65, 70, 70],
+      borderColor: '#a855f7',
+      backgroundColor: 'rgba(168,85,247,0.1)',
+      pointBackgroundColor: '#a855f7'
+    },{
+      label: '🟠 蔡森',
+      data: [65, 70, 85, 55, 40, 50],
+      borderColor: '#e8b84b',
+      backgroundColor: 'rgba(232,184,75,0.1)',
+      pointBackgroundColor: '#e8b84b'
+    },{
+      label: '🟢 笨鸟',
+      data: [70, 75, 75, 60, 65, 65],
+      borderColor: '#2ed573',
+      backgroundColor: 'rgba(46,213,115,0.1)',
+      pointBackgroundColor: '#2ed573'
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: { display: true, text: '四专家风险评估雷达图', color: '#ccc', font: { size: 14 } },
+      legend: { position: 'bottom' }
+    },
+    scales: { r: { beginAtZero: true, max: 100, ticks: { color: '#666' }, grid: { color: '#2a2d3e' }, angleLines: { color: '#2a2d3e' } } }
+  }
+});
+
+// 12. Risk Heatmap (as stacked bar)
+new Chart(document.getElementById('riskHeatmap'), {
+  type: 'bar',
+  data: {
+    labels: ['日元套利解除', '美债拍卖失败', 'AI泡沫破裂', '中国LGFV违约', '地缘黑天鹅'],
+    datasets: [{
+      label: '概率 (%)',
+      data: [35, 25, 20, 15, 5],
+      backgroundColor: '#ff4757'
+    },{
+      label: '冲击程度 (%)',
+      data: [85, 95, 75, 70, 95],
+      backgroundColor: '#ffa502'
+    },{
+      label: '综合风险评分',
+      data: [30, 24, 15, 11, 5],
+      backgroundColor: '#a855f7'
+    }]
+  },
+  options: {
+    responsive: true,
+    indexAxis: 'y',
+    plugins: {
+      title: { display: true, text: '五大危机情景风险评估', color: '#ccc', font: { size: 14 } },
+      legend: { position: 'bottom' }
+    }
+  }
+});
+
+// 13. Scenario Tree Probability
+new Chart(document.getElementById('scenarioTree'), {
+  type: 'pie',
+  data: {
+    labels: ['日元套利解除 (35%)', '美债拍卖失败 (25%)', 'AI泡沫破裂 (20%)', '中国LGFV违约 (15%)', '地缘黑天鹅 (5%)'],
+    datasets: [{
+      data: [35, 25, 20, 15, 5],
+      backgroundColor: ['#ff4757', '#ffa502', '#e8b84b', '#a855f7', '#4a9eff'],
+      borderColor: '#1a1d2e',
+      borderWidth: 3
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: { display: true, text: '五大危机引爆情景概率分布', color: '#ccc', font: { size: 14 } },
+      legend: { position: 'bottom' }
+    }
+  }
+});
+</script>
+</body>
+</html>

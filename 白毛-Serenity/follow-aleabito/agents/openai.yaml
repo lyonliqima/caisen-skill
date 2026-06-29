@@ -1,0 +1,6 @@
+interface:
+  display_name: "Follow AleaBito"
+  short_description: "Beginner-friendly Chinese AleaBito digest with Buffett analysis"
+  default_prompt: "Use $follow-aleabito to fetch @aleabitoreddit posts, quotes, and high-signal replies; build a beginner-friendly Chinese digest with first-principles and Buffett-style direct answers; then send it by iMessage."
+policy:
+  allow_implicit_invocation: true

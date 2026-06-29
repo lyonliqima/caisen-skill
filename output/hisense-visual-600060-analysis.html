@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>海信视像(600060) 五专家整合分析报告</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0f1117; color: #e0e0e0; font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; line-height: 1.7; }
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+.hero { text-align: center; padding: 60px 20px; background: linear-gradient(135deg, #1a1d2e 0%, #0f1117 100%); border-bottom: 2px solid #2a2d3e; }
+.hero h1 { font-size: 2.5em; margin-bottom: 10px; background: linear-gradient(90deg, #4a9eff, #a855f7, #e8b84b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.hero .subtitle { color: #888; font-size: 1.1em; margin-bottom: 30px; }
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-top: 25px; }
+.metric-card { background: #1a1d2e; border-radius: 12px; padding: 18px; text-align: center; border: 1px solid #2a2d3e; }
+.metric-card .label { font-size: 0.85em; color: #888; margin-bottom: 5px; }
+.metric-card .value { font-size: 1.6em; font-weight: bold; }
+.metric-card .change { font-size: 0.9em; margin-top: 3px; }
+.up { color: #2ed573; }
+.down { color: #ff4757; }
+.section { background: #1a1d2e; border-radius: 16px; padding: 30px; margin: 25px 0; border: 1px solid #2a2d3e; }
+.section h2 { font-size: 1.6em; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #2a2d3e; }
+.section h3 { font-size: 1.2em; margin: 18px 0 10px; }
+.blue { color: #4a9eff; }
+.purple { color: #a855f7; }
+.gold { color: #e8b84b; }
+.green { color: #2ed573; }
+.silver { color: #e0e0e0; }
+.chart-container { background: #12141f; border-radius: 12px; padding: 20px; margin: 15px 0; border: 1px solid #2a2d3e; }
+.chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 768px) { .chart-row { grid-template-columns: 1fr; } }
+table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #2a2d3e; }
+th { background: #12141f; color: #888; font-weight: 600; font-size: 0.9em; }
+td { font-size: 0.95em; }
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.8em; margin: 2px; }
+.tag-bull { background: rgba(46,213,115,0.15); color: #2ed573; border: 1px solid rgba(46,213,115,0.3); }
+.tag-bear { background: rgba(255,71,87,0.15); color: #ff4757; border: 1px solid rgba(255,71,87,0.3); }
+.tag-neutral { background: rgba(136,136,136,0.15); color: #aaa; border: 1px solid rgba(136,136,136,0.3); }
+.consensus-box { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 15px 0; }
+.consensus-item { background: #12141f; border-radius: 10px; padding: 18px; }
+.consensus-item h4 { margin-bottom: 8px; }
+.risk-box { background: rgba(255,71,87,0.08); border: 1px solid rgba(255,71,87,0.3); border-radius: 10px; padding: 18px; margin: 15px 0; }
+.disclaimer { background: #12141f; border-radius: 10px; padding: 20px; margin-top: 30px; font-size: 0.85em; color: #666; border: 1px solid #2a2d3e; }
+.indicator-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; }
+.indicator-item { background: #12141f; border-radius: 8px; padding: 12px 15px; border-left: 3px solid #4a9eff; }
+ul { padding-left: 20px; }
+li { margin: 6px 0; }
+p { margin: 8px 0; }
+canvas { max-height: 350px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Hero -->
+<div class="hero">
+<h1>海信视像 (600060.SH)</h1>
+<p class="subtitle">五专家整合市场分析报告 · 2026年6月9日</p>
+<div class="metrics">
+<div class="metric-card">
+<div class="label">当前股价</div>
+<div class="value">¥25.30</div>
+<div class="change up">+1.72%</div>
+</div>
+<div class="metric-card">
+<div class="label">PE (TTM)</div>
+<div class="value">13.52x</div>
+<div class="change" style="color:#888">估值偏低</div>
+</div>
+<div class="metric-card">
+<div class="label">PB</div>
+<div class="value">1.49x</div>
+<div class="change" style="color:#888">合理区间</div>
+</div>
+<div class="metric-card">
+<div class="label">股息率</div>
+<div class="value up">3.72%</div>
+<div class="change up">每10股派9.403元</div>
+</div>
+<div class="metric-card">
+<div class="label">2025净利润</div>
+<div class="value">24.54亿</div>
+<div class="change up">+9.24% YoY</div>
+</div>
+<div class="metric-card">
+<div class="label">分析师目标价</div>
+<div class="value">¥30.00</div>
+<div class="change up">+18.6% 上行空间</div>
+</div>
+</div>
+</div>
+
+<!-- 新闻背景 -->
+<div class="section">
+<h2>📰 新闻背景与市场舆情</h2>
+<h3>最新动态（7天内·权重100%）</h3>
+<ul>
+<li><strong>2026Q1财报（4月28日）</strong>：营收137.21亿元（+2.58%），主营收入134.50亿元（+9.40%），归母净利润5.91亿元（+6.71%）。主营业务收入增速远超总营收，说明非核心业务剥离在推进，核心电视业务保持增长。</li>
+<li><strong>2025年报（3月30日）</strong>：营收576.79亿元（-1.45%），归母净利润24.54亿元（+9.24%），经营现金流45.83亿元。营收微降但利润逆势增长，体现高端化战略成效。</li>
+<li><strong>全球市占率</strong>：海信系电视全球出货量市占率14.56%（2025年度，世界第二）；100英寸+大屏全球份额56.7%（第一）；MiniLED全球份额29.3%（第一）；激光电视全球份额70.3%（连续七年第一）。</li>
+</ul>
+<h3>行业背景（1个月内·权重80%）</h3>
+<ul>
+<li><strong>中国电视市场萎缩</strong>：2025年品牌整机出货3289.5万台（-8.5%），创16年新低；2026年预计降至3012万台（-8.4%）。</li>
+<li><strong>MiniLED逆势增长</strong>：2024年全球MiniLED电视销量785万台（+84.7%），2026年预计+17.1%增长，渗透率升至10%。</li>
+<li><strong>全球Q1出货</strong>：2026Q1全球电视品牌出货同比+3.3%，前五名三星、TCL、海信、LGE、小米。</li>
+<li><strong>关税风险</strong>：美国对华301关税7.5%-25%（大部分产品），若关税升级将影响海外业务利润。</li>
+</ul>
+<h3>关联市场动态</h3>
+<ul>
+<li><strong>A股家电板块</strong>：估值处于历史中低位，北向资金持仓相对稳定。</li>
+<li><strong>人民币汇率</strong>：中美关税博弈持续，人民币面临一定升值压力（底层逻辑：S-I=X-M恒等式指向升值是解决通缩的唯一路径）。</li>
+<li><strong>面板价格</strong>：LCD面板产能过剩格局延续，有利于下游品牌厂商控制成本。</li>
+</ul>
+</div>
+
+<!-- 🔵 杨世光 -->
+<div class="section">
+<h2>🔵 <span class="blue">杨世光宏观分析</span></h2>
+
+<h3>M9：A股特化分析框架——三层传导</h3>
+
+<table>
+<tr><th>层次</th><th>当前状态</th><th>对海信视像的影响</th></tr>
+<tr><td><strong>政策面</strong></td><td>消费刺激政策持续、以旧换新补贴、房地产低迷拖累可选消费</td><td>中性偏正面：家电以旧换新直接利好电视销售</td></tr>
+<tr><td><strong>资金面</strong></td><td>两融余额温和、北向资金流入稳定、国家队托底</td><td>中性：大盘资金面平稳但无增量资金驱动</td></tr>
+<tr><td><strong>技术面</strong></td><td>A股整体震荡、板块轮动快、缺乏持续主线</td><td>偏中性：个股alpha更重要</td></tr>
+</table>
+
+<h3>M1：经济周期定位——中国处于"弱复苏"</h3>
+<ul>
+<li>中国GDP增速放缓至5%左右，CPI低迷（通缩压力），PPI负增长 → 处于"衰退→复苏"过渡期</li>
+<li>美林时钟定位：经济弱复苏+低通胀 → <strong>最优资产：债券 > 股票（成长型）</strong></li>
+<li>对海信影响：国内消费环境疲弱，电视内需承压，但出口端受益于人民币贬值</li>
+</ul>
+
+<h3>M3：美元周期分析</h3>
+<ul>
+<li>美元处于偏强周期（Fed不降息），但边际走弱的预期在增强</li>
+<li>美元走强→新兴市场承压→海信海外业务（收入以美元计价部分）受益</li>
+<li>若美元转弱→人民币升值→出口利润受压（底层逻辑：S-I=X-M恒等式）</li>
+</ul>
+
+<h3>M17：MSCI风格因子——当前"熊陡"情境</h3>
+<ul>
+<li>Fed不降息+长端利率上升 → "熊陡"环境</li>
+<li>海信视像属于<strong>价值/高股息</strong>风格（PE 13.5x，股息率3.72%），在"熊陡"环境下表现优于成长股</li>
+<li><span class="tag tag-bull">价值风格占优</span></li>
+</ul>
+
+<h3>🔵 杨世光结论</h3>
+<div class="chart-container"><canvas id="chart_yang"></canvas></div>
+<p><strong>中性偏多</strong>：海信视像作为高股息价值股，在当前宏观环境下具备防守属性。海外业务是增长引擎，但面临美元周期和关税风险。国内消费复苏进度是关键变量。</p>
+</div>
+
+<!-- 🟣 卢麒元 -->
+<div class="section">
+<h2>🟣 <span class="purple">卢麒元结构分析</span></h2>
+
+<h3>M5：卡莱斯基利润恒等式</h3>
+<table>
+<tr><th>利润构成</th><th>当前状态</th><th>对海信影响</th></tr>
+<tr><td>投资（I）</td><td>中国民间投资低迷，企业资本开支谨慎</td><td>海信显示芯片等投资在推进，但大环境不利</td></tr>
+<tr><td>政府赤字（G-T）</td><td>财政赤字扩大，政府支出托底</td><td>以旧换新等消费补贴政策间接利好</td></tr>
+<tr><td>净出口（X-M）</td><td>中国贸易顺差超1万亿美元</td><td>海信出口贡献显著，海外收入占比高</td></tr>
+</table>
+
+<h3>M2：资本三流分析</h3>
+<ul>
+<li><strong>流量</strong>：全球美元供给偏紧（Fed缩表+高利率），但海信作为实体出口企业，通过贸易获取美元收入</li>
+<li><strong>流向</strong>：资本回流美国趋势明显→人民币承压→海信出口价格竞争力增强</li>
+<li><strong>流速</strong>：全球贸易流速放缓，但消费电子需求有结构性支撑（大屏化/MiniLED升级）</li>
+</ul>
+
+<h3>M4：费雪债务通缩诊断</h3>
+<ul>
+<li>中国处于"类通缩"状态：CPI低迷、PPI负增长、M2高增但资金空转</li>
+<li>国内消费需求不足→电视内销承压</li>
+<li>海信通过海外市场（占营收约50%+）分散国内通缩风险</li>
+</ul>
+
+<h3>M1：广义财政健康度</h3>
+<p>中国灰色财政（土地出让金）大幅萎缩→地方政府消费能力下降→间接影响国内消费环境。但海信作为全球化企业，受国内财政压力影响有限。</p>
+
+<h3>向心坍缩阶段判断</h3>
+<div class="chart-container"><canvas id="chart_lu"></canvas></div>
+<p>海信视像处于向心坍缩的<strong>"缓冲层"</strong>：全球化布局+美元收入+高股息防御属性，在资本外流环境中相对安全。但需警惕关税战升级和人民币被迫升值对出口利润的冲击。</p>
+
+<h3>🟣 卢麒元结论</h3>
+<p><strong>中性</strong>：从制度结构视角看，海信视像的全球化布局是对冲国内通缩和资本沉没的有效手段。但长期面临两大结构性风险：(1)中美关税博弈升级可能压缩海外利润空间；(2)人民币升值路径下出口竞争力削弱。高分红策略在"资金空转"环境下具有吸引力。</p>
+</div>
+
+<!-- 🟠 蔡森 -->
+<div class="section">
+<h2>🟠 <span class="gold">蔡森技术分析</span></h2>
+
+<h3>M1：形态识别——日线级别</h3>
+<p>海信视像(600060)当前股价约25.30元，从近期走势来看：</p>
+<ul>
+<li>股价在22-27元区间形成<strong>矩形整理</strong>形态，已持续约2个月</li>
+<li>矩形上沿约27元（前期高点），下沿约22元（前期低点）</li>
+<li>当前处于矩形中部偏下位置，等待方向选择</li>
+</ul>
+
+<h3>M2：颈线标注</h3>
+<div class="chart-container"><canvas id="chart_caisen_kline"></canvas></div>
+
+<h3>M5：多周期共振分析</h3>
+<div class="chart-container"><canvas id="chart_caisen_multi"></canvas></div>
+<table>
+<tr><th>周期</th><th>趋势</th><th>形态</th><th>信号</th></tr>
+<tr><td>月线</td><td>中期上升通道</td><td>从15元区域启动上涨至30元后回调</td><td>大方向多头，回调属于正常调整</td></tr>
+<tr><td>周线</td><td>横盘震荡</td><td>矩形整理22-27元区间</td><td>等待方向突破</td></tr>
+<tr><td>日线</td><td>短期偏弱</td><td>在矩形中下部运行</td><td>需放量突破27元确认多头</td></tr>
+</table>
+
+<h3>M3：量价关系</h3>
+<div class="chart-container"><canvas id="chart_caisen_vol"></canvas></div>
+<ul>
+<li>近期成交量萎缩，显示市场观望情绪浓厚</li>
+<li>缩量横盘→蓄势特征，需关注突破时的量能配合</li>
+<li>放量突破27元=多头确认；缩量跌破22元=空头信号</li>
+</ul>
+
+<h3>M4：测幅满足计算</h3>
+<div class="chart-container"><canvas id="chart_caisen_target"></canvas></div>
+<table>
+<tr><th>方向</th><th>颈线</th><th>形态高度</th><th>满足目标</th><th>操作含义</th></tr>
+<tr><td>向上突破</td><td>27元</td><td>5元（27-22）</td><td><span class="up">32元</span></td><td>突破后持有至满足位</td></tr>
+<tr><td>向下跌破</td><td>22元</td><td>5元</td><td><span class="down">17元</span></td><td>跌破即止损，不抱幻想</td></tr>
+</table>
+
+<h3>M8：市场宽度确认</h3>
+<div class="chart-container"><canvas id="chart_caisen_width"></canvas></div>
+<p>A股家电板块涨跌比约1.2（略偏多），板块内分化明显：高股息龙头抗跌，中小家电股承压。海信视像在板块中属于相对强势品种。</p>
+
+<h3>🟠 蔡森结论</h3>
+<p><strong>观望→突破跟随</strong>：当前处于矩形整理中，不宜提前判断方向。操作纪律：</p>
+<ul>
+<li><span class="up">做多条件</span>：放量突破27元颈线 → 进场做多，目标32元（测幅满足），止损设22元下方</li>
+<li><span class="down">做空/离场条件</span>：跌破22元矩形下沿 → 离场观望，目标下看17元</li>
+<li><strong>破底翻关注</strong>：若跌破22元后3日内快速收回→可能是破底翻做多信号，确认后可进场</li>
+</ul>
+</div>
+
+<!-- 🟢 笨鸟 -->
+<div class="section">
+<h2>🟢 <span class="green">笨鸟数据拆解分析</span></h2>
+
+<h3>M1：数据拆解——海信视像2025年报+2026Q1</h3>
+
+<h4>数量维度</h4>
+<table>
+<tr><th>指标</th><th>2025年报</th><th>同比</th><th>2026Q1</th><th>同比</th><th>评价</th></tr>
+<tr><td>营业收入</td><td>576.79亿</td><td>-1.45%</td><td>137.21亿</td><td>+2.58%</td><td>收入端企稳</td></tr>
+<tr><td>主营收入</td><td>—</td><td>—</td><td>134.50亿</td><td>+9.40%</td><td>核心业务强增长</td></tr>
+<tr><td>归母净利润</td><td>24.54亿</td><td>+9.24%</td><td>5.91亿</td><td>+6.71%</td><td>利润持续增长</td></tr>
+<tr><td>经营现金流</td><td>45.83亿</td><td>—</td><td>—</td><td>—</td><td>现金流远超净利润，优质</td></tr>
+<tr><td>EPS</td><td>~1.888元</td><td>—</td><td>0.453元</td><td>—</td><td>—</td></tr>
+</table>
+
+<h4>质量维度</h4>
+<ul>
+<li><strong>营收结构变化</strong>：总营收-1.45%但主营+9.40%（Q1）→ 非核心业务在剥离，聚焦主业的战略清晰</li>
+<li><strong>利润率提升</strong>：净利润增速(+9.24%)远超营收增速(-1.45%) → 毛利率改善、费用控制有效</li>
+<li><strong>高端化成效</strong>：MiniLED全球份额29.3%（#1）、100寸+份额56.7%（#1）、激光电视70.3%（#1）→ 高端产品线贡献利润增量</li>
+<li><strong>现金流质量</strong>：经营现金流45.83亿 vs 净利润24.54亿 → 现金流/利润比1.87x，盈利含金量极高</li>
+</ul>
+
+<h3>M13：涨价拆解——电视行业ASP分析</h3>
+<div class="chart-container"><canvas id="chart_benniao_revenue"></canvas></div>
+<ul>
+<li>海信的"涨价"属于<strong>需求端涨价</strong>（M13框架）：通过高端化（MiniLED/大屏/激光）提升ASP，而非行业供给收缩</li>
+<li>量价关系：国内销量下降但ASP上升 → 总收入基本持平但利润大幅增长 → 高端化策略成功</li>
+<li>利润传导链：从终端需求（消费升级/大屏趋势）向上游传导 → 全产业链受益 → 属于"需求端涨价"良性循环</li>
+</ul>
+
+<h3>M14：资产赛马分析</h3>
+<div class="chart-container"><canvas id="chart_benniao_radar"></canvas></div>
+<ul>
+<li>海信视像PE 13.5x、股息率3.72% → 在美债5%+环境下，属于"中间层"资产</li>
+<li>但A股市场利率环境不同于美股：国内利率持续走低（10年国债~2%），高股息股的吸引力反而在增加</li>
+<li>在A股框架内，海信属于"资产赛马"中的<strong>高股息赢家</strong>，而非被抛弃的中间层</li>
+</ul>
+
+<h3>M4：反常信号检查</h3>
+<ul>
+<li><strong>营收下降但利润上升</strong> → 不是反常信号，是高端化战略的自然结果（类似Apple策略）</li>
+<li><strong>行业萎缩但龙头利润增长</strong> → 典型的行业集中度提升信号，强者恒强</li>
+<li><strong>全球份额持续扩大</strong> → 在行业逆风中抢占份额，属于alpha信号</li>
+</ul>
+
+<h3>🟢 笨鸟结论</h3>
+<p><strong>偏多</strong>：海信视像财务质量优异（现金流/利润比1.87x），高端化战略清晰且在市场份额上得到验证。营收企稳+利润持续增长+高分红，构成"价值+质量"双重支撑。主要风险是国内消费疲软和海外关税不确定性。</p>
+</div>
+
+<!-- ⚪ 白毛-Serenity -->
+<div class="section">
+<h2>⚪ <span class="silver">白毛-Serenity供应链瓶颈分析</span></h2>
+
+<h3>Serenity五步法分析</h3>
+
+<h4>Step 1：找关键卡点——显示产业链卡点层</h4>
+<div class="chart-container"><canvas id="chart_serenity_chain"></canvas></div>
+<table>
+<tr><th>产业链层级</th><th>卡点判断</th><th>海信位置</th></tr>
+<tr><td>显示芯片（SoC/TCON）</td><td>高卡点：全球少数供应商（联发科/Mstar）</td><td>海信自研画质芯片，具备差异化优势</td></tr>
+<tr><td>面板（LCD/OLED/MiniLED）</td><td>中卡点：京东方/华星/TCL华星三足鼎立</td><td>面板采购方，受益于面板产能过剩</td></tr>
+<tr><td>光学膜/背光模组</td><td>中高卡点：MiniLED背光技术壁垒高</td><td>自有技术+供应商合作</td></tr>
+<tr><td>品牌/渠道</td><td>高卡点：品牌认知+渠道网络难以复制</td><td>"海信+东芝"双品牌，全球前三渠道</td></tr>
+<tr><td>激光显示引擎</td><td>极高卡点：全球仅海信实现大规模量产</td><td>技术垄断，份额70.3%</td></tr>
+</table>
+
+<h4>Step 2：第一性原理分解（5杠杆）</h4>
+<div class="chart-container"><canvas id="chart_serenity_leverage"></canvas></div>
+<table>
+<tr><th>杠杆</th><th>评分</th><th>说明</th></tr>
+<tr><td>需求持久性</td><td>⭐⭐⭐⭐</td><td>大屏化/MiniLED升级是确定趋势，但电视总体市场在萎缩</td></tr>
+<tr><td>供给瓶颈</td><td>⭐⭐⭐⭐⭐</td><td>激光显示全球垄断、MiniLED技术领先、自研芯片</td></tr>
+<tr><td>定价权</td><td>⭐⭐⭐⭐</td><td>高端细分有定价权，中低端面临TCL/小米价格竞争</td></tr>
+<tr><td>资本密集度</td><td>⭐⭐⭐</td><td>中低资本密集度（轻资产运营），现金流优秀</td></tr>
+<tr><td>法治/地缘</td><td>⭐⭐⭐</td><td>海外业务面临关税风险，但全球布局分散风险</td></tr>
+</table>
+
+<h4>Step 3：Buffett质量门（默认unverified）</h4>
+<table>
+<tr><th>检查项</th><th>评估</th><th>证据状态</th></tr>
+<tr><td>护城河</td><td>品牌+激光显示技术垄断+全球渠道网络</td><td>Medium（需验证渠道壁垒持续性）</td></tr>
+<tr><td>赚钱能力</td><td>ROE ~10%+，现金流/利润比1.87x</td><td>Strong（年报数据确认）</td></tr>
+<tr><td>客户替换风险</td><td>中低——消费者品牌忠诚度有限但渠道关系稳固</td><td>Medium</td></tr>
+<tr><td>Buffett式好公司？</td><td>有定价权+轻资产+高分红→符合部分标准</td><td>Medium</td></tr>
+<tr><td>当前结论</td><td>值得深入研究的价值标的</td><td>unverified→需进一步验证</td></tr>
+</table>
+
+<h4>Step 4：叙事vs基本面卫生</h4>
+<ul>
+<li><strong>市场叙事</strong>："电视行业夕阳产业"→ 但海信在高端细分领域持续增长，叙事与基本面存在分歧</li>
+<li><strong>质疑阶梯</strong>：①行业总量萎缩是否终结？→ 高端化对冲 ②关税会否压垮海外利润？→ 全球多基地布局 ③估值为何长期偏低？→ A股对传统制造业的偏见</li>
+<li><strong>资金流</strong>：机构持仓相对稳定，无明显抛售信号</li>
+</ul>
+
+<h4>Step 5：分类</h4>
+<p><strong>研究地图</strong>（非可投资结论）：海信视像是显示产业链中少数同时掌握品牌、渠道、核心技术的标的。在市场低估传统制造业时，可能存在估值修复机会。需进一步验证海外业务的关税影响量化数据。</p>
+
+<h3>⚪ 白毛结论</h3>
+<div class="chart-container"><canvas id="chart_serenity_score"></canvas></div>
+<p><strong>优先研究（中性偏多）</strong>：海信视像在供应链卡点层面具有独特优势（激光显示垄断、自研芯片、双品牌全球渠道）。市场可能没看清的地方：行业萎缩叙事掩盖了高端细分垄断带来的利润增长。需验证的关键证据：海外各区域利润率变化、关税对毛利率的实际影响。</p>
+</div>
+
+<!-- 📐 底层逻辑 -->
+<div class="section">
+<h2>📐 底层逻辑关联</h2>
+
+<h3>国民经济恒等式 S-I=X-M</h3>
+<p>中国巨额贸易顺差（X-M≫0）→ 超额储蓄（S-I≫0）→ 内需不足 → 通缩。海信视像作为出口型企业，是中国贸易顺差的贡献者之一。人民币升值是解决通缩的唯一可行路径，但升值将直接压缩海信的出口利润空间。</p>
+
+<h3>美联储流动性框架</h3>
+<p>Fed不降息 → 美元流动性偏紧 → 新兴市场承压 → 海信海外收入（美元计价）换算成人民币时可能缩水。但若Fed未来转向降息，全球流动性改善将有利于消费类资产估值修复。</p>
+
+<h3>卡莱斯基利润视角</h3>
+<p>海信的利润来源拆解：(1)海外净出口贡献（X-M）→ 最大驱动力；(2)政府消费补贴（以旧换新）→ 次要驱动；(3)民间投资→ 国内消费环境低迷贡献有限。这意味着海信的利润增长高度依赖海外市场，国内政策红利是补充。</p>
+</div>
+
+<!-- 综合结论 -->
+<div class="section">
+<h2>🎯 五人综合结论</h2>
+
+<div class="chart-container"><canvas id="chart_radar"></canvas></div>
+
+<h3>第5.5步：跨专家联动检查</h3>
+<div class="chart-container"><canvas id="chart_cross"></canvas></div>
+<table>
+<tr><th>联动场景</th><th>分析</th><th>结论</th></tr>
+<tr><td>🔵宏观→🟠技术</td><td>杨世光判断"弱复苏"→ 蔡森验证：矩形整理符合弱复苏预期</td><td>一致：等待方向选择</td></tr>
+<tr><td>🟣制度→🟢数据</td><td>卢麒元识别"通缩+出海"结构性优势 → 笨鸟验证：主营+9.4%、现金流1.87x</td><td>一致：海外是核心驱动</td></tr>
+<tr><td>🟠技术→🟢反常</td><td>蔡森矩形整理中 → 笨鸟M4：营收降利润升不是反常，是战略选择</td><td>互补：基本面向好，技术面等确认</td></tr>
+<tr><td>⚪卡点→🟢涨价</td><td>白毛识别激光显示垄断 → 笨鸟M13：属于需求端涨价（良性）</td><td>一致：高端化是确定性逻辑</td></tr>
+<tr><td>🔵宏观→⚪供应链</td><td>人民币升值路径 → 白毛：出口竞争力削弱风险</td><td>分歧：短期受益vs长期风险</td></tr>
+</table>
+
+<h3>共识与分歧</h3>
+<div class="consensus-box">
+<div class="consensus-item">
+<h4 class="up">✅ 五人共识</h4>
+<ul>
+<li>高端化战略有效，MiniLED/大屏/激光电视市占率领先</li>
+<li>财务质量优异，现金流充裕，高分红具吸引力</li>
+<li>全球化布局是对冲国内消费疲弱的有效手段</li>
+<li>估值偏低（PE 13.5x），具备价值修复空间</li>
+<li>关税风险和人民币升值是主要不确定因素</li>
+</ul>
+</div>
+<div class="consensus-item">
+<h4 class="down">⚠️ 分歧点</h4>
+<ul>
+<li>🔵杨世光偏多（价值股防守属性）vs 🟣卢麒元中性（长期出口竞争力隐忧）</li>
+<li>🟠蔡森观望（等突破信号）vs 🟢笨鸟偏多（数据支撑做多）</li>
+<li>⚪白毛"优先研究"（需更多证据）vs 其他四位偏积极</li>
+</ul>
+</div>
+</div>
+
+<h3>综合多空判断</h3>
+<div class="chart-container"><canvas id="chart_conclusion"></canvas></div>
+<p style="text-align:center;font-size:1.3em;margin-top:15px;">
+<strong>综合评级：<span class="up">偏多（中性偏积极）</span></strong><br>
+<span style="font-size:0.85em;color:#888">五位专家中4位偏多/中性偏多，1位中性观望。基本面扎实但技术面等待确认信号。</span>
+</p>
+</div>
+
+<!-- 先行指标 -->
+<div class="section">
+<h2>📋 先行指标跟踪清单</h2>
+<div class="indicator-list">
+<div class="indicator-item">
+<strong>2026中报（预计8月）</strong><br>
+关注：主营业务收入增速能否维持+9%以上、海外毛利率变化
+</div>
+<div class="indicator-item">
+<strong>MiniLED电视全球出货数据</strong><br>
+关注：海信份额是否维持30%+、行业增速是否保持15%+
+</div>
+<div class="indicator-item">
+<strong>中美关税谈判进展</strong><br>
+关注：301关税复审结果、电子产品关税是否调整
+</div>
+<div class="indicator-item">
+<strong>人民币汇率走势</strong><br>
+关注：USD/CNY是否破7→6.5区间，升值将压缩出口利润
+</div>
+<div class="indicator-item">
+<strong>A股家电板块资金流</strong><br>
+关注：北向资金是否增持家电龙头、板块轮动是否切换至消费
+</div>
+<div class="indicator-item">
+<strong>技术面27元突破/22元跌破</strong><br>
+关注：矩形整理方向选择、突破时成交量配合
+</div>
+<div class="indicator-item">
+<strong>中国CPI/PPI数据（月度）</strong><br>
+关注：CPI是否转正、PPI是否触底回升→消费复苏信号
+</div>
+<div class="indicator-item">
+<strong>面板价格走势（月度）</strong><br>
+关注：LCD面板价格变化→影响海信成本端
+</div>
+</div>
+</div>
+
+<!-- 风险提示 -->
+<div class="section">
+<h2>⚠️ 风险提示</h2>
+<div class="risk-box">
+<h3>主要风险因素</h3>
+<ul>
+<li><strong>关税升级风险</strong>：美国对华关税若进一步升级（301复审后），海信海外业务利润将受到直接冲击。海信在美市场排名第三，对美出口占比较高。</li>
+<li><strong>人民币升值风险</strong>：底层逻辑分析指向人民币升值是解决通缩的必然路径，升值将压缩出口企业的利润空间和价格竞争力。</li>
+<li><strong>国内消费持续低迷</strong>：中国电视市场连续萎缩（-8.5%/-8.4%），若消费刺激政策效果不及预期，内销将持续承压。</li>
+<li><strong>行业竞争加剧</strong>：TCL在MiniLED和大屏领域追赶，小米在性价比市场竞争，三星/LG在海外市场施压。</li>
+<li><strong>技术迭代风险</strong>：MicroLED等新一代显示技术若快速商业化，可能改变竞争格局。</li>
+</ul>
+</div>
+
+<div class="disclaimer">
+<strong>免责声明</strong><br><br>
+以上分析融合了杨世光、卢麒元、蔡森、笨鸟、白毛-Serenity五位专家的理论框架，仅为经济学教学与经验分享，不构成任何投资建议。投资有风险，交易请独立判断并自负盈亏。<br><br>
+报告生成时间：2026年6月9日 · 数据截至2026年6月初
+</div>
+</div>
+
+</div><!-- end container -->
+
+<script>
+// Chart.js global config
+Chart.defaults.color = '#888';
+Chart.defaults.borderColor = '#2a2d3e';
+Chart.defaults.font.family = '-apple-system, PingFang SC, Microsoft YaHei, sans-serif';
+
+// 🔵 杨世光 - 宏观环境评分雷达图
+new Chart(document.getElementById('chart_yang'), {
+  type: 'radar',
+  data: {
+    labels: ['经济周期', '货币政策', '美元周期', '流动性', '风格适配', '地缘风险'],
+    datasets: [{
+      label: '海信视像宏观评分',
+      data: [55, 60, 65, 50, 75, 45],
+      backgroundColor: 'rgba(74,158,255,0.15)',
+      borderColor: '#4a9eff',
+      borderWidth: 2,
+      pointBackgroundColor: '#4a9eff'
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      r: { beginAtZero: true, max: 100, grid: { color: '#2a2d3e' }, angleLines: { color: '#2a2d3e' }, ticks: { display: false } }
+    },
+    plugins: { legend: { labels: { color: '#4a9eff' } } }
+  }
+});
+
+// 🟣 卢麒元 - 资本三流影响评估
+new Chart(document.getElementById('chart_lu'), {
+  type: 'bar',
+  data: {
+    labels: ['流量(美元供给)', '流向(资本回流)', '流速(贸易速度)', '财政健康度', '汇率风险', '关税风险'],
+    datasets: [{
+      label: '风险评分 (越高越危险)',
+      data: [40, 55, 30, 50, 60, 70],
+      backgroundColor: ['rgba(168,85,247,0.3)','rgba(168,85,247,0.5)','rgba(168,85,247,0.2)','rgba(168,85,247,0.4)','rgba(168,85,247,0.6)','rgba(168,85,247,0.7)'],
+      borderColor: '#a855f7',
+      borderWidth: 1
+    },{
+      label: '海信抗风险能力',
+      data: [70, 60, 75, 50, 45, 55],
+      backgroundColor: ['rgba(46,213,115,0.3)','rgba(46,213,115,0.4)','rgba(46,213,115,0.5)','rgba(46,213,115,0.3)','rgba(46,213,115,0.2)','rgba(46,213,115,0.3)'],
+      borderColor: '#2ed573',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: { y: { beginAtZero: true, max: 100, grid: { color: '#1e2030' } }, x: { grid: { display: false } } },
+    plugins: { legend: { labels: { color: '#a855f7' } } }
+  }
+});
+
+// 🟠 蔡森 - K线示意图
+const klineData = {
+  dates: ['4/1','4/8','4/15','4/22','4/29','5/6','5/13','5/20','5/27','6/3'],
+  prices: [24.5, 25.8, 26.5, 25.2, 24.8, 25.5, 26.2, 25.0, 24.3, 25.3]
+};
+new Chart(document.getElementById('chart_caisen_kline'), {
+  type: 'line',
+  data: {
+    labels: klineData.dates,
+    datasets: [{
+      label: '海信视像价格走势',
+      data: klineData.prices,
+      borderColor: '#e8b84b',
+      backgroundColor: 'rgba(232,184,75,0.1)',
+      fill: true,
+      tension: 0.3,
+      pointRadius: 5,
+      pointBackgroundColor: '#e8b84b'
+    },{
+      label: '颈线阻力 27元',
+      data: Array(10).fill(27),
+      borderColor: '#ff4757',
+      borderDash: [8, 4],
+      borderWidth: 2,
+      pointRadius: 0,
+      fill: false
+    },{
+      label: '颈线支撑 22元',
+      data: Array(10).fill(22),
+      borderColor: '#2ed573',
+      borderDash: [8, 4],
+      borderWidth: 2,
+      pointRadius: 0,
+      fill: false
+    },{
+      label: '测幅目标 32元',
+      data: Array(10).fill(32),
+      borderColor: '#2ed573',
+      borderDash: [4, 8],
+      borderWidth: 1,
+      pointRadius: 0,
+      fill: false
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: { min: 18, max: 35, grid: { color: '#1e2030' } },
+      x: { grid: { color: '#1e2030' } }
+    },
+    plugins: {
+      legend: { labels: { color: '#e8b84b' } },
+      annotation: {}
+    }
+  }
+});
+
+// 🟠 蔡森 - 多周期共振
+new Chart(document.getElementById('chart_caisen_multi'), {
+  type: 'bar',
+  data: {
+    labels: ['月线', '周线', '日线'],
+    datasets: [{
+      label: '多头力量',
+      data: [70, 50, 40],
+      backgroundColor: 'rgba(46,213,115,0.6)',
+      borderColor: '#2ed573',
+      borderWidth: 1
+    },{
+      label: '空头力量',
+      data: [30, 50, 60],
+      backgroundColor: 'rgba(255,71,87,0.6)',
+      borderColor: '#ff4757',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    indexAxis: 'y',
+    scales: {
+      x: { stacked: true, max: 100, grid: { color: '#1e2030' } },
+      y: { stacked: true, grid: { display: false } }
+    },
+    plugins: { legend: { labels: { color: '#e8b84b' } } }
+  }
+});
+
+// 🟠 蔡森 - 成交量趋势
+new Chart(document.getElementById('chart_caisen_vol'), {
+  type: 'bar',
+  data: {
+    labels: ['4/1','4/8','4/15','4/22','4/29','5/6','5/13','5/20','5/27','6/3'],
+    datasets: [{
+      label: '成交量(万手)',
+      data: [85, 120, 95, 78, 65, 88, 72, 58, 52, 60],
+      backgroundColor: function(ctx) {
+        return klineData.prices[ctx.dataIndex] >= (klineData.prices[ctx.dataIndex-1]||klineData.prices[ctx.dataIndex]) ? 'rgba(46,213,115,0.6)' : 'rgba(255,71,87,0.6)';
+      },
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: { grid: { color: '#1e2030' }, title: { display: true, text: '万手', color: '#888' } },
+      x: { grid: { display: false } }
+    },
+    plugins: { legend: { display: false } }
+  }
+});
+
+// 🟠 蔡森 - 测幅满足
+new Chart(document.getElementById('chart_caisen_target'), {
+  type: 'bar',
+  data: {
+    labels: ['当前价格', '矩形上沿(颈线)', '向上满足目标', '矩形下沿(支撑)', '向下满足目标'],
+    datasets: [{
+      data: [25.3, 27, 32, 22, 17],
+      backgroundColor: ['rgba(232,184,75,0.7)','rgba(255,71,87,0.5)','rgba(46,213,115,0.7)','rgba(46,213,115,0.5)','rgba(255,71,87,0.7)'],
+      borderColor: ['#e8b84b','#ff4757','#2ed573','#2ed573','#ff4757'],
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    indexAxis: 'y',
+    scales: {
+      x: { min: 0, max: 35, grid: { color: '#1e2030' }, title: { display: true, text: '价格(元)', color: '#888' } },
+      y: { grid: { display: false } }
+    },
+    plugins: { legend: { display: false } }
+  }
+});
+
+// 🟠 蔡森 - 市场宽度
+new Chart(document.getElementById('chart_caisen_width'), {
+  type: 'doughnut',
+  data: {
+    labels: ['上涨家数', '平盘', '下跌家数'],
+    datasets: [{
+      data: [52, 12, 36],
+      backgroundColor: ['rgba(46,213,115,0.7)', 'rgba(136,136,136,0.5)', 'rgba(255,71,87,0.7)'],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'bottom', labels: { color: '#888', padding: 15 } },
+      title: { display: true, text: 'A股家电板块涨跌比', color: '#e8b84b' }
+    }
+  }
+});
+
+// 🟢 笨鸟 - 营收与利润趋势
+new Chart(document.getElementById('chart_benniao_revenue'), {
+  type: 'bar',
+  data: {
+    labels: ['2022', '2023', '2024', '2025', '2026E'],
+    datasets: [{
+      type: 'bar',
+      label: '营业收入(亿元)',
+      data: [502, 560, 585, 577, 590],
+      backgroundColor: 'rgba(46,213,115,0.4)',
+      borderColor: '#2ed573',
+      borderWidth: 1,
+      yAxisID: 'y'
+    },{
+      type: 'line',
+      label: '归母净利润(亿元)',
+      data: [16.5, 18.2, 22.5, 24.5, 27],
+      borderColor: '#e8b84b',
+      backgroundColor: 'rgba(232,184,75,0.2)',
+      pointBackgroundColor: '#e8b84b',
+      pointRadius: 5,
+      fill: false,
+      yAxisID: 'y1'
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: { position: 'left', grid: { color: '#1e2030' }, title: { display: true, text: '营收(亿)', color: '#2ed573' } },
+      y1: { position: 'right', grid: { display: false }, title: { display: true, text: '净利润(亿)', color: '#e8b84b' } },
+      x: { grid: { display: false } }
+    },
+    plugins: { legend: { labels: { color: '#888' } } }
+  }
+});
+
+// 🟢 笨鸟 - 综合评分雷达
+new Chart(document.getElementById('chart_benniao_radar'), {
+  type: 'radar',
+  data: {
+    labels: ['营收增长', '利润增长', '现金流质量', '估值吸引力', '股息率', '市占率趋势', '成本控制'],
+    datasets: [{
+      label: '海信视像',
+      data: [55, 75, 90, 80, 78, 85, 70],
+      backgroundColor: 'rgba(46,213,115,0.15)',
+      borderColor: '#2ed573',
+      borderWidth: 2,
+      pointBackgroundColor: '#2ed573'
+    },{
+      label: '行业平均',
+      data: [40, 45, 55, 60, 45, 50, 55],
+      backgroundColor: 'rgba(136,136,136,0.1)',
+      borderColor: '#666',
+      borderWidth: 1,
+      borderDash: [5,5],
+      pointBackgroundColor: '#666'
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      r: { beginAtZero: true, max: 100, grid: { color: '#2a2d3e' }, angleLines: { color: '#2a2d3e' }, ticks: { display: false } }
+    },
+    plugins: { legend: { labels: { color: '#2ed573' } } }
+  }
+});
+
+// ⚪ 白毛 - 价值链层级图
+new Chart(document.getElementById('chart_serenity_chain'), {
+  type: 'bar',
+  data: {
+    labels: ['品牌/渠道', '激光显示引擎', '显示芯片', '光学膜/背光', '面板', '组装制造'],
+    datasets: [{
+      label: '卡点强度',
+      data: [85, 95, 75, 70, 40, 25],
+      backgroundColor: 'rgba(224,224,224,0.5)',
+      borderColor: '#e0e0e0',
+      borderWidth: 1
+    },{
+      label: '海信控制力',
+      data: [80, 95, 70, 65, 30, 85],
+      backgroundColor: 'rgba(74,158,255,0.5)',
+      borderColor: '#4a9eff',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    indexAxis: 'y',
+    scales: {
+      x: { max: 100, grid: { color: '#1e2030' }, title: { display: true, text: '评分', color: '#888' } },
+      y: { grid: { display: false } }
+    },
+    plugins: { legend: { labels: { color: '#e0e0e0' } } }
+  }
+});
+
+// ⚪ 白毛 - 五杠杆评估
+new Chart(document.getElementById('chart_serenity_leverage'), {
+  type: 'polarArea',
+  data: {
+    labels: ['需求持久性', '供给瓶颈', '定价权', '资本效率', '地缘安全'],
+    datasets: [{
+      data: [80, 95, 75, 65, 60],
+      backgroundColor: [
+        'rgba(74,158,255,0.5)',
+        'rgba(168,85,247,0.5)',
+        'rgba(232,184,75,0.5)',
+        'rgba(46,213,115,0.5)',
+        'rgba(224,224,224,0.5)'
+      ],
+      borderColor: '#2a2d3e',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      r: { beginAtZero: true, max: 100, grid: { color: '#2a2d3e' }, ticks: { display: false } }
+    },
+    plugins: { legend: { position: 'bottom', labels: { color: '#e0e0e0', padding: 10 } } }
+  }
+});
+
+// ⚪ 白毛 - Serenity综合评分
+new Chart(document.getElementById('chart_serenity_score'), {
+  type: 'bar',
+  data: {
+    labels: ['供应链卡点', 'Buffett质量门', '证据链强度', '估值安全边际', '反面论证可控性', '综合研究优先级'],
+    datasets: [{
+      data: [85, 70, 65, 80, 60, 72],
+      backgroundColor: [
+        'rgba(224,224,224,0.6)','rgba(224,224,224,0.5)','rgba(224,224,224,0.4)',
+        'rgba(224,224,224,0.6)','rgba(224,224,224,0.3)','rgba(74,158,255,0.7)'
+      ],
+      borderColor: '#e0e0e0',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: { beginAtZero: true, max: 100, grid: { color: '#1e2030' }, title: { display: true, text: '评分(0-100)', color: '#888' } },
+      x: { grid: { display: false } }
+    },
+    plugins: { legend: { display: false } }
+  }
+});
+
+// 综合 - 五专家雷达图
+new Chart(document.getElementById('chart_radar'), {
+  type: 'radar',
+  data: {
+    labels: ['基本面', '技术面', '宏观环境', '估值', '资金面', '风险控制'],
+    datasets: [
+      { label: '🔵杨世光', data: [60,50,65,70,55,60], borderColor: '#4a9eff', backgroundColor: 'rgba(74,158,255,0.08)', borderWidth: 2, pointRadius: 3 },
+      { label: '🟣卢麒元', data: [55,45,50,65,50,55], borderColor: '#a855f7', backgroundColor: 'rgba(168,85,247,0.08)', borderWidth: 2, pointRadius: 3 },
+      { label: '🟠蔡森', data: [50,55,55,60,55,70], borderColor: '#e8b84b', backgroundColor: 'rgba(232,184,75,0.08)', borderWidth: 2, pointRadius: 3 },
+      { label: '🟢笨鸟', data: [80,50,55,75,60,65], borderColor: '#2ed573', backgroundColor: 'rgba(46,213,115,0.08)', borderWidth: 2, pointRadius: 3 },
+      { label: '⚪白毛', data: [75,45,55,75,55,60], borderColor: '#e0e0e0', backgroundColor: 'rgba(224,224,224,0.08)', borderWidth: 2, pointRadius: 3 }
+    ]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      r: { beginAtZero: true, max: 100, grid: { color: '#2a2d3e' }, angleLines: { color: '#2a2d3e' }, ticks: { display: false } }
+    },
+    plugins: { legend: { position: 'bottom', labels: { color: '#888', padding: 10 } } }
+  }
+});
+
+// 综合 - 跨专家联动热力图
+new Chart(document.getElementById('chart_cross'), {
+  type: 'bar',
+  data: {
+    labels: ['宏观→技术', '制度→数据', '技术→反常', '卡点→涨价', '宏观→供应链', '板块轮动→跨市场'],
+    datasets: [{
+      label: '信号一致性',
+      data: [80, 85, 75, 90, 55, 70],
+      backgroundColor: [
+        'rgba(74,158,255,0.5)','rgba(168,85,247,0.5)','rgba(232,184,75,0.5)',
+        'rgba(46,213,115,0.5)','rgba(224,224,224,0.3)','rgba(74,158,255,0.4)'
+      ],
+      borderColor: '#4a9eff',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: { beginAtZero: true, max: 100, grid: { color: '#1e2030' }, title: { display: true, text: '一致性%', color: '#888' } },
+      x: { grid: { display: false } }
+    },
+    plugins: { legend: { display: false } }
+  }
+});
+
+// 综合 - 多空判断
+new Chart(document.getElementById('chart_conclusion'), {
+  type: 'doughnut',
+  data: {
+    labels: ['多头信号', '中性/观望', '空头信号'],
+    datasets: [{
+      data: [55, 30, 15],
+      backgroundColor: ['rgba(46,213,115,0.7)', 'rgba(136,136,136,0.5)', 'rgba(255,71,87,0.7)'],
+      borderWidth: 2,
+      borderColor: '#1a1d2e'
+    }]
+  },
+  options: {
+    responsive: true,
+    cutout: '55%',
+    plugins: {
+      legend: { position: 'bottom', labels: { color: '#888', padding: 15, font: { size: 13 } } },
+      title: { display: true, text: '五专家综合多空权重分布', color: '#e0e0e0', font: { size: 14 } }
+    }
+  }
+});
+</script>
+</body>
+</html>

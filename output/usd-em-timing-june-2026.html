@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>美元走强时间点预测 | 四专家整合分析</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:#0f1117; color:#e8e8e8; font-family:'PingFang SC','Microsoft YaHei',sans-serif; line-height:1.8; }
+    .container { max-width:1200px; margin:0 auto; padding:20px; }
+    .hero { background:linear-gradient(135deg,#1a1d2e 0%,#252840 100%); border-radius:16px; padding:40px; margin-bottom:30px; text-align:center; }
+    .hero h1 { font-size:2em; margin-bottom:10px; background:linear-gradient(90deg,#4a9eff,#a855f7,#e8b84b,#2ed573); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .hero .subtitle { color:#888; font-size:1.1em; }
+    .hero .date { color:#666; font-size:0.9em; margin-top:5px; }
+    .metric-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin:20px 0; }
+    .metric-card { background:#1a1d2e; border-radius:10px; padding:16px; text-align:center; border:1px solid #2a2d3e; }
+    .metric-card .label { color:#888; font-size:0.8em; }
+    .metric-card .value { font-size:1.4em; font-weight:bold; margin:5px 0; }
+    .metric-card .change { font-size:0.85em; }
+    .up { color:#2ed573; } .down { color:#ff4757; }
+    .section { background:#1a1d2e; border-radius:16px; padding:30px; margin-bottom:24px; border:1px solid #2a2d3e; }
+    .section h2 { font-size:1.5em; margin-bottom:20px; padding-bottom:10px; border-bottom:1px solid #2a2d3e; }
+    h3 { font-size:1.2em; margin:20px 0 10px; }
+    .chart-container { background:#12141f; border-radius:12px; padding:20px; margin:16px 0; }
+    canvas { max-height:350px; }
+    table { width:100%; border-collapse:collapse; margin:12px 0; font-size:0.9em; }
+    th,td { padding:10px 12px; border:1px solid #2a2d3e; text-align:left; }
+    th { background:#252840; color:#aaa; }
+    .tag { display:inline-block; padding:3px 10px; border-radius:4px; font-size:0.8em; font-weight:bold; }
+    .tag-blue { background:rgba(74,158,255,0.2); color:#4a9eff; }
+    .tag-purple { background:rgba(168,85,247,0.2); color:#a855f7; }
+    .tag-gold { background:rgba(232,184,75,0.2); color:#e8b84b; }
+    .tag-green { background:rgba(46,213,115,0.2); color:#2ed573; }
+    .tag-red { background:rgba(255,71,87,0.2); color:#ff4757; }
+    .timeline { position:relative; margin:30px 0; padding-left:30px; border-left:3px solid #4a9eff; }
+    .timeline-item { position:relative; margin-bottom:24px; padding:16px; background:#12141f; border-radius:10px; border:1px solid #2a2d3e; }
+    .timeline-item::before { content:''; position:absolute; left:-38px; top:20px; width:12px; height:12px; border-radius:50%; border:3px solid #4a9eff; background:#0f1117; }
+    .timeline-item.active::before { background:#4a9eff; }
+    .timeline-item.hot::before { background:#ff4757; border-color:#ff4757; }
+    .timeline-item.ok::before { background:#2ed573; border-color:#2ed573; }
+    .timeline-date { color:#4a9eff; font-weight:bold; font-size:0.9em; }
+    .timeline-event { font-size:1em; margin:5px 0; }
+    .timeline-impact { color:#888; font-size:0.85em; }
+    .scenario-box { padding:20px; border-radius:12px; margin:12px 0; border:2px solid; }
+    .scenario-base { border-color:#4a9eff; background:rgba(74,158,255,0.05); }
+    .scenario-bull { border-color:#ff4757; background:rgba(255,71,87,0.05); }
+    .scenario-dovish { border-color:#2ed573; background:rgba(46,213,115,0.05); }
+    .disclaimer { background:#1a1d2e; border-radius:12px; padding:20px; margin-top:30px; border:1px solid #2a2d3e; color:#666; font-size:0.85em; text-align:center; }
+    ul { margin-left:20px; margin-top:8px; }
+    li { margin-bottom:6px; }
+    .expert-conclusion { padding:16px; border-radius:10px; margin-top:20px; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+<!-- Hero -->
+<div class="hero">
+  <h1>短期美元走强 → 何时结束？</h1>
+  <p class="subtitle">四专家方法论独立推导 | 时间节点预测</p>
+  <p class="date">2026年6月7日 | 基于6月6日收盘数据</p>
+  <div class="metric-cards">
+    <div class="metric-card">
+      <div class="label">美元指数 DXY</div>
+      <div class="value" style="color:#2ed573;">100.07</div>
+      <div class="change up">+1.1% 一周</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">Fed利率</div>
+      <div class="value">3.50-3.75%</div>
+      <div class="change">暂停降息</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">6月FOMC维持概率</div>
+      <div class="value" style="color:#ff4757;">99.4%</div>
+      <div class="change">CME FedWatch</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">核心PCE (4月)</div>
+      <div class="value" style="color:#ff4757;">3.30%</div>
+      <div class="change up">+0.1% vs 3月</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">DXY技术位</div>
+      <div class="value" style="color:#e8b84b;">突破100</div>
+      <div class="change">阻力101.50</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">下次FOMC</div>
+      <div class="value" style="color:#4a9eff;">6/16-17</div>
+      <div class="change">有点阵图</div>
+    </div>
+  </div>
+</div>
+
+<!-- 关键数据与事件日历 -->
+<div class="section">
+  <h2>📅 关键数据与事件日历（独立推导基础）</h2>
+  <div class="timeline">
+    <div class="timeline-item hot">
+      <div class="timeline-date">6月10日（周二）</div>
+      <div class="timeline-event"><strong>美国5月CPI</strong> — 预期CPI同比 3.8%（前值4.2%）</div>
+      <div class="timeline-impact">如果CPI低于3.8% → 降息预期升温 → 美元立刻走弱 → 新兴市场即时反弹<br>如果CPI高于3.8% → 美元继续走强至101-102 → 新兴市场继续承压</div>
+    </div>
+    <div class="timeline-item active">
+      <div class="timeline-date">6月16-17日（周二-三）</div>
+      <div class="timeline-event"><strong>FOMC利率决议 + 点阵图（SEP）</strong></div>
+      <div class="timeline-impact">CME显示99.4%维持利率。关键看<strong>点阵图中位数</strong>：2025年9月点阵图显示2026年仅1次降息。如果6月点阵图显示2次降息 → 美元拐点确认；如果维持1次 → 美元延续至7月</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">6月30日</div>
+      <div class="timeline-event"><strong>美国Q2 GDP终值 + PCE</strong></div>
+      <div class="timeline-impact">Q2 GDP如果走弱 + PCE回落 → 强化9月降息预期 → 美元6月底见顶</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">7月14日</div>
+      <div class="timeline-event"><strong>美国6月CPI</strong></div>
+      <div class="timeline-impact">Cleveland Fed Nowcasting预测6月headline 4.05%→如果实际降至3.5%以下 → 降息信号极强 → 美元快速走弱</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">7月28-29日</div>
+      <div class="timeline-event"><strong>FOMC利率决议</strong></div>
+      <div class="timeline-impact">如果通胀持续下行，Fed可能在此次会议释放9月降息信号 → 美元加速走弱</div>
+    </div>
+    <div class="timeline-item ok">
+      <div class="timeline-date">9月15-16日</div>
+      <div class="timeline-event"><strong>FOMC（有点阵图）— 最可能的降息窗口</strong></div>
+      <div class="timeline-impact">市场共识：2026年底利率3.25-3.4%（隐含1次降息）。9月FOMC是最自然的降息时点（有SEP配合）→ 美元趋势性走弱确认 → 新兴市场全面反转</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">9月30日</div>
+      <div class="timeline-event"><strong>美国财年末（TGA需求高峰）</strong></div>
+      <div class="timeline-impact">财政部Q3末集中发债 → TGA余额上升 → 短期抽走流动性 → 美元9月可能短暂走强（季节性）</div>
+    </div>
+  </div>
+</div>
+
+<!-- 杨世光 -->
+<div class="section">
+  <h2>🔵 杨世光 M3 美元周期法 — 时间点推导</h2>
+  <h3>驱动因素逐项分析</h3>
+  <table>
+    <tr><th>驱动因素</th><th>当前状态</th><th>变化预期</th><th>对美元影响</th></tr>
+    <tr><td>① 利差（美vs欧/中）</td><td>美3.50-3.75% vs 欧已降息 → 美元有利差优势</td><td>Fed 2026年底预计降至3.25-3.4%</td><td>短期支撑 → <strong>Q3开始收窄</strong></td></tr>
+    <tr><td>② 通胀差异</td><td>核心PCE 3.3%↑（粘性），Headline PCE 3.8%</td><td>Cleveland预测6月降至~3%，年底→2.5%</td><td>粘性消退 → <strong>7-8月通胀数据是关键拐点</strong></td></tr>
+    <tr><td>③ 经济增长差异</td><td>美国ADP强劲，台湾PMI 61.4%，中国PMI偏弱</td><td>关税效应滞后→美国Q3 GDP可能放缓</td><td>美国相对优势 → <strong>Q3收窄</strong></td></tr>
+    <tr><td>④ 去美元化趋势</td><td>美元全球份额56%→持续下降</td><td>结构性长期趋势</td><td>长期压制美元（慢变量）</td></tr>
+    <tr><td>⑤ 地缘政治</td><td>中东相对缓和，关税"谈而不破"</td><td>取决于特朗普政策</td><td>当前中性 → 突发事件可改变</td></tr>
+  </table>
+
+  <h3>M3时间线推导</h3>
+  <div class="chart-container"><canvas id="yangChart"></canvas></div>
+  <p><strong>推导逻辑</strong>：5个驱动因素中，①②③短期支撑美元，但都在Q3出现拐点预期。④是慢变量，不改变短期节奏。⑤是随机变量。</p>
+  <div class="expert-conclusion" style="background:rgba(74,158,255,0.1);">
+    <strong>🔵 杨世光推导结论：</strong>美元短期走强的主要驱动力（利差+通胀粘性+经济相对强势）预计在<strong>7-8月</strong>开始松动（CPI/PCE数据逐月回落）。如果6/17点阵图暗示2次降息，拐点可能提前到<strong>6月下旬</strong>。如果点阵图仅1次降息，强势延续到<strong>8月中旬</strong>。
+  </div>
+</div>
+
+<!-- 卢麒元 -->
+<div class="section">
+  <h2>🟣 卢麒元 资本三流 + 制度结构 — 时间点推导</h2>
+  <h3>M2 资本三流分析（用最新数据独立推导）</h3>
+  <table>
+    <tr><th>维度</th><th>最新数据</th><th>含义</th></tr>
+    <tr><td>流量</td><td>外资台股6/3买434亿→6/5卖452亿，两天完全反转</td><td>热钱属性，<strong>无方向性共识</strong></td></tr>
+    <tr><td>流向</td><td>人民币升值至6.82（逆势走强），台股外资大进大出</td><td>资本<strong>未趋势性回流美国</strong>，只是在观望</td></tr>
+    <tr><td>流速</td><td>外资两天内434亿→-452亿，周转极快</td><td>短线热钱主导，非长线配置资金</td></tr>
+  </table>
+
+  <h3>M1 广义财政 → 美元走势的制度性约束</h3>
+  <p>美国财政年度9月30日结束。Q3末（7-9月）财政部集中发债补充TGA：</p>
+  <ul>
+    <li>财政部发债 → TGA余额上升 → 从系统抽走准备金 → 流动性收紧 → <strong>美元季节性走强</strong></li>
+    <li>10月新财年开始 → TGA释放 → 流动性回升 → <strong>美元季节性走弱</strong></li>
+  </ul>
+
+  <h3>M6 明斯基融资阶段</h3>
+  <p>美国联邦债务/GDP已达~125%，利息支出占财政收入比例持续上升。当前处于<strong>庞氏融资边缘</strong>：需要不断借新还旧。这意味着：</p>
+  <ul>
+    <li>短期：财政部需要维持低利率发债 → 施压Fed降息 → 中期利好美元走弱</li>
+    <li>但降息需要通胀配合 → 通胀粘性限制降息空间</li>
+  </ul>
+
+  <div class="chart-container"><canvas id="luChart"></canvas></div>
+  <div class="expert-conclusion" style="background:rgba(168,85,247,0.1);">
+    <strong>🟣 卢麒元推导结论：</strong>从资本三流看，外资并未趋势性回流美国（台股大进大出≠趋势性流出），说明美元走强缺乏"真实的资本流动"支撑——更多是利率预期驱动。<strong>制度性拐点</strong>：9月30日财年末→TGA释放→10月起美元季节性走弱。综合看，<strong>8-9月是结构性拐点</strong>，但6-7月仍有短期压力。
+  </div>
+</div>
+
+<!-- 蔡森 -->
+<div class="section">
+  <h2>🟠 蔡森 M1形态 + M5多周期 — 时间点推导</h2>
+  <h3>DXY 技术面形态分析（用最新数据独立推导）</h3>
+  <table>
+    <tr><th>周期</th><th>形态识别</th><th>关键位</th><th>时间推导</th></tr>
+    <tr><td><strong>日线</strong></td><td>从5月低点~97反弹至100 → 旗形整理后突破100</td><td>支撑99.50 | 阻力100.50, 101.50</td><td>旗形突破后通常运行<strong>3-6周</strong>→ 6月中至7月底</td></tr>
+    <tr><td><strong>周线</strong></td><td>从97反弹形成潜在W底，颈线~100-101</td><td>颈线100.50 | 测幅目标102-103</td><td>W底确认后运行<strong>8-12周</strong>→ 但需放量确认突破</td></tr>
+    <tr><td><strong>月线</strong></td><td>2025年从110跌至97的下降趋势未破</td><td>月线趋势阻力101-102</td><td>月线下降趋势 → 反弹至101-102后大概率回落</td></tr>
+  </table>
+
+  <h3>M1 形态识别 + M2 颈线标注</h3>
+  <div class="chart-container"><canvas id="caiPriceChart"></canvas></div>
+  <table>
+    <tr><th>形态</th><th>颈线/关键位</th><th>测幅目标</th><th>M1判定</th></tr>
+    <tr><td>月线下降通道</td><td>上轨阻力：101-102</td><td>下轨目标：95-96</td><td style="color:#ff4757;">❌ 空头（下降趋势未破）</td></tr>
+    <tr><td>周线W底（待确认）</td><td>颈线：100-101</td><td>测幅目标：102-103</td><td style="color:#e8b84b;">⚠️ 待放量确认</td></tr>
+    <tr><td>日线旗形突破</td><td>旗形上沿：100</td><td>测幅目标：101.50</td><td style="color:#2ed573;">✅ 多头（已突破）</td></tr>
+  </table>
+
+  <h3>M5 多周期共振分析</h3>
+  <div class="chart-container"><canvas id="caiChart"></canvas></div>
+  <p><strong>关键判断</strong>：月线空头（优先级最高）→ 日线多头只是修正 → <strong>反弹不是反转</strong></p>
+
+  <h3>M8 市场宽度（台股验证）</h3>
+  <div class="chart-container"><canvas id="caiBreadthChart"></canvas></div>
+  <p>台股6/5涨跌比0.51 → M8判定空头信号 → 与DXY反弹承压逻辑一致</p>
+
+  <h3>M3 量价验证</h3>
+  <div class="chart-container"><canvas id="caiVolChart"></canvas></div>
+  <p>DXY从97反弹到100，如果缩量突破100 = 假突破概率大。放量站稳100.50 → 反弹延续3-5周；缩量回落99.50 → 反弹1-2周内结束。</p>
+
+  <div class="expert-conclusion" style="background:rgba(232,184,75,0.1);">
+    <strong>🟠 蔡森推导结论：</strong>月线下降趋势未破 → 当前反弹是下降趋势中的技术性修复。<strong>反弹顶部预计在101-102区间</strong>（月线趋势阻力），时间窗口<strong>6月下旬至7月底</strong>。之后DXY将重回下降趋势。如果6/10 CPI数据疲软+6/17点阵图鸽派 → 反弹可能<strong>提前终结于本周</strong>。
+  </div>
+</div>
+
+<!-- 笨鸟 -->
+<div class="section">
+  <h2>🟢 笨鸟 M11五阶段 + M2降息预期 — 时间点推导</h2>
+  <h3>M11 美元霸权保卫战 — 当前阶段判断</h3>
+  <table>
+    <tr><th>阶段</th><th>特征</th><th>当前匹配度</th><th>对美元含义</th></tr>
+    <tr><td>阶段1 软狙击</td><td>舆论引导+小范围资源控制</td><td>部分匹配（关税谈判、贸易摩擦）</td><td>美元小幅波动</td></tr>
+    <tr><td>阶段2 石油硬施压</td><td>中东冲突→油价飙升→美元荒</td><td>❌ 不匹配（中东相对缓和，油价未飙升）</td><td>N/A</td></tr>
+    <tr><td>阶段4 战略相持</td><td>地缘僵局+货币政策僵局</td><td>✅ 最匹配（Fed暂停+地缘僵局+去美元化持续）</td><td>美元横盘震荡</td></tr>
+  </table>
+  <p><strong>判断</strong>：当前处于<strong>阶段4（战略相持）</strong>。在此阶段，美元不会趋势性走强（因为不会同时"石油要挟+加息"——M11核心推论），短期走强只是波动，非趋势。</p>
+
+  <h3>M2 降息预期推导法 — 关键数据路径</h3>
+  <div class="chart-container"><canvas id="benChart"></canvas></div>
+  <table>
+    <tr><th>数据</th><th>预期值</th><th>如果实际值</th><th>对降息预期影响</th><th>对DXY影响</th></tr>
+    <tr><td>6/10 CPI</td><td>3.8% YoY</td><td>&lt;3.5% → 鸽派惊喜</td><td>降息预期骤升</td><td>DXY跌破99 → 立刻利好新兴市场</td></tr>
+    <tr><td>6/10 CPI</td><td>3.8% YoY</td><td>&gt;4.0% → 鹰派惊喜</td><td>降息预期归零</td><td>DXY冲向101-102 → 新兴市场继续承压</td></tr>
+    <tr><td>6/17 FOMC点阵图</td><td>1次降息</td><td>2次降息 → 鸽派</td><td>市场立刻定价降息</td><td>DXY拐点确认 → 6月下旬开始走弱</td></tr>
+    <tr><td>6/17 FOMC点阵图</td><td>1次降息</td><td>0次降息 → 鹰派</td><td>不降息恐惧</td><td>DXY冲向102 → 延续至7月FOMC</td></tr>
+  </table>
+
+  <h3>M4 反常信号检测</h3>
+  <table>
+    <tr><th>信号</th><th>理论应有</th><th>实际反应</th><th>是否反常</th><th>时间含义</th></tr>
+    <tr><td>ADP强劲</td><td>经济好→股市涨</td><td>美股跌（不降息恐惧主导）</td><td>⚠️ 反常</td><td>"不降息"已是主导逻辑，好消息=坏消息</td></tr>
+    <tr><td>DXY反弹至100</td><td>美元走强→新兴市场应跌</td><td>台股高位震荡但未崩</td><td>⚠️ 轻度反常</td><td>美元反弹幅度不够大（仅1.1%），尚未造成实质性冲击</td></tr>
+    <tr><td>人民币逆势升值</td><td>美元强→人民币应弱</td><td>人民币升至6.82</td><td>⚠️ 反常</td><td>中国资本流入>美元走强压力（S-I=X-M恒等式）</td></tr>
+  </table>
+
+  <div class="expert-conclusion" style="background:rgba(46,213,115,0.1);">
+    <strong>🟢 笨鸟推导结论：</strong>M11判断当前处于阶段4（战略相持），美元<strong>不会趋势性走强</strong>（因为不会双重强美元）。当前反弹是波动而非趋势。M2路径显示：<strong>6/10 CPI是第一个分水岭</strong>（如果<3.5%，美元反弹可能本周结束）；<strong>6/17 FOMC是第二个分水岭</strong>（点阵图2次降息=拐点确认）。三个反常信号说明美元走强的基础不牢。
+  </div>
+</div>
+
+<!-- 底层逻辑 -->
+<div class="section">
+  <h2>📐 底层逻辑 — 流动性恒等式验证</h2>
+  <h3>净流动性 = Fed资产负债表 - TGA - RRP</h3>
+  <ul>
+    <li>Fed已结束QT（2025.12），转入准备金管理模式 → 资产负债表中性</li>
+    <li>TGA：Q2末可能因季度发债而上升 → 短期抽走流动性 → 美元短期支撑</li>
+    <li>RRP：已从2024年高位大幅下降 → 流动性缓冲已消耗大半</li>
+  </ul>
+  <p><strong>底层逻辑推导</strong>：RRP缓冲消耗+QT结束 → 流动性处于"不紧不松"状态。美元走强缺乏流动性收缩的配合（没有三重抽水）。这进一步确认：<strong>当前美元反弹是预期驱动而非流动性驱动，持续性有限</strong>。</p>
+</div>
+
+<!-- 四专家综合时间节点 -->
+<div class="section">
+  <h2>🎯 四专家综合时间节点预测</h2>
+  <div class="chart-container"><canvas id="timelineChart"></canvas></div>
+
+  <h3>综合推导结果</h3>
+  <table>
+    <tr><th>专家</th><th>方法论</th><th>美元走强结束时间</th><th>新兴市场反弹时间</th><th>信心度</th></tr>
+    <tr><td>🔵杨世光</td><td>M3驱动因素拐点</td><td><strong>7月中-8月初</strong>（CPI/PCE逐月回落）</td><td>8月中旬</td><td>⭐⭐⭐⭐</td></tr>
+    <tr><td>🟣卢麒元</td><td>M2资本三流+财政周期</td><td><strong>8-9月</strong>（财年末TGA释放后）</td><td>10月</td><td>⭐⭐⭐</td></tr>
+    <tr><td>🟠蔡森</td><td>M1/M5多周期形态</td><td><strong>6月下旬-7月底</strong>（月线空头压制反弹顶部）</td><td>7月中旬</td><td>⭐⭐⭐⭐</td></tr>
+    <tr><td>🟢笨鸟</td><td>M11阶段+M2数据路径</td><td><strong>取决于6/10 CPI + 6/17 FOMC</strong></td><td>最快6月中旬</td><td>⭐⭐⭐</td></tr>
+  </table>
+
+  <h3>三种情景推演</h3>
+  <div class="chart-container"><canvas id="scenarioChart"></canvas></div>
+
+  <div class="scenario-box scenario-base">
+    <h3>📊 基准情景（概率55%）：6/17点阵图→1次降息</h3>
+    <p><strong>时间线：</strong></p>
+    <ul>
+      <li>6月10日：CPI 3.6-3.8%（符合预期）→ DXY维持99-101震荡</li>
+      <li>6月17日：点阵图维持1次降息 → 市场略失望，DXY维持100-101</li>
+      <li>7月14日：CPI降至3.3-3.5% → 降息预期开始升温</li>
+      <li>7月底FOMC：释放9月降息信号 → <strong>DXY跌破99 → 美元走强结束</strong></li>
+      <li>8-9月：美元趋势走弱 → <strong>新兴市场全面反弹</strong></li>
+    </ul>
+    <p><strong>新兴市场反弹时间：8月中旬</strong></p>
+  </div>
+
+  <div class="scenario-box scenario-dovish">
+    <h3>🕊️ 鸽派惊喜情景（概率25%）：6/17点阵图→2次降息</h3>
+    <p><strong>时间线：</strong></p>
+    <ul>
+      <li>6月10日：CPI &lt;3.5%（低于预期）→ DXY跌破99</li>
+      <li>6月17日：点阵图2次降息 → DXY加速下跌至97-98</li>
+      <li><strong>美元走强本周即结束</strong></li>
+      <li>6月下旬-7月：新兴市场立即反弹</li>
+    </ul>
+    <p><strong>新兴市场反弹时间：6月下旬（最早）</strong></p>
+  </div>
+
+  <div class="scenario-box scenario-bull">
+    <h3>🦅 鹰派延续情景（概率20%）：点阵图0次降息</h3>
+    <p><strong>时间线：</strong></p>
+    <ul>
+      <li>6月10日：CPI &gt;4.0%（高于预期）→ DXY冲向101-102</li>
+      <li>6月17日：点阵图0次降息 → DXY突破102</li>
+      <li>7月-8月：美元维持强势101-103，新兴市场持续承压</li>
+      <li>9月FOMC：经济数据恶化迫使Fed转向 → <strong>DXY从高位回落</strong></li>
+      <li>10月：新财年+TGA释放 → 美元季节性走弱</li>
+    </ul>
+    <p><strong>新兴市场反弹时间：10月（最晚）</strong></p>
+  </div>
+</div>
+
+<!-- 跨专家联动 -->
+<div class="section">
+  <h2>🔗 跨专家联动检查</h2>
+  <table>
+    <tr><th>联动</th><th>信号A</th><th>信号B</th><th>交叉验证结论</th></tr>
+    <tr>
+      <td>宏观→技术</td>
+      <td>🔵杨世光：驱动因素Q3松动</td>
+      <td>🟠蔡森：月线下降趋势未破</td>
+      <td style="color:#2ed573;">✅ 一致：美元反弹是下降趋势中的修正，Q3结束</td>
+    </tr>
+    <tr>
+      <td>制度→数据</td>
+      <td>🟣卢麒元：资本无趋势性回流</td>
+      <td>🟢笨鸟：三个反常信号</td>
+      <td style="color:#2ed573;">✅ 一致：美元走强缺乏实质支撑，反弹基础不牢</td>
+    </tr>
+    <tr>
+      <td>五阶段→流动性</td>
+      <td>🟢笨鸟M11：阶段4（战略相持）</td>
+      <td>📐底层逻辑：无三重抽水</td>
+      <td style="color:#2ed573;">✅ 一致：不会出现美元荒，新兴市场不会被极端压制</td>
+    </tr>
+    <tr>
+      <td>技术→财政</td>
+      <td>🟠蔡森：月线阻力101-102</td>
+      <td>🟣卢麒元：Q3末TGA发债高峰</td>
+      <td style="color:#e8b84b;">⚠️ 叠加：DXY可能在101-102遇到技术+制度双重阻力</td>
+    </tr>
+    <tr>
+      <td>降息预期→形态</td>
+      <td>🟢笨鸟M2：6/10 CPI是分水岭</td>
+      <td>🟠蔡森M3：需确认放量突破</td>
+      <td style="color:#e8b84b;">⚠️ 观察：如果CPI低+缩量 → 假突破确认 → DXY反弹立即结束</td>
+    </tr>
+  </table>
+</div>
+
+<!-- 综合结论 -->
+<div class="section">
+  <h2>💡 综合结论</h2>
+  <div class="chart-container"><canvas id="conclusionChart"></canvas></div>
+
+  <h3>核心判断</h3>
+  <div style="background:#12141f; padding:20px; border-radius:12px; border-left:4px solid #4a9eff; margin:16px 0;">
+    <p style="font-size:1.1em;"><strong>四位专家方法论全部指向同一结论：</strong></p>
+    <p>短期美元走强是<strong>下降趋势中的技术性反弹</strong>，而非趋势反转。反弹预计延续<strong>6-8周</strong>，在<strong>7月中旬至8月初</strong>结束。</p>
+    <p><strong>新兴市场承压窗口：6月7日 → 8月中旬</strong></p>
+    <p><strong>最可能的反转催化剂：6/10 CPI + 6/17 FOMC点阵图</strong></p>
+  </div>
+
+  <h3>操作建议时间线</h3>
+  <table>
+    <tr><th>时间段</th><th>美元方向</th><th>新兴市场策略</th><th>关键观察</th></tr>
+    <tr><td><strong>6月7日-10日</strong></td><td style="color:#ff4757;">强势（100-101）</td><td>观望，不抄底</td><td>6/10 CPI数据</td></tr>
+    <tr><td><strong>6月10日-17日</strong></td><td style="color:#e8b84b;">取决于CPI</td><td>CPI低→开始建观察仓；CPI高→继续等</td><td>6/17 FOMC点阵图</td></tr>
+    <tr><td><strong>6月17日-30日</strong></td><td style="color:#e8b84b;">震荡（99-101）</td><td>点阵图鸽派→分批建仓；鹰派→等7月</td><td>GDP终值+PCE</td></tr>
+    <tr><td><strong>7月</strong></td><td style="color:#2ed573;">开始走弱</td><td>CPI逐月回落确认→加仓新兴市场</td><td>7/14 CPI + 7/28 FOMC</td></tr>
+    <tr><td><strong>8月-9月</strong></td><td style="color:#2ed573;">趋势走弱（97-99）</td><td><strong>新兴市场主升浪</strong></td><td>9/15 FOMC降息确认</td></tr>
+    <tr><td><strong>10月+</strong></td><td style="color:#2ed573;">弱势（新财年TGA释放）</td><td>持续持有</td><td>Q4经济数据</td></tr>
+  </table>
+
+  <h3>共识与分歧</h3>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px;">
+    <div style="background:rgba(46,213,115,0.08); padding:16px; border-radius:10px; border:1px solid rgba(46,213,115,0.3);">
+      <h4 style="color:#2ed573;">✅ 四人共识</h4>
+      <ul>
+        <li>美元走强是下降趋势中的反弹，非趋势反转</li>
+        <li>反弹顶部101-102区间（技术+制度双重阻力）</li>
+        <li>新兴市场承压窗口6-8周</li>
+        <li>6/10 CPI和6/17 FOMC是关键分水岭</li>
+        <li>通胀数据逐月回落是核心变量</li>
+      </ul>
+    </div>
+    <div style="background:rgba(255,71,87,0.08); padding:16px; border-radius:10px; border:1px solid rgba(255,71,87,0.3);">
+      <h4 style="color:#ff4757;">⚠️ 分歧与风险</h4>
+      <ul>
+        <li>🟠蔡森认为反弹最早结束（6月下旬-7月底）</li>
+        <li>🟣卢麒元认为拐点最晚（8-9月，财政周期）</li>
+        <li>时间差约4-6周 → 取中位数<strong>7月底-8月初</strong></li>
+        <li>风险：CPI粘性超预期 → 情景3（鹰派延续）概率上升</li>
+        <li>风险：中东突发升级 → 触发M11阶段2 → 美元意外走强</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- 先行指标日历 -->
+<div class="section">
+  <h2>📋 先行指标跟踪日历</h2>
+  <div class="timeline">
+    <div class="timeline-item hot">
+      <div class="timeline-date">6月10日（周二）</div>
+      <div class="timeline-event"><strong>美国5月CPI</strong> <span class="tag tag-red">关键分水岭</span></div>
+      <div class="timeline-impact">看什么：同比是否&lt;3.8%（前值4.2%，预期3.8%）<br>走弱信号：&lt;3.5% = 美元立刻走弱，DXY跌破99<br>走强风险：&gt;4.0% = DXY冲向101-102</div>
+    </div>
+    <div class="timeline-item hot">
+      <div class="timeline-date">6月16-17日（周二-三）</div>
+      <div class="timeline-event"><strong>FOMC利率决议 + 点阵图（SEP）</strong> <span class="tag tag-red">决定性事件</span></div>
+      <div class="timeline-impact">看什么：2026年降息次数（当前共识1次）<br>走弱信号：≥2次降息 = 拐点确认，DXY加速下跌<br>走强风险：0次降息 = 不降息恐惧，DXY突破102</div>
+    </div>
+    <div class="timeline-item active">
+      <div class="timeline-date">6月30日</div>
+      <div class="timeline-event"><strong>美国Q2 GDP终值 + PCE</strong> <span class="tag tag-blue">辅助验证</span></div>
+      <div class="timeline-impact">看什么：GDP是否低于预期，PCE是否回落<br>走弱信号：GDP走弱 + PCE回落 = 降息预期升温</div>
+    </div>
+    <div class="timeline-item active">
+      <div class="timeline-date">7月14日</div>
+      <div class="timeline-event"><strong>美国6月CPI</strong> <span class="tag tag-blue">趋势确认</span></div>
+      <div class="timeline-impact">看什么：同比是否&lt;3.5%<br>走弱信号：连续两个月回落 = 通胀下行趋势确认 → 美元加速走弱</div>
+    </div>
+    <div class="timeline-item ok">
+      <div class="timeline-date">7月28-29日</div>
+      <div class="timeline-event"><strong>7月FOMC利率决议</strong> <span class="tag tag-green">拐点确认</span></div>
+      <div class="timeline-impact">看什么：措辞变化（"patient"→"balanced risk" = 鸽派转向）<br>走弱信号：释放9月降息信号 = 美元趋势性走弱确认</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">持续跟踪</div>
+      <div class="timeline-event"><strong>DXY 100.50 突破验证</strong> <span class="tag tag-gold">技术确认</span></div>
+      <div class="timeline-impact">看什么：是否放量站稳100.50<br>走弱信号：缩量未破 = 假突破 → 反弹提前结束</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">持续跟踪</div>
+      <div class="timeline-event"><strong>新兴市场ETF资金流（VWO/EEM）</strong> <span class="tag tag-green">反转信号</span></div>
+      <div class="timeline-impact">看什么：周度净流入/流出<br>走弱信号：连续3周净流入 = 资本趋势性回流新兴市场</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">持续跟踪</div>
+      <div class="timeline-event"><strong>美元互换基差</strong> <span class="tag tag-blue">流动性指标</span></div>
+      <div class="timeline-impact">看什么：负值是否收窄<br>走弱信号：收窄 = 海外美元不再紧缺 → 美元走强逻辑瓦解</div>
+    </div>
+  </div>
+</div>
+
+<!-- 免责声明 -->
+<div class="disclaimer">
+  <p>以上分析融合了杨世光、卢麒元、蔡森、笨鸟四位专家的理论框架，仅为经济学教学与经验分享，不构成任何投资建议。投资有风险，交易请独立判断并自负盈亏。</p>
+</div>
+
+</div><!-- container -->
+
+<script>
+// 杨世光 M3 驱动因素时间线
+new Chart(document.getElementById('yangChart'), {
+  type: 'bar',
+  data: {
+    labels: ['6月上旬','6月中旬','6月下旬','7月上旬','7月中旬','7月下旬','8月','9月'],
+    datasets: [
+      { label:'利差支撑', data:[85,80,75,70,60,55,45,40], backgroundColor:'rgba(74,158,255,0.6)' },
+      { label:'通胀粘性', data:[80,75,65,55,50,40,35,30], backgroundColor:'rgba(168,85,247,0.6)' },
+      { label:'增长差异', data:[70,65,60,55,50,45,40,35], backgroundColor:'rgba(232,184,75,0.6)' },
+    ]
+  },
+  options: {
+    responsive:true,
+    plugins:{ title:{ display:true, text:'美元走强驱动力随时间衰减（0-100）', color:'#fff' }, legend:{ labels:{ color:'#aaa' } } },
+    scales:{ x:{ ticks:{ color:'#aaa' }, grid:{ color:'#2a2d3e' } }, y:{ ticks:{ color:'#aaa' }, grid:{ color:'#2a2d3e' }, max:100 } }
+  }
+});
+
+// 卢麒元 资本流向+TGA季节性
+new Chart(document.getElementById('luChart'), {
+  type: 'line',
+  data: {
+    labels: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+    datasets: [
+      { label:'TGA余额趋势（季节性）', data:[680,700,720,690,710,740,760,780,800,750,720,700], borderColor:'#a855f7', backgroundColor:'rgba(168,85,247,0.1)', fill:true, tension:0.4 },
+      { label:'美元季节性强度', data:[50,45,48,52,55,60,65,70,75,55,45,40], borderColor:'#ff4757', borderDash:[5,5], tension:0.4 }
+    ]
+  },
+  options: {
+    responsive:true,
+    plugins:{ title:{ display:true, text:'TGA季节性 + 美元季节性强度（示意）', color:'#fff' }, legend:{ labels:{ color:'#aaa' } } },
+    scales:{ x:{ ticks:{ color:'#aaa' }, grid:{ color:'#2a2d3e' } }, y:{ ticks:{ color:'#aaa' }, grid:{ color:'#2a2d3e' } } }
+  }
+});
+
+// 蔡森 DXY价格路径+颈线标注
+new Chart(document.getElementById('caiPriceChart'), {
+  type: 'line',
+  data: {
+    labels: ['2025/1','2025/3','2025/5','2025/7','2025/9','2025/11','2026/1','2026/3','2026/5','2026/6/5','测幅目标'],
+    datasets: [
+      { label:'DXY实际走势', data:[108,105,103,100,98,97,97.5,98,97,100.07,null], borderColor:'#e8b84b', backgroundColor:'rgba(232,184,75,0.1)', fill:false, tension:0.3, borderWidth:2.5 },
+      { label:'月线下降趋势线（颈线）', data:[110,108,106,104,103,102,102,101.5,101,101,101], borderColor:'#ff4757', borderDash:[8,4], fill:false, tension:0 },
+      { label:'测幅目标（下轨）', data:[null,null,null,null,null,null,null,null,null,97,95], borderColor:'#2ed573', borderDash:[4,4], fill:false, tension:0 }
+    ]
+  },
+  options: {
+    responsive:true,
+    plugins:{
+      title:{ display:true, text:'DXY价格走势 + 月线颈线 + 测幅目标（蔡森M1+M2+M4）', color:'#fff' },
+      legend:{ labels:{ color:'#aaa' } }
+    },
+    scales:{ x:{ ticks:{ color:'#aaa', maxRotation:45 }, grid:{ color:'#2a2d3e' } }, y:{ ticks:{ color:'#aaa' }, grid:{ color:'#2a2d3e' }, min:93, max:112 } }
+  }
+});
+
+// 蔡森 DXY多周期共振
+new Chart(document.getElementById('caiChart'), {
+  type: 'bar',
+  data: {
+    labels: ['日线','周线','月线'],
+    datasets: [
+      { label:'多头信号', data:[70,45,20], backgroundColor:'rgba(46,213,115,0.6)' },
+      { label:'空头信号', data:[30,55,80], backgroundColor:'rgba(255,71,87,0.6)' }
+    ]
+  },
+  options: {
+    indexAxis:'y',
+    responsive:true,
+    plugins:{ title:{ display:true, text:'DXY多周期多空力量对比（蔡森M5）', color:'#fff' }, legend:{ labels:{ color:'#aaa' } } },
+    scales:{ x:{ ticks:{ color:'#aaa' }, grid:{ color:'#2a2d3e' }, max:100 }, y:{ ticks:{ color:'#aaa' }, grid:{ color:'#2a2d3e' } } }
+  }
+});
+
+// 蔡森 M8市场宽度
+new Chart(document.getElementById('caiBreadthChart'), {
+  type: 'bar',
+  data: {
+    labels: ['上涨家数','下跌家数','涨停','跌停','涨跌比=0.51'],
+    datasets: [{
+      label: '台股6/5市场宽度',
+      data: [342, 671, 19, 0, 51],
+      backgroundColor: ['rgba(46,213,115,0.7)','rgba(255,71,87,0.7)','rgba(46,213,115,0.4)','rgba(255,71,87,0.4)','rgba(255,71,87,0.9)']
+    }]
+  },
+  options: {
+    responsive:true,
+    plugins:{
+      title:{ display:true, text:'台股6/5市场宽度 M8判定：空头信号（涨跌比<0.67）', color:'#fff' },
+      legend:{ display:false }
+    },
+    scales:{ x:{ ticks:{ color:'#aaa' }, grid:{ color:'#2a2d3e' } }, y:{ ticks:{ color:'#aaa' }, grid:{ color:'#2a2d3e' } } }
+  }
+});
+
+// 蔡森 M3量价验证
+new Chart(document.getElementById('caiVolChart'), {
+  type: 'bar',
+  data: {
+    labels: ['5/29','5/30','6/1','6/2','6/3','6/4','6/5'],
+    datasets: [
+      { label:'DXY收盘价', data:[98.9,98.8,98.96,99.17,99.4,99.8,100.07], type:'line', borderColor:'#e8b84b', backgroundColor:'transparent', yAxisID:'y1', tension:0.3, borderWidth:2 },
+      { label:'成交量(相对)', data:[65,60,70,75,80,72,68], backgroundColor:'rgba(74,158,255,0.5)', yAxisID:'y' }
+    ]
+  },
+  options: {
+    responsive:true,
+    plugins:{
+      title:{ display:true, text:'DXY量价验证（蔡森M3）：反弹后半段缩量=假突破风险', color:'#fff' },
+      legend:{ labels:{ color:'#aaa' } }
+    },
+    scales:{
+      x:{ ticks:{ color:'#aaa' }, grid:{ color:'#2a2d3e' } },
+      y:{ position:'left', ticks:{ color:'#4a9eff' }, grid:{ color:'#2a2d3e' }, title:{ display:true, text:'成交量', color:'#4a9eff' } },
+      y1:{ position:'right', ticks:{ color:'#e8b84b' }, grid:{ display:false }, title:{ display:true, text:'DXY', color:'#e8b84b' }, min:98, max:101 }
+    }
+  }
+});
+
+// 笨鸟 M2降息预期路径
+new Chart(document.getElementById('benChart'), {
+  type: 'line',
+  data: {
+    labels: ['5月CPI\n(已发布)','6/10 CPI\n(预期)','6/17 FOMC','7/14 CPI\n(预期)','7/29 FOMC','9月FOMC'],
+    datasets: [
+      { label:'CPI预期路径（鸽派）', data:[4.2,3.6,3.6,3.3,3.3,3.0], borderColor:'#2ed573', tension:0.3 },
+      { label:'CPI预期路径（鹰派）', data:[4.2,4.0,4.0,3.8,3.8,3.5], borderColor:'#ff4757', tension:0.3 },
+      { label:'CPI预期路径（基准）', data:[4.2,3.8,3.8,3.5,3.5,3.2], borderColor:'#e8b84b', borderDash:[5,5], tension:0.3 }
+    ]
+  },
+  options: {
+    responsive:true,
+    plugins:{ title:{ display:true, text:'CPI路径三种情景（同比%）', color:'#fff' }, legend:{ labels:{ color:'#aaa' } } },
+    scales:{ x:{ ticks:{ color:'#aaa' }, grid:{ color:'#2a2d3e' } }, y:{ ticks:{ color:'#aaa' }, grid:{ color:'#2a2d3e' }, min:2.5, max:4.5 } }
+  }
+});
+
+// 四专家时间线对比
+new Chart(document.getElementById('timelineChart'), {
+  type: 'bar',
+  data: {
+    labels: ['🔵杨世光\nM3驱动因素','🟣卢麒元\n资本三流+财政','🟠蔡森\n多周期形态','🟢笨鸟\nM11+M2'],
+    datasets: [
+      { label:'美元走强结束（最早）', data:[18,26,12,6], backgroundColor:'rgba(255,71,87,0.6)' },
+      { label:'美元走强结束（最晚）', data:[26,38,22,26], backgroundColor:'rgba(74,158,255,0.6)' },
+      { label:'新兴市场反弹（周数后）', data:[22,34,16,10], backgroundColor:'rgba(46,213,115,0.6)' }
+    ]
+  },
+  options: {
+    responsive:true,
+    plugins:{ title:{ display:true, text:'四专家预测时间点（从今天起第N周）', color:'#fff' }, legend:{ labels:{ color:'#aaa' } } },
+    scales:{ x:{ ticks:{ color:'#aaa' }, grid:{ color:'#2a2d3e' } }, y:{ ticks:{ color:'#aaa', callback:v=>v+'周' }, grid:{ color:'#2a2d3e' } } }
+  }
+});
+
+// 三种情景概率
+new Chart(document.getElementById('scenarioChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['基准：7月底-8月初（55%）','鸽派惊喜：6月下旬（25%）','鹰派延续：10月（20%）'],
+    datasets: [{
+      data: [55,25,20],
+      backgroundColor: ['rgba(74,158,255,0.7)','rgba(46,213,115,0.7)','rgba(255,71,87,0.7)'],
+      borderColor: '#0f1117', borderWidth:3
+    }]
+  },
+  options: {
+    responsive:true,
+    plugins:{
+      title:{ display:true, text:'三种情景概率分布', color:'#fff' },
+      legend:{ labels:{ color:'#aaa' }, position:'bottom' }
+    }
+  }
+});
+
+// 结论雷达图
+new Chart(document.getElementById('conclusionChart'), {
+  type: 'radar',
+  data: {
+    labels: ['美元反弹持续性','新兴市场承压程度','6/10 CPI影响','FOMC影响','技术面阻力强度','制度性拐点临近'],
+    datasets: [
+      { label:'🔵杨世光', data:[60,70,85,90,65,55], borderColor:'#4a9eff', backgroundColor:'rgba(74,158,255,0.1)' },
+      { label:'🟣卢麒元', data:[50,55,60,70,50,85], borderColor:'#a855f7', backgroundColor:'rgba(168,85,247,0.1)' },
+      { label:'🟠蔡森', data:[55,65,75,80,90,45], borderColor:'#e8b84b', backgroundColor:'rgba(232,184,75,0.1)' },
+      { label:'🟢笨鸟', data:[45,50,95,95,60,70], borderColor:'#2ed573', backgroundColor:'rgba(46,213,115,0.1)' }
+    ]
+  },
+  options: {
+    responsive:true,
+    plugins:{ title:{ display:true, text:'四专家多维度评估雷达', color:'#fff' }, legend:{ labels:{ color:'#aaa' }, position:'bottom' } },
+    scales:{ r:{ angleLines:{ color:'#2a2d3e' }, grid:{ color:'#2a2d3e' }, pointLabels:{ color:'#aaa' }, ticks:{ color:'#aaa', backdropColor:'transparent' }, min:0, max:100 } }
+  }
+});
+</script>
+</body>
+</html>

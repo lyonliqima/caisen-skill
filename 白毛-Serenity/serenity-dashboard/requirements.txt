@@ -1,0 +1,3 @@
+# Main dashboard and Yahoo ingestion use only the Python standard library.
+# Required for scripts/fetch_tv_price.py TradingView backfill helper.
+tradingview-scraper==0.4.20

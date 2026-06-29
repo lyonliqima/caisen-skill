@@ -1,0 +1,1720 @@
+{
+  "success": true,
+  "status": 0,
+  "code": 0,
+  "message": "ok",
+  "data": {
+    "requestId": null,
+    "message": "OK",
+    "status": 0,
+    "code": 0,
+    "data": {
+      "protocolType": "SEARCH_DATA",
+      "id": "6b8a02e1-908d-45cc-9599-689a653cbc8b",
+      "refSeq": null,
+      "keyEntityList": null,
+      "searchDataResultDTO": {
+        "questionId": "b3b74da2-92fe-4709-9d08-a3add23218f4",
+        "dataTableDTOList": [
+          {
+            "code": "688048.SH",
+            "entityName": "长光华芯(688048.SH)",
+            "table": {
+              "100000000004696": [
+                "506",
+                "515",
+                "472"
+              ],
+              "headName": [
+                "2025",
+                "2024",
+                "2023"
+              ]
+            },
+            "rawTable": {
+              "100000000004696": [
+                "506",
+                "515",
+                "472"
+              ],
+              "headName": [
+                "2025",
+                "2024",
+                "2023"
+              ]
+            },
+            "truncateRawTable": {},
+            "nameMap": {
+              "100000000004696": "员工总数",
+              "headNameSub": "数据来源"
+            },
+            "headNameMap": {},
+            "field": {
+              "returnCode": "100000000004696",
+              "returnName": "员工总数",
+              "classCode": "007101",
+              "checkedRelatedIndicators": true,
+              "startDate": "2026-06-21 00:00:00",
+              "endDate": "2026-06-21 00:00:00",
+              "fuzzy": true,
+              "dateGranularity": "YEAR",
+              "defineType": 0,
+              "isLoopN": false,
+              "quantType": "1",
+              "isGroup": false,
+              "returnSourceCode": "WORKFORCE",
+              "returnSourceName": "员工总数",
+              "graph": "1",
+              "unit": "0",
+              "tableType": "1"
+            },
+            "entityCodes": [
+              "688048.SH"
+            ],
+            "macroAttributeExcelMap": {},
+            "fieldSet": [
+              {
+                "returnCode": "100000000004696",
+                "returnName": "员工总数",
+                "classCode": "007101",
+                "checkedRelatedIndicators": true,
+                "startDate": "2026-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "dateGranularity": "YEAR",
+                "defineType": 0,
+                "isLoopN": false,
+                "quantType": "1",
+                "isGroup": false,
+                "returnSourceCode": "WORKFORCE",
+                "returnSourceName": "员工总数",
+                "graph": "1",
+                "unit": "0",
+                "tableType": "1"
+              }
+            ],
+            "dataTableType": "NORM_TABLE",
+            "rowInfo": {},
+            "colInfo": {},
+            "indicatorOrder": [
+              "100000000004696"
+            ],
+            "tipFlags": [],
+            "dataType": "数据浏览器",
+            "title": "长光华芯(688048.SH)的员工总数",
+            "hasThumbnail": true,
+            "indicatorLimited": false,
+            "dataPositionEnum": "MetricLeftTimeTop",
+            "orderCol": {},
+            "jumpUrlList": [
+              {
+                "choiceUrl": "EM://stockdatacenter?type=browser&modType=STOCK&code=688048.SH&indId=100000000004696|103:2023,100000000004696|103:2024,100000000004696|103:2025",
+                "typeName": "股票数据浏览器"
+              }
+            ],
+            "dataTypeEnum": "DATA_BROWSER",
+            "dateRuleSet": [],
+            "freqConvert": false,
+            "deleteInfo": [],
+            "macroCodeMap": {},
+            "entityTagDTO": {
+              "entityId": "1002629165",
+              "entityType": "SEC",
+              "entityTypeCode": "058001001",
+              "entityTypeName": "A股",
+              "classCode": "002001",
+              "className": "沪深京股票",
+              "publishCode": "",
+              "fullName": "长光华芯",
+              "shortName": "",
+              "matchWord": "长光华芯",
+              "secuCode": "688048",
+              "market": "1",
+              "marketChar": ".SH",
+              "correct": false,
+              "hasKLine": false,
+              "valuation": false,
+              "relatedEntity": false
+            },
+            "entityTagDTOList": [
+              {
+                "entityId": "1002629165",
+                "entityType": "SEC",
+                "entityTypeCode": "058001001",
+                "entityTypeName": "A股",
+                "classCode": "002001",
+                "className": "沪深京股票",
+                "publishCode": "",
+                "fullName": "长光华芯",
+                "shortName": "",
+                "matchWord": "长光华芯",
+                "secuCode": "688048",
+                "market": "1",
+                "marketChar": ".SH",
+                "correct": false,
+                "hasKLine": false,
+                "valuation": false,
+                "relatedEntity": false
+              }
+            ],
+            "indexTable": false,
+            "edbThirdData": false,
+            "dataUpdate": {
+              "2025": false
+            },
+            "supportsTimeSeries": false,
+            "estimatedTokens": 0,
+            "summaryTips": {
+              "periodicalReport": null
+            },
+            "nestEntityListMap": {},
+            "excelTimeTruncate": false,
+            "frontendEntityName": "",
+            "frontendEntityCode": "",
+            "frontendTitle": "",
+            "frontendDesc": "",
+            "indicatorCount": 0,
+            "fieldParameterStr": "",
+            "tdayEnum": "NORMAL"
+          },
+          {
+            "code": "688048.SH",
+            "entityName": "长光华芯(688048.SH)",
+            "table": {
+              "100000000004601": [
+                "2012-03-06"
+              ],
+              "100000000020827": [
+                "闵大勇"
+              ],
+              "100000000018465": [
+                "    苏州长光华芯光电技术股份有限公司成立于2012年,位于江苏苏州,公司主要致力于高功率半导体激光器芯片、高效率激光雷达与3D传感芯片、高速光通信半导体激光芯片及器件和系统的研发、生产和销售。产品广泛应用于:工业激光器泵浦、激光先进制造装备、生物医学美容、高速光通信、机器视觉与传感等。公司拥有一批高层次的人才队伍,包括多名国家级人才工程入选者和行业资深管理和技术专家以及4位院士组成的顾问团队等,公司研发技术队伍中硕士博士占比超过50%,团队多次获得各级部门重大创新团队和领军人才殊荣。已建成从芯片设计、MOCVD(外延)、光刻、解理/镀膜、封装测试、光纤耦合等完整的工艺平台和量产线,是全球少数几家研发和量产高功率半导体激光器芯片的公司。公司高亮度单管芯片和光纤耦合输出模块、高功率巴条和叠阵等产品,在功率、亮度、光电转换效率、寿命等方面屡次突破,获多项专利,与全球先进水平同步。公司建立了完整的研发、生产及质量管理体系,通过了ISO9001质量体系,以高性能和高可靠性产品服务客户。未来,长光华芯将牢记“中国激光芯,光耀美好生活”的企业使命,以“POSS”(“专业”—Professional,“用心”—Observant,“服务”—Serving,“奋斗”—Striving)企业精神和价值观,服务客户和社会,实现“在激光芯片领域综合实力和创新能力具有全球竞争力”的目标。——“心所往,光所至”。"
+              ],
+              "headName": [
+                " "
+              ]
+            },
+            "rawTable": {
+              "100000000004601": [
+                "2012-03-06"
+              ],
+              "100000000020827": [
+                "闵大勇"
+              ],
+              "100000000018465": [
+                "    苏州长光华芯光电技术股份有限公司成立于2012年,位于江苏苏州,公司主要致力于高功率半导体激光器芯片、高效率激光雷达与3D传感芯片、高速光通信半导体激光芯片及器件和系统的研发、生产和销售。产品广泛应用于:工业激光器泵浦、激光先进制造装备、生物医学美容、高速光通信、机器视觉与传感等。公司拥有一批高层次的人才队伍,包括多名国家级人才工程入选者和行业资深管理和技术专家以及4位院士组成的顾问团队等,公司研发技术队伍中硕士博士占比超过50%,团队多次获得各级部门重大创新团队和领军人才殊荣。已建成从芯片设计、MOCVD(外延)、光刻、解理/镀膜、封装测试、光纤耦合等完整的工艺平台和量产线,是全球少数几家研发和量产高功率半导体激光器芯片的公司。公司高亮度单管芯片和光纤耦合输出模块、高功率巴条和叠阵等产品,在功率、亮度、光电转换效率、寿命等方面屡次突破,获多项专利,与全球先进水平同步。公司建立了完整的研发、生产及质量管理体系,通过了ISO9001质量体系,以高性能和高可靠性产品服务客户。未来,长光华芯将牢记“中国激光芯,光耀美好生活”的企业使命,以“POSS”(“专业”—Professional,“用心”—Observant,“服务”—Serving,“奋斗”—Striving)企业精神和价值观,服务客户和社会,实现“在激光芯片领域综合实力和创新能力具有全球竞争力”的目标。——“心所往,光所至”。"
+              ],
+              "headName": [
+                " "
+              ]
+            },
+            "truncateRawTable": {},
+            "nameMap": {
+              "100000000004601": "成立日期",
+              "headNameSub": "数据来源",
+              "100000000020827": "董事长",
+              "100000000018465": "公司简介"
+            },
+            "headNameMap": {},
+            "field": {
+              "returnCode": "100000000004601",
+              "returnName": "成立日期",
+              "classCode": "007101",
+              "checkedRelatedIndicators": true,
+              "startDate": "2026-06-21 00:00:00",
+              "endDate": "2026-06-21 00:00:00",
+              "fuzzy": true,
+              "dateGranularity": "UNKNOWN",
+              "defineType": 0,
+              "isLoopN": false,
+              "quantType": "1",
+              "isGroup": false,
+              "returnSourceCode": "ESTDATE",
+              "returnSourceName": "成立日期",
+              "graph": "0",
+              "unit": "0",
+              "tableType": "1"
+            },
+            "entityCodes": [
+              "688048.SH"
+            ],
+            "macroAttributeExcelMap": {},
+            "fieldSet": [
+              {
+                "returnCode": "100000000018465",
+                "returnName": "公司简介",
+                "classCode": "007101",
+                "checkedRelatedIndicators": true,
+                "startDate": "2026-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "dateGranularity": "UNKNOWN",
+                "defineType": 0,
+                "isLoopN": false,
+                "quantType": "1",
+                "isGroup": false,
+                "returnSourceCode": "GSJJ",
+                "returnSourceName": "公司简介",
+                "graph": "0",
+                "unit": "0",
+                "tableType": "1"
+              },
+              {
+                "returnCode": "100000000004601",
+                "returnName": "成立日期",
+                "classCode": "007101",
+                "checkedRelatedIndicators": true,
+                "startDate": "2026-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "dateGranularity": "UNKNOWN",
+                "defineType": 0,
+                "isLoopN": false,
+                "quantType": "1",
+                "isGroup": false,
+                "returnSourceCode": "ESTDATE",
+                "returnSourceName": "成立日期",
+                "graph": "0",
+                "unit": "0",
+                "tableType": "1"
+              },
+              {
+                "returnCode": "100000000020827",
+                "returnName": "董事长",
+                "classCode": "007101",
+                "checkedRelatedIndicators": true,
+                "startDate": "2026-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "dateGranularity": "UNKNOWN",
+                "defineType": 0,
+                "isLoopN": false,
+                "quantType": "1",
+                "isGroup": false,
+                "returnSourceCode": "CHAIRMAN",
+                "returnSourceName": "董事长",
+                "graph": "0",
+                "unit": "0",
+                "tableType": "1"
+              }
+            ],
+            "dataTableType": "NORM_TABLE",
+            "rowInfo": {},
+            "colInfo": {},
+            "indicatorOrder": [
+              "100000000004601",
+              "100000000020827",
+              "100000000018465"
+            ],
+            "tipFlags": [],
+            "dataType": "数据浏览器",
+            "title": "长光华芯(688048.SH)的成立日期、董事长等",
+            "hasThumbnail": true,
+            "indicatorLimited": false,
+            "dataPositionEnum": "MetricLeftTimeTop",
+            "orderCol": {},
+            "jumpUrlList": [
+              {
+                "choiceUrl": "EM://stockdatacenter?type=browser&modType=STOCK&code=688048.SH&indId=100000000004601,100000000020827,100000000018465",
+                "typeName": "股票数据浏览器"
+              }
+            ],
+            "dataTypeEnum": "DATA_BROWSER",
+            "dateRuleSet": [],
+            "freqConvert": false,
+            "deleteInfo": [],
+            "macroCodeMap": {},
+            "entityTagDTO": {
+              "entityId": "1002629165",
+              "entityType": "SEC",
+              "entityTypeCode": "058001001",
+              "entityTypeName": "A股",
+              "classCode": "002001",
+              "className": "沪深京股票",
+              "publishCode": "",
+              "fullName": "长光华芯",
+              "shortName": "",
+              "matchWord": "长光华芯",
+              "secuCode": "688048",
+              "market": "1",
+              "marketChar": ".SH",
+              "correct": false,
+              "hasKLine": false,
+              "valuation": false,
+              "relatedEntity": false
+            },
+            "entityTagDTOList": [
+              {
+                "entityId": "1002629165",
+                "entityType": "SEC",
+                "entityTypeCode": "058001001",
+                "entityTypeName": "A股",
+                "classCode": "002001",
+                "className": "沪深京股票",
+                "publishCode": "",
+                "fullName": "长光华芯",
+                "shortName": "",
+                "matchWord": "长光华芯",
+                "secuCode": "688048",
+                "market": "1",
+                "marketChar": ".SH",
+                "correct": false,
+                "hasKLine": false,
+                "valuation": false,
+                "relatedEntity": false
+              }
+            ],
+            "indexTable": false,
+            "edbThirdData": false,
+            "dataUpdate": {
+              " ": false
+            },
+            "supportsTimeSeries": false,
+            "estimatedTokens": 0,
+            "summaryTips": {
+              "periodicalReport": null
+            },
+            "nestEntityListMap": {},
+            "excelTimeTruncate": false,
+            "frontendEntityName": "",
+            "frontendEntityCode": "",
+            "frontendTitle": "",
+            "frontendDesc": "",
+            "indicatorCount": 0,
+            "fieldParameterStr": "",
+            "tdayEnum": "TDAY"
+          },
+          {
+            "code": "688048.SH",
+            "entityName": "长光华芯(688048.SH)",
+            "table": {
+              "100000000018305": [
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿",
+                "1.763亿"
+              ],
+              "headName": [
+                "2026-06-18",
+                "2026-06-17",
+                "2026-06-16",
+                "2026-06-15",
+                "2026-06-12",
+                "2026-06-11",
+                "2026-06-10",
+                "2026-06-09",
+                "2026-06-08",
+                "2026-06-05",
+                "2026-06-04",
+                "2026-06-03",
+                "2026-06-02",
+                "2026-06-01",
+                "2026-05-29",
+                "2026-05-28",
+                "2026-05-27",
+                "2026-05-26",
+                "2026-05-25",
+                "2026-05-22",
+                "2026-05-21",
+                "2026-05-20",
+                "2026-05-19",
+                "2026-05-18",
+                "2026-05-15",
+                "2026-05-14",
+                "2026-05-13",
+                "2026-05-12",
+                "2026-05-11",
+                "2026-05-08",
+                "2026-05-07",
+                "2026-05-06",
+                "2026-04-30",
+                "2026-04-29",
+                "2026-04-28",
+                "2026-04-27",
+                "2026-04-24",
+                "2026-04-23",
+                "2026-04-22",
+                "2026-04-21",
+                "2026-04-20",
+                "2026-04-17",
+                "2026-04-16",
+                "2026-04-15",
+                "2026-04-14",
+                "2026-04-13",
+                "2026-04-10",
+                "2026-04-09",
+                "2026-04-08",
+                "2026-04-07",
+                "2026-04-03",
+                "2026-04-02",
+                "2026-04-01",
+                "2026-03-31",
+                "2026-03-30",
+                "2026-03-27",
+                "2026-03-26",
+                "2026-03-25",
+                "2026-03-24",
+                "2026-03-23"
+              ]
+            },
+            "rawTable": {
+              "100000000018305": [
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943",
+                "176279943"
+              ],
+              "headName": [
+                "2026-06-18",
+                "2026-06-17",
+                "2026-06-16",
+                "2026-06-15",
+                "2026-06-12",
+                "2026-06-11",
+                "2026-06-10",
+                "2026-06-09",
+                "2026-06-08",
+                "2026-06-05",
+                "2026-06-04",
+                "2026-06-03",
+                "2026-06-02",
+                "2026-06-01",
+                "2026-05-29",
+                "2026-05-28",
+                "2026-05-27",
+                "2026-05-26",
+                "2026-05-25",
+                "2026-05-22",
+                "2026-05-21",
+                "2026-05-20",
+                "2026-05-19",
+                "2026-05-18",
+                "2026-05-15",
+                "2026-05-14",
+                "2026-05-13",
+                "2026-05-12",
+                "2026-05-11",
+                "2026-05-08",
+                "2026-05-07",
+                "2026-05-06",
+                "2026-04-30",
+                "2026-04-29",
+                "2026-04-28",
+                "2026-04-27",
+                "2026-04-24",
+                "2026-04-23",
+                "2026-04-22",
+                "2026-04-21",
+                "2026-04-20",
+                "2026-04-17",
+                "2026-04-16",
+                "2026-04-15",
+                "2026-04-14",
+                "2026-04-13",
+                "2026-04-10",
+                "2026-04-09",
+                "2026-04-08",
+                "2026-04-07",
+                "2026-04-03",
+                "2026-04-02",
+                "2026-04-01",
+                "2026-03-31",
+                "2026-03-30",
+                "2026-03-27",
+                "2026-03-26",
+                "2026-03-25",
+                "2026-03-24",
+                "2026-03-23"
+              ]
+            },
+            "truncateRawTable": {},
+            "nameMap": {
+              "100000000018305": "总股本",
+              "headNameSub": "数据来源"
+            },
+            "headNameMap": {},
+            "field": {
+              "returnCode": "100000000018305",
+              "returnName": "总股本",
+              "classCode": "007102",
+              "checkedRelatedIndicators": true,
+              "startDate": "2026-03-23 00:00:00",
+              "endDate": "2026-06-21 00:00:00",
+              "fuzzy": true,
+              "defineType": 0,
+              "isLoopN": false,
+              "fixedParamValue": "Period=1",
+              "quantType": "2",
+              "isGroup": false,
+              "returnSourceCode": "TOTALSHARE",
+              "returnSourceName": "总股本",
+              "graph": "1",
+              "unit": "1",
+              "tableType": "1"
+            },
+            "macroAttributeExcelMap": {},
+            "fieldSet": [
+              {
+                "returnCode": "100000000018305",
+                "returnName": "总股本",
+                "classCode": "007102",
+                "checkedRelatedIndicators": true,
+                "startDate": "2026-03-23 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "defineType": 0,
+                "isLoopN": false,
+                "fixedParamValue": "Period=1",
+                "quantType": "2",
+                "isGroup": false,
+                "returnSourceCode": "TOTALSHARE",
+                "returnSourceName": "总股本",
+                "graph": "1",
+                "unit": "1",
+                "tableType": "1"
+              }
+            ],
+            "dataTableType": "NORM_TABLE",
+            "rowInfo": {},
+            "colInfo": {},
+            "indicatorOrder": [
+              "100000000018305"
+            ],
+            "tipFlags": [],
+            "dataType": "数据浏览器",
+            "title": "长光华芯(688048.SH)的总股本",
+            "hasThumbnail": true,
+            "indicatorLimited": false,
+            "dataPositionEnum": "MetricLeftTimeTop",
+            "orderCol": {},
+            "jumpUrlList": [
+              {
+                "choiceUrl": "EM://stockdatacenter?type=browser&modType=STOCK&code=688048.SH&indId=100000000000045",
+                "typeName": "股票数据浏览器"
+              }
+            ],
+            "dataTypeEnum": "DATA_BROWSER",
+            "dateRuleSet": [],
+            "freqConvert": false,
+            "deleteInfo": [],
+            "macroCodeMap": {},
+            "entityTagDTO": {
+              "entityId": "1002629165",
+              "entityType": "SEC",
+              "entityTypeCode": "058001001",
+              "entityTypeName": "A股",
+              "classCode": "002001",
+              "className": "沪深京股票",
+              "publishCode": "",
+              "fullName": "长光华芯",
+              "shortName": "",
+              "matchWord": "长光华芯",
+              "secuCode": "688048",
+              "market": "1",
+              "marketChar": ".SH",
+              "correct": false,
+              "hasKLine": false,
+              "valuation": false,
+              "relatedEntity": false
+            },
+            "entityTagDTOList": [
+              {
+                "entityId": "1002629165",
+                "entityType": "SEC",
+                "entityTypeCode": "058001001",
+                "entityTypeName": "A股",
+                "classCode": "002001",
+                "className": "沪深京股票",
+                "publishCode": "",
+                "fullName": "长光华芯",
+                "shortName": "",
+                "matchWord": "长光华芯",
+                "secuCode": "688048",
+                "market": "1",
+                "marketChar": ".SH",
+                "correct": false,
+                "hasKLine": false,
+                "valuation": false,
+                "relatedEntity": false
+              }
+            ],
+            "indexTable": false,
+            "edbThirdData": false,
+            "dataUpdate": {
+              "2026-06-18": false
+            },
+            "supportsTimeSeries": false,
+            "estimatedTokens": 0,
+            "summaryTips": {
+              "periodicalReport": null
+            },
+            "nestEntityListMap": {},
+            "excelTimeTruncate": false,
+            "frontendEntityName": "",
+            "frontendEntityCode": "",
+            "frontendTitle": "",
+            "frontendDesc": "",
+            "indicatorCount": 0,
+            "fieldParameterStr": "",
+            "tdayEnum": "NORMAL"
+          },
+          {
+            "code": "688048.SH",
+            "entityName": "长光华芯(688048.SH)",
+            "table": {
+              "company_highlight": [
+                "【涉及行业】该公司涉及半导体激光芯片、光通信、激光雷达与3D传感、光子技术应用、硅光集成、薄膜铌酸锂材料、氮化镓蓝绿光激光器等多个高科技行业，专注于激光芯片及光子技术的创新与应用。<br>【经营优势或产品优势】公司拥有高功率半导体激光芯片的领先技术，打破了多项行业记录，如超高功率单管芯片、780nm宽条分布反馈激光器、9XXnm50W高功率半导体激光芯片等，产品性能卓越，且已实现大规模量产。在激光雷达与3D传感领域，公司技术领先，可满足多样化应用需求。VCSEL技术取得突破性进展，效率和功率转换效率世界领先，应用场景广泛。光通信产品矩阵全面，满足超大容量数据通信需求。此外，公司还布局了硅光集成、薄膜铌酸锂材料、氮化镓蓝绿光激光器等前沿技术，具有明显的竞争优势。<br>【经营风险和原因】经营风险主要包括技术更新风险，由于行业技术迭代迅速，公司需持续投入研发以保持技术领先；市场风险，包括地缘政治因素导致的市场不确定性，以及全球光芯片产能短缺可能带来的供应链风险；此外，公司扩张过程中可能面临管理风险，包括内部控制和公司治理的挑战，以及海外业务拓展的不确定性。"
+              ],
+              "headName": [
+                " "
+              ],
+              "company_base_info": [
+                "【股票代码】688048.SH【公司简介】苏州长光华芯光电技术股份有限公司成立于2012年,位于江苏苏州,是一家致力于高功率半导体激光器芯片、高效率激光雷达与3D传感芯片、高速光通信半导体激光芯片及器件和系统研发、生产和销售的高新技术企业。公司拥有强大的研发团队,硕士博士占比超过50%,团队多次获得各级部门重大创新团队和领军人才殊荣。公司已建成完整的工艺平台和量产线,是全球少数几家研发和量产高功率半导体激光器芯片的公司。公司产品在功率、亮度、光电转换效率、寿命等方面屡次突破,获多项专利,与全球先进水平同步。公司通过了ISO9001质量体系认证,以高性能和高可靠性产品服务客户。未来,长光华芯将以“POSS”企业精神和价值观,服务客户和社会,实现在激光芯片领域综合实力和创新能力具有全球竞争力的目标。【主营产品】半导体激光芯片、器件及模块等激光行业核心元器件的研发、制造与销售【办公地址】苏州市高新区漓江路56号【公司第一大股东】苏州华丰投资中心(有限合伙)【公司第一大股东持股比例】15.4%"
+              ]
+            },
+            "rawTable": {
+              "company_highlight": [
+                "【涉及行业】该公司涉及半导体激光芯片、光通信、激光雷达与3D传感、光子技术应用、硅光集成、薄膜铌酸锂材料、氮化镓蓝绿光激光器等多个高科技行业，专注于激光芯片及光子技术的创新与应用。<br>【经营优势或产品优势】公司拥有高功率半导体激光芯片的领先技术，打破了多项行业记录，如超高功率单管芯片、780nm宽条分布反馈激光器、9XXnm50W高功率半导体激光芯片等，产品性能卓越，且已实现大规模量产。在激光雷达与3D传感领域，公司技术领先，可满足多样化应用需求。VCSEL技术取得突破性进展，效率和功率转换效率世界领先，应用场景广泛。光通信产品矩阵全面，满足超大容量数据通信需求。此外，公司还布局了硅光集成、薄膜铌酸锂材料、氮化镓蓝绿光激光器等前沿技术，具有明显的竞争优势。<br>【经营风险和原因】经营风险主要包括技术更新风险，由于行业技术迭代迅速，公司需持续投入研发以保持技术领先；市场风险，包括地缘政治因素导致的市场不确定性，以及全球光芯片产能短缺可能带来的供应链风险；此外，公司扩张过程中可能面临管理风险，包括内部控制和公司治理的挑战，以及海外业务拓展的不确定性。"
+              ],
+              "headName": [
+                " "
+              ],
+              "company_base_info": [
+                "【股票代码】688048.SH【公司简介】苏州长光华芯光电技术股份有限公司成立于2012年,位于江苏苏州,是一家致力于高功率半导体激光器芯片、高效率激光雷达与3D传感芯片、高速光通信半导体激光芯片及器件和系统研发、生产和销售的高新技术企业。公司拥有强大的研发团队,硕士博士占比超过50%,团队多次获得各级部门重大创新团队和领军人才殊荣。公司已建成完整的工艺平台和量产线,是全球少数几家研发和量产高功率半导体激光器芯片的公司。公司产品在功率、亮度、光电转换效率、寿命等方面屡次突破,获多项专利,与全球先进水平同步。公司通过了ISO9001质量体系认证,以高性能和高可靠性产品服务客户。未来,长光华芯将以“POSS”企业精神和价值观,服务客户和社会,实现在激光芯片领域综合实力和创新能力具有全球竞争力的目标。【主营产品】半导体激光芯片、器件及模块等激光行业核心元器件的研发、制造与销售【办公地址】苏州市高新区漓江路56号【公司第一大股东】苏州华丰投资中心(有限合伙)【公司第一大股东持股比例】15.4%"
+              ]
+            },
+            "truncateRawTable": {},
+            "nameMap": {
+              "date": "日期",
+              "company_highlight": "公司亮点",
+              "company_base_info": "公司基本信息"
+            },
+            "headNameMap": {},
+            "field": {
+              "returnCode": "HIGHLIGHT",
+              "returnName": "公司亮点",
+              "classCode": "007902",
+              "checkedRelatedIndicators": true,
+              "startDate": "2026-06-21 00:00:00",
+              "endDate": "2026-06-21 00:00:00",
+              "fuzzy": true,
+              "defineType": 0,
+              "isLoopN": false,
+              "preprocess": "1",
+              "isGroup": false,
+              "returnSourceCode": "HIGHLIGHT",
+              "returnSourceName": "公司亮点",
+              "unit": "0",
+              "tableType": "0"
+            },
+            "entityCodes": [
+              "688048.SH"
+            ],
+            "macroAttributeExcelMap": {},
+            "fieldSet": [
+              {
+                "returnCode": "HIGHLIGHT",
+                "returnName": "公司亮点",
+                "classCode": "007902",
+                "checkedRelatedIndicators": true,
+                "startDate": "2026-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "defineType": 0,
+                "isLoopN": false,
+                "preprocess": "1",
+                "isGroup": false,
+                "returnSourceCode": "HIGHLIGHT",
+                "returnSourceName": "公司亮点",
+                "unit": "0",
+                "tableType": "0"
+              },
+              {
+                "returnCode": "BASICINFORMATION",
+                "returnName": "公司基本信息",
+                "classCode": "007902",
+                "checkedRelatedIndicators": true,
+                "startDate": "2026-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "defineType": 0,
+                "isLoopN": false,
+                "preprocess": "1",
+                "isGroup": false,
+                "returnSourceCode": "BASICINFORMATION",
+                "returnSourceName": "公司基本信息",
+                "unit": "0",
+                "tableType": "0"
+              }
+            ],
+            "dataTableType": "NORM_TABLE",
+            "rowInfo": {},
+            "colInfo": {},
+            "indicatorOrder": [
+              "company_highlight",
+              "company_base_info"
+            ],
+            "tipFlags": [],
+            "dataType": "数据浏览器",
+            "title": "长光华芯(688048.SH)的公司亮点、公司基本信息",
+            "hasThumbnail": true,
+            "indicatorLimited": false,
+            "dataPositionEnum": "MetricLeftTimeTop",
+            "orderCol": {},
+            "jumpUrlList": [],
+            "dataTypeEnum": "DATA_BROWSER",
+            "dateRuleSet": [],
+            "freqConvert": false,
+            "deleteInfo": [],
+            "macroCodeMap": {},
+            "entityTagDTO": {
+              "entityId": "1002629165",
+              "entityType": "SEC",
+              "entityTypeCode": "058001001",
+              "entityTypeName": "A股",
+              "classCode": "002001",
+              "className": "沪深京股票",
+              "publishCode": "",
+              "fullName": "长光华芯",
+              "shortName": "",
+              "matchWord": "长光华芯",
+              "secuCode": "688048",
+              "market": "1",
+              "marketChar": ".SH",
+              "correct": false,
+              "hasKLine": false,
+              "valuation": false,
+              "relatedEntity": false
+            },
+            "entityTagDTOList": [
+              {
+                "entityId": "1002629165",
+                "entityType": "SEC",
+                "entityTypeCode": "058001001",
+                "entityTypeName": "A股",
+                "classCode": "002001",
+                "className": "沪深京股票",
+                "publishCode": "",
+                "fullName": "长光华芯",
+                "shortName": "",
+                "matchWord": "长光华芯",
+                "secuCode": "688048",
+                "market": "1",
+                "marketChar": ".SH",
+                "correct": false,
+                "hasKLine": false,
+                "valuation": false,
+                "relatedEntity": false
+              }
+            ],
+            "indexTable": false,
+            "edbThirdData": false,
+            "dataUpdate": {
+              " ": false
+            },
+            "supportsTimeSeries": false,
+            "estimatedTokens": 0,
+            "summaryTips": {
+              "periodicalReport": null
+            },
+            "nestEntityListMap": {},
+            "excelTimeTruncate": false,
+            "frontendEntityName": "",
+            "frontendEntityCode": "",
+            "frontendTitle": "",
+            "frontendDesc": "",
+            "indicatorCount": 0,
+            "fieldParameterStr": "",
+            "tdayEnum": "NORMAL"
+          },
+          {
+            "code": "688048.SH",
+            "entityName": "长光华芯(688048.SH)",
+            "table": {
+              "100000000017020": [
+                "2025年报扭亏,MSCI中国,专精特新,中盘成长,中盘股,光纤概念,光通信模块,医美概念,半导体概念,可控核聚变,商业航天,国产芯片,数据中心,无人驾驶,沪股通,百元股,融资融券,通信技术",
+                "2025年报扭亏,MSCI中国,专精特新,中盘成长,中盘股,光纤概念,光通信模块,医美概念,半导体概念,可控核聚变,商业航天,国产芯片,数据中心,无人驾驶,沪股通,百元股,科技风格,融资融券,通信技术",
+                "2025年报扭亏,MSCI中国,专精特新,中盘成长,中盘股,光纤概念,光通信模块,医美概念,半导体概念,可控核聚变,商业航天,国产芯片,数据中心,无人驾驶,沪股通,百元股,科技风格,融资融券,通信技术",
+                "2025年报扭亏,MSCI中国,专精特新,中盘成长,中盘股,光纤概念,光通信模块,医美概念,半导体概念,可控核聚变,商业航天,国产芯片,数据中心,无人驾驶,沪股通,百元股,科技风格,融资融券,通信技术"
+              ],
+              "headName": [
+                "2026-06-18",
+                "2026-06-17",
+                "2026-06-16",
+                "2026-06-15"
+              ]
+            },
+            "rawTable": {
+              "100000000017020": [
+                "2025年报扭亏,MSCI中国,专精特新,中盘成长,中盘股,光纤概念,光通信模块,医美概念,半导体概念,可控核聚变,商业航天,国产芯片,数据中心,无人驾驶,沪股通,百元股,融资融券,通信技术",
+                "2025年报扭亏,MSCI中国,专精特新,中盘成长,中盘股,光纤概念,光通信模块,医美概念,半导体概念,可控核聚变,商业航天,国产芯片,数据中心,无人驾驶,沪股通,百元股,科技风格,融资融券,通信技术",
+                "2025年报扭亏,MSCI中国,专精特新,中盘成长,中盘股,光纤概念,光通信模块,医美概念,半导体概念,可控核聚变,商业航天,国产芯片,数据中心,无人驾驶,沪股通,百元股,科技风格,融资融券,通信技术",
+                "2025年报扭亏,MSCI中国,专精特新,中盘成长,中盘股,光纤概念,光通信模块,医美概念,半导体概念,可控核聚变,商业航天,国产芯片,数据中心,无人驾驶,沪股通,百元股,科技风格,融资融券,通信技术"
+              ],
+              "headName": [
+                "2026-06-18",
+                "2026-06-17",
+                "2026-06-16",
+                "2026-06-15"
+              ]
+            },
+            "truncateRawTable": {},
+            "nameMap": {
+              "100000000017020": "所属概念板块",
+              "headNameSub": "数据来源"
+            },
+            "headNameMap": {},
+            "field": {
+              "returnCode": "100000000017020",
+              "returnName": "所属概念板块",
+              "classCode": "007101",
+              "checkedRelatedIndicators": true,
+              "startDate": "2026-06-21 00:00:00",
+              "endDate": "2026-06-21 00:00:00",
+              "fuzzy": true,
+              "dateGranularity": "DAY",
+              "defineType": 0,
+              "isLoopN": false,
+              "quantType": "1",
+              "isGroup": false,
+              "returnSourceCode": "BLGAINIAN",
+              "returnSourceName": "所属概念板块",
+              "graph": "0",
+              "unit": "0",
+              "tableType": "1"
+            },
+            "entityCodes": [
+              "688048.SH"
+            ],
+            "macroAttributeExcelMap": {},
+            "fieldSet": [
+              {
+                "returnCode": "100000000017020",
+                "returnName": "所属概念板块",
+                "classCode": "007101",
+                "checkedRelatedIndicators": true,
+                "startDate": "2026-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "dateGranularity": "DAY",
+                "defineType": 0,
+                "isLoopN": false,
+                "quantType": "1",
+                "isGroup": false,
+                "returnSourceCode": "BLGAINIAN",
+                "returnSourceName": "所属概念板块",
+                "graph": "0",
+                "unit": "0",
+                "tableType": "1"
+              }
+            ],
+            "dataTableType": "NORM_TABLE",
+            "rowInfo": {},
+            "colInfo": {},
+            "indicatorOrder": [
+              "100000000017020"
+            ],
+            "tipFlags": [],
+            "dataType": "数据浏览器",
+            "title": "长光华芯(688048.SH)的所属概念板块",
+            "hasThumbnail": true,
+            "indicatorLimited": false,
+            "dataPositionEnum": "MetricLeftTimeTop",
+            "orderCol": {},
+            "jumpUrlList": [
+              {
+                "choiceUrl": "EM://stockdatacenter?type=browser&modType=STOCK&code=688048.SH&indId=100000000017020|119:2026-06-15,100000000017020|119:2026-06-16,100000000017020|119:2026-06-17,100000000017020|119:2026-06-18",
+                "typeName": "股票数据浏览器"
+              }
+            ],
+            "dataTypeEnum": "DATA_BROWSER",
+            "dateRuleSet": [],
+            "freqConvert": false,
+            "deleteInfo": [],
+            "macroCodeMap": {},
+            "entityTagDTO": {
+              "entityId": "1002629165",
+              "entityType": "SEC",
+              "entityTypeCode": "058001001",
+              "entityTypeName": "A股",
+              "classCode": "002001",
+              "className": "沪深京股票",
+              "publishCode": "",
+              "fullName": "长光华芯",
+              "shortName": "",
+              "matchWord": "长光华芯",
+              "secuCode": "688048",
+              "market": "1",
+              "marketChar": ".SH",
+              "correct": false,
+              "hasKLine": false,
+              "valuation": false,
+              "relatedEntity": false
+            },
+            "entityTagDTOList": [
+              {
+                "entityId": "1002629165",
+                "entityType": "SEC",
+                "entityTypeCode": "058001001",
+                "entityTypeName": "A股",
+                "classCode": "002001",
+                "className": "沪深京股票",
+                "publishCode": "",
+                "fullName": "长光华芯",
+                "shortName": "",
+                "matchWord": "长光华芯",
+                "secuCode": "688048",
+                "market": "1",
+                "marketChar": ".SH",
+                "correct": false,
+                "hasKLine": false,
+                "valuation": false,
+                "relatedEntity": false
+              }
+            ],
+            "indexTable": false,
+            "edbThirdData": false,
+            "dataUpdate": {
+              "2026-06-18": false
+            },
+            "supportsTimeSeries": false,
+            "estimatedTokens": 0,
+            "summaryTips": {
+              "periodicalReport": null
+            },
+            "nestEntityListMap": {},
+            "excelTimeTruncate": false,
+            "frontendEntityName": "",
+            "frontendEntityCode": "",
+            "frontendTitle": "",
+            "frontendDesc": "",
+            "indicatorCount": 0,
+            "fieldParameterStr": "",
+            "tdayEnum": "NORMAL"
+          },
+          {
+            "code": "688048.SH",
+            "entityName": "类型",
+            "table": {
+              "headName": [
+                "主营构成",
+                "主营业务收入(元)",
+                "主营业务收入占比",
+                "主营成本(元)",
+                "主营成本占比",
+                "主营利润(元)",
+                "主营利润占比",
+                "毛利率"
+              ],
+              "0": [
+                "高功率单管系列",
+                "3.862亿",
+                "80.90%",
+                "2.643亿",
+                "84.58%",
+                "1.219亿",
+                "73.91%",
+                "31.56%"
+              ],
+              "1": [
+                "VCSEL及光通讯芯片系列",
+                "4119万",
+                "8.63%",
+                "3592万",
+                "11.49%",
+                "527.5万",
+                "3.20%",
+                "12.81%"
+              ],
+              "2": [
+                "高功率巴条系列",
+                "2925万",
+                "6.13%",
+                "955.7万",
+                "3.06%",
+                "1970万",
+                "11.95%",
+                "67.33%"
+              ],
+              "3": [
+                "其他主营业务",
+                "2075万",
+                "4.35%",
+                "271.3万",
+                "0.87%",
+                "1804万",
+                "10.94%",
+                "86.93%"
+              ],
+              "4": [
+                "中国大陆",
+                "4.641亿",
+                "97.22%",
+                "3.086亿",
+                "98.74%",
+                "1.555亿",
+                "94.32%",
+                "33.51%"
+              ],
+              "5": [
+                "境外",
+                "1329万",
+                "2.79%",
+                "393万",
+                "1.26%",
+                "936.3万",
+                "5.68%",
+                "70.44%"
+              ]
+            },
+            "rawTable": {
+              "headName": [
+                "主营构成",
+                "主营业务收入(元)",
+                "主营业务收入占比",
+                "主营成本(元)",
+                "主营成本占比",
+                "主营利润(元)",
+                "主营利润占比",
+                "毛利率"
+              ],
+              "0": [
+                "高功率单管系列",
+                "386179249.42",
+                "80.90%",
+                "264310569.3",
+                "84.58%",
+                "121868680.12",
+                "73.91%",
+                "31.56%"
+              ],
+              "1": [
+                "VCSEL及光通讯芯片系列",
+                "41193768.25",
+                "8.63%",
+                "35918385.49",
+                "11.49%",
+                "5275382.76",
+                "3.20%",
+                "12.81%"
+              ],
+              "2": [
+                "高功率巴条系列",
+                "29252912.46",
+                "6.13%",
+                "9556771.83",
+                "3.06%",
+                "19696140.63",
+                "11.95%",
+                "67.33%"
+              ],
+              "3": [
+                "其他主营业务",
+                "20751629.31",
+                "4.35%",
+                "2713019.9",
+                "0.87%",
+                "18038609.41",
+                "10.94%",
+                "86.93%"
+              ],
+              "4": [
+                "中国大陆",
+                "464084570.42",
+                "97.22%",
+                "308568841.92",
+                "98.74%",
+                "155515728.5",
+                "94.32%",
+                "33.51%"
+              ],
+              "5": [
+                "境外",
+                "13292989.02",
+                "2.78%",
+                "3929904.6",
+                "1.26%",
+                "9363084.42",
+                "5.68%",
+                "70.44%"
+              ]
+            },
+            "truncateRawTable": {},
+            "nameMap": {
+              "0": "产品",
+              "1": "",
+              "2": "",
+              "3": "",
+              "4": "地区",
+              "5": ""
+            },
+            "headNameMap": {},
+            "field": {
+              "returnCode": "RPT_HSF9_FN_MAINOPBUSINESS_NORMAL",
+              "returnName": "主营业务构成",
+              "classCode": "007202",
+              "checkedRelatedIndicators": true,
+              "startDate": "2025-06-21 00:00:00",
+              "endDate": "2026-06-21 00:00:00",
+              "fuzzy": true,
+              "defineType": 0,
+              "isLoopN": false,
+              "isGroup": false,
+              "returnSourceCode": "SecuCode,SECURITY_NAME_ABBR,SECURITY_CODE,ReportDate,STD_REPORT_NAME,ACT_REPORT_NAME,MAIN_BUSINESS_INCOME,MAIN_BUSINESS_COST,MAIN_BUSINESS_RPOFIT,MBI_RATIO,MBC_RATIO,MBR_RATIO,GROSS_RPOFIT_RATIO,STD_CLASSIFY_CODE,REPORT_TYPE,REPORT_YEAR,REPORT_CODE,Type,BELONG_TYPE_CODE,IS_MAXREPORTDATE,METHOD_TYPE,METHOD_CODE,CURRENCY,CURRENCY_CH",
+              "returnSourceName": "证券代码（带后缀）,证券简称,证券代码,报告日期,标准披露项目名称,实际披露项目名称,本期主营业务收入,本期主营业务成本,本期主营业务利润,收入构成,营业成本占比,利润构成,本期毛利率,项目编码,报告期类型,报告年度,报告期编码,分布类型,分布类型编码,是否最新报告期,计算方式类型,计算方式代码,币种(英文),币种(中文)",
+              "tableType": "10"
+            },
+            "macroAttributeExcelMap": {},
+            "fieldSet": [
+              {
+                "returnCode": "RPT_HSF9_FN_MAINOPBUSINESS_NORMAL",
+                "returnName": "主营业务构成",
+                "classCode": "007202",
+                "checkedRelatedIndicators": true,
+                "startDate": "2025-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "defineType": 0,
+                "isLoopN": false,
+                "isGroup": false,
+                "returnSourceCode": "SecuCode,SECURITY_NAME_ABBR,SECURITY_CODE,ReportDate,STD_REPORT_NAME,ACT_REPORT_NAME,MAIN_BUSINESS_INCOME,MAIN_BUSINESS_COST,MAIN_BUSINESS_RPOFIT,MBI_RATIO,MBC_RATIO,MBR_RATIO,GROSS_RPOFIT_RATIO,STD_CLASSIFY_CODE,REPORT_TYPE,REPORT_YEAR,REPORT_CODE,Type,BELONG_TYPE_CODE,IS_MAXREPORTDATE,METHOD_TYPE,METHOD_CODE,CURRENCY,CURRENCY_CH",
+                "returnSourceName": "证券代码（带后缀）,证券简称,证券代码,报告日期,标准披露项目名称,实际披露项目名称,本期主营业务收入,本期主营业务成本,本期主营业务利润,收入构成,营业成本占比,利润构成,本期毛利率,项目编码,报告期类型,报告年度,报告期编码,分布类型,分布类型编码,是否最新报告期,计算方式类型,计算方式代码,币种(英文),币种(中文)",
+                "tableType": "10"
+              }
+            ],
+            "dataTableType": "F10_TABLE",
+            "inputTitle": "长光华芯(688048.SH)主营构成分析(2025-12-31)",
+            "rowInfo": {},
+            "colInfo": {},
+            "indicatorOrder": [
+              "0",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5"
+            ],
+            "tipFlags": [],
+            "hasThumbnail": true,
+            "indicatorLimited": false,
+            "dataPositionEnum": "MetricLeftTimeTop",
+            "orderCol": {},
+            "jumpUrlList": [
+              {
+                "choiceUrl": "https://choicewzp2.eastmoney.com/stock/cn/f9/index.html#/mainCompositionByProjectName?securitycode=688048.SH",
+                "typeName": "F9深度资料",
+                "securityName": "长光华芯"
+              }
+            ],
+            "dataTypeEnum": "F9",
+            "dateRuleSet": [],
+            "freqConvert": false,
+            "deleteInfo": [],
+            "macroCodeMap": {},
+            "entityTagDTO": {
+              "entityId": "1002629165",
+              "entityType": "SEC",
+              "entityTypeCode": "058001001",
+              "entityTypeName": "A股",
+              "classCode": "002001",
+              "className": "沪深京股票",
+              "publishCode": "",
+              "fullName": "长光华芯",
+              "shortName": "",
+              "matchWord": "长光华芯",
+              "secuCode": "688048",
+              "market": "1",
+              "marketChar": ".SH",
+              "correct": false,
+              "hasKLine": false,
+              "valuation": false,
+              "relatedEntity": false
+            },
+            "entityTagDTOList": [
+              {
+                "entityId": "1002629165",
+                "entityType": "SEC",
+                "entityTypeCode": "058001001",
+                "entityTypeName": "A股",
+                "classCode": "002001",
+                "className": "沪深京股票",
+                "publishCode": "",
+                "fullName": "长光华芯",
+                "shortName": "",
+                "matchWord": "长光华芯",
+                "secuCode": "688048",
+                "market": "1",
+                "marketChar": ".SH",
+                "correct": false,
+                "hasKLine": false,
+                "valuation": false,
+                "relatedEntity": false
+              }
+            ],
+            "indexTable": false,
+            "edbThirdData": false,
+            "dataUpdate": {},
+            "supportsTimeSeries": false,
+            "estimatedTokens": 0,
+            "summaryTips": {
+              "periodicalReport": null
+            },
+            "nestEntityListMap": {},
+            "excelTimeTruncate": false,
+            "frontendEntityName": "长光华芯",
+            "frontendEntityCode": "688048.SH",
+            "frontendTitle": "主营构成分析(2025-12-31)",
+            "frontendDesc": "",
+            "indicatorCount": 0,
+            "fieldParameterStr": "",
+            "tdayEnum": "NORMAL"
+          },
+          {
+            "code": "688048.SH",
+            "entityName": "类型",
+            "table": {
+              "headName": [
+                "主营构成",
+                "主营业务收入(元)",
+                "主营业务收入占比",
+                "主营成本(元)",
+                "主营成本占比",
+                "主营利润(元)",
+                "主营利润占比",
+                "毛利率"
+              ],
+              "0": [
+                "高功率单管系列",
+                "1.648亿",
+                "76.98%",
+                "1.131亿",
+                "79.20%",
+                "5165万",
+                "72.53%",
+                "31.34%"
+              ],
+              "1": [
+                "VCSEL及光通讯芯片系列",
+                "2454万",
+                "11.47%",
+                "2210万",
+                "15.47%",
+                "243.8万",
+                "3.43%",
+                "9.94%"
+              ],
+              "2": [
+                "高功率巴条系列",
+                "1186万",
+                "5.54%",
+                "537.5万",
+                "3.76%",
+                "648.8万",
+                "9.11%",
+                "54.69%"
+              ],
+              "3": [
+                "废料销售",
+                "205.6万",
+                "0.96%",
+                "0",
+                "0.00%",
+                "205.6万",
+                "2.89%",
+                "100.00%"
+              ],
+              "4": [
+                "其他主营业务",
+                "1081万",
+                "5.05%",
+                "223.3万",
+                "1.56%",
+                "857.3万",
+                "12.04%",
+                "79.34%"
+              ],
+              "5": [
+                "中国大陆",
+                "2.1亿",
+                "98.10%",
+                "1.421亿",
+                "99.48%",
+                "6788万",
+                "95.33%",
+                "32.32%"
+              ],
+              "6": [
+                "境外",
+                "406.1万",
+                "1.90%",
+                "73.9万",
+                "0.52%",
+                "332.2万",
+                "4.67%",
+                "81.80%"
+              ]
+            },
+            "rawTable": {
+              "headName": [
+                "主营构成",
+                "主营业务收入(元)",
+                "主营业务收入占比",
+                "主营成本(元)",
+                "主营成本占比",
+                "主营利润(元)",
+                "主营利润占比",
+                "毛利率"
+              ],
+              "0": [
+                "高功率单管系列",
+                "164795926.72",
+                "76.98%",
+                "113149629.3",
+                "79.20%",
+                "51646297.42",
+                "72.53%",
+                "31.34%"
+              ],
+              "1": [
+                "VCSEL及光通讯芯片系列",
+                "24543436.04",
+                "11.47%",
+                "22104943.94",
+                "15.47%",
+                "2438492.1",
+                "3.42%",
+                "9.94%"
+              ],
+              "2": [
+                "高功率巴条系列",
+                "11863427.01",
+                "5.54%",
+                "5375295.94",
+                "3.76%",
+                "6488131.07",
+                "9.11%",
+                "54.69%"
+              ],
+              "3": [
+                "废料销售",
+                "2056012.62",
+                "0.96%",
+                "0",
+                "0.00%",
+                "2056012.62",
+                "2.89%",
+                "100.00%"
+              ],
+              "4": [
+                "其他主营业务",
+                "10805631.54",
+                "5.05%",
+                "2232581.34",
+                "1.56%",
+                "8573050.2",
+                "12.04%",
+                "79.34%"
+              ],
+              "5": [
+                "中国大陆",
+                "210003356.53",
+                "98.10%",
+                "142123420.14",
+                "99.48%",
+                "67879936.39",
+                "95.33%",
+                "32.32%"
+              ],
+              "6": [
+                "境外",
+                "4061077.4",
+                "1.90%",
+                "739030.38",
+                "0.52%",
+                "3322047.02",
+                "4.67%",
+                "81.80%"
+              ]
+            },
+            "truncateRawTable": {},
+            "nameMap": {
+              "0": "产品",
+              "1": "",
+              "2": "",
+              "3": "",
+              "4": "",
+              "5": "地区",
+              "6": ""
+            },
+            "headNameMap": {},
+            "field": {
+              "returnCode": "RPT_HSF9_FN_MAINOPBUSINESS_NORMAL",
+              "returnName": "主营业务构成",
+              "classCode": "007202",
+              "checkedRelatedIndicators": true,
+              "startDate": "2025-06-21 00:00:00",
+              "endDate": "2026-06-21 00:00:00",
+              "fuzzy": true,
+              "defineType": 0,
+              "isLoopN": false,
+              "isGroup": false,
+              "returnSourceCode": "SecuCode,SECURITY_NAME_ABBR,SECURITY_CODE,ReportDate,STD_REPORT_NAME,ACT_REPORT_NAME,MAIN_BUSINESS_INCOME,MAIN_BUSINESS_COST,MAIN_BUSINESS_RPOFIT,MBI_RATIO,MBC_RATIO,MBR_RATIO,GROSS_RPOFIT_RATIO,STD_CLASSIFY_CODE,REPORT_TYPE,REPORT_YEAR,REPORT_CODE,Type,BELONG_TYPE_CODE,IS_MAXREPORTDATE,METHOD_TYPE,METHOD_CODE,CURRENCY,CURRENCY_CH",
+              "returnSourceName": "证券代码（带后缀）,证券简称,证券代码,报告日期,标准披露项目名称,实际披露项目名称,本期主营业务收入,本期主营业务成本,本期主营业务利润,收入构成,营业成本占比,利润构成,本期毛利率,项目编码,报告期类型,报告年度,报告期编码,分布类型,分布类型编码,是否最新报告期,计算方式类型,计算方式代码,币种(英文),币种(中文)",
+              "tableType": "10"
+            },
+            "macroAttributeExcelMap": {},
+            "fieldSet": [
+              {
+                "returnCode": "RPT_HSF9_FN_MAINOPBUSINESS_NORMAL",
+                "returnName": "主营业务构成",
+                "classCode": "007202",
+                "checkedRelatedIndicators": true,
+                "startDate": "2025-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "defineType": 0,
+                "isLoopN": false,
+                "isGroup": false,
+                "returnSourceCode": "SecuCode,SECURITY_NAME_ABBR,SECURITY_CODE,ReportDate,STD_REPORT_NAME,ACT_REPORT_NAME,MAIN_BUSINESS_INCOME,MAIN_BUSINESS_COST,MAIN_BUSINESS_RPOFIT,MBI_RATIO,MBC_RATIO,MBR_RATIO,GROSS_RPOFIT_RATIO,STD_CLASSIFY_CODE,REPORT_TYPE,REPORT_YEAR,REPORT_CODE,Type,BELONG_TYPE_CODE,IS_MAXREPORTDATE,METHOD_TYPE,METHOD_CODE,CURRENCY,CURRENCY_CH",
+                "returnSourceName": "证券代码（带后缀）,证券简称,证券代码,报告日期,标准披露项目名称,实际披露项目名称,本期主营业务收入,本期主营业务成本,本期主营业务利润,收入构成,营业成本占比,利润构成,本期毛利率,项目编码,报告期类型,报告年度,报告期编码,分布类型,分布类型编码,是否最新报告期,计算方式类型,计算方式代码,币种(英文),币种(中文)",
+                "tableType": "10"
+              }
+            ],
+            "dataTableType": "F10_TABLE",
+            "inputTitle": "长光华芯(688048.SH)主营构成分析(2025-06-30)",
+            "rowInfo": {},
+            "colInfo": {},
+            "indicatorOrder": [
+              "0",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6"
+            ],
+            "tipFlags": [],
+            "hasThumbnail": true,
+            "indicatorLimited": false,
+            "dataPositionEnum": "MetricLeftTimeTop",
+            "orderCol": {},
+            "jumpUrlList": [
+              {
+                "choiceUrl": "https://choicewzp2.eastmoney.com/stock/cn/f9/index.html#/mainCompositionByProjectName?securitycode=688048.SH",
+                "typeName": "F9深度资料",
+                "securityName": "长光华芯"
+              }
+            ],
+            "dataTypeEnum": "F9",
+            "dateRuleSet": [],
+            "freqConvert": false,
+            "deleteInfo": [],
+            "macroCodeMap": {},
+            "entityTagDTO": {
+              "entityId": "1002629165",
+              "entityType": "SEC",
+              "entityTypeCode": "058001001",
+              "entityTypeName": "A股",
+              "classCode": "002001",
+              "className": "沪深京股票",
+              "publishCode": "",
+              "fullName": "长光华芯",
+              "shortName": "",
+              "matchWord": "长光华芯",
+              "secuCode": "688048",
+              "market": "1",
+              "marketChar": ".SH",
+              "correct": false,
+              "hasKLine": false,
+              "valuation": false,
+              "relatedEntity": false
+            },
+            "entityTagDTOList": [
+              {
+                "entityId": "1002629165",
+                "entityType": "SEC",
+                "entityTypeCode": "058001001",
+                "entityTypeName": "A股",
+                "classCode": "002001",
+                "className": "沪深京股票",
+                "publishCode": "",
+                "fullName": "长光华芯",
+                "shortName": "",
+                "matchWord": "长光华芯",
+                "secuCode": "688048",
+                "market": "1",
+                "marketChar": ".SH",
+                "correct": false,
+                "hasKLine": false,
+                "valuation": false,
+                "relatedEntity": false
+              }
+            ],
+            "indexTable": false,
+            "edbThirdData": false,
+            "dataUpdate": {},
+            "supportsTimeSeries": false,
+            "estimatedTokens": 0,
+            "summaryTips": {
+              "periodicalReport": null
+            },
+            "nestEntityListMap": {},
+            "excelTimeTruncate": false,
+            "frontendEntityName": "长光华芯",
+            "frontendEntityCode": "688048.SH",
+            "frontendTitle": "主营构成分析(2025-06-30)",
+            "frontendDesc": "",
+            "indicatorCount": 0,
+            "fieldParameterStr": "",
+            "tdayEnum": "NORMAL"
+          }
+        ],
+        "condition": {
+          "search_data_task_0": [
+            "长光华芯",
+            "员工总数主营业务构成成立日期董事长总股本公司亮点公司基本信息所属概念板块公司简介",
+            "2026-06-21至2026-06-21"
+          ]
+        },
+        "entityTagDTOList": [
+          {
+            "entityId": "1002629165",
+            "entityType": "SEC",
+            "entityTypeCode": "058001001",
+            "entityTypeName": "A股",
+            "classCode": "002001",
+            "className": "沪深京股票",
+            "publishCode": "",
+            "fullName": "长光华芯",
+            "shortName": "",
+            "matchWord": "长光华芯",
+            "secuCode": "688048",
+            "market": "1",
+            "marketChar": ".SH",
+            "correct": false,
+            "hasKLine": false,
+            "valuation": false,
+            "relatedEntity": false
+          }
+        ]
+      },
+      "entityName": null,
+      "message": null,
+      "tableTruncated": false
+    },
+    "stack": null
+  },
+  "requestId": "c9ad067019a14a468bd13646d6094278"
+}

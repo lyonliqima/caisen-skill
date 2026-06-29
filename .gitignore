@@ -1,0 +1,51 @@
+# ===== 敏感信息（必排除）=====
+.env
+.env.local
+*.key
+*.pem
+secrets/
+
+# ===== macOS =====
+.DS_Store
+._*
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+ENV/
+*.egg-info/
+.eggs/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ===== Jupyter =====
+.ipynb_checkpoints/
+
+# ===== IDE =====
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ===== 日志 / 临时文件 =====
+*.log
+logs/
+*.tmp
+*.bak
+
+# ===== 数据库文件 =====
+*.db
+*.sqlite
+*.sqlite3
+
+# ===== Qoder 本地缓存（按需保留）=====
+# .qoder/ 目录含 agent 配置，可保留

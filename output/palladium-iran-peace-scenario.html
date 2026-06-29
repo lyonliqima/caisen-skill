@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>情景分析：川普与伊朗和解对钯金的影响</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root{--bg:#0f1117;--card:#1a1d28;--accent:#e8b84b;--blue:#4ea8de;--red:#ef4444;--green:#22c55e;--purple:#a78bfa;--orange:#f97316;--text:#e2e8f0;--muted:#94a3b8;--border:#2d3348;--cyan:#06b6d4;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,'PingFang SC','Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;}
+.hero{background:linear-gradient(135deg,#1a1d28 0%,#2d1a1a 40%,#1a2940 100%);padding:60px 40px 50px;border-bottom:3px solid var(--red);position:relative;overflow:hidden;}
+.hero::before{content:'⚔️→🕊️';position:absolute;right:40px;top:50%;transform:translateY(-50%);font-size:100px;opacity:0.08;}
+.hero h1{font-size:2em;font-weight:800;color:var(--red);}
+.hero .sub{color:var(--muted);margin-top:6px;font-size:1em;}
+.badges{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;}
+.badge{padding:8px 18px;border-radius:8px;font-weight:700;font-size:1em;}
+.badge.war{background:rgba(239,68,68,0.15);border:1px solid var(--red);color:var(--red);}
+.badge.peace{background:rgba(34,197,94,0.15);border:1px solid var(--green);color:var(--green);}
+.badge.gold{background:rgba(232,184,75,0.12);border:1px solid var(--accent);color:var(--accent);}
+.badge.blue{background:rgba(78,168,222,0.12);border:1px solid var(--blue);color:var(--blue);}
+.container{max-width:1200px;margin:0 auto;padding:40px 28px;}
+.eh{display:flex;align-items:center;gap:14px;margin-bottom:24px;padding:18px 24px;border-radius:14px;font-size:1.3em;font-weight:800;}
+.eh.yang{background:linear-gradient(90deg,rgba(78,168,222,0.12),transparent);border-left:4px solid var(--blue);color:var(--blue);}
+.eh.lu{background:linear-gradient(90deg,rgba(167,139,250,0.12),transparent);border-left:4px solid var(--purple);color:var(--purple);}
+.eh.cai{background:linear-gradient(90deg,rgba(249,115,22,0.12),transparent);border-left:4px solid var(--orange);color:var(--orange);}
+.eh.synth{background:linear-gradient(90deg,rgba(232,184,75,0.12),transparent);border-left:4px solid var(--accent);color:var(--accent);}
+section{margin-bottom:52px;}
+h3{font-size:1.12em;font-weight:700;margin:18px 0 10px;color:var(--text);}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:20px;}
+.ct{font-size:0.88em;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:20px;}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;}
+.stat .lb{font-size:0.8em;color:var(--muted);margin-bottom:3px;}
+.stat .v{font-size:1.5em;font-weight:800;}
+.stat .v.r{color:var(--red);} .stat .v.g{color:var(--green);} .stat .v.go{color:var(--accent);} .stat .v.b{color:var(--blue);} .stat .v.p{color:var(--purple);}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;}
+@media(max-width:800px){.grid2,.grid3{grid-template-columns:1fr;}}
+.cb{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px;}
+.cb canvas{max-height:340px;}
+.tag{display:inline-block;padding:3px 12px;border-radius:20px;font-size:0.78em;font-weight:600;margin:2px;}
+.tag.bull{background:rgba(34,197,94,0.15);color:var(--green);border:1px solid rgba(34,197,94,0.3);}
+.tag.bear{background:rgba(239,68,68,0.15);color:var(--red);border:1px solid rgba(239,68,68,0.3);}
+.tag.neu{background:rgba(148,163,184,0.12);color:var(--muted);border:1px solid rgba(148,163,184,0.25);}
+.tag.warn{background:rgba(249,115,22,0.15);color:var(--orange);border:1px solid rgba(249,115,22,0.3);}
+table{width:100%;border-collapse:collapse;font-size:0.92em;}
+thead th{background:rgba(232,184,75,0.08);color:var(--accent);font-weight:700;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);}
+tbody td{padding:9px 14px;border-bottom:1px solid var(--border);}
+tbody tr:hover{background:rgba(255,255,255,0.02);}
+.flow{display:flex;align-items:center;justify-content:center;gap:6px;padding:16px;flex-wrap:wrap;}
+.fbox{padding:10px 14px;border-radius:10px;font-weight:700;font-size:0.88em;text-align:center;min-width:80px;}
+.farr{font-size:1.4em;color:var(--muted);}
+.tl{position:relative;padding-left:32px;margin:16px 0;}
+.tl::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:2px;background:var(--border);}
+.tli{position:relative;margin-bottom:22px;padding-left:18px;}
+.tli::before{content:'';position:absolute;left:-26px;top:6px;width:14px;height:14px;border-radius:50%;border:3px solid var(--accent);background:var(--bg);}
+.tli h4{color:var(--accent);font-size:1.02em;margin-bottom:3px;}
+.tli p{color:var(--muted);font-size:0.9em;}
+.scenario-box{border-radius:14px;padding:24px;margin-bottom:16px;}
+.sc-bear{background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.25);}
+.sc-base{background:rgba(232,184,75,0.06);border:1px solid rgba(232,184,75,0.25);}
+.sc-bull{background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.25);}
+.sc h3{margin-bottom:10px;}
+.conclusion{background:linear-gradient(135deg,rgba(232,184,75,0.08),rgba(239,68,68,0.05));border:1px solid var(--accent);border-radius:14px;padding:28px 32px;}
+.conclusion p{margin-bottom:10px;} .conclusion strong{color:var(--accent);}
+.disclaimer{margin-top:36px;padding:14px 20px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:10px;color:var(--muted);font-size:0.82em;}
+.ind-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;}
+.ind{background:rgba(78,168,222,0.06);border:1px solid rgba(78,168,222,0.2);border-radius:10px;padding:14px 16px;}
+.ind .nm{font-weight:700;color:var(--blue);margin-bottom:3px;}
+.ind .ds{font-size:0.84em;color:var(--muted);}
+.vs-box{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:stretch;margin:16px 0;}
+.vs-side{padding:20px;border-radius:12px;text-align:center;}
+.vs-side h4{font-size:1.1em;margin-bottom:8px;}
+.vs-mid{display:flex;align-items:center;justify-content:center;font-size:2em;color:var(--muted);}
+@media(max-width:600px){.vs-box{grid-template-columns:1fr;}.vs-mid{transform:rotate(90deg);padding:8px;}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>⚔️ 情景推演：川普与伊朗和解 → 钯金会怎样？</h1>
+  <p class="sub">三合一框架情景分析 | 2026年6月6日 | 基于当前美伊谈判实际进展</p>
+  <div class="badges">
+    <span class="badge war">2026美伊冲突已发生</span>
+    <span class="badge peace">停火协议谈判中</span>
+    <span class="badge gold">Pd 现价 $1,240</span>
+    <span class="badge blue">油价已从高点跌20%</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- 背景概述 -->
+<section>
+  <h3 style="color:var(--accent);font-size:1.3em;">📋 当前局势背景</h3>
+  <div class="card">
+    <table>
+      <thead><tr><th>时间</th><th>事件</th><th>市场影响</th></tr></thead>
+      <tbody>
+        <tr><td><strong>2026.2.28</strong></td><td>美伊冲突爆发，霍尔木兹海峡受扰</td><td>布伦特原油飙升60%，突破$100</td></tr>
+        <tr><td><strong>2026.3</strong></td><td>伊朗布雷+封锁海峡，油价冲击全球</td><td>亚洲石油进口暴跌30%，通胀飙升</td></tr>
+        <tr><td><strong>2026.3.20</strong></td><td>川普宣布30天制裁豁免允许购买伊朗石油</td><td>油价小幅回落</td></tr>
+        <tr><td><strong>2026.4.7</strong></td><td>停火协议生效</td><td>油价暴跌，道指创年内最大单日涨幅</td></tr>
+        <tr><td><strong>2026.4.22</strong></td><td>川普延长停火</td><td>油价继续回落</td></tr>
+        <tr><td><strong>2026.5.23</strong></td><td>川普称协议"已基本谈妥"</td><td>油价较高点跌20%，市场乐观</td></tr>
+        <tr><td><strong>2026.6.5</strong></td><td>钯金跌至$1,240（冲突溢价消退中）</td><td>贵金属整体回调</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cb">
+    <div class="ct">钯金 & 原油在美伊冲突期间的走势对比</div>
+    <canvas id="chartTimeline"></canvas>
+  </div>
+</section>
+
+<!-- ============ 杨世光 ============ -->
+<section>
+  <div class="eh yang">🔵 杨世光视角 — 地缘传导链推演</div>
+
+  <div class="card">
+    <h3>🔗 地缘→钯金完整传导链（和解情景）</h3>
+    <div class="flow">
+      <div class="fbox" style="background:rgba(34,197,94,0.15);color:var(--green);">🕊️ 美伊和解</div>
+      <div class="farr">→</div>
+      <div class="fbox" style="background:rgba(34,197,94,0.15);color:var(--green);">霍尔木兹畅通</div>
+      <div class="farr">→</div>
+      <div class="fbox" style="background:rgba(34,197,94,0.2);color:var(--green);">油价暴跌至$55</div>
+      <div class="farr">→</div>
+      <div class="fbox" style="background:rgba(78,168,222,0.15);color:var(--blue);">通胀预期下降</div>
+      <div class="farr">→</div>
+      <div class="fbox" style="background:rgba(78,168,222,0.2);color:var(--blue);">降息预期上升</div>
+      <div class="farr">→</div>
+      <div class="fbox" style="background:rgba(232,184,75,0.15);color:var(--accent);">钯金：先跌后涨</div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="cb">
+      <div class="ct">情景对比：油价对钯金的传导效应</div>
+      <canvas id="chartOilPd"></canvas>
+    </div>
+    <div class="card">
+      <h3>📊 杨世光跨市场传导分析</h3>
+      <table>
+        <thead><tr><th>传导环节</th><th>和解方向</th><th>对钯金</th><th>时滞</th></tr></thead>
+        <tbody>
+          <tr><td>油价暴跌</td><td>Brent→$55</td><td><span class="tag bear">短期利空</span> 通胀降温削弱商品配置需求</td><td>即时</td></tr>
+          <tr><td>美元走弱</td><td>DXY跌向95</td><td><span class="tag bull">中期利好</span> 弱美元利好美元计价商品</td><td>1-3月</td></tr>
+          <tr><td>降息预期</td><td>Fed加速降息</td><td><span class="tag bull">中期利好</span> 实质利率下降利好无息资产</td><td>3-6月</td></tr>
+          <tr><td>经济修复</td><td>全球汽车产量回升</td><td><span class="tag bull">长期利好</span> 催化剂需求增加</td><td>6-12月</td></tr>
+          <tr><td>风险偏好</td><td>资金从避险转向风险资产</td><td><span class="tag bear">短空长多</span> 资金离开贵金属进入股市</td><td>即时</td></tr>
+          <tr><td>俄罗斯制裁</td><td>和解≠放松对俄</td><td><span class="tag neu">中性</span> 对俄金属制裁独立于伊朗</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 杨世光结论：先跌后涨，V型修复</h3>
+    <p>美伊和解对钯金的影响呈现<strong style="color:var(--blue)">"先空后多"</strong>的传导路径：</p>
+    <p><strong>第一阶段（即时-1月）</strong>：地缘溢价彻底消退，冲突期间钯金获得的$200-300溢价蒸发，价格可能下探<strong style="color:var(--red)">$1,050-$1,100</strong>。</p>
+    <p><strong>第二阶段（1-6月）</strong>：油价暴跌→通胀降温→美联储加速降息→美元走弱→实质利率下降→利好钯金。同时全球经济修复带动汽车产量回升，催化剂需求回暖。</p>
+    <p><strong>第三阶段（6-12月）</strong>：弱美元+低利率+经济复苏三重利好，钯金有望回升至<strong style="color:var(--green)">$1,400-$1,600</strong>。</p>
+    <div style="margin-top:10px;">
+      <span class="tag bear">短期：地缘溢价蒸发 → 跌至$1,050</span>
+      <span class="tag bull">中期：降息+弱美元 → 修复至$1,400+</span>
+      <span class="tag neu">关键变量：对俄制裁是否联动放松</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 卢麒元 ============ -->
+<section>
+  <div class="eh lu">🟣 卢麒元视角 — 资本三流与制度结构推演</div>
+
+  <div class="grid2">
+    <div class="cb">
+      <div class="ct">和解前后资本三流变化评估</div>
+      <canvas id="chartThreeFlow"></canvas>
+    </div>
+    <div class="cb">
+      <div class="ct">多情景钯金价格路径模拟</div>
+      <canvas id="chartScenario"></canvas>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💰 资本三流分析：和解对钯金的深层影响</h3>
+    <table>
+      <thead><tr><th>维度</th><th>战争期间</th><th>和解后</th><th>对钯金影响</th></tr></thead>
+      <tbody>
+        <tr><td><strong>流量</strong></td><td>石油美元膨胀→通胀→全球美元实质供给收缩</td><td>油价跌→通胀降→美元实质供给压力缓解</td><td><span class="tag bull">利好：流动性改善</span></td></tr>
+        <tr><td><strong>流向</strong></td><td>资本疯狂涌入美国避险资产（美债+美元）</td><td>资本从美国流出，转向新兴市场和商品</td><td><span class="tag bull">利好：资金回流商品</span></td></tr>
+        <tr><td><strong>流速</strong></td><td>流动性冻结，钯金ETF持续流出</td><td>风险偏好回升，资金周转加速</td><td><span class="tag bull">利好：交易活跃度提升</span></td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:14px;color:var(--muted);"><strong style="color:var(--purple)">关键洞察</strong>：美伊和解从三流角度看，对钯金全面利好。战争期间资本"冻结"在美元避险资产中，和解将释放这部分流动性，部分回流商品市场。但钯金作为小品种，资金回流的优先级排在黄金、白银、原油之后。</p>
+  </div>
+
+  <div class="card">
+    <h3>💥 向心坍缩视角：和解 = 推迟坍缩深化</h3>
+    <div class="vs-box">
+      <div class="vs-side" style="background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:12px;">
+        <h4 style="color:var(--red);">⚔️ 若战争持续</h4>
+        <p style="font-size:0.9em;color:var(--muted);">油价$100+ → 全球滞胀 → 美联储无法降息 → 向心坍缩加速深化 → 钯金跌至$800-900</p>
+        <p style="font-size:0.85em;color:var(--red);margin-top:8px;">概率：25%</p>
+      </div>
+      <div class="vs-mid">VS</div>
+      <div class="vs-side" style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.2);border-radius:12px;">
+        <h4 style="color:var(--green);">🕊️ 若美伊和解</h4>
+        <p style="font-size:0.9em;color:var(--muted);">油价$55 → 通胀缓和 → Fed降息 → 坍缩延迟 → 钯金短期回落但中期修复</p>
+        <p style="font-size:0.85em;color:var(--green);margin-top:8px;">概率：55%</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:20px;">🔬 明斯基/费雪视角</h3>
+    <p><strong style="color:var(--purple)">费雪等式 m×v=PQ</strong>：战争期间油价暴涨→P（物价）飙升→央行被迫加息→m（债务货币）收缩→Q（产出）下降。和解将逆转这一链条：油价下跌→P回落→央行获得降息空间→m恢复扩张→Q回升。<strong>对钯金意味着需求端（Q）和货币端（m）同时改善</strong>。</p>
+    <p style="margin-top:10px;"><strong style="color:var(--purple)">明斯基融资阶段</strong>：美国当前处于投机性→庞氏过渡阶段。战争加剧了这一进程（军费膨胀+利息飙升）。和解则<strong>减缓向庞氏融资滑落的速度</strong>，为美元体系争取喘息时间，间接利好所有美元计价资产。</p>
+  </div>
+
+  <div class="card">
+    <h3>🏛️ 制度结构分析：和解的战略意图</h3>
+    <p>川普推动美伊和解的<strong style="color:var(--purple)">深层制度逻辑</strong>：</p>
+    <ul style="padding-left:20px;color:var(--muted);margin-top:8px;">
+      <li><strong>沃什战略的一环</strong>：压低油价→控制通胀→为Fed降息创造条件→配合美债需求工程</li>
+      <li><strong>强美元的副作用管理</strong>：强美元+高油价=全球经济双杀，和解放松油价端以换取美元体系稳定性</li>
+      <li><strong>对俄罗斯的间接影响</strong>：伊朗石油回归市场→俄罗斯石油议价力下降→可能迫使俄罗斯在金属制裁上让步</li>
+      <li><strong>对钯金的连锁效应</strong>：若俄罗斯在金属制裁上让步→钯金供给增加→长期利空</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🎯 卢麒元结论：和解短期砸坑、中期修复、长期看制度</h3>
+    <p>从资本三流看，和解对钯金<strong style="color:var(--purple)">三流全面利好</strong>（流量改善、流向回归商品、流速加速）。但钯金面临一个<strong>独特的制度风险</strong>：美伊和解可能是美国整体"缓和战略"的开端，若进一步放松对俄金属制裁，将从供给端冲击钯金。</p>
+    <p><strong>向心坍缩视角</strong>：和解推迟了坍缩深化的时间表，为钯金争取了修复窗口。但美国庞氏融资的结构性问题未解，中长期风险仍在。</p>
+    <div style="margin-top:10px;">
+      <span class="tag bull">三流全面利好</span>
+      <span class="tag bull">推迟坍缩深化</span>
+      <span class="tag warn">警惕：对俄金属制裁联动放松</span>
+      <span class="tag bear">长期：庞氏融资结构性问题未解</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 蔡森 ============ -->
+<section>
+  <div class="eh cai">🟠 蔡森视角 — 技术形态推演</div>
+
+  <div class="cb">
+    <div class="ct">钯金周线：冲突溢价 + 和解情景下的形态演变</div>
+    <canvas id="chartCaisen" style="max-height:380px;"></canvas>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>📐 当前形态 + 和解后的形态演变</h3>
+      <table>
+        <thead><tr><th>情景</th><th>形态变化</th><th>颈线位</th><th>目标</th></tr></thead>
+        <tbody>
+          <tr><td><strong>当前（停火中）</strong></td><td>周线W底雏形（$866→$1,240）</td><td>$1,700</td><td>待确认</td></tr>
+          <tr><td><strong>和解落地</strong></td><td>冲突溢价消退→回踩$1,050-1,100</td><td>新支撑区</td><td>破底翻？</td></tr>
+          <tr><td><strong>破底翻成立</strong></td><td>$1,050急跌后快速收回$1,200+</td><td>$1,700（不变）</td><td style="color:var(--green)">$2,534</td></tr>
+          <tr><td><strong>破底翻失败</strong></td><td>跌破$1,050无法收回</td><td>W底破坏</td><td style="color:var(--red)">$850-900</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h3>📊 量价关系预判</h3>
+      <table>
+        <thead><tr><th>阶段</th><th>预期量价</th><th>操作含义</th></tr></thead>
+        <tbody>
+          <tr><td>和解消息落地</td><td>放量下跌（恐慌抛售冲突溢价）</td><td><span class="tag bear">不追空</span></td></tr>
+          <tr><td>跌至$1,050-1,100</td><td>缩量企稳 或 放量恐慌底</td><td><span class="tag neu">观察</span></td></tr>
+          <tr><td>反弹收回$1,200+</td><td>放量反弹（破底翻信号）</td><td><span class="tag bull">第一个买点</span></td></tr>
+          <tr><td>突破$1,400阻力</td><td>放量突破（颈线确认）</td><td><span class="tag bull">加码点</span></td></tr>
+        </tbody>
+      </table>
+      <h3 style="margin-top:16px;">📏 测幅满足</h3>
+      <p style="font-size:0.92em;color:var(--muted);"><strong>破底翻成功→W底确认</strong>：高度=$1,700-$866=$834，目标=<strong style="color:var(--green)">$2,534</strong></p>
+      <p style="font-size:0.92em;color:var(--muted);"><strong>破底翻失败→新低</strong>：$866下方无明确支撑，参考2020年低点<strong style="color:var(--red)">$850</strong></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📋 蔡森交易计划（和解情景）</h3>
+    <div class="grid3">
+      <div style="padding:16px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:10px;">
+        <p style="color:var(--red);font-weight:700;font-size:1.05em;margin-bottom:6px;">⚡ 第一波：不追空</p>
+        <p style="font-size:0.88em;color:var(--muted);">和解落地时的放量下跌是"冲突溢价消退"，不是新趋势。空头已在$1,240-1,500区间获利。此时追空=吃鱼尾。</p>
+        <p style="font-size:0.88em;color:var(--accent);margin-top:6px;">策略：观望，等待$1,050-1,100</p>
+      </div>
+      <div style="padding:16px;background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.2);border-radius:10px;">
+        <p style="color:var(--green);font-weight:700;font-size:1.05em;margin-bottom:6px;">⚡ 第二波：破底翻做多</p>
+        <p style="font-size:0.88em;color:var(--muted);">若跌到$1,050-1,100后快速收回$1,200上方，确认破底翻。止损$1,000，目标$1,700（颈线），满足$2,534。</p>
+        <p style="font-size:0.88em;color:var(--accent);margin-top:6px;">策略：翻回$1,200时进场</p>
+      </div>
+      <div style="padding:16px;background:rgba(249,115,22,0.06);border:1px solid rgba(249,115,22,0.2);border-radius:10px;">
+        <p style="color:var(--orange);font-weight:700;font-size:1.05em;margin-bottom:6px;">⚡ 第三波：止损纪律</p>
+        <p style="font-size:0.88em;color:var(--muted);">若跌破$1,050后无法收回$1,100，破底翻失败。W底被破坏，转为月线大空头。绝对不扛单。</p>
+        <p style="font-size:0.88em;color:var(--accent);margin-top:6px;">策略：$1,000止损，空仓等待</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 蔡森结论：和解砸出的坑 = 破底翻最佳舞台</h3>
+    <p>美伊和解会<strong style="color:var(--orange)">一次性砸掉冲突溢价</strong>（约$200-300），让钯金快速回落至$1,050-1,100。这恰恰是蔡森最喜欢的<strong>"破底翻"</strong>剧本舞台——主力借利空洗盘，清洗恐慌筹码后迅速收回。关键判断：<strong>能否在$1,050缩量企稳并快速放量收回$1,200</strong>。能则大波段做多，不能则空仓等待。</p>
+    <div style="margin-top:10px;">
+      <span class="tag bear">不追空（鱼尾行情）</span>
+      <span class="tag bull">等破底翻信号</span>
+      <span class="tag warn">严格止损$1,000</span>
+      <span class="tag neu">目标$1,700→$2,534</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 综合 ============ -->
+<section>
+  <div class="eh synth">⭐ 三人综合结论</div>
+
+  <div class="grid2">
+    <div class="cb">
+      <div class="ct">三人情景评分雷达图</div>
+      <canvas id="chartRadar"></canvas>
+    </div>
+    <div class="cb">
+      <div class="ct">三种情景下的钯金价格路径</div>
+      <canvas id="chartPath"></canvas>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤝 三人共识与分歧</h3>
+    <table>
+      <thead><tr><th>维度</th><th>杨世光</th><th>卢麒元</th><th>蔡森</th><th>综合</th></tr></thead>
+      <tbody>
+        <tr><td><strong>和解短期影响</strong></td><td>冲突溢价蒸发</td><td>资本三流短期冻结解除</td><td>砸坑到$1,050-1,100</td><td><span class="tag bear">共识：先跌</span></td></tr>
+        <tr><td><strong>和解中期影响</strong></td><td>降息+弱美元利好</td><td>三流全面利好</td><td>破底翻做多机会</td><td><span class="tag bull">共识：后涨</span></td></tr>
+        <tr><td><strong>和解长期影响</strong></td><td>汽车需求恢复</td><td>警惕对俄制裁联动</td><td>W底目标$2,534</td><td><span class="tag neu">分歧：看对俄政策</span></td></tr>
+        <tr><td><strong>最大风险</strong></td><td>和解破裂→重新开战</td><td>美国庞氏融资结构性问题</td><td>破底翻失败→$850</td><td><span class="tag warn">共识：和解失败</span></td></tr>
+        <tr><td><strong>最优策略</strong></td><td>等待降息周期启动</td><td>控制仓位5%</td><td>等破底翻信号再进场</td><td><span class="tag neu">共识：耐心等待</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cb">
+    <div class="ct">和解概率与钯金价格预期分布</div>
+    <canvas id="chartProb"></canvas>
+  </div>
+
+  <div class="card">
+    <h3>🔭 关键观察信号（判断和解是否落地）</h3>
+    <div class="ind-grid">
+      <div class="ind"><div class="nm">🛢️ 布伦特原油跌至$55以下</div><div class="ds">和解落地的最硬信号，油价回归基本面</div></div>
+      <div class="ind"><div class="nm">🚢 霍尔木兹海峡航运恢复正常</div><div class="ds">Marinetraffic油轮流量回升=实质和解</div></div>
+      <div class="ind"><div class="nm">💵 DXY跌破97</div><div class="ds">避险需求消退+降息预期=美元走弱</div></div>
+      <div class="ind"><div class="nm">📈 10Y美债收益率跌破4%</div><div class="ds">降息预期落地，利好无息资产</div></div>
+      <div class="ind"><div class="nm">🇷🇺 对俄金属制裁是否联动</div><div class="ds">若放松=钯金供给增加，长期利空</div></div>
+      <div class="ind"><div class="nm">🚗 全球汽车月度产量数据</div><div class="ds">和解后产量恢复=催化剂需求回暖</div></div>
+    </div>
+  </div>
+
+  <div class="conclusion">
+    <p><strong>一句话结论</strong>：川普与伊朗和解对钯金是<strong>"先砸坑、后修复"</strong>的剧本。</p>
+    <p><strong>短期（1-4周）</strong>：冲突溢价彻底蒸发，钯金可能快速下探至 <strong style="color:var(--red)">$1,050-$1,100</strong>。这是三位专家的一致判断。</p>
+    <p><strong>中期（1-6月）</strong>：油价暴跌→通胀缓和→美联储降息→美元走弱→资本回流商品。<strong style="color:var(--green)">钯金修复至$1,400-$1,600</strong>。蔡森认为这是"破底翻"的最佳做多窗口。</p>
+    <p><strong>长期（6-12月）</strong>：取决于两个关键变量——①对俄金属制裁是否联动放松（利空）；②全球经济是否真正复苏（利好）。乐观情景$1,800+，悲观情景$850-900。</p>
+    <p><strong>操作建议</strong>：不在和解消息落地时追空（鱼尾行情）。等待$1,050-1,100区域的<strong>破底翻信号</strong>（缩量企稳+放量收回$1,200），确认后做多。止损$1,000，目标$1,700。仓位控制在5%以内。</p>
+  </div>
+</section>
+
+<div class="disclaimer">
+  ⚠️ <strong>风险提示</strong>：以上为情景推演分析，不构成投资建议。美伊谈判存在高度不确定性，和解可能失败甚至重新开战。分析融合了杨世光、卢麒元、蔡森三位专家的理论框架，各有局限性。投资有风险，交易请独立判断并自负盈亏。
+</div>
+
+</div>
+
+<script>
+Chart.defaults.color='#94a3b8';
+Chart.defaults.borderColor='#2d3348';
+Chart.defaults.font.family="-apple-system,'PingFang SC','Noto Sans SC',sans-serif";
+
+// 1. Timeline: Pd & Oil during Iran conflict
+new Chart(document.getElementById('chartTimeline'),{type:'line',data:{
+  labels:['25.12','26.1','26.2','26.2.28','26.3','26.3.20','26.4.7','26.4.22','26.5','26.6.5'],
+  datasets:[
+    {label:'钯金$/oz',data:[1665,1550,1450,1500,1580,1520,1400,1350,1300,1240],borderColor:'#e8b84b',backgroundColor:'rgba(232,184,75,0.08)',tension:0.3,fill:true,yAxisID:'y'},
+    {label:'Brent原油$/bbl',data:[72,70,78,95,110,105,82,75,65,62],borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,0.08)',tension:0.3,fill:true,yAxisID:'y1'}
+  ]},options:{responsive:true,interaction:{mode:'index',intersect:false},scales:{y:{position:'left',title:{display:true,text:'钯金$/oz'},grid:{color:'rgba(255,255,255,0.04)'}},y1:{position:'right',title:{display:true,text:'Brent$/bbl'},grid:{drawOnChartArea:false}}}}}
+);
+
+// 2. Oil-Pd transmission
+new Chart(document.getElementById('chartOilPd'),{type:'bar',data:{
+  labels:['即时','1月','3月','6月','12月'],
+  datasets:[
+    {label:'油价影响',data:[-8,-5,-2,2,5],backgroundColor:'rgba(239,68,68,0.6)'},
+    {label:'利率影响',data:[0,1,3,6,8],backgroundColor:'rgba(34,197,94,0.6)'},
+    {label:'美元影响',data:[0,2,4,5,6],backgroundColor:'rgba(78,168,222,0.6)'},
+    {label:'综合效应',data:[-8,-2,5,13,19],backgroundColor:'rgba(232,184,75,0.7)'}
+  ]},options:{responsive:true,scales:{y:{title:{display:true,text:'对钯金影响评分'},grid:{color:'rgba(255,255,255,0.04)'}},x:{grid:{display:false}}},plugins:{legend:{position:'bottom',labels:{usePointStyle:true,pointStyle:'circle'}}}}
+});
+
+// 3. Capital Three-Flow Radar
+new Chart(document.getElementById('chartThreeFlow'),{type:'radar',data:{
+  labels:['流量充裕度','流向商品','流向钯金','流速活跃度','避险情绪(反)','美元弱势(反)'],
+  datasets:[
+    {label:'战争期间',data:[20,15,10,15,80,30],borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,0.1)',pointBackgroundColor:'#ef4444'},
+    {label:'和解后',data:[60,55,45,65,30,65],borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,0.1)',pointBackgroundColor:'#22c55e'}
+  ]},options:{responsive:true,scales:{r:{min:0,max:100,ticks:{stepSize:25,backdropColor:'transparent'},grid:{color:'rgba(255,255,255,0.06)'},angleLines:{color:'rgba(255,255,255,0.06)'},pointLabels:{font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{usePointStyle:true,pointStyle:'circle'}}}}
+});
+
+// 4. Scenario price paths
+new Chart(document.getElementById('chartScenario'),{type:'line',data:{
+  labels:['现在','1周','1月','3月','6月','12月'],
+  datasets:[
+    {label:'🟢 和解+破底翻成功',data:[1240,1100,1050,1250,1500,1800],borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,0.05)',tension:0.3,fill:true},
+    {label:'🟡 和解+缓慢修复',data:[1240,1150,1100,1200,1350,1500],borderColor:'#e8b84b',backgroundColor:'rgba(232,184,75,0.05)',tension:0.3,fill:true},
+    {label:'🔴 和解失败+战争重启',data:[1240,1400,1500,1300,1000,850],borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,0.05)',tension:0.3,fill:true}
+  ]},options:{responsive:true,scales:{y:{title:{display:true,text:'$/oz'},grid:{color:'rgba(255,255,255,0.04)'}},x:{grid:{display:false}}},plugins:{legend:{position:'bottom',labels:{usePointStyle:true,pointStyle:'circle'}}}}
+});
+
+// 5. Caisen technical chart
+new Chart(document.getElementById('chartCaisen'),{type:'line',data:{
+  labels:['25.4','25.5','25.6','25.7','25.8','25.9','25.10','25.11','25.12','26.1','26.2','26.3','26.4','26.5','26.6','26.7E','26.8E','26.9E'],
+  datasets:[
+    {label:'实际/预期价格',data:[866,1031,1149,1288,1390,1500,1550,1620,1665,1550,1450,1580,1400,1300,1240,null,null,null],borderColor:'#e8b84b',backgroundColor:'rgba(232,184,75,0.08)',tension:0.2,fill:true,pointRadius:4},
+    {label:'和解→破底翻路径',data:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,1240,1080,1200,1400],borderColor:'#22c55e',borderDash:[6,4],backgroundColor:'rgba(34,197,94,0.05)',tension:0.3,fill:false,pointRadius:5,pointBackgroundColor:['#22c55e','#22c55e','#22c55e','#22c55e']},
+    {label:'$1,700 颈线',data:[1700,1700,1700,1700,1700,1700,1700,1700,1700,1700,1700,1700,1700,1700,1700,1700,1700,1700],borderColor:'rgba(148,163,184,0.4)',borderDash:[4,4],pointRadius:0,fill:false},
+    {label:'$1,050 支撑',data:[1050,1050,1050,1050,1050,1050,1050,1050,1050,1050,1050,1050,1050,1050,1050,1050,1050,1050],borderColor:'rgba(239,68,68,0.4)',borderDash:[4,4],pointRadius:0,fill:false}
+  ]},options:{responsive:true,interaction:{mode:'nearest',intersect:true},scales:{y:{title:{display:true,text:'$/oz'},grid:{color:'rgba(255,255,255,0.04)'}},x:{grid:{display:false}}},plugins:{legend:{position:'bottom',labels:{usePointStyle:true,pointStyle:'circle'}}}}
+});
+
+// 6. Three-expert radar
+new Chart(document.getElementById('chartRadar'),{type:'radar',data:{
+  labels:['短期看空强度','中期看多信心','操作确定性','风险警觉度','情景可信度'],
+  datasets:[
+    {label:'杨世光',data:[70,75,55,80,70],borderColor:'#4ea8de',backgroundColor:'rgba(78,168,222,0.1)',pointBackgroundColor:'#4ea8de'},
+    {label:'卢麒元',data:[60,65,40,85,65],borderColor:'#a78bfa',backgroundColor:'rgba(167,139,250,0.1)',pointBackgroundColor:'#a78bfa'},
+    {label:'蔡森',data:[75,70,60,75,60],borderColor:'#f97316',backgroundColor:'rgba(249,115,22,0.1)',pointBackgroundColor:'#f97316'}
+  ]},options:{responsive:true,scales:{r:{min:0,max:100,ticks:{stepSize:25,backdropColor:'transparent'},grid:{color:'rgba(255,255,255,0.06)'},angleLines:{color:'rgba(255,255,255,0.06)'},pointLabels:{font:{size:11}}}},plugins:{legend:{position:'bottom',labels:{usePointStyle:true,pointStyle:'circle'}}}}
+});
+
+// 7. Price path projection
+new Chart(document.getElementById('chartPath'),{type:'bar',data:{
+  labels:['和解+破底翻\n(55%)','和解+缓慢修复\n(25%)','和解失败\n(15%)','对俄制裁放松\n(5%)'],
+  datasets:[
+    {label:'3个月后',data:[1250,1200,1400,1100],backgroundColor:'rgba(78,168,222,0.6)'},
+    {label:'6个月后',data:[1500,1350,1100,950],backgroundColor:'rgba(232,184,75,0.6)'},
+    {label:'12个月后',data:[1800,1500,850,800],backgroundColor:'rgba(167,139,250,0.6)'}
+  ]},options:{responsive:true,scales:{y:{title:{display:true,text:'$/oz'},grid:{color:'rgba(255,255,255,0.04)'}},x:{grid:{display:false}}},plugins:{legend:{position:'bottom',labels:{usePointStyle:true,pointStyle:'circle'}}}}
+});
+
+// 8. Probability distribution
+new Chart(document.getElementById('chartProb'),{type:'doughnut',data:{
+  labels:['和解+破底翻→$1,800+ (30%)','和解+缓修复→$1,400 (25%)','和解+先跌后涨→$1,500 (20%)','和解失败→$850 (15%)','对俄制裁放松→$950 (5%)','其他 (5%)'],
+  datasets:[{data:[30,25,20,15,5,5],backgroundColor:['#22c55e','#e8b84b','#4ea8de','#ef4444','#f97316','#64748b'],borderWidth:0}]
+}},options:{responsive:true,cutout:'50%',plugins:{legend:{position:'bottom',labels:{padding:10,usePointStyle:true,pointStyle:'circle',font:{size:11}}}}}}
+);
+</script>
+
+</body>
+</html>

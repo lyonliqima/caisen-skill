@@ -1,0 +1,4 @@
+interface:
+  display_name: "Serenity Stock Scorer"
+  short_description: "Score stocks from Serenity tweet signals"
+  default_prompt: "Use $serenity-stock-scorer to rate NVDA from 0 to 100 using Serenity tweet evidence."

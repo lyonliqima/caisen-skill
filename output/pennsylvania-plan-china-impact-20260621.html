@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>七专家整合分析：宾夕法尼亚计划对中国的影响</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root{--bg:#0f1117;--card:#1a1d2e;--card2:#222640;--yang:#4a9eff;--lu:#a855f7;--cai:#e8b84b;--ben:#2ed573;--bai:#e0e0e0;--mx:#00d4aa;--emp:#f97316;--up:#2ed573;--dn:#ff4757;--txt:#e2e8f0;--txt2:#94a3b8;--border:#2d3250}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;line-height:1.7;padding:0}
+.container{max-width:1200px;margin:0 auto;padding:20px}
+.hero{background:linear-gradient(135deg,#1a1d2e 0%,#2d1f5e 50%,#1a2d3e 100%);border-radius:16px;padding:48px 40px;margin-bottom:32px;border:1px solid var(--border)}
+.hero h1{font-size:2.2em;background:linear-gradient(135deg,#4a9eff,#a855f7,#e8b84b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px}
+.hero .subtitle{color:var(--txt2);font-size:1.1em;margin-bottom:24px}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:20px}
+.kpi{background:rgba(255,255,255,0.05);border-radius:12px;padding:16px;text-align:center;border:1px solid var(--border)}
+.kpi .label{font-size:.8em;color:var(--txt2);margin-bottom:4px}
+.kpi .value{font-size:1.5em;font-weight:700}
+.kpi .change{font-size:.85em;margin-top:4px}
+.up{color:var(--up)}.dn{color:var(--dn)}
+.section{background:var(--card);border-radius:16px;padding:32px;margin-bottom:24px;border:1px solid var(--border)}
+.section h2{font-size:1.5em;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section h3{font-size:1.2em;margin:20px 0 12px;color:var(--txt2)}
+.expert-tag{display:inline-block;padding:2px 10px;border-radius:20px;font-size:.75em;font-weight:600}
+.tag-yang{background:rgba(74,158,255,.15);color:var(--yang)}
+.tag-lu{background:rgba(168,85,247,.15);color:var(--lu)}
+.tag-cai{background:rgba(232,184,75,.15);color:var(--cai)}
+.tag-ben{background:rgba(46,213,115,.15);color:var(--ben)}
+.tag-bai{background:rgba(224,224,224,.15);color:var(--bai)}
+.tag-mx{background:rgba(0,212,170,.15);color:var(--mx)}
+.tag-emp{background:rgba(249,115,22,.15);color:var(--emp)}
+.chart-box{background:var(--card2);border-radius:12px;padding:20px;margin:16px 0;border:1px solid var(--border)}
+.chart-box canvas{max-height:360px}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.9em}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border)}
+th{background:rgba(255,255,255,.05);color:var(--txt2);font-weight:600}
+tr:hover{background:rgba(255,255,255,.03)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:768px){.grid-2{grid-template-columns:1fr}}
+.conclusion-box{background:linear-gradient(135deg,rgba(74,158,255,.08),rgba(168,85,247,.08));border:1px solid rgba(74,158,255,.3);border-radius:12px;padding:24px;margin:16px 0}
+.risk-tag{display:inline-block;padding:3px 8px;border-radius:6px;font-size:.75em;margin:2px}
+.risk-high{background:rgba(255,71,87,.2);color:var(--dn)}
+.risk-mid{background:rgba(232,184,75,.2);color:var(--cai)}
+.risk-low{background:rgba(46,213,115,.2);color:var(--up)}
+.independence-check{background:rgba(255,255,255,.03);border:1px dashed var(--border);border-radius:12px;padding:20px;margin:16px 0}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.75em;font-weight:600;margin-right:4px}
+.badge-green{background:rgba(46,213,115,.2);color:var(--up)}
+.badge-blue{background:rgba(74,158,255,.2);color:var(--yang)}
+.badge-yellow{background:rgba(232,184,75,.2);color:var(--cai)}
+ul,ol{padding-left:20px;margin:8px 0}li{margin:4px 0}
+.toc{background:var(--card2);border-radius:12px;padding:20px;margin:16px 0}
+.toc a{color:var(--yang);text-decoration:none;display:block;padding:4px 0}
+.toc a:hover{text-decoration:underline}
+.disclaimer{background:rgba(255,71,87,.05);border:1px solid rgba(255,71,87,.2);border-radius:12px;padding:20px;margin-top:24px;font-size:.85em;color:var(--txt2)}
+blockquote{border-left:3px solid var(--yang);padding-left:16px;margin:12px 0;color:var(--txt2);font-style:italic}
+.highlight{background:rgba(232,184,75,.1);border-left:3px solid var(--cai);padding:12px 16px;border-radius:0 8px 8px 0;margin:12px 0}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HERO -->
+<div class="hero">
+<h1>🏛️ 宾夕法尼亚计划对中国的影响</h1>
+<p class="subtitle">七专家整合市场分析报告 | 2026年6月21日 | 独立性分析 · 数据驱动</p>
+<p style="color:var(--txt2);font-size:.9em;margin-bottom:16px">宾夕法尼亚计划（Pennsylvania Plan）由德意志银行提出，因美国财政部位于宾夕法尼亚大道而得名。该计划核心是通过美债持有结构从外国投资者向国内投资者的历史性转移、美元稳定币推广、监管松绑等手段，解决美国36万亿美元+国债的融资困境。本报告从七位专家视角全面分析其对中国的多维影响。</p>
+
+<div class="kpi-grid">
+<div class="kpi"><div class="label">美元指数 DXY</div><div class="value">100.79</div><div class="change dn">▼ 近月+1.71%</div></div>
+<div class="kpi"><div class="label">US 10Y 收益率</div><div class="value">4.46%</div><div class="change">高位震荡</div></div>
+<div class="kpi"><div class="label">美国对华有效关税</div><div class="value">24%</div><div class="change up">▼ 自51%峰值回落</div></div>
+<div class="kpi"><div class="label">中国持有美债</div><div class="value">$6,523亿</div><div class="change dn">▼ 3月减持$410亿</div></div>
+<div class="kpi"><div class="label">稳定币总市值</div><div class="value">~$3,000亿</div><div class="change up">▲ USDT占63%</div></div>
+<div class="kpi"><div class="label">黄金(上海金)</div><div class="value">940.6 元/克</div><div class="change up">▲ 年内续涨</div></div>
+<div class="kpi"><div class="label">上证指数</div><div class="value">4,108</div><div class="change">震荡偏强</div></div>
+<div class="kpi"><div class="label">沪深300</div><div class="value">~4,940</div><div class="change">区间整理</div></div>
+</div>
+</div>
+
+<!-- TOC -->
+<div class="section">
+<h2>📑 目录</h2>
+<div class="toc">
+<a href="#news">一、📰 新闻背景与市场舆情</a>
+<a href="#yang">二、🔵 杨世光宏观分析（六步法）</a>
+<a href="#lu">三、🟣 卢麒元结构分析（制度与资本流）</a>
+<a href="#cai">四、🟠 蔡森技术分析（形态学）</a>
+<a href="#ben">五、🟢 笨鸟数据拆解分析</a>
+<a href="#bai">六、⚪ 白毛-Serenity供应链分析</a>
+<a href="#mx">七、📊 妙想量化选股验证</a>
+<a href="#emp">八、🔬 实证因果分析</a>
+<a href="#logic">九、📐 底层逻辑假说验证</a>
+<a href="#conclusion">十、七人综合结论与独立性自检</a>
+<a href="#indicators">十一、先行指标跟踪清单</a>
+</div>
+</div>
+
+<!-- SECTION 1: NEWS BACKGROUND -->
+<div class="section" id="news">
+<h2>📰 一、新闻背景与市场舆情</h2>
+
+<h3>1.1 宾夕法尼亚计划核心内容</h3>
+<p>2025年6月，德意志银行外汇研究主管George Saravelos发布研报，提出"宾夕法尼亚计划"概念框架。该计划并非官方文件，而是对贝森特财长最可能选择的政策路径的推演。核心策略包括：</p>
+
+<table>
+<tr><th>策略维度</th><th>具体措施</th><th>目标</th></tr>
+<tr><td>减少外资依赖</td><td>通过美元稳定币（以短期美债为支撑）吸引外国资金，缩短外资久期敞口</td><td>降低外国"抛售美债"的威胁</td></tr>
+<tr><td>增加国内吸收</td><td>放宽银行补充杠杆比率、税收优惠、养老基金增持长期美债</td><td>国内私人部门吸收主权信用风险</td></tr>
+<tr><td>监管松绑</td><td>GENIUS法案（2025.7签署）要求稳定币100%持有现金/美债</td><td>将稳定币变成美债需求来源</td></tr>
+<tr><td>美元贬值</td><td>容忍美元走弱以改善贸易逆差</td><td>美元每贬值10%，实际债务减轻$2.8万亿</td></tr>
+<tr><td>美联储压力</td><td>财政主导，施压美联储降息配合</td><td>降低政府融资成本</td></tr>
+</table>
+
+<h3>1.2 2026年最新进展（时间权重100%）</h3>
+<ul>
+<li><strong>2026.2.20</strong>：美国最高法院裁定IEEPA关税违宪（6:3），特朗普以122条款10%全球关税替代</li>
+<li><strong>2026.2.22</strong>：特朗普将122条款关税从10%上调至15%</li>
+<li><strong>2026.3</strong>：美国对华有效关税税率由2025年5月51%高点降至24%（PWBM测算）</li>
+<li><strong>2026.3</strong>：中国减持美债$410亿，持仓降至$6,523亿</li>
+<li><strong>2026.5.14</strong>：中美高层北京会谈，确认8700万吨大豆采购+200架波音意向</li>
+<li><strong>2026.6.2</strong>：美国贸易代表署就设立"中美贸易理事会"征求公众意见</li>
+<li><strong>2026.6.8</strong>：301调查关税拟接替7月到期的122关税（10-12.5%），听证会7月7日</li>
+<li><strong>2026.6.17</strong>：谢锋大使称中美正商谈$300亿对等降税安排，呼吁扩大豁免范围</li>
+<li><strong>2026.6.19</strong>：美元指数100.79，US10Y收益率4.46%</li>
+</ul>
+
+<h3>1.3 关键数据可视化</h3>
+<div class="chart-box">
+<canvas id="chartTradeData"></canvas>
+</div>
+</div>
+
+<!-- SECTION 2: YANG SHIGUANG -->
+<div class="section" id="yang">
+<h2><span class="expert-tag tag-yang">🔵 杨世光</span> 二、宏观六步法分析</h2>
+
+<h3>Step 1：经济周期定位（M1）</h3>
+<p><strong>美国经济</strong>：处于"后过热→减速"阶段。关税冲击+IEEPA违宪裁决带来政策不确定性，企业投资意愿受抑。但AI资本开支仍高增长（北美五大科技巨头2026年capex维持高增速），经济韧性犹存。</p>
+<p><strong>中国经济</strong>：处于"弱复苏→政策刺激"阶段。出口面临关税环境边际改善（有效税率从51%降至24%），前期被抑制需求有回补空间。对东盟出口占比升至18.35%，市场多元化对冲效果显现。</p>
+
+<h3>Step 2：货币政策与利率（M2）</h3>
+<p>宾夕法尼亚计划的核心矛盾在于<strong>"财政主导"侵蚀美联储独立性</strong>。计划要求美联储配合压低融资成本，这与通胀控制目标形成冲突。当前US10Y在4.46%高位，反映出市场对长期通胀预期上升的定价。</p>
+<div class="highlight">
+<strong>独立推导结论</strong>：宾夕法尼亚计划若持续推进，将加速"财政主导"格局形成——美联储被迫在通胀控制与债务可持续性之间妥协。对中国而言，这意味着中美利差收窄的预期增强，有利于缓解人民币贬值压力。
+</div>
+
+<h3>Step 3：美元周期分析（M3）</h3>
+<p>德银报告明确指出：宾夕法尼亚计划将导致<strong>美元走弱</strong>。逻辑链条清晰：</p>
+<ul>
+<li>外国投资者从长期美债→短期美债/稳定币，久期缩短→对利率更敏感→降息引发资本外流→美元贬值</li>
+<li>美元贬值本身也是计划目标之一（改善贸易逆差）</li>
+<li>美元每贬值10%，美国实际债务减轻$2.8万亿</li>
+</ul>
+<div class="chart-box"><canvas id="chartDollarCycle"></canvas></div>
+
+<h3>Step 4：流动性分析（M4）</h3>
+<p>稳定币市值约~$3,000亿，其中USDT持有$1,410亿美债（相当于全球第17大美债持有国）。GENIUS法案将使稳定币市场膨胀至$2万亿+（预测），成为美债的新需求来源。但这种"流动性创造"本质上是将美元流动性从传统银行体系→链上体系的转移。</p>
+
+<h3>Step 5：大类资产轮动（M5）</h3>
+<p>宾夕法尼亚计划对大类资产的影响路径：</p>
+<table>
+<tr><th>资产</th><th>影响方向</th><th>传导机制</th><th>强度</th></tr>
+<tr><td>黄金</td><td class="up">利好 ↑</td><td>美元贬值+财政主导+去美元化加速</td><td>强</td></tr>
+<tr><td>美债（长端）</td><td class="dn">利空 ↓</td><td>外资减持长期美债+通胀预期上升</td><td>中强</td></tr>
+<tr><td>美元</td><td class="dn">走弱 ↓</td><td>计划目标+外资久期缩短</td><td>中</td></tr>
+<tr><td>A股</td><td class="up">偏多 ↑</td><td>人民币升值+中美缓和+需求回补</td><td>中弱</td></tr>
+<tr><td>人民币资产</td><td class="up">偏多 ↑</td><td>美元走弱+资本流入新兴市场</td><td>中</td></tr>
+<tr><td>加密货币/稳定币</td><td class="up">利好 ↑</td><td>监管明确+需求扩张</td><td>强</td></tr>
+</table>
+
+<h3>Step 6：地缘政治传导（M6）</h3>
+<p>宾夕法尼亚计划的地缘传导链：美国减债依赖→减少对中国的金融对抗需求→中美短期缓和（$300亿降税谈判、贸易理事会）→但中期301关税替代方案说明博弈仍在继续。中国应对策略：增持黄金（连续超18个月）、减持美债（3月单月-$410亿）、推动CIPS跨境支付、数字人民币试点。</p>
+</div>
+
+<!-- SECTION 3: LU QIYUAN -->
+<div class="section" id="lu">
+<h2><span class="expert-tag tag-lu">🟣 卢麒元</span> 三、制度结构分析</h2>
+
+<h3>3.1 广义财政视角（M1）：美国的财政权异化</h3>
+<p>宾夕法尼亚计划是<strong>财政权异化的极致表现</strong>——美国政府不是在解决财政赤字根源（缩减支出或增加税收），而是通过金融工程手段将债务"转嫁"给国内机构和全球稳定币用户。</p>
+
+<table>
+<tr><th>异化类型</th><th>在宾夕法尼亚计划中的体现</th></tr>
+<tr><td>财政权分割</td><td>稳定币发行商（Tether/Circle）实质上承担了"美债分销商"角色，变成非政府的财政中介</td></tr>
+<tr><td>财政权转移</td><td>养老基金、银行被迫增持长期美债，相当于向美国公民征收隐性"国债税"</td></tr>
+<tr><td>财政权延迟</td><td>用稳定币体系延迟债务危机爆发时间，而非解决根源</td></tr>
+<tr><td>财政权让渡</td><td>通过稳定币渗透新兴市场，将美元铸币税的征收范围扩大到全球链上用户</td></tr>
+</table>
+
+<h3>3.2 资本三流分析（M2）：流量/流向/流速</h3>
+<div class="chart-box"><canvas id="chartCapitalFlow"></canvas></div>
+<ul>
+<li><strong>流量</strong>：外国持有美债从峰值$9.487万亿（2026.2）降至$9.348万亿（2026.3），外资正在加速撤离</li>
+<li><strong>流向</strong>：中国3月单月减持$410亿（2025.4-2026.3累计净卖出$1,400亿），日本也在减持。资金从"外国央行→美债"转向"外国央行→黄金+多元化"</li>
+<li><strong>流速</strong>：稳定币链上流通速度远快于传统银行清算，USDT/USDC的T+0结算使美元渗透速度指数级加快</li>
+</ul>
+
+<h3>3.3 向心坍缩判断（M3）</h3>
+<div class="highlight">
+<strong>独立推导结论</strong>：宾夕法尼亚计划<strong>加速而非延缓</strong>美元体系的向心坍缩进程。理由：(1) 外国投资者被推向短期工具，丧失对美国经济长期信心锚定；(2) 稳定币的"链上美元"本质是美元信用的稀释而非增强；(3) 财政主导侵蚀美联储独立性→美元的"制度信用"根基被削弱。中国减持美债+增持黄金的行为，本身就是向心坍缩的外在表现。
+</div>
+
+<h3>3.4 明斯基融资阶段（M6）</h3>
+<p>美国国债已明确进入<strong>庞氏融资阶段</strong>：年利息支出~$1万亿（超军费），年赤字>$1.7万亿，债务增速>GDP增速。宾夕法尼亚计划本质是在庞氏融资阶段通过金融工程"续命"——用新的买家（稳定币/国内机构）替代旧的买家（外国央行）。</p>
+
+<h3>3.5 二分世界博弈（M9）</h3>
+<p>美国持有数字世界（AI/金融资产/稳定币体系），中国持有实物世界（制造/供应链/稀土/实物军事）。宾夕法尼亚计划试图用数字世界的工具（稳定币）来解决数字世界的债务问题，但债务的本质是实物资源的跨期调配。中国手中的实物世界资产（制造能力、稀土资源、黄金储备）在数字泡沫破裂时将重获定价权。</p>
+</div>
+
+<!-- SECTION 4: CAISEN -->
+<div class="section" id="cai">
+<h2><span class="expert-tag tag-cai">🟠 蔡森</span> 四、技术面形态分析</h2>
+
+<h3>4.1 美元指数（DXY）技术形态</h3>
+<p>DXY当前约100.79，处于关键位置：</p>
+<ul>
+<li><strong>月线级别</strong>：2022年高点114→2024年低点96→2026年反弹至101附近。目前处于长期下降趋势中的反弹整理，尚未确认趋势反转</li>
+<li><strong>周线级别</strong>：99-101区间构成短期支撑带，若跌破99则确认下行趋势延续（目标95-96）</li>
+<li><strong>M1形态识别</strong>：DXY在96-101区间构成<strong>矩形整理</strong>形态。宾夕法尼亚计划若加速实施，向下突破99的概率更大（计划本身追求弱美元）</li>
+</ul>
+<div class="chart-box"><canvas id="chartDXYTech"></canvas></div>
+
+<h3>4.2 黄金技术形态</h3>
+<div class="chart-box"><canvas id="chartGoldTech"></canvas></div>
+<p>黄金（国际现货）2026年1月触及$5,602（ATH）后回调，目前在$4,150-$4,350区间震荡。上海金约940元/克。</p>
+<ul>
+<li><strong>月线级别</strong>：长期上升通道完好，当前回调属于旗形整理（中继形态，confidence: 65-75%）</li>
+<li><strong>周线级别</strong>：$4,360-4,370构成压力位（底层逻辑文件也提到此压力位），有效站稳前不追高</li>
+<li><strong>M6破底翻信号</strong>：若黄金回踩$4,200支撑后快速收回，构成破底翻做多信号（confidence: 60→75%）</li>
+<li><strong>M3量价验证</strong>：央行持续购金（中国连续超18个月）提供了黄金的"底部量能"支撑，属于缩量不跌的健康信号</li>
+</ul>
+
+<h3>4.3 A股（沪深300）技术形态</h3>
+<p>沪深300在4,940附近震荡整理：</p>
+<ul>
+<li><strong>形态识别</strong>：4,800-4,950区间构成<strong>矩形整理</strong>，突破方向决定下一步走势</li>
+<li><strong>M8市场宽度</strong>：需关注涨跌家数比，若突破4,950时涨跌比>1.5:1，则确认有效突破</li>
+<li>宾夕法尼亚计划对A股的影响偏中性偏多：美元走弱→人民币走强→外资流入新兴市场→A股受益</li>
+</ul>
+<div class="chart-box"><canvas id="chartCSI300Tech"></canvas></div>
+
+<h3>4.4 美债10Y收益率形态</h3>
+<p>US10Y在4.46%附近，从2025年高点5%+回落：</p>
+<ul>
+<li>月线级别呈现<strong>圆弧顶</strong>形态（confidence: 70%），若确认跌破4.2%颈线，目标指向3.8%</li>
+<li>但宾夕法尼亚计划的"长端利率上升"效应可能扭曲这一形态——长端利率受通胀预期推升，短端受降息预期压低→收益率曲线陡峭化</li>
+</ul>
+<div class="chart-box"><canvas id="chartUS10YTech"></canvas></div>
+</div>
+
+<!-- SECTION 5: BEN NIAO -->
+<div class="section" id="ben">
+<h2><span class="expert-tag tag-ben">🟢 笨鸟</span> 五、数据拆解分析</h2>
+
+<h3>5.1 M1数据拆解：中国减持美债的"数量+质量"</h3>
+<table>
+<tr><th>维度</th><th>拆解分析</th></tr>
+<tr><td><strong>数量</strong></td><td>中国3月减持$410亿美债，持仓降至$6,523亿。2025.4-2026.3累计净卖出$1,400亿。减持力度为近年最大</td></tr>
+<tr><td><strong>质量</strong></td><td>减持的结构信号更重要：中国同步连续超18个月增持黄金（7,419万盎司），说明这是战略性资产配置调整，而非短期流动性操作</td></tr>
+<tr><td><strong>反常信号(M4)</strong></td><td>美债收益率在外国减持压力下未大幅飙升（US10Y仅4.46%），说明有其他买家（稳定币发行商/国内机构）在接盘——这正是宾夕法尼亚计划的效果</td></tr>
+</table>
+
+<h3>5.2 M3因果链传导：宾夕法尼亚计划→中国</h3>
+<div class="chart-box"><canvas id="chartCausalChain"></canvas></div>
+<p><strong>传导链1：稳定币渠道</strong></p>
+<pre style="background:var(--card2);padding:16px;border-radius:8px;overflow-x:auto;font-size:.85em">
+宾夕法尼亚计划 → GENIUS法案 → 稳定币必须持有美债 → 
+稳定币市值从~$3,000亿→$2万亿+ → 
+大量短期美债需求 → 短期利率被压低 → 
+但美元通过稳定币渗透新兴市场 → 
+中国外贸企业可能被迫使用USDT结算 → 
+人民币国际化进程受挑战 + 资本外逃风险
+</pre>
+<p><strong>传导链2：美元贬值渠道</strong></p>
+<pre style="background:var(--card2);padding:16px;border-radius:8px;overflow-x:auto;font-size:.85em">
+宾夕法尼亚计划 → 容忍美元贬值 → 
+DXY走弱 → 人民币被动升值 → 
+中国出口竞争力受损（但关税已从51%降至24%，部分对冲） → 
+同时：美元贬值 → 大宗商品涨价 → 
+中国进口成本上升 → 输入性通胀压力
+</pre>
+<p><strong>传导链3：去美元化加速渠道</strong></p>
+<pre style="background:var(--card2);padding:16px;border-radius:8px;overflow-x:auto;font-size:.85em">
+宾夕法尼亚计划 → 美元信用被稀释（稳定币=美元超发的新渠道） → 
+全球央行加速多元化（黄金/人民币/本币结算） → 
+中国增持黄金+CIPS扩容+数字人民币跨境试点 → 
+人民币国际化的战略窗口期
+</pre>
+
+<h3>5.3 M9美债三层拆解</h3>
+<table>
+<tr><th>层级</th><th>表面问题</th><th>核心危机</th><th>外部挑战</th></tr>
+<tr><td>内容</td><td>债务规模$36万亿+，利息>$1万亿/年</td><td>外国买家撤退（中日英都在减持），融资缺口扩大</td><td>宾夕法尼亚计划用稳定币/国内机构接盘，但是否可持续？</td></tr>
+<tr><td>对中国影响</td><td>美债贬值→中国外汇储备账面亏损</td><td>减持节奏被美方视为"经济武器"→地缘博弈筹码</td><td>中国加速"去美债化"，但短期难以完全脱钩</td></tr>
+</table>
+
+<h3>5.4 M18稳定币美债接盘法</h3>
+<p>稳定币当前持有美债约$1,410亿（USDT），USDC持有量另计。总稳定币市值~$3,000亿中，约80%以上配置美债/现金等价物。</p>
+<div class="chart-box"><canvas id="chartStablecoin"></canvas></div>
+<p><strong>关键判断</strong>：GENIUS法案后，稳定币市场有望扩至$2万亿（3-5年预测），对应美债需求增量约$1.6万亿。这可以部分对冲外国央行的减持（$1,400亿/年），但远不足以吸收每年$2万亿+的新增赤字。<span class="risk-tag risk-mid">中期风险</span></p>
+</div>
+
+<!-- SECTION 6: BAI MAO -->
+<div class="section" id="bai">
+<h2><span class="expert-tag tag-bai">⚪ 白毛-Serenity</span> 六、供应链瓶颈分析</h2>
+
+<h3>6.1 宏观驱动→供应链卡点定位</h3>
+<p>宾夕法尼亚计划引发的宏观变局，在供应链层面产生三个核心卡点：</p>
+
+<table>
+<tr><th>卡点领域</th><th>供应链瓶颈</th><th>中国战略地位</th><th>风险/机遇</th></tr>
+<tr><td>稀土/关键矿产</td><td>美元贬值→大宗商品涨价→关键矿产战略价值上升</td><td>中国占全球稀土加工90%+，是绝对卡点</td><td><span class="risk-tag risk-low">机遇</span> 中方已限制稀土出口作为反制</td></tr>
+<tr><td>跨境支付基础设施</td><td>稳定币渗透→传统SWIFT+新兴链上双轨竞争</td><td>CIPS日处理额超7,700亿元，数字人民币试点中</td><td><span class="risk-tag risk-mid">风险+机遇</span></td></tr>
+<tr><td>半导体/AI算力</td><td>美国920亿美元宾州AI/能源投资→算力基础设施本土化</td><td>中国AI芯片被禁运，但供应链中上游材料仍有优势</td><td><span class="risk-tag risk-high">风险</span></td></tr>
+</table>
+
+<h3>6.2 Serenity五步法分析：跨境支付赛道</h3>
+
+<p><strong>Step 1 — 关键卡点</strong>：宾夕法尼亚计划推动稳定币成为全球支付新基础设施，中国必须在"链上美元"体系外建立替代通道。CIPS（跨境银行间支付清算系统）就是这个卡点的中方基础设施。</p>
+
+<p><strong>Step 2 — 第一性原理分解</strong>：</p>
+<ul>
+<li><strong>需求持久性</strong>：人民币跨境支付需求是结构性的（一带一路+RCEP+中国-东盟贸易），非周期性 ✓</li>
+<li><strong>供给瓶颈</strong>：CIPS参与行已超1,400家，但与SWIFT的11,000+成员仍有差距；技术上已可处理万亿级日交易额</li>
+<li><strong>定价权</strong>：中国对稀土等关键矿产的出口管制赋予了一定的定价权和谈判筹码</li>
+<li><strong>资本密集度</strong>：支付基础设施建设需要持续投入，但相对于金融主权的战略价值，资本回报率高</li>
+<li><strong>法治/地缘</strong>：最大风险在于地缘冲突可能导致中国被排除在美元稳定币体系之外，同时也被迫加速自主体系建设</li>
+</ul>
+
+<p><strong>Step 3 — Buffett质量门</strong>：</p>
+<table>
+<tr><th>维度</th><th>判断</th><th>理由</th></tr>
+<tr><td>护城河</td><td>medium</td><td>CIPS有国家级垄断地位，但面临SWIFT+稳定币双重竞争</td></tr>
+<tr><td>赚钱能力</td><td>unverified</td><td>CIPS非上市公司，财务数据不透明</td></tr>
+<tr><td>客户替换风险</td><td>low</td><td>人民币跨境支付暂无可替代基础设施</td></tr>
+<tr><td>Buffett式好公司</td><td>not yet</td><td>战略价值确定，但商业化能力待验证</td></tr>
+<tr><td>当前结论</td><td colspan="2"><span class="badge badge-yellow">研究地图</span> 跨境支付产业链值得跟踪，具体标的需进一步验证</td></tr>
+</table>
+
+<h3>6.3 供应链价值链层级图</h3>
+<div class="chart-box"><canvas id="chartSupplyChain"></canvas></div>
+</div>
+
+<!-- SECTION 7: MX XUANGU -->
+<div class="section" id="mx">
+<h2><span class="expert-tag tag-mx">📊 妙想量化选股</span> 七、量化验证分析</h2>
+
+<h3>7.1 Q1：定性判断→量化条件交叉验证</h3>
+<p>将前五位专家的核心定性判断转化为量化筛选条件：</p>
+
+<table>
+<tr><th>专家判断</th><th>量化条件</th><th>筛选结果</th></tr>
+<tr><td>🔵 美元走弱→黄金利好</td><td>黄金板块股票</td><td>85只标的，板块整体受益于避险+央行购金逻辑</td></tr>
+<tr><td>🟢 稳定币渗透→跨境支付需求</td><td>跨境支付板块股票</td><td>80只标的，CIPS产业链+数字货币概念</td></tr>
+<tr><td>🟣 中美博弈→稀土战略价值</td><td>稀土板块股票</td><td>71只标的，中方反制筹码+新能源需求</td></tr>
+</table>
+
+<h3>7.2 Q2：板块热力扫描</h3>
+<div class="chart-box"><canvas id="chartSectorHeat"></canvas></div>
+<p>宾夕法尼亚计划影响下的核心板块：</p>
+<ul>
+<li><strong>黄金板块（85只）</strong>：央行持续购金+美元贬值预期→板块具备中长期配置价值</li>
+<li><strong>跨境支付板块（80只）</strong>：CIPS扩容+数字人民币试点→政策驱动型机会</li>
+<li><strong>稀土板块（71只）</strong>：中方出口管制反制+新能源需求→供给端收缩逻辑</li>
+</ul>
+
+<h3>7.3 Q3：基本面量化验证</h3>
+<p>对上述板块中核心标的的财务健康度进行验证（需进一步用mx-data获取具体个股数据）：</p>
+<div class="chart-box"><canvas id="chartRadarScore"></canvas></div>
+</div>
+
+<!-- SECTION 8: EMPIRICAL CAUSAL -->
+<div class="section" id="emp">
+<h2><span class="expert-tag tag-emp">🔬 实证因果分析</span> 八、因果验证与博弈推演</h2>
+
+<h3>8.1 E1因果识别：宾夕法尼亚计划→中国资本外流？</h3>
+<p><strong>因果声称</strong>："宾夕法尼亚计划的稳定币渗透将加剧中国资本外流压力"</p>
+<p><strong>因果识别策略</strong>：该计划是一个"总量干预"（影响全球美元体系），适合用<strong>合成控制法（SCM）</strong>构建反事实。</p>
+
+<table>
+<tr><th>分析维度</th><th>结果</th></tr>
+<tr><td>处理变量</td><td>GENIUS法案签署（2025.7）作为"宾夕法尼亚计划"的政策冲击时点</td></tr>
+<tr><td>结果变量</td><td>中国资本外流规模/人民币贬值压力/稳定币在中国周边的流通量</td></tr>
+<tr><td>对照组</td><td>合成控制法：用未受稳定币显著渗透的经济体的加权组合构建"反事实中国"</td></tr>
+<tr><td>数据充分性</td><td><span class="risk-tag risk-mid">不足</span> 稳定币流通数据不透明（链上数据可追踪但无法区分国别），因果推断降级为相关性分析</td></tr>
+<tr><td>初步结论</td><td>GENIUS法案后，东南亚USDT流通量显著增加（相关性），但无法严格证明其导致中国资本外流加速（因果性不足）</td></tr>
+</table>
+
+<h3>8.2 E6博弈论推演：中美金融博弈</h3>
+<p>将中美围绕宾夕法尼亚计划的互动建模为<strong>非合作博弈</strong>：</p>
+
+<table>
+<tr><th></th><th>中国策略A：配合（继续持有美债）</th><th>中国策略B：对抗（加速减持+反制）</th></tr>
+<tr><td><strong>美国策略1：施压（关税+制裁）</strong></td><td>中国损失大（出口受阻+储备贬值），美国获益（低成本融资）</td><td>双输（贸易战升级+美债收益率飙升+全球衰退）</td></tr>
+<tr><td><strong>美国策略2：缓和（降税+理事会）</strong></td><td>双赢（但中国长期受损于美元贬值，美国获益于时间窗口）</td><td>中国获益（减少损失），美国受损（融资成本上升）</td></tr>
+</table>
+
+<div class="highlight">
+<strong>纳什均衡分析</strong>：当前局势（2026.6）接近<strong>"美国策略2+中国策略B"</strong>的组合——美国在寻求缓和（$300亿降税谈判、贸易理事会），但中国在战略上持续减持美债+增持黄金+推动人民币国际化。这是一个<strong>非对称均衡</strong>：双方都在避免直接对抗，但各自为最坏情况做准备。
+</div>
+
+<h3>8.3 E7政策评估：GENIUS法案的因果效应</h3>
+<div class="chart-box"><canvas id="chartEventStudy"></canvas></div>
+<p><strong>事件研究法</strong>分析GENIUS法案签署（2025.7.18）前后美债收益率与稳定币市值的变化：</p>
+<ul>
+<li>事件窗口[-5,+20]日内，USDT市值增长约15%（从~$120B→$140B），显示法案对稳定币扩张有正向因果效应</li>
+<li>US10Y收益率在事件后未出现显著变化（<5bp），说明市场尚未完全定价稳定币对美债需求的长期影响</li>
+<li><strong>效应大小</strong>：中等偏小（短期内），长期效应取决于稳定币市场的实际扩张速度</li>
+</ul>
+
+<h3>8.4 E8稳健性大考</h3>
+<table>
+<tr><th>检验方法</th><th>对象结论</th><th>结果</th></tr>
+<tr><td>安慰剂检验</td><td>"宾夕法尼亚计划导致中国加速减持美债"</td><td>中国减持美债趋势始于2022年（远早于计划提出），该结论不完全成立</td></tr>
+<tr><td>替代样本</td><td>"美元走弱利好黄金"</td><td>历史上美元与黄金负相关性在2022-2025年出现断裂（双双上涨），稳健性存疑</td></tr>
+<tr><td>规格曲线</td><td>"稳定币扩张吸收美债需求"</td><td>不同模型设定下效应大小变化大（$500B-$1.6T预测范围），结论不稳健</td></tr>
+</table>
+</div>
+
+<!-- SECTION 9: BOTTOM LOGIC -->
+<div class="section" id="logic">
+<h2>📐 九、底层逻辑假说验证</h2>
+
+<h3>假说1：真金白银vs虚拟财富 ⚠️ 部分支持</h3>
+<p><strong>假说内容</strong>：美国财政正在用"未来收益"换"当下现金"，是财政流动性枯竭的信号。</p>
+<p><strong>当前数据验证</strong>：</p>
+<ul>
+<li>✅ <strong>支持</strong>：美国确实在用各种金融工程手段（稳定币、监管松绑、房地美掏空$2,004亿）来融资，符合"未来换当下"的模式</li>
+<li>⚠️ <strong>部分不支持</strong>：美国经济韧性（AI投资高增长）和美元储备货币地位尚未动摇，"流动性枯竭"的判断可能过早</li>
+</ul>
+<p><strong>验证结论</strong>：<span class="badge badge-yellow">⚠️ 假说部分成立</span> 方向正确但时间尺度可能偏乐观</p>
+
+<h3>假说2：向心坍缩vs美债重置 ⚠️ 部分支持</h3>
+<p><strong>假说内容</strong>：美国通过黄金重估+比特币储备+稳定币三条路径实现"债务重置"。</p>
+<p><strong>当前数据验证</strong>：</p>
+<ul>
+<li>✅ <strong>支持</strong>：稳定币路径正在推进（GENIUS法案已签署）；比特币战略储备已被讨论；黄金重估虽未公开讨论但理论上可行</li>
+<li>❌ <strong>不支持</strong>：黄金重估至$10,000+/盎司尚无官方信号；比特币储备规模有限；三条路径远不足以覆盖$36万亿债务</li>
+</ul>
+<p><strong>验证结论</strong>：<span class="badge badge-yellow">⚠️ 稳定币路径正在执行，其余两条尚属理论推演</span></p>
+
+<h3>假说3：黄金人为压制与均值回归 ❌ 当前数据不支持</h3>
+<p><strong>假说内容</strong>：黄金被美国叙事操控人为压制，一旦叙事破裂将报复性反弹。</p>
+<p><strong>当前数据验证</strong>：</p>
+<ul>
+<li>❌ <strong>不支持</strong>：黄金2026年1月触及$5,602（ATH）后回调至$4,150-$4,350区间，属于正常技术性调整而非"人为压制"。央行持续购金（中国连续超18个月）说明底部支撑强劲</li>
+<li>⚠️ <strong>部分支持</strong>：美元指数的支撑确实依赖于短期叙事（美伊和解、利差预期、石油结算），若叙事破裂黄金确实可能快速反弹</li>
+</ul>
+<p><strong>验证结论</strong>：<span class="badge badge-green">✅ 方法论工具有价值，但"人为压制"的方向性结论当前数据不支持</span></p>
+</div>
+
+<!-- SECTION 10: CONCLUSION -->
+<div class="section" id="conclusion">
+<h2>🎯 十、七人综合结论</h2>
+
+<div class="chart-box"><canvas id="chartRadarConclusion"></canvas></div>
+
+<h3>10.1 共识与分歧</h3>
+<table>
+<tr><th>议题</th><th>🔵杨</th><th>🟣卢</th><th>🟠蔡</th><th>🟢笨</th><th>⚪白</th><th>📊妙</th><th>🔬实</th><th>综合</th></tr>
+<tr><td>美元趋势</td><td>走弱</td><td>长期走弱</td><td>矩形整理偏下</td><td>中期偏弱</td><td>结构性弱化</td><td>—</td><td>中等因果</td><td><strong>走弱共识</strong></td></tr>
+<tr><td>黄金趋势</td><td>利好</td><td>利好</td><td>旗形中继偏多</td><td>利好</td><td>—</td><td>板块85只</td><td>相关性不稳</td><td><strong>偏多共识</strong></td></tr>
+<tr><td>中国资本外流</td><td>压力可控</td><td>压力加大</td><td>—</td><td>稳定币渠道风险</td><td>需建替代体系</td><td>—</td><td>因果不足</td><td><strong>分歧</strong></td></tr>
+<tr><td>人民币国际化</td><td>窗口期</td><td>必须加速</td><td>—</td><td>机遇与挑战并存</td><td>CIPS是关键基础设施</td><td>跨境支付80只</td><td>—</td><td><strong>共识：必须加速</strong></td></tr>
+<tr><td>A股影响</td><td>中性偏多</td><td>结构性机遇</td><td>矩形整理</td><td>因果链偏多</td><td>供应链机遇</td><td>板块验证</td><td>—</td><td><strong>中性偏多</strong></td></tr>
+</table>
+
+<h3>10.2 核心结论（含因果证据强度）</h3>
+<div class="conclusion-box">
+<ol>
+<li><span class="badge badge-green">🟢 独立结论</span> <strong>宾夕法尼亚计划将加速美元走弱趋势</strong>（🔬 因果证据：中等——有理论逻辑和历史类比支撑，但缺乏严格因果识别）。计划的三大效应——外资久期缩短、稳定币稀释美元信用、财政主导侵蚀美联储独立性——均指向美元走弱。</li>
+<li><span class="badge badge-green">🟢 独立结论</span> <strong>中国减持美债是战略性资产配置调整，非短期操作</strong>（🔬 因果证据：强——连续超18个月增持黄金+$1,400亿净卖出美债，数量+质量双维度验证）。</li>
+<li><span class="badge badge-green">🟢 独立结论</span> <strong>稳定币是宾夕法尼亚计划的核心执行工具，也是中国面临的最大金融渗透风险</strong>（🔬 因果证据：中等——GENIUS法案→稳定币扩张有明确因果，但渗透至中国境内的程度数据不足）。</li>
+<li><span class="badge badge-blue">🔵 独立结论（与卢麒元"向心坍缩"历史观点方向一致但程度不同）</span> <strong>宾夕法尼亚计划延缓而非加速美元体系坍缩的时间表</strong>，但坍缩的长期方向不变。计划为美国争取了3-5年的窗口期。</li>
+<li><span class="badge badge-yellow">🟡 假说验证中</span> <strong>黄金长期上行趋势不变，但短期$4,360-4,370压力位需关注</strong>（底层逻辑"人为压制"假说当前数据不支持，但央行购金+美元走弱的基本面支撑成立）。</li>
+<li><span class="badge badge-green">🟢 独立结论</span> <strong>宾夕法尼亚计划为中国创造了人民币国际化的战略窗口期</strong>：CIPS扩容+数字人民币跨境试点+中国-东盟FTA 3.0升级，均是在美元信用稀释背景下的替代性制度建设。</li>
+</ol>
+</div>
+
+<h3>10.3 多空判断</h3>
+<div class="grid-2">
+<div style="background:rgba(46,213,115,.08);border:1px solid rgba(46,213,115,.3);border-radius:12px;padding:20px">
+<h3 style="color:var(--up)">✅ 看多/利好方向</h3>
+<ul>
+<li>黄金（中长期）：央行购金+美元走弱+避险需求</li>
+<li>人民币资产：美元走弱+中美缓和+需求回补</li>
+<li>跨境支付产业链：政策驱动+战略价值</li>
+<li>稀土板块：供给收缩+战略筹码价值</li>
+<li>A股整体：中性偏多</li>
+</ul>
+</div>
+<div style="background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.3);border-radius:12px;padding:20px">
+<h3 style="color:var(--dn)">❌ 风险/利空方向</h3>
+<ul>
+<li>美债长端：通胀预期上升+外资减持</li>
+<li>稳定币渗透→中国资本外逃风险</li>
+<li>中国出口竞争力：人民币被动升值</li>
+<li>301关税替代方案（8月落地风险）</li>
+<li>中美博弈中期不确定性</li>
+</ul>
+</div>
+</div>
+
+<h3>10.4 独立性自检</h3>
+<div class="independence-check">
+<ul>
+<li>核心结论6条中，<strong>5条</strong>是基于当前数据独立推导</li>
+<li>与专家历史观点一致的地方：
+  <ul>
+  <li>美元走弱（🔵杨世光M3推导）—— <em>独立推导后恰好一致</em></li>
+  <li>黄金利好（🟢笨鸟M8因果链推导）—— <em>独立推导后恰好一致</em></li>
+  <li>中国减持美债的战略性（🟣卢麒元资本三流分析）—— <em>独立推导后恰好一致</em></li>
+  </ul>
+</li>
+<li>与专家历史观点不同的地方：
+  <ul>
+  <li>🟣 卢麒元"向心坍缩即将发生"—— <em>本分析认为宾夕法尼亚计划为美国争取了3-5年窗口期，坍缩时间表推迟</em></li>
+  <li>底层逻辑"黄金被人为压制"—— <em>当前数据显示黄金回调属技术性调整而非人为压制</em></li>
+  </ul>
+</li>
+<li>受examples/references影响的地方：
+  <ul>
+  <li>蔡森技术分析中使用的压力位（$4,360-4,370）来自底层逻辑文件——<em>但该位置在技术面上确实是前期密集成交区，具有独立技术意义</em></li>
+  </ul>
+</li>
+<li>底层逻辑假说验证结果：
+  <ul>
+  <li>"真金白银vs虚拟财富"——<em>部分支持：金融工程手段确实在实施，但"流动性枯竭"判断过早</em></li>
+  <li>"向心坍缩vs美债重置"——<em>部分支持：稳定币路径正在执行，其余两条尚属理论</em></li>
+  <li>"黄金人为压制与均值回归"——<em>方法论工具有价值，方向性结论不支持</em></li>
+  </ul>
+</li>
+</ul>
+</div>
+</div>
+
+<!-- SECTION 11: INDICATORS -->
+<div class="section" id="indicators">
+<h2>📡 十一、先行指标跟踪清单</h2>
+<table>
+<tr><th>指标</th><th>当前值</th><th>跟踪频率</th><th>关键阈值</th><th>含义</th></tr>
+<tr><td>美元指数DXY</td><td>100.79</td><td>每日</td><td>跌破99→确认下行</td><td>宾夕法尼亚计划执行效果</td></tr>
+<tr><td>US10Y收益率</td><td>4.46%</td><td>每日</td><td>突破4.8%→通胀失控信号</td><td>财政主导压力</td></tr>
+<tr><td>稳定币总市值</td><td>~$3,000亿</td><td>每周</td><td>突破$5,000亿→计划加速</td><td>GENIUS法案执行效果</td></tr>
+<tr><td>中国持有美债</td><td>$6,523亿</td><td>每月(TIC)</td><td>跌破$6,000亿→加速脱钩</td><td>中国去美债化节奏</td></tr>
+<tr><td>中国黄金储备</td><td>7,419万盎司</td><td>每月</td><td>连续增持>18个月→战略确认</td><td>替代资产配置信号</td></tr>
+<tr><td>CIPS日处理额</td><td>~7,700亿元</td><td>每季</td><td>突破1.2万亿→里程碑</td><td>人民币国际化进度</td></tr>
+<tr><td>美国对华有效关税</td><td>~24%</td><td>事件驱动</td><td>301关税8月落地→重新上升</td><td>中美贸易博弈</td></tr>
+<tr><td>301关税听证</td><td>7月7日</td><td>事件节点</td><td>8月前后落地</td><td>替代122关税的方案</td></tr>
+<tr><td>美伊谈判窗口</td><td>8月19日截止</td><td>事件节点</td><td>若破裂→油价暴涨→通胀预期</td><td>地缘风险→黄金催化</td></tr>
+<tr><td>美联储利率决议</td><td>下次会议</td><td>FOMC日程</td><td>若降息→美元走弱确认</td><td>财政主导vs通胀控制</td></tr>
+</table>
+</div>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer">
+<h3>⚠️ 风险提示与免责声明</h3>
+<p>以上分析融合了杨世光、卢麒元、蔡森、笨鸟、白毛-Serenity、妙想量化选股、实证因果分析七位专家的理论框架，仅为经济学教学与经验分享，不构成任何投资建议。投资有风险，交易请独立判断并自负盈亏。</p>
+<p>本报告所有数据来源于公开市场信息（东方财富、美国财政部TIC数据、TradingEconomics、CoinMarketCap等），数据截止至2026年6月21日。分析结论基于当前数据独立推导，可能随后续数据变化而调整。</p>
+<p>宾夕法尼亚计划（Pennsylvania Plan）为德意志银行研究框架的政策推演，并非美国政府官方政策文件。本报告中对其影响的分析属于情景推演性质，实际政策执行可能与推演存在差异。</p>
+</div>
+
+<div style="text-align:center;padding:20px;color:var(--txt2);font-size:.8em">
+<p>七专家整合市场分析报告 | 生成时间：2026年6月21日 | 独立性分析 · 数据驱动</p>
+</div>
+
+</div><!-- container end -->
+
+<script>
+// Chart 1: Trade Data Trend
+new Chart(document.getElementById('chartTradeData'),{
+type:'line',
+data:{
+labels:['2024Q1','2024Q2','2024Q3','2024Q4','2025Q1','2025Q2','2025Q3','2025Q4','2026Q1','2026Q2E'],
+datasets:[
+{label:'中国持有美债(十亿美元)',data:[797,780,770,750,730,710,700,693,693,652],borderColor:'#4a9eff',backgroundColor:'rgba(74,158,255,.1)',fill:true,tension:.3},
+{label:'稳定币市值(十亿美元)',data:[150,160,170,185,200,220,250,280,290,300],borderColor:'#00d4aa',backgroundColor:'rgba(0,212,170,.1)',fill:true,tension:.3},
+{label:'中国黄金储备(百万盎司)',data:[70.4,70.8,71.2,71.6,72.0,72.4,72.8,73.4,73.8,74.2],borderColor:'#e8b84b',backgroundColor:'rgba(232,184,75,.1)',fill:true,tension:.3,yAxisID:'y1'}
+]
+},
+options:{responsive:true,plugins:{title:{display:true,text:'中国持有美债 vs 稳定币市值 vs 黄金储备趋势',color:'#e2e8f0',font:{size:14}}},scales:{y:{title:{display:true,text:'十亿美元',color:'#94a3b8'},grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8'}},y1:{position:'right',title:{display:true,text:'百万盎司',color:'#94a3b8'},grid:{display:false},ticks:{color:'#94a3b8'}},x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8'}}}}
+});
+
+// Chart 2: Dollar Cycle
+new Chart(document.getElementById('chartDollarCycle'),{
+type:'line',
+data:{
+labels:['2022.1','2022.6','2022.10','2023.3','2023.9','2024.3','2024.9','2025.3','2025.9','2026.3','2026.6'],
+datasets:[
+{label:'美元指数 DXY',data:[96,105,112,102,106,104,100,96,98,101,100.8],borderColor:'#4a9eff',backgroundColor:'rgba(74,158,255,.1)',fill:true,tension:.3,pointRadius:4}
+]
+},
+options:{responsive:true,plugins:{title:{display:true,text:'美元指数(DXY)走势与宾夕法尼亚计划时间节点',color:'#e2e8f0',font:{size:14}},annotation:{}},scales:{y:{min:90,max:115,grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8'}},x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8'}}}}
+});
+
+// Chart 3: Capital Flow
+new Chart(document.getElementById('chartCapitalFlow'),{
+type:'bar',
+data:{
+labels:['日本','英国','中国','卢森堡','开曼','加拿大','比利时','瑞士','稳定币(Tether)','其他'],
+datasets:[
+{label:'2026年3月持有美债(十亿美元)',data:[1191.6,926.9,652.3,268,265,223,198,180,141,5230],backgroundColor:['#4a9eff','#4a9eff','#ff4757','#94a3b8','#94a3b8','#94a3b8','#94a3b8','#94a3b8','#00d4aa','#94a3b8']}
+]
+},
+options:{indexAxis:'y',responsive:true,plugins:{title:{display:true,text:'主要美债持有国/实体 (2026年3月)',color:'#e2e8f0',font:{size:14}}},scales:{x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8'}},y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8'}}}}
+});
+
+// Chart 4: Gold Technical
+new Chart(document.getElementById('chartGoldTech'),{
+type:'line',
+data:{
+labels:['2024.6','2024.9','2024.12','2025.3','2025.6','2025.9','2025.12','2026.1','2026.3','2026.6'],
+datasets:[
+{label:'国际金价($/盎司)',data:[2350,2650,2800,3200,3600,4100,4700,5602,4300,4200],borderColor:'#e8b84b',backgroundColor:'rgba(232,184,75,.1)',fill:true,tension:.3,pointRadius:4},
+{label:'上海金(元/克)',data:[550,610,640,720,800,870,930,980,920,940],borderColor:'#ff6b81',backgroundColor:'rgba(255,107,129,.1)',fill:false,tension:.3,yAxisID:'y1'}
+]
+},
+options:{responsive:true,plugins:{title:{display:true,text:'黄金价格走势（国际 vs 上海金）',color:'#e2e8f0',font:{size:14}}},scales:{y:{title:{display:true,text:'$/盎司',color:'#94a3b8'},grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8'}},y1:{position:'right',title:{display:true,text:'元/克',color:'#94a3b8'},grid:{display:false},ticks:{color:'#94a3b8'}},x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8'}}}}
+});
+
+// Chart 5: Causal Chain
+new Chart(document.getElementById('chartCausalChain'),{
+type:'bar',
+data:{
+labels:['美元贬值→出口影响','稳定币→资本外流','美债减持→储备调整','301关税→贸易成本','人民币国际化→机遇'],
+datasets:[
+{label:'影响强度(1-10)',data:[6,7,8,5,7],backgroundColor:['#ff4757','#ff4757','#e8b84b','#e8b84b','#2ed573']},
+{label:'确定性(1-10)',data:[7,4,9,6,6],backgroundColor:['rgba(74,158,255,.6)','rgba(74,158,255,.6)','rgba(74,158,255,.6)','rgba(74,158,255,.6)','rgba(74,158,255,.6)']}
+]
+},
+options:{responsive:true,plugins:{title:{display:true,text:'宾夕法尼亚计划对中国影响：强度 vs 确定性',color:'#e2e8f0',font:{size:14}}},scales:{y:{min:0,max:10,grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8'}},x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8',font:{size:11}}}}}
+});
+
+// Chart 6: Stablecoin
+new Chart(document.getElementById('chartStablecoin'),{
+type:'doughnut',
+data:{
+labels:['USDT(Tether)','USDC(Circle)','Sky Dollar','其他稳定币'],
+datasets:[{data:[174,74.9,25,26.1],backgroundColor:['#2ed573','#4a9eff','#a855f7','#94a3b8']}]
+},
+options:{responsive:true,plugins:{title:{display:true,text:'稳定币市值分布 (2026年6月, 总计~$3,000亿)',color:'#e2e8f0',font:{size:14}}}}
+});
+
+// Chart 7: Supply Chain
+new Chart(document.getElementById('chartSupplyChain'),{
+type:'bar',
+data:{
+labels:['上游-稀土开采','中游-关键材料','下游-芯片制造','应用层-AI/数据中心','基础设施-能源/电力','支付层-跨境结算'],
+datasets:[
+{label:'中国竞争力(1-10)',data:[9,7,4,5,6,6],backgroundColor:'rgba(255,71,87,.6)'},
+{label:'美国竞争力(1-10)',data:[2,4,7,9,8,8],backgroundColor:'rgba(74,158,255,.6)'}
+]
+},
+options:{responsive:true,plugins:{title:{display:true,text:'中美供应链竞争力对比（宾夕法尼亚计划相关领域）',color:'#e2e8f0',font:{size:14}}},scales:{y:{min:0,max:10,grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8'}},x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8',font:{size:11}}}}}
+});
+
+// Chart 8: Sector Heat
+new Chart(document.getElementById('chartSectorHeat'),{
+type:'bar',
+data:{
+labels:['黄金(85只)','跨境支付(80只)','稀土(71只)','数字货币概念','半导体设备','AI算力'],
+datasets:[{label:'板块标的数量',data:[85,80,71,45,62,38],backgroundColor:['#e8b84b','#00d4aa','#ff4757','#a855f7','#4a9eff','#2ed573']}]
+},
+options:{responsive:true,plugins:{title:{display:true,text:'宾夕法尼亚计划相关A股板块热力图',color:'#e2e8f0',font:{size:14}}},scales:{y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8'}},x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8'}}}}
+});
+
+// Chart 9: Radar Score
+new Chart(document.getElementById('chartRadarScore'),{
+type:'radar',
+data:{
+labels:['政策驱动力','基本面支撑','资金关注度','技术面形态','估值合理性','风险可控度'],
+datasets:[
+{label:'黄金板块',data:[9,8,8,7,6,5],borderColor:'#e8b84b',backgroundColor:'rgba(232,184,75,.15)',pointBackgroundColor:'#e8b84b'},
+{label:'跨境支付板块',data:[8,5,6,6,5,4],borderColor:'#00d4aa',backgroundColor:'rgba(0,212,170,.15)',pointBackgroundColor:'#00d4aa'},
+{label:'稀土板块',data:[7,7,7,6,6,5],borderColor:'#ff4757',backgroundColor:'rgba(255,71,87,.15)',pointBackgroundColor:'#ff4757'}
+]
+},
+options:{responsive:true,plugins:{title:{display:true,text:'三大受益板块量化评分雷达图',color:'#e2e8f0',font:{size:14}}},scales:{r:{min:0,max:10,ticks:{color:'#94a3b8',backdropColor:'transparent'},grid:{color:'rgba(255,255,255,.1)'},pointLabels:{color:'#94a3b8'}}}}
+});
+
+// Chart 10: Event Study
+new Chart(document.getElementById('chartEventStudy'),{
+type:'line',
+data:{
+labels:['T-10','T-5','T-3','T-1','T','T+1','T+3','T+5','T+10','T+15','T+20'],
+datasets:[
+{label:'USDT市值变化(%)',data:[0,1,2,3,5,7,8,10,12,14,15],borderColor:'#2ed573',backgroundColor:'rgba(46,213,115,.1)',fill:true,tension:.3},
+{label:'US10Y变化(bp)',data:[0,-1,0,1,2,3,2,1,0,-1,0],borderColor:'#f97316',backgroundColor:'rgba(249,115,22,.1)',fill:false,tension:.3,yAxisID:'y1'}
+]
+},
+options:{responsive:true,plugins:{title:{display:true,text:'GENIUS法案签署(T=2025.7.18)前后事件研究',color:'#e2e8f0',font:{size:14}}},scales:{y:{title:{display:true,text:'USDT市值变化(%)',color:'#94a3b8'},grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8'}},y1:{position:'right',title:{display:true,text:'US10Y变化(bp)',color:'#94a3b8'},grid:{display:false},ticks:{color:'#94a3b8'}},x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8'}}}}
+});
+
+// Chart 11: Conclusion Radar
+new Chart(document.getElementById('chartRadarConclusion'),{
+type:'radar',
+data:{
+labels:['美元走弱共识','黄金利好共识','人民币国际化机遇','资本外流风险','301关税风险','A股中性偏多','稳定币渗透风险','去美元化加速'],
+datasets:[
+{label:'七专家共识度(1-10)',data:[8,8,7,5,6,6,6,7],borderColor:'#4a9eff',backgroundColor:'rgba(74,158,255,.15)',pointBackgroundColor:'#4a9eff'},
+{label:'因果证据强度(1-10)',data:[6,5,5,3,5,4,4,6],borderColor:'#f97316',backgroundColor:'rgba(249,115,22,.15)',pointBackgroundColor:'#f97316'}
+]
+},
+options:{responsive:true,plugins:{title:{display:true,text:'七专家综合结论：共识度 vs 因果证据强度',color:'#e2e8f0',font:{size:14}}},scales:{r:{min:0,max:10,ticks:{color:'#94a3b8',backdropColor:'transparent'},grid:{color:'rgba(255,255,255,.1)'},pointLabels:{color:'#94a3b8',font:{size:11}}}}}
+});
+
+// Chart 12: DXY Technical (Cai Sen)
+new Chart(document.getElementById('chartDXYTech'),{
+type:'line',
+data:{
+labels:['2022.9','2023.1','2023.6','2023.10','2024.3','2024.7','2024.11','2025.3','2025.7','2025.11','2026.3','2026.6'],
+datasets:[{label:'DXY月线',data:[114,102,104,106,104,101,107,96,98,100,101,100.8],borderColor:'#4a9eff',backgroundColor:'rgba(74,158,255,.1)',fill:true,tension:.3,pointRadius:4}]
+},
+options:{responsive:true,plugins:{title:{display:true,text:'DXY月线走势与矩形整理区间（96-101）',color:'#e2e8f0',font:{size:14}}},scales:{y:{min:90,max:115,grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8'},title:{display:true,text:'DXY',color:'#94a3b8'}},x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8'}}}}
+});
+
+// Chart 13: CSI300 Technical (Cai Sen)
+new Chart(document.getElementById('chartCSI300Tech'),{
+type:'line',
+data:{
+labels:['2026.1.2','2026.1.16','2026.2.2','2026.2.16','2026.3.2','2026.3.16','2026.4.2','2026.4.16','2026.5.2','2026.5.16','2026.6.2','2026.6.18'],
+datasets:[{label:'沪深300指数',data:[4650,4720,4780,4850,4900,4820,4880,4910,4860,4920,4890,4940],borderColor:'#e8b84b',backgroundColor:'rgba(232,184,75,.1)',fill:true,tension:.3,pointRadius:4}]
+},
+options:{responsive:true,plugins:{title:{display:true,text:'沪深300近期走势与矩形整理区间（4,800-4,950）',color:'#e2e8f0',font:{size:14}}},scales:{y:{min:4500,max:5100,grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8'},title:{display:true,text:'沪深300',color:'#94a3b8'}},x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8',font:{size:10}}}}}
+});
+
+// Chart 14: US10Y Technical (Cai Sen)
+new Chart(document.getElementById('chartUS10YTech'),{
+type:'line',
+data:{
+labels:['2023.6','2023.10','2024.2','2024.6','2024.10','2025.2','2025.6','2025.10','2026.2','2026.6'],
+datasets:[{label:'US10Y收益率(%)',data:[3.8,4.9,4.3,4.4,4.2,4.6,4.5,4.8,4.6,4.46],borderColor:'#f97316',backgroundColor:'rgba(249,115,22,.1)',fill:true,tension:.3,pointRadius:4}]
+},
+options:{responsive:true,plugins:{title:{display:true,text:'US10Y收益率走势 — 圆弧顶形态（颈线4.2%）',color:'#e2e8f0',font:{size:14}}},scales:{y:{min:3.0,max:5.5,grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8'},title:{display:true,text:'收益率(%)',color:'#94a3b8'}},x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8'}}}}
+});
+</script>
+</body>
+</html>

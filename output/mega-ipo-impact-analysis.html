@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026巨型IPO与增发潮对全球资本市场的影响 | 四专家深度分析</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0f1117;color:#e2e8f0;font-family:-apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neue',sans-serif;line-height:1.8}
+.container{max-width:1400px;margin:0 auto;padding:0 24px}
+.hero{background:linear-gradient(135deg,#0f1117 0%,#1a1d2e 50%,#0f1117 100%);padding:80px 0 60px;text-align:center;border-bottom:1px solid #2a2d3e}
+.hero h1{font-size:2.6em;background:linear-gradient(135deg,#4a9eff,#a855f7,#e8b84b,#2ed573);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px;line-height:1.3}
+.hero .subtitle{font-size:1.2em;color:#94a3b8;margin-bottom:40px}
+.hero .date{color:#64748b;font-size:0.9em;margin-top:8px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:36px}
+.card{background:#1a1d2e;border-radius:12px;padding:20px;border:1px solid #2a2d3e;text-align:center}
+.card .label{font-size:0.85em;color:#94a3b8;margin-bottom:6px}
+.card .value{font-size:1.8em;font-weight:700}
+.card .change{font-size:0.85em;margin-top:4px}
+.up{color:#2ed573}.down{color:#ff4757}.neutral{color:#e8b84b}
+.section{padding:60px 0}
+.section-title{font-size:1.8em;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.section-desc{color:#94a3b8;margin-bottom:32px;font-size:1.05em}
+.analyst-tag{display:inline-block;padding:2px 10px;border-radius:20px;font-size:0.65em;font-weight:600}
+.tag-yang{background:#4a9eff22;color:#4a9eff;border:1px solid #4a9eff44}
+.tag-lu{background:#a855f722;color:#a855f7;border:1px solid #a855f744}
+.tag-cai{background:#e8b84b22;color:#e8b84b;border:1px solid #e8b84b44}
+.tag-bn{background:#2ed57322;color:#2ed573;border:1px solid #2ed57344}
+.chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:24px;margin:24px 0}
+.chart-box{background:#1a1d2e;border-radius:12px;padding:24px;border:1px solid #2a2d3e}
+.chart-box h3{font-size:1.1em;margin-bottom:16px;color:#e2e8f0}
+.chart-box canvas{max-height:350px}
+.insight-box{background:#1a1d2e;border-radius:12px;padding:24px;border-left:4px solid #4a9eff;margin:16px 0}
+.insight-box.purple{border-left-color:#a855f7}
+.insight-box.gold{border-left-color:#e8b84b}
+.insight-box.green{border-left-color:#2ed573}
+.insight-box h4{margin-bottom:8px;font-size:1.05em}
+.insight-box p,.insight-box li{color:#cbd5e1;font-size:0.95em}
+.insight-box ul{padding-left:20px}
+.insight-box li{margin-bottom:6px}
+table{width:100%;border-collapse:collapse;margin:16px 0;background:#1a1d2e;border-radius:12px;overflow:hidden}
+th,td{padding:12px 16px;text-align:left;border-bottom:1px solid #2a2d3e;font-size:0.92em}
+th{background:#252839;color:#94a3b8;font-weight:600}
+tr:hover{background:#252839}
+.conclusion-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:24px 0}
+@media(max-width:768px){.conclusion-grid{grid-template-columns:1fr}.chart-grid{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}}
+.verdict{font-size:2.4em;font-weight:800;text-align:center;padding:40px;border-radius:16px;margin:24px 0}
+.verdict.bearish{background:linear-gradient(135deg,#ff475722,#ff475711);border:2px solid #ff475744;color:#ff4757}
+.indicator-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin:24px 0}
+.indicator-item{background:#1a1d2e;border-radius:12px;padding:20px;border:1px solid #2a2d3e}
+.indicator-item h4{color:#e8b84b;margin-bottom:8px}
+.indicator-item p{color:#94a3b8;font-size:0.9em}
+.disclaimer{background:#1a1d2e;border:1px solid #ff475744;border-radius:12px;padding:24px;margin:40px 0;color:#94a3b8;font-size:0.9em}
+.full-chart{background:#1a1d2e;border-radius:12px;padding:24px;border:1px solid #2a2d3e;margin:24px 0}
+.full-chart h3{margin-bottom:16px}
+.flow-chain{background:#252839;border-radius:8px;padding:20px;margin:16px 0;font-family:monospace;font-size:0.9em;line-height:2;color:#cbd5e1;white-space:pre-wrap}
+.consensus-table td:nth-child(2){color:#2ed573}
+.consensus-table td:nth-child(3){color:#ff4757}
+.news-item{background:#1a1d2e;border-radius:12px;padding:20px;border:1px solid #2a2d3e;margin:12px 0}
+.news-item .time{color:#64748b;font-size:0.8em}
+.news-item h4{color:#4a9eff;margin:6px 0}
+.weight-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.75em;font-weight:600;background:#4a9eff22;color:#4a9eff}
+</style>
+</head>
+<body>
+
+<!-- HERO SECTION -->
+<section class="hero">
+<div class="container">
+<h1>🚀 2026巨型IPO与增发潮<br>对全球资本市场的影响</h1>
+<p class="subtitle">四专家视角深度整合分析 · 杨世光 × 卢麒元 × 蔡森 × 笨鸟</p>
+<p class="date">报告日期：2026年6月6日 | 数据截至：2026年6月5日收盘</p>
+<div class="cards">
+<div class="card">
+<div class="label">S&P 500 PE (TTM)</div>
+<div class="value neutral">25.9x</div>
+<div class="change neutral">PE10: 39.9x（2000年来最高）</div>
+</div>
+<div class="card">
+<div class="label">美元指数 DXY</div>
+<div class="value down">99.49</div>
+<div class="change down">跌破100关口</div>
+</div>
+<div class="card">
+<div class="label">美国10Y国债</div>
+<div class="value up">4.54%</div>
+<div class="change neutral">利率仍处高位</div>
+</div>
+<div class="card">
+<div class="label">黄金 COMEX</div>
+<div class="value down">$4,331</div>
+<div class="change down">单日-3.22%</div>
+</div>
+<div class="card">
+<div class="label">Fed利率</div>
+<div class="value neutral">3.50-3.75%</div>
+<div class="change">6月维持不变</div>
+</div>
+<div class="card">
+<div class="label">Mag7占S&P500</div>
+<div class="value neutral">34.8%</div>
+<div class="change neutral">集中度极高</div>
+</div>
+<div class="card">
+<div class="label">IPO抽水量</div>
+<div class="value down">$2,000亿+</div>
+<div class="change down">2025全年仅$474亿</div>
+</div>
+<div class="card">
+<div class="label">美债利息/年</div>
+<div class="value down">~$1万亿</div>
+<div class="change down">超过国防开支</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- SECTION 2: NEWS BACKGROUND -->
+<section class="section">
+<div class="container">
+<h2 class="section-title">📰 新闻背景与市场舆情</h2>
+<p class="section-desc">五大巨型IPO/增发消息汇总及市场最新动态</p>
+
+<div class="news-item">
+<div class="time">2026年6月2日 | Reuters独家</div>
+<h4>🚀 SpaceX IPO：估值$1.75万亿，$135/股固定价格，融资$750亿</h4>
+<p>SpaceX计划下周以全一级股（all-primary）形式IPO，所有 proceeds 归公司。S-1已于5月20日提交，6月1日修订。估值从此前$2万亿下调至$1.75万亿，<strong>信号意味：为AI市场估值"降温"</strong>。S&P 500指数委员会正考虑豁免12个月"seasoning"等待期。</p>
+</div>
+<div class="news-item">
+<div class="time">2026年3月 | Forbes / Reuters</div>
+<h4>🤖 OpenAI IPO：估值$8520亿，目标2026年Q4上市</h4>
+<p>2026年3月私募轮估值$8520亿，IPO可能瞄准$1万亿。正进行监管审查，最快2026年9月上市。2025年10月员工股转让时估值$5000亿，短短半年估值暴涨70%。</p>
+</div>
+<div class="news-item">
+<div class="time">2026年Q1-Q2 | The Information / FT</div>
+<h4>🧠 Anthropic IPO：估值$3800亿，最快Q4 2026</h4>
+<p>2026年2月完成$300亿融资（$3800亿估值），正谈判新一轮融资估值达$9000亿。Amazon、Google、Microsoft、NVIDIA均为投资方。IPO概率72%早于OpenAI。</p>
+</div>
+<div class="news-item">
+<div class="time">2026年6月3日 | Bloomberg / SEC Filing</div>
+<h4>🔍 Alphabet增发：$847.5亿股权融资，CapEx上调至$1900亿</h4>
+<p>史上最大规模科技公司股权融资：$400亿ATM + $100亿波克夏定向增发 + $300亿承销发行。2026年资本开支$1800-1900亿，管理层暗示2027年进一步增加。<strong>杨世光关键信号："棄債轉股"</strong>。</p>
+</div>
+<div class="news-item">
+<div class="time">2026年Q1财报季 | CNBC / Barron's</div>
+<h4>📘 Meta增发：CapEx上调至$1250-1450亿，考虑大规模股权融资</h4>
+<p>Meta将2026年资本开支指引从$1150-1350亿上调至$1250-1450亿。投资者对Meta AI支出信任度低于Google，股价单日暴跌6%，蒸发$900亿市值。</p>
+</div>
+
+<div class="chart-grid">
+<div class="chart-box">
+<h3>📊 2026年巨型IPO/增发 vs 2025全年IPO市场</h3>
+<canvas id="chart-ipo-compare"></canvas>
+</div>
+<div class="chart-box">
+<h3>📊 AI资本开支：科技巨头2026年CapEx预算</h3>
+<canvas id="chart-capex"></canvas>
+</div>
+</div>
+
+<div class="news-item">
+<h4>⚡ 关键市场背景</h4>
+<p><strong>流动性冲击规模：</strong>仅三大IPO（SpaceX+OpenAI+Anthropic）合计从公开市场抽走超过$2000亿——而2025年全年美国IPO市场总融资仅$474亿，相当于一次性抽取约4.5年的IPO量。<br>
+<strong>Deutsche Bank调查：</strong>57%的受访者认为AI估值暴跌是2026年最大市场风险。<br>
+<strong>Alphabet "棄債轉股"：</strong>从发债转向发股融资，信号意义深远——利率已过拐点，AI入场券变贵。<br>
+<strong>新兴市场：</strong>JPMorgan认为SpaceX IPO对港股流动性冲击有限，中国AI/机器人/医疗IPO需求强劲。</p>
+</div>
+</div>
+</section>
+
+<!-- SECTION 3: YANG SHIGUANG -->
+<section class="section" style="border-top:1px solid #2a2d3e">
+<div class="container">
+<h2 class="section-title">🔵 杨世光宏观分析 <span class="analyst-tag tag-yang">宏观六步法</span></h2>
+<p class="section-desc">自上而下：经济周期→货币政策→美元周期→流动性→大类资产→地缘政治</p>
+
+<div class="insight-box">
+<h4>🔵 第一步：经济周期判断——"后期扩张，接近滞胀"</h4>
+<ul>
+<li><strong>PMI</strong>：制造业PMI在50附近徘徊，服务业保持扩张但动能放缓</li>
+<li><strong>GDP</strong>：美国Q1 2026增速放缓但仍为正增长，AI投资支撑但消费疲软</li>
+<li><strong>就业</strong>：非农数据强劲（数量↑），但质量分化——金融/保险被AI替代（↓），政府/石油扩张（↑）</li>
+<li><strong>通胀</strong>：中东局势推升油价，关税政策叠加→通胀反弹风险升温</li>
+<li><strong>判断</strong>：经济处于<strong>过热期尾声→滞胀期过渡</strong>，美林时钟指向"现金/短债"配置窗口</li>
+</ul>
+</div>
+
+<div class="insight-box">
+<h4>🔵 第二步：货币政策——Fed "棄資管債"框架转型</h4>
+<ul>
+<li><strong>联邦基金利率</strong>：3.50-3.75%，3月会议维持不变，高盛预测年内再降2次至3.00-3.25%</li>
+<li><strong>沃什新政</strong>：Fed从"供给驱动"转向"需求驱动"流动性框架，RMP渐进缩减（$400亿→$250亿→$100亿/月）</li>
+<li><strong>资产负债表</strong>：从峰值$8.91T缩至$6.704T，缩表仍在继续</li>
+<li><strong>r*上升</strong>：NY Fed数据显示自然实质利率全球性上升——AI资本需求+财政扩张+国债定价权转移</li>
+<li><strong>关键判断</strong>：低利率时代彻底结束。IMF戈皮纳特警告：AI企业占投资级债49%、垃圾债38%，利率上升后资产面临重估</li>
+</ul>
+</div>
+
+<div class="insight-box">
+<h4>🔵 第三步：美元周期——弱势美元+资本争夺并存</h4>
+<ul>
+<li><strong>美元指数</strong>：跌破100至99.49，处于近年低位</li>
+<li><strong>矛盾现象</strong>：美元走弱但全球资本仍在涌入美国资本市场（"卖场"优势）</li>
+<li><strong>去美元化</strong>：美元全球贸易结算份额51%、央行储备57%——"不强不弱"</li>
+<li><strong>人民币</strong>：创新高6.8187，中国对外投资新规收紧资本管控</li>
+<li><strong>判断</strong>：美元走弱周期利好黄金和新兴市场，但巨型IPO可能短期逆转资本流向</li>
+</ul>
+</div>
+
+<div class="insight-box">
+<h4>🔵 第四步：流动性分析——"美元荒"与"资产荒"的极端演绎</h4>
+<ul>
+<li><strong>巨型IPO抽水</strong>：$2000亿+一次性抽取 = 2025全年IPO的4.5倍，流动性冲击前所未有</li>
+<li><strong>Alphabet棄債轉股</strong>：$847.5亿股权融资 = 利率已过拐点，企业宁可稀释股权也不加杠杆</li>
+<li><strong>指数基金再平衡</strong>：SpaceX纳入S&P 500后，万亿级被动资金被迫买入→对现有成分股形成挤出效应</li>
+<li><strong>Fed缩表叠加</strong>：QT继续回收流动性 + 巨型IPO抽水 = 流动性双重收紧</li>
+<li><strong>判断</strong>：<strong>"美元荒"加剧</strong>，类似2023-2024年但更为极端，一旦触发因素出现→流动性冲击→资产价格剧烈调整</li>
+</ul>
+</div>
+
+<div class="chart-grid">
+<div class="chart-box">
+<h3>📊 美联储资产负债表 vs 联邦基金利率</h3>
+<canvas id="chart-fed-balance"></canvas>
+</div>
+<div class="chart-box">
+<h3>📊 美元周期与大类资产表现</h3>
+<canvas id="chart-dollar-cycle"></canvas>
+</div>
+</div>
+
+<div class="insight-box">
+<h4>🔵 第五步：大类资产方向判断</h4>
+<table>
+<tr><th>资产</th><th>方向</th><th>逻辑</th></tr>
+<tr><td>美股</td><td class="down">⬇ 偏空</td><td>估值高企（PE10=39.9x）+ 流动性抽水 + r*上升压制估值 + AI CapEx回报不确定</td></tr>
+<tr><td>美债</td><td class="neutral">→ 中性偏多</td><td>经济放缓利好，但利息支出膨胀+Fed缩表限制涨幅</td></tr>
+<tr><td>黄金</td><td class="up">⬆ 看多</td><td>实际利率中长期下行+央行购金+去美元化+地缘风险（短期受非农冲击回调）</td></tr>
+<tr><td>原油</td><td class="neutral">→ 中性偏多</td><td>中东地缘风险+供给约束 vs 需求放缓担忧</td></tr>
+<tr><td>美元</td><td class="down">⬇ 偏空</td><td>降息预期+去美元化，但巨型IPO短期吸引资本回流</td></tr>
+<tr><td>新兴市场</td><td class="down">⬇ 承压</td><td>巨型IPO虹吸效应+美元流动性收紧+资本外流风险</td></tr>
+</table>
+</div>
+
+<div class="insight-box">
+<h4>🔵 第六步：地缘政治——中东+中美资本战</h4>
+<ul>
+<li>伊朗攻击科威特、巴林，霍尔木兹海峡封锁风险→油价冲击→通胀反弹→Fed降息空间被压缩</li>
+<li>中国对外投资新规收紧资本管控→人民币走强+港股承压</li>
+<li>韩国激进资本政策（2x杠杆ETF）vs 中国稳健降温→小国孤注一掷 vs 大国"治大国如烹小鲜"</li>
+<li>沃什"卧石妙计"：先通胀后通缩→油价可能暴涨→倒逼全球资本抢购美债</li>
+</ul>
+</div>
+</div>
+</section>
+
+
+<!-- SECTION 4: LU QIYUAN -->
+<section class="section" style="border-top:1px solid #2a2d3e">
+<div class="container">
+<h2 class="section-title">🟣 卢麒元结构分析 <span class="analyst-tag tag-lu">制度结构/向心坍缩</span></h2>
+<p class="section-desc">广义财政论 × 资本三流 × 明斯基三阶段 × 向心坍缩理论</p>
+
+<div class="insight-box purple">
+<h4>🟣 第一步：广义财政分析——美国已进入"庞氏融资"阶段</h4>
+<ul>
+<li><strong>美国国债</strong>：~$37万亿，超过GDP的120%，年利息支出~$1万亿（超过国防开支）</li>
+<li><strong>明斯基阶段判断</strong>：2025年后美国进入<strong>庞氏融资</strong>阶段——必须借新债还旧债+利息</li>
+<li><strong>Q1 FY2026赤字</strong>：$6024亿，净利息占赤字的44.5%——利息正在吞噬财政空间</li>
+<li><strong>CBO预测</strong>：2036年利息支出将达$2.1万亿，公债占GDP 120%</li>
+<li><strong>死亡底线逼近</strong>：广义财政/GDP逼近危险区（60-80%），灰黑色财政（军工复合体、隐性担保）扩张</li>
+</ul>
+</div>
+
+<div class="insight-box purple">
+<h4>🟣 第二步：资本三流分析——巨型IPO是"向心坍缩"的加速器</h4>
+<ul>
+<li><strong>流量</strong>：$2000亿+IPO + $850亿Alphabet增发 + Meta增发 = 从市场一次性抽取天量流动性</li>
+<li><strong>流向</strong>：全球资本被迫流向美国科技IPO → 新兴市场资本外流 → "流向逆转"正在发生</li>
+<li><strong>流速</strong>：指数基金再平衡（SpaceX纳入S&P 500）将触发万亿级被动资金流动，但方向单一→其他资产流速冻结</li>
+<li><strong>判断</strong>：巨型IPO潮是美元体系"三流逆变"的最新表现，加速全球资本从非美市场回流美国</li>
+</ul>
+</div>
+
+<div class="flow-chain">巨型IPO潮的"三流"传导链：
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+流量：$2000亿+ 一次性抽取 → 全球美元流动性急剧收紧
+流向：新兴市场/非美资产 → 美国科技IPO（被迫回流）
+流速：指数基金再平衡 → 万亿级被动资金单向流动 → 其他资产"速冻"
+
+→ 向心坍缩第一阶段特征：流量失控 + 流向逆转
+→ 如果叠加Fed缩表+利率高位 → 可能触发第二阶段：流动性雪崩</div>
+
+<div class="insight-box purple">
+<h4>🟣 第三步：卡莱斯基利润公式——AI CapEx撑起利润，但能撑多久？</h4>
+<ul>
+<li><strong>恒等式</strong>：总利润 = 投资 + 政府赤字 + 净出口 + 资本家消费 - 工人储蓄</li>
+<li><strong>当前状况</strong>：科技巨头AI CapEx（投资）暴增 → 直接推高AI供应链企业利润 → NVIDIA等利润创新高</li>
+<li><strong>致命问题</strong>：当AI CapEx增速放缓或回报不及预期时 → 投资项急剧萎缩 → 总利润断崖式下降</li>
+<li><strong>与Google棄債轉股的关联</strong>：企业宁愿稀释股权也要继续投资 → 说明投资回报率已经接近临界点 → 再融不到资就撑不下去</li>
+</ul>
+</div>
+
+<div class="insight-box purple">
+<h4>🟣 第四步：费雪债务通缩——AI泡沫破裂的传导链</h4>
+<ul>
+<li>AI公司债务占比：投资级债49%、创投87%、垃圾债38% → AI债务已深度嵌入信用市场</li>
+<li>如果AI估值暴跌 → AI公司无法新增债务 → m收缩 → 同时抛售资产 → 抵押品缩水 → 银行惜贷</li>
+<li>v断崖下降 → P全面下跌 → <strong>债务-通缩螺旋</strong></li>
+<li>这与2000年科技泡沫高度相似：Cisco（网络设备）= 今天的NVIDIA（算力设备）</li>
+</ul>
+</div>
+
+<div class="chart-grid">
+<div class="chart-box">
+<h3>📊 明斯基三阶段演进：美国国债</h3>
+<canvas id="chart-minsky"></canvas>
+</div>
+<div class="chart-box">
+<h3>📊 向心坍缩风险矩阵</h3>
+<canvas id="chart-collapse-risk"></canvas>
+</div>
+</div>
+
+<div class="insight-box purple">
+<h4>🟣 第五步：沃什战略与布雷顿森林3.0</h4>
+<ul>
+<li><strong>"卧石妙计"</strong>：先恶性通胀（推高油价至$200/桶），后极度通缩 → 倒逼全球资本抢购美债</li>
+<li><strong>巨型IPO的战略角色</strong>：可能是沃什"制造稀缺性"战略的一部分 → 让全球资本不得不涌入美国</li>
+<li><strong>布雷顿森林3.0</strong>：黄金重估 + 比特币战略储备 + 稳定币体系 → 三条路径并行解决$37万亿债务</li>
+<li><strong>中国应对</strong>：加快建立基于AI技术的国家资管体系 + 人民币升值解决通缩 + 资本管控防御走资</li>
+</ul>
+</div>
+</div>
+</section>
+
+<!-- SECTION 5: CAI SEN -->
+<section class="section" style="border-top:1px solid #2a2d3e">
+<div class="container">
+<h2 class="section-title">🟠 蔡森技术分析 <span class="analyst-tag tag-cai">形态学12招</span></h2>
+<p class="section-desc">颈线 + 量价 + 测幅满足 | 多周期共振分析</p>
+
+<div class="insight-box gold">
+<h4>🟠 S&P 500 月线级别：潜在的"圆弧顶"形态</h4>
+<ul>
+<li><strong>当前点位</strong>：~7,570点（2026年6月3日）</li>
+<li><strong>形态识别</strong>：2024年底至2026年Q1上涨速度明显放缓 → 顶部呈弧形特征</li>
+<li><strong>量价关系</strong>：上涨过程中成交量逐渐萎缩（量缩价涨 → 上涨乏力信号）</li>
+<li><strong>关键颈线</strong>：~7,000点（2025年Q4回调低点附近）</li>
+<li><strong>测幅满足</strong>：若跌破7,000点，目标 = 7,000 - (7,800-7,000) = <strong>6,200点</strong>（约-18%）</li>
+<li><strong>蔡森判断</strong>：月线级别圆弧顶形成中，<strong>但尚未确认</strong>。需观察是否跌破颈线7,000点</li>
+</ul>
+</div>
+
+<div class="insight-box gold">
+<h4>🟠 Nasdaq 100 周线级别："三角收敛"末端</h4>
+<ul>
+<li><strong>高点递降</strong>：2025年高点 → 2026年Q1高点 → 2026年Q2高点，高点不断降低</li>
+<li><strong>低点递升</strong>：回调低点逐步抬升 → 形成三角收敛</li>
+<li><strong>突破方向</strong>：三角收敛可向任一方向突破，但结合量价（上涨缩量）和宏观环境，<strong>向下突破概率偏大</strong></li>
+<li><strong>操作纪律</strong>：等突破方向明确后再行动，不提前预判</li>
+</ul>
+</div>
+
+<div class="insight-box gold">
+<h4>🟠 黄金（COMEX）：破底翻后的回调修正</h4>
+<ul>
+<li><strong>近期走势</strong>：$4,331，单日-3.22%（非农数据冲击）</li>
+<li><strong>大级别形态</strong>：月线仍为多头趋势，$4,000为关键支撑</li>
+<li><strong>破底翻信号</strong>：若跌破$4,000后快速收回 → 形成月线级别破底翻 → 强力做多信号</li>
+<li><strong>测幅满足</strong>：若破底翻成立，目标可达$5,000+</li>
+<li><strong>蔡森判断</strong>：短期受非农+美元走强压制，中长期多头格局未破坏，关注$4,000支撑</li>
+</ul>
+</div>
+
+<div class="chart-grid">
+<div class="chart-box">
+<h3>📊 S&P 500 技术形态与关键位</h3>
+<canvas id="chart-sp500-tech"></canvas>
+</div>
+<div class="chart-box">
+<h3>📊 多资产技术信号雷达图</h3>
+<canvas id="chart-tech-radar"></canvas>
+</div>
+</div>
+
+<div class="insight-box gold">
+<h4>🟠 操作纪律与交易计划</h4>
+<table>
+<tr><th>标的</th><th>形态</th><th>方向</th><th>颈线/关键位</th><th>操作建议</th></tr>
+<tr><td>S&P 500</td><td>圆弧顶（形成中）</td><td class="down">偏空观望</td><td>7,000（颈线）</td><td>跌破7,000确认→做空，目标6,200</td></tr>
+<tr><td>Nasdaq 100</td><td>三角收敛</td><td class="neutral">等待突破</td><td>上/下轨</td><td>向下突破做空，向上突破观望</td></tr>
+<tr><td>黄金COMEX</td><td>多头回调</td><td class="up">偏多</td><td>$4,000（支撑）</td><td>破底翻确认→做多，目标$5,000</td></tr>
+<tr><td>美元指数</td><td>矩形整理</td><td class="down">偏空</td><td>98-100</td><td>跌破98→做空，目标94</td></tr>
+</table>
+</div>
+</div>
+</section>
+
+<!-- SECTION 6: BEN NIAO -->
+<section class="section" style="border-top:1px solid #2a2d3e">
+<div class="container">
+<h2 class="section-title">🟢 笨鸟数据拆解分析 <span class="analyst-tag tag-bn">数量+质量双拆解</span></h2>
+<p class="section-desc">因果链传导 × 七大资产联动 × 反常信号识别</p>
+
+<div class="insight-box green">
+<h4>🟢 第一步：数据拆解——巨型IPO的"数量"与"质量"</h4>
+<div class="flow-chain">        ┌ 数量 ↑ → $2000亿+ 一次性抽取 = 2025全年4.5倍 → 流动性枯竭
+巨型IPO ─┤
+        └ 质量 ↓ → 全是AI/科技公司 → 集中度极端 → 板块风险传染</div>
+<ul>
+<li><strong>数量维度</strong>：三大IPO合计$2000亿+，Alphabet增发$847.5亿，Meta增发未知 → 总计可能超$3000亿</li>
+<li><strong>质量维度</strong>：100%集中在AI/科技板块 → Mag7已占S&P500的34.8% → 新增IPO将进一步加剧集中度</li>
+<li><strong>结构信号</strong>：AI公司占投资级债49%、垃圾债38% → 如果AI板块出问题，整个信用市场都会受冲击</li>
+</ul>
+</div>
+
+<div class="insight-box green">
+<h4>🟢 第二步：降息预期推导</h4>
+<div class="flow-chain">        ┌ 数量 ↑（IPO抽水） → 流动性收紧 → 等同"隐性加息" → 美元走强
+巨型IPO ─┤
+        └ 质量 ↓（AI集中）→ AI CapEx回报不确定 → Fed观望 → 不降息
+
+非农数据 ─┤ 数量 ↑ → 就业强劲 → 不降息 → 贵金属暴跌
+           └ 质量 ↓ → 金融/保险↓（AI替代）→ 长期结构性风险</div>
+<ul>
+<li><strong>核心判断</strong>：巨型IPO的流动性抽取效果等同"隐性加息" → 即使Fed不加息，市场流动性也在急剧收紧</li>
+<li><strong>叠加效应</strong>：Fed缩表（QT）+ 巨型IPO抽水 + 中东油价冲击 → 三重紧缩</li>
+</ul>
+</div>
+
+<div class="insight-box green">
+<h4>🟢 第三步：七大资产传导链</h4>
+<table>
+<tr><th>资产</th><th>巨型IPO影响</th><th>非农数据影响</th><th>综合方向</th></tr>
+<tr><td>黄金</td><td class="down">流动性抽水→短期承压</td><td class="down">不降息→利空</td><td class="down">⬇ 短期偏空</td></tr>
+<tr><td>白银</td><td class="down">跟随黄金+工业属性弱</td><td class="down">暴跌-6.84%</td><td class="down">⬇⬇ 大跌</td></tr>
+<tr><td>铜</td><td class="neutral">AI数据中心需求支撑</td><td class="down">不降息→经济放缓</td><td class="neutral">→ 中性</td></tr>
+<tr><td>原油</td><td class="up">中东地缘→供给约束</td><td class="up">经济好→需求强</td><td class="up">⬆ 偏多</td></tr>
+<tr><td>美股</td><td class="down">流动性抽水+估值压制</td><td class="down">"好消息=坏消息"</td><td class="down">⬇ 偏空</td></tr>
+<tr><td>美元</td><td class="up">IPO吸引资本回流</td><td class="up">不降息→走强</td><td class="up">⬆ 短期偏强</td></tr>
+<tr><td>美债</td><td class="neutral">避险vs供给增加</td><td class="down">不降息→收益率高</td><td class="neutral">→ 中性</td></tr>
+</table>
+</div>
+
+<div class="chart-grid">
+<div class="chart-box">
+<h3>📊 七大资产联动信号矩阵</h3>
+<canvas id="chart-asset-matrix"></canvas>
+</div>
+<div class="chart-box">
+<h3>📊 流动性抽取规模 vs 历史IPO年度对比</h3>
+<canvas id="chart-liquidity-drain"></canvas>
+</div>
+</div>
+
+<div class="insight-box green">
+<h4>🟢 第四步：反常信号识别</h4>
+<ul>
+<li><strong>反常1</strong>：非农数据好（就业强劲），但美股"刚开始撑了一阵"后也跌 → 市场认为"好消息就是坏消息"（不降息=利空估值）</li>
+<li><strong>反常2</strong>：Alphabet股价年内涨20%+，却要增发$847.5亿 → 表面利好（AI信心）实际利空（稀释+利率拐点）</li>
+<li><strong>反常3</strong>：黄金在避险需求高涨时反而暴跌-3.22% → 流动性需求（追保卖出）压过避险需求</li>
+<li><strong>反常4</strong>：美元走弱（跌破100）但全球资本仍涌入美国 → "卖场"优势 > 汇率因素</li>
+<li><strong>笨鸟判断</strong>：<strong>"关键资产价格暴露市场态度"</strong>——贵金属暴跌说明市场最恐惧的不是经济衰退，而是流动性枯竭</li>
+</ul>
+</div>
+</div>
+</section>
+
+
+<!-- SECTION 7: BOTTOM LOGIC -->
+<section class="section" style="border-top:1px solid #2a2d3e">
+<div class="container">
+<h2 class="section-title">📐 底层逻辑关联</h2>
+<p class="section-desc">恒等式 × 财政逻辑 × 资本流动性 × 向心坍缩</p>
+
+<div class="conclusion-grid">
+<div class="insight-box">
+<h4>📐 恒等式 S-I=X-M 的全球映射</h4>
+<ul>
+<li><strong>美国</strong>：巨额贸易赤字（X-M≪0）→ 储蓄缺口（S-I≪0）→ 必须靠外部融资弥补 → $37万亿美债就是这个缺口的累积</li>
+<li><strong>巨型IPO</strong>：本质是美国用"未来AI收益权"换取全球当下的真金白银 → 弥补储蓄缺口</li>
+<li><strong>中国</strong>：巨额贸易盈余（X-M≫0）→ 超额储蓄（S-I≫0）→ 人民币升值是唯一解</li>
+</ul>
+</div>
+<div class="insight-box purple">
+<h4>📐 真金白银 vs 虚拟财富</h4>
+<ul>
+<li><strong>核心矛盾</strong>：SpaceX估值$1.75万亿=虚拟财富，IPO融资$750亿=真金白银</li>
+<li><strong>历史教训</strong>：美国"缺钱缺到恐怖地步"——房地美IPO紧急搁置，直接掏空$2004亿流动资金</li>
+<li><strong>判断</strong>：巨型IPO潮是美国财政流动性枯竭的典型信号——用"未来收益"换"当下现金"</li>
+</ul>
+</div>
+</div>
+
+<div class="insight-box">
+<h4>📐 向心坍缩 vs 美债重置：两条路径的博弈</h4>
+<table>
+<tr><th>维度</th><th>卢麒元：向心坍缩</th><th>雷倩：美债重置</th><th>巨型IPO的角色</th></tr>
+<tr><td>核心预判</td><td class="down">美元体系向内坍缩</td><td class="up">金融工程延续霸权</td><td>加速器或防火墙？</td></tr>
+<tr><td>债务结局</td><td class="down">明斯基时刻爆发</td><td class="neutral">转移到加密云</td><td>从市场抽取流动性</td></tr>
+<tr><td>黄金</td><td class="up">危机后更值钱</td><td class="up">被重估为新锚</td><td>两种情景都利好</td></tr>
+<tr><td>最终赢家</td><td>持有实物黄金的国家</td><td>掌握加密主导权的美国</td><td>不确定</td></tr>
+</table>
+</div>
+</div>
+</section>
+
+<!-- SECTION 8: COMPREHENSIVE CONCLUSION -->
+<section class="section" style="border-top:1px solid #2a2d3e">
+<div class="container">
+<h2 class="section-title">⚖️ 四人综合结论</h2>
+<p class="section-desc">共识 × 分歧 × 时间权重 × 最终多空判断</p>
+
+<div class="chart-grid">
+<div class="chart-box">
+<h3>📊 四专家观点雷达图</h3>
+<canvas id="chart-radar"></canvas>
+</div>
+<div class="chart-box">
+<h3>📊 多空力量对比</h3>
+<canvas id="chart-bull-bear"></canvas>
+</div>
+</div>
+
+<h3 style="margin:24px 0 16px">🤝 四人共识与分歧</h3>
+<table class="consensus-table">
+<tr><th>议题</th><th>共识（✅）</th><th>分歧（⚠️）</th></tr>
+<tr><td>美股短期方向</td><td>四人一致偏空：流动性抽水+估值高企+AI泡沫风险</td><td>空的程度：蔡森观望等确认，其余三人更悲观</td></tr>
+<tr><td>黄金中长期</td><td>四人一致看多：去美元化+央行购金+地缘风险</td><td>短期节奏：笨鸟认为非农冲击未消化，杨世光看好反弹</td></tr>
+<tr><td>AI泡沫</td><td>四人一致认为存在泡沫成分</td><td>破裂时机：卢麒元认为明斯基时刻临近，蔡森等技术确认</td></tr>
+<tr><td>美元走向</td><td>中长期走弱：去美元化趋势不可逆</td><td>短期：杨世光认为IPO吸引回流，卢麒元认为沃什战略推强</td></tr>
+<tr><td>新兴市场</td><td>四人一致承压：虹吸效应+资本外流</td><td>中国例外：笨鸟和卢麒元认为人民币升值+资本管控是防御</td></tr>
+<tr><td>巨型IPO本质</td><td>流动性负面事件</td><td>卢麒元视为"向心坍缩加速器"，杨世光视为"棄債轉股信号"</td></tr>
+</table>
+
+<h3 style="margin:24px 0 16px">⏱ 时间衰减权重标注</h3>
+<table>
+<tr><th>观点来源</th><th>日期</th><th>权重</th><th>核心内容</th></tr>
+<tr><td>🔵 杨世光</td><td>2026-06-04</td><td><span class="weight-badge">100%</span></td><td>Google棄債轉股 + Fed棄資管債 + 低利率终结</td></tr>
+<tr><td>🔵 杨世光</td><td>2026-06-02</td><td><span class="weight-badge">100%</span></td><td>中国对外投资新规 + 人民币走强 + 资本管控收紧</td></tr>
+<tr><td>🟣 卢麒元</td><td>2026-Q2</td><td><span class="weight-badge">80%</span></td><td>向心坍缩三流逆变 + 沃什卧石妙计 + AI金融战</td></tr>
+<tr><td>🟠 蔡森</td><td>2026-06-01</td><td><span class="weight-badge">100%</span></td><td>ETF全盛时期 + 多周期形态分析 + 板轮动</td></tr>
+<tr><td>🟢 笨鸟</td><td>2026-06-06</td><td><span class="weight-badge">100%</span></td><td>非农数据带崩全市场 + AI革命传导链 + 反常信号</td></tr>
+</table>
+
+<div class="verdict bearish">
+⚠️ 最终判断：中短期偏空（6-12个月）
+</div>
+
+<div class="conclusion-grid">
+<div class="insight-box" style="border-left-color:#ff4757">
+<h4>🐻 空头论据（四人共识）</h4>
+<ul>
+<li>$2000亿+流动性一次性抽取 = 史上最大IPO冲击波</li>
+<li>S&P 500 PE10=39.9x（2000年以来最高），估值极度脆弱</li>
+<li>Mag7占S&P500的34.8% + 新IPO将进一步加剧集中度 → 单点故障风险</li>
+<li>棄債轉股 = 利率已过拐点，AI入场券变贵 → DCF模型面临重估</li>
+<li>明斯基庞氏融资阶段 + 费雪债务通缩传导链已就位</li>
+<li>中东地缘风险 → 油价冲击 → 通胀反弹 → Fed降息空间被压缩</li>
+<li>非农数据好 + 黄金暴跌 = 市场最恐惧的是流动性枯竭而非衰退</li>
+</ul>
+</div>
+<div class="insight-box" style="border-left-color:#2ed573">
+<h4>🐂 多头论据（需观察）</h4>
+<ul>
+<li>SpaceX纳入S&P 500 → 万亿级被动资金被迫买入 → 短期托底</li>
+<li>AI CapEx持续暴增 → 卡莱斯基公式下利润仍可维持</li>
+<li>Fed仍有降息空间（高盛预测降至3.00-3.25%）</li>
+<li>美国"布雷顿森林3.0"金融工程可能延缓危机</li>
+<li>蔡森：月线级别破底翻信号尚未破坏 → 技术面仍有转多可能</li>
+<li>黄金$4,000支撑若形成破底翻 → 强信号做多至$5,000+</li>
+</ul>
+</div>
+</div>
+
+<div class="full-chart">
+<h3>📊 多空概率评估（四专家加权平均）</h3>
+<canvas id="chart-probability" style="max-height:300px"></canvas>
+</div>
+</div>
+</section>
+
+<!-- SECTION 9: LEADING INDICATORS -->
+<section class="section" style="border-top:1px solid #2a2d3e">
+<div class="container">
+<h2 class="section-title">📡 先行指标跟踪清单</h2>
+<p class="section-desc">密切监控以下信号，任一触发则需重新评估</p>
+
+<div class="indicator-list">
+<div class="indicator-item">
+<h4>🔴 SpaceX IPO定价与首日表现</h4>
+<p>关注：定价是否下调（已降为$135）、首日涨跌、纳入S&P500时间表。若首日破发=流动性危机确认。</p>
+</div>
+<div class="indicator-item">
+<h4>🔴 Alphabet增发认购情况</h4>
+<p>关注：$847.5亿增发是否超额认购。若认购不足=市场对AI CapEx回报失去信心。</p>
+</div>
+<div class="indicator-item">
+<h4>🔴 S&P 500跌破7,000点</h4>
+<p>蔡森技术信号：月线圆弧顶颈线确认。跌破=技术面全面转空，测幅目标6,200。</p>
+</div>
+<div class="indicator-item">
+<h4>🟡 黄金$4,000关口</h4>
+<p>跌破后能否快速收回=破底翻确认。若收回=黄金牛市延续至$5,000+。若持续跌破=流动性危机深化。</p>
+</div>
+<div class="indicator-item">
+<h4>🟡 美国10Y国债收益率突破5%</h4>
+<p>卢麒元"资本冻结线"接近。突破5%=全球资本加速回流美国，新兴市场三杀风险。</p>
+</div>
+<div class="indicator-item">
+<h4>🟡 中东油价突破$120/桶</h4>
+<p>沃什"卧石妙计"信号。油价暴涨→通胀反弹→Fed被迫不降息甚至加息→向心坍缩加速。</p>
+</div>
+<div class="indicator-item">
+<h4>🟢 OpenAI/Anthropic IPO时间表</h4>
+<p>若延期或缩减规模=市场对AI估值开始怀疑。若如期推进=流动性冲击确认。</p>
+</div>
+<div class="indicator-item">
+<h4>🟢 人民币汇率走势</h4>
+<p>人民币持续走强=中国资本回流+通缩缓解。若突然走弱=外资撤离+资本管控失效。</p>
+</div>
+<div class="indicator-item">
+<h4>🔵 Fed 6月会议（6月17日）</h4>
+<p>维持利率不变是基准。若释放鸽派信号=缓解流动性担忧。若鹰派=加剧紧缩恐慌。</p>
+</div>
+<div class="indicator-item">
+<h4>🔵 AI企业Q2财报（7-8月）</h4>
+<p>NVIDIA/微软/AI公司营收增速是否放缓。若不及预期=AI泡沫破裂导火索。</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- SECTION 10: DISCLAIMER -->
+<section class="section">
+<div class="container">
+<div class="disclaimer">
+<h3 style="color:#ff4757;margin-bottom:12px">⚠️ 风险提示与免责声明</h3>
+<p>以上分析融合了杨世光、卢麒元、蔡森、笨鸟四位专家的理论框架，仅为经济学教学与经验分享，不构成任何投资建议。投资有风险，交易请独立判断并自负盈亏。</p>
+<br>
+<p><strong>主要风险因素：</strong></p>
+<ul style="padding-left:20px;margin-top:8px">
+<li>巨型IPO流动性冲击可能远超模型预估</li>
+<li>AI估值泡沫可能在任一催化剂下突然破裂</li>
+<li>中东地缘冲突可能升级为全面战争</li>
+<li>美联储政策可能在通胀与经济之间做出意外选择</li>
+<li>中国资本管控政策变化可能影响全球资金流向</li>
+<li>历史模式和技术形态不能保证未来走势</li>
+</ul>
+<br>
+<p style="color:#64748b;font-size:0.85em">报告生成时间：2026年6月6日 | 四位专家分析框架版本：v2026.06 | 数据截至：2026年6月5日收盘</p>
+</div>
+</div>
+</section>
+
+<!-- ALL CHARTS JAVASCRIPT -->
+<script>
+Chart.defaults.color = '#94a3b8';
+Chart.defaults.borderColor = '#2a2d3e';
+Chart.defaults.font.family = "-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif";
+
+// Chart 1: IPO Compare
+new Chart(document.getElementById('chart-ipo-compare'), {
+  type: 'bar',
+  data: {
+    labels: ['2025全年\n美国IPO', 'SpaceX\nIPO', 'OpenAI\nIPO(估)', 'Anthropic\nIPO(估)', 'Alphabet\n增发', 'Meta\n增发(估)', '合计\n抽水'],
+    datasets: [{
+      label: '融资金额（十亿美元）',
+      data: [47.4, 75, 60, 40, 84.75, 50, 357],
+      backgroundColor: ['#2ed57355','#ff475788','#ff475777','#ff475766','#4a9eff88','#4a9eff66','#ff4757aa'],
+      borderColor: ['#2ed573','#ff4757','#ff4757','#ff4757','#4a9eff','#4a9eff','#ff4757'],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {display: false},
+      tooltip: {callbacks: {label: ctx => '$' + ctx.raw + 'B'}}
+    },
+    scales: {
+      y: {grid: {color: '#2a2d3e'}, ticks: {callback: v => '$' + v + 'B'}},
+      x: {grid: {display: false}}
+    }
+  }
+});
+
+// Chart 2: CapEx
+new Chart(document.getElementById('chart-capex'), {
+  type: 'bar',
+  data: {
+    labels: ['Google\n(Alphabet)', 'Meta', 'Microsoft\n(估)', 'Amazon\n(估)', 'NVIDIA\n生态', '合计'],
+    datasets: [{
+      label: '2025 CapEx',
+      data: [75, 65, 80, 75, 50, 345],
+      backgroundColor: '#4a9eff44',
+      borderColor: '#4a9eff',
+      borderWidth: 1
+    },{
+      label: '2026 CapEx',
+      data: [190, 135, 100, 95, 70, 590],
+      backgroundColor: '#e8b84b66',
+      borderColor: '#e8b84b',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {legend: {position: 'top'}},
+    scales: {
+      y: {grid: {color: '#2a2d3e'}, ticks: {callback: v => '$' + v + 'B'}},
+      x: {grid: {display: false}}
+    }
+  }
+});
+
+// Chart 3: Fed Balance Sheet
+new Chart(document.getElementById('chart-fed-balance'), {
+  type: 'line',
+  data: {
+    labels: ['2020','2021','2022','2023','2024','2025','2026Q2'],
+    datasets: [{
+      label: 'Fed资产负债表 (万亿美元)',
+      data: [7.2, 8.2, 8.9, 8.0, 7.4, 7.0, 6.7],
+      borderColor: '#4a9eff',
+      backgroundColor: '#4a9eff22',
+      fill: true,
+      yAxisID: 'y',
+      tension: 0.3
+    },{
+      label: '联邦基金利率 (%)',
+      data: [0.25, 0.25, 1.0, 4.5, 5.25, 4.5, 3.625],
+      borderColor: '#e8b84b',
+      backgroundColor: '#e8b84b22',
+      fill: false,
+      yAxisID: 'y1',
+      tension: 0.3
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {legend: {position: 'top'}},
+    scales: {
+      y: {position: 'left', grid: {color: '#2a2d3e'}, title: {display: true, text: '万亿美元'}},
+      y1: {position: 'right', grid: {display: false}, title: {display: true, text: '利率 %'}},
+      x: {grid: {display: false}}
+    }
+  }
+});
+
+// Chart 4: Dollar Cycle
+new Chart(document.getElementById('chart-dollar-cycle'), {
+  type: 'line',
+  data: {
+    labels: ['2022Q1','2022Q3','2023Q1','2023Q3','2024Q1','2024Q3','2025Q1','2025Q3','2026Q1','2026Q2'],
+    datasets: [{
+      label: '美元指数 DXY',
+      data: [98, 114, 105, 106, 104, 101, 103, 100, 99, 99.5],
+      borderColor: '#4a9eff',
+      tension: 0.3
+    },{
+      label: '黄金 (百美元/盎司)',
+      data: [19, 17, 19.5, 19, 21, 25, 28, 32, 42, 43],
+      borderColor: '#e8b84b',
+      tension: 0.3
+    },{
+      label: 'S&P 500 (百点)',
+      data: [45, 38, 40, 43, 51, 55, 58, 60, 59, 75],
+      borderColor: '#2ed573',
+      tension: 0.3
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {legend: {position: 'top'}},
+    scales: {
+      y: {grid: {color: '#2a2d3e'}},
+      x: {grid: {display: false}}
+    }
+  }
+});
+
+// Chart 5: Minsky Stages
+new Chart(document.getElementById('chart-minsky'), {
+  type: 'bar',
+  data: {
+    labels: ['2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026E'],
+    datasets: [{
+      label: '美国国债 (万亿美元)',
+      data: [22.7, 27.0, 28.4, 30.9, 33.2, 35.0, 36.5, 38.0],
+      backgroundColor: '#a855f755',
+      borderColor: '#a855f7',
+      borderWidth: 1
+    },{
+      label: '年利息支出 (千亿美元)',
+      data: [3.7, 3.5, 3.8, 4.8, 6.6, 8.8, 9.7, 10.5],
+      backgroundColor: '#ff475755',
+      borderColor: '#ff4757',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {position: 'top'},
+      annotation: {}
+    },
+    scales: {
+      y: {grid: {color: '#2a2d3e'}},
+      x: {grid: {display: false}}
+    }
+  }
+});
+
+// Chart 6: Collapse Risk Radar
+new Chart(document.getElementById('chart-collapse-risk'), {
+  type: 'radar',
+  data: {
+    labels: ['债务/GDP', '利息/财政收入', 'AI债务占比', 'IPO流动性冲击', '地缘风险', '通胀反弹', '资本外流(EM)'],
+    datasets: [{
+      label: '当前风险水平',
+      data: [85, 75, 70, 90, 80, 65, 70],
+      backgroundColor: '#ff475733',
+      borderColor: '#ff4757',
+      pointBackgroundColor: '#ff4757'
+    },{
+      label: '2020年水平',
+      data: [50, 30, 20, 20, 40, 25, 35],
+      backgroundColor: '#2ed57322',
+      borderColor: '#2ed573',
+      pointBackgroundColor: '#2ed573'
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {legend: {position: 'top'}},
+    scales: {
+      r: {
+        grid: {color: '#2a2d3e'},
+        angleLines: {color: '#2a2d3e'},
+        pointLabels: {color: '#94a3b8', font: {size: 11}},
+        ticks: {display: false},
+        suggestedMin: 0, suggestedMax: 100
+      }
+    }
+  }
+});
+
+// Chart 7: S&P 500 Technical
+new Chart(document.getElementById('chart-sp500-tech'), {
+  type: 'line',
+  data: {
+    labels: ['2024Q1','Q2','Q3','Q4','2025Q1','Q2','Q3','Q4','2026Q1','Q2*'],
+    datasets: [{
+      label: 'S&P 500',
+      data: [5200, 5400, 5600, 5800, 5900, 6200, 6400, 6800, 7200, 7570],
+      borderColor: '#4a9eff',
+      backgroundColor: '#4a9eff11',
+      fill: true,
+      tension: 0.3,
+      pointRadius: [3,3,3,3,3,3,3,3,3,6]
+    },{
+      label: '颈线 (7000)',
+      data: [7000,7000,7000,7000,7000,7000,7000,7000,7000,7000],
+      borderColor: '#ff475788',
+      borderDash: [8,4],
+      pointRadius: 0,
+      fill: false
+    },{
+      label: '测幅目标 (6200)',
+      data: [6200,6200,6200,6200,6200,6200,6200,6200,6200,6200],
+      borderColor: '#2ed57388',
+      borderDash: [8,4],
+      pointRadius: 0,
+      fill: false
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {legend: {position: 'top'}},
+    scales: {
+      y: {grid: {color: '#2a2d3e'}, min: 5000},
+      x: {grid: {display: false}}
+    }
+  }
+});
+
+// Chart 8: Tech Radar
+new Chart(document.getElementById('chart-tech-radar'), {
+  type: 'radar',
+  data: {
+    labels: ['S&P 500', 'Nasdaq 100', '黄金', '白银', '美元', '原油', '美债'],
+    datasets: [{
+      label: '技术面强度(0-100)',
+      data: [40, 35, 70, 55, 45, 60, 50],
+      backgroundColor: '#e8b84b33',
+      borderColor: '#e8b84b',
+      pointBackgroundColor: '#e8b84b'
+    },{
+      label: '基本面支撑(0-100)',
+      data: [55, 50, 80, 65, 40, 55, 55],
+      backgroundColor: '#4a9eff22',
+      borderColor: '#4a9eff',
+      pointBackgroundColor: '#4a9eff'
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {legend: {position: 'top'}},
+    scales: {
+      r: {
+        grid: {color: '#2a2d3e'},
+        angleLines: {color: '#2a2d3e'},
+        pointLabels: {color: '#94a3b8', font: {size: 11}},
+        ticks: {display: false},
+        suggestedMin: 0, suggestedMax: 100
+      }
+    }
+  }
+});
+
+// Chart 9: Asset Matrix
+new Chart(document.getElementById('chart-asset-matrix'), {
+  type: 'bar',
+  data: {
+    labels: ['黄金', '白银', '铜', '原油', '美股', '美元', '美债'],
+    datasets: [{
+      label: 'IPO冲击影响',
+      data: [-30, -40, -15, 10, -45, 25, -10],
+      backgroundColor: ctx => ctx.raw >= 0 ? '#2ed57355' : '#ff475755',
+      borderColor: ctx => ctx.raw >= 0 ? '#2ed573' : '#ff4757',
+      borderWidth: 1
+    },{
+      label: '非农数据影响',
+      data: [-35, -70, -20, 15, -25, 30, -15],
+      backgroundColor: ctx => ctx.raw >= 0 ? '#2ed57333' : '#ff475733',
+      borderColor: ctx => ctx.raw >= 0 ? '#2ed573' : '#ff4757',
+      borderWidth: 1,
+      borderDash: [4,2]
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {legend: {position: 'top'}},
+    scales: {
+      x: {grid: {color: '#2a2d3e'}, title: {display: true, text: '影响评分（负=利空，正=利好）'}},
+      y: {grid: {display: false}}
+    }
+  }
+});
+
+// Chart 10: Liquidity Drain
+new Chart(document.getElementById('chart-liquidity-drain'), {
+  type: 'bar',
+  data: {
+    labels: ['2019','2020','2021','2022','2023','2024','2025','2026\n(仅巨型IPO)'],
+    datasets: [{
+      label: '年度IPO融资额 (十亿美元)',
+      data: [63, 168, 315, 27, 22, 40, 47.4, 357],
+      backgroundColor: ctx => ctx.dataIndex === 7 ? '#ff475788' : '#4a9eff55',
+      borderColor: ctx => ctx.dataIndex === 7 ? '#ff4757' : '#4a9eff',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {display: false},
+      tooltip: {callbacks: {label: ctx => '$' + ctx.raw + 'B'}}
+    },
+    scales: {
+      y: {grid: {color: '#2a2d3e'}, ticks: {callback: v => '$' + v + 'B'}},
+      x: {grid: {display: false}}
+    }
+  }
+});
+
+// Chart 11: Four Expert Radar
+new Chart(document.getElementById('chart-radar'), {
+  type: 'radar',
+  data: {
+    labels: ['美股看空度', '黄金看多度', '风险预警度', '流动性担忧', 'AI泡沫判断', '新兴市场悲观'],
+    datasets: [{
+      label: '🔵 杨世光',
+      data: [70, 80, 85, 90, 75, 70],
+      borderColor: '#4a9eff',
+      backgroundColor: '#4a9eff22',
+      pointBackgroundColor: '#4a9eff'
+    },{
+      label: '🟣 卢麒元',
+      data: [85, 90, 95, 85, 90, 80],
+      borderColor: '#a855f7',
+      backgroundColor: '#a855f722',
+      pointBackgroundColor: '#a855f7'
+    },{
+      label: '🟠 蔡森',
+      data: [55, 70, 60, 50, 55, 45],
+      borderColor: '#e8b84b',
+      backgroundColor: '#e8b84b22',
+      pointBackgroundColor: '#e8b84b'
+    },{
+      label: '🟢 笨鸟',
+      data: [65, 55, 75, 80, 70, 60],
+      borderColor: '#2ed573',
+      backgroundColor: '#2ed57322',
+      pointBackgroundColor: '#2ed573'
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {legend: {position: 'top'}},
+    scales: {
+      r: {
+        grid: {color: '#2a2d3e'},
+        angleLines: {color: '#2a2d3e'},
+        pointLabels: {color: '#94a3b8', font: {size: 10}},
+        ticks: {display: false},
+        suggestedMin: 0, suggestedMax: 100
+      }
+    }
+  }
+});
+
+// Chart 12: Bull Bear
+new Chart(document.getElementById('chart-bull-bear'), {
+  type: 'doughnut',
+  data: {
+    labels: ['看空因素', '中性因素', '看多因素'],
+    datasets: [{
+      data: [55, 25, 20],
+      backgroundColor: ['#ff475777', '#94a3b855', '#2ed57377'],
+      borderColor: ['#ff4757', '#94a3b8', '#2ed573'],
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {position: 'bottom'},
+      tooltip: {callbacks: {label: ctx => ctx.label + ': ' + ctx.raw + '%'}}
+    }
+  }
+});
+
+// Chart 13: Probability
+new Chart(document.getElementById('chart-probability'), {
+  type: 'bar',
+  data: {
+    labels: ['美股\n(S&P500)', 'Nasdaq\n100', '黄金\nCOMEX', '美元\nDXY', '原油\nWTI', '新兴\n市场', '美债\n10Y'],
+    datasets: [{
+      label: '看多概率',
+      data: [25, 20, 70, 35, 60, 25, 45],
+      backgroundColor: '#2ed57366',
+      borderColor: '#2ed573',
+      borderWidth: 1
+    },{
+      label: '看空概率',
+      data: [60, 65, 15, 40, 20, 60, 30],
+      backgroundColor: '#ff475766',
+      borderColor: '#ff4757',
+      borderWidth: 1
+    },{
+      label: '中性概率',
+      data: [15, 15, 15, 25, 20, 15, 25],
+      backgroundColor: '#94a3b844',
+      borderColor: '#94a3b8',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {position: 'top'},
+      tooltip: {callbacks: {label: ctx => ctx.dataset.label + ': ' + ctx.raw + '%'}}
+    },
+    scales: {
+      x: {stacked: true, grid: {display: false}},
+      y: {stacked: true, grid: {color: '#2a2d3e'}, max: 100, ticks: {callback: v => v + '%'}}
+    }
+  }
+});
+</script>
+
+</body>
+</html>

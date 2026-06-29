@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生猪市场六专家整合分析报告 | 2026.06.18</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root {
+  --bg: #0f1117;
+  --card: #1a1d2e;
+  --card-hover: #232740;
+  --border: #2d3050;
+  --text: #e4e7f0;
+  --text-dim: #8892b0;
+  --yang: #4a9eff;
+  --lu: #a855f7;
+  --caisen: #e8b84b;
+  --benniao: #2ed573;
+  --serenity: #e0e0e0;
+  --mx: #00d4aa;
+  --logic: #f97316;
+  --bull: #2ed573;
+  --bear: #ff4757;
+  --warn: #ffa502;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.7;
+  font-size: 15px;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, #1a1d2e 0%, #0f1117 50%, #1a1d2e 100%);
+  padding: 60px 0 40px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle at 30% 50%, rgba(232,184,75,0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+.hero h1 { font-size: 2.2em; margin-bottom: 10px; background: linear-gradient(90deg, var(--caisen), var(--yang), var(--mx)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.hero .subtitle { color: var(--text-dim); font-size: 1.05em; margin-bottom: 30px; }
+.hero-meta { display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.85em; color: var(--text-dim); }
+.hero-meta span { background: var(--card); padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); }
+/* KPI Cards */
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 30px 0; }
+.kpi-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-align: center; transition: transform 0.2s; }
+.kpi-card:hover { transform: translateY(-3px); border-color: var(--caisen); }
+.kpi-card .label { font-size: 0.8em; color: var(--text-dim); margin-bottom: 8px; }
+.kpi-card .value { font-size: 1.8em; font-weight: 700; }
+.kpi-card .change { font-size: 0.85em; margin-top: 4px; }
+.kpi-card .change.down { color: var(--bear); }
+.kpi-card .change.up { color: var(--bull); }
+.kpi-card .change.warn { color: var(--warn); }
+/* Section */
+.section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+.section-title { font-size: 1.6em; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+.section-title .icon { width: 36px; height: 36px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 1.2em; }
+.section-subtitle { color: var(--text-dim); font-size: 0.9em; margin-bottom: 25px; }
+/* Expert color bars */
+.expert-yang .icon { background: rgba(74,158,255,0.15); color: var(--yang); }
+.expert-yang .section-title { color: var(--yang); }
+.expert-lu .icon { background: rgba(168,85,247,0.15); color: var(--lu); }
+.expert-lu .section-title { color: var(--lu); }
+.expert-caisen .icon { background: rgba(232,184,75,0.15); color: var(--caisen); }
+.expert-caisen .section-title { color: var(--caisen); }
+.expert-benniao .icon { background: rgba(46,213,115,0.15); color: var(--benniao); }
+.expert-benniao .section-title { color: var(--benniao); }
+.expert-serenity .icon { background: rgba(224,224,224,0.15); color: var(--serenity); }
+.expert-serenity .section-title { color: var(--serenity); }
+.expert-mx .icon { background: rgba(0,212,170,0.15); color: var(--mx); }
+.expert-mx .section-title { color: var(--mx); }
+.expert-logic .icon { background: rgba(249,115,22,0.15); color: var(--logic); }
+.expert-logic .section-title { color: var(--logic); }
+/* Card */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+.card h3 { font-size: 1.15em; margin-bottom: 12px; }
+.card p, .card li { color: var(--text); font-size: 0.92em; }
+.card ul { padding-left: 20px; margin: 10px 0; }
+.card li { margin-bottom: 6px; }
+.card .highlight { background: rgba(232,184,75,0.1); padding: 1px 6px; border-radius: 4px; color: var(--caisen); }
+.tag { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.78em; margin: 2px; }
+.tag-bull { background: rgba(46,213,115,0.15); color: var(--bull); }
+.tag-bear { background: rgba(255,71,87,0.15); color: var(--bear); }
+.tag-warn { background: rgba(255,165,2,0.15); color: var(--warn); }
+.tag-neutral { background: rgba(136,146,176,0.15); color: var(--text-dim); }
+/* Chart container */
+.chart-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+.chart-box h4 { font-size: 1em; color: var(--text-dim); margin-bottom: 15px; }
+.chart-container { position: relative; height: 320px; }
+.chart-container.tall { height: 380px; }
+.chart-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media(max-width: 768px) { .chart-grid-2 { grid-template-columns: 1fr; } }
+/* Table */
+.data-table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.88em; }
+.data-table th { background: var(--card-hover); padding: 10px 12px; text-align: left; color: var(--text-dim); border-bottom: 2px solid var(--border); white-space: nowrap; }
+.data-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+.data-table tr:hover { background: rgba(255,255,255,0.02); }
+.data-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+.data-table .neg { color: var(--bear); }
+.data-table .pos { color: var(--bull); }
+/* Consensus box */
+.consensus-box { background: linear-gradient(135deg, rgba(74,158,255,0.08), rgba(0,212,170,0.08)); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin: 20px 0; }
+.consensus-box h3 { margin-bottom: 15px; }
+/* Timeline */
+.timeline-item { display: flex; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.timeline-item:last-child { border-bottom: none; }
+.timeline-date { min-width: 120px; color: var(--text-dim); font-size: 0.85em; }
+.timeline-content { flex: 1; }
+.timeline-content .indicator { font-weight: 600; color: var(--caisen); }
+/* Disclaimer */
+.disclaimer { background: rgba(255,71,87,0.05); border: 1px solid rgba(255,71,87,0.2); border-radius: 12px; padding: 20px; margin: 30px 0; font-size: 0.85em; color: var(--text-dim); }
+/* Verdict badge */
+.verdict { display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; border-radius: 25px; font-weight: 700; font-size: 1.05em; }
+.verdict.neutral { background: rgba(255,165,2,0.15); color: var(--warn); border: 1px solid rgba(255,165,2,0.3); }
+/* Method badge */
+.method-badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 0.75em; font-weight: 600; margin-right: 6px; }
+.method-badge.yang { background: rgba(74,158,255,0.2); color: var(--yang); }
+.method-badge.lu { background: rgba(168,85,247,0.2); color: var(--lu); }
+.method-badge.caisen { background: rgba(232,184,75,0.2); color: var(--caisen); }
+.method-badge.benniao { background: rgba(46,213,115,0.2); color: var(--benniao); }
+.method-badge.serenity { background: rgba(224,224,224,0.2); color: var(--serenity); }
+.method-badge.mx { background: rgba(0,212,170,0.2); color: var(--mx); }
+.footer { padding: 30px 0; text-align: center; color: var(--text-dim); font-size: 0.8em; }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="container">
+    <h1>生猪市场六专家整合分析报告</h1>
+    <p class="subtitle">杨世光 · 卢麒元 · 蔡森 · 笨鸟 · 白毛-Serenity · 妙想量化选股 — 六维交叉验证猪周期底部</p>
+    <div class="hero-meta">
+      <span>报告日期：2026年6月18日</span>
+      <span>数据来源：东方财富妙想数据 · mx-search · WebSearch</span>
+      <span>猪价基准：9.39元/公斤</span>
+      <span>能繁母猪：3904万头</span>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="label">生猪出栏均价</div>
+        <div class="value" style="color:var(--bear)">9.39<span style="font-size:0.5em">元/kg</span></div>
+        <div class="change down">同比 -35.2%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">猪肉批发价</div>
+        <div class="value" style="color:var(--bear)">14.7<span style="font-size:0.5em">元/kg</span></div>
+        <div class="change down">较高点 -47%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">能繁母猪存栏</div>
+        <div class="value" style="color:var(--warn)">3904<span style="font-size:0.5em">万头</span></div>
+        <div class="change warn">高于新目标3750万约4%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">头均养殖利润</div>
+        <div class="value" style="color:var(--bear)">-400<span style="font-size:0.5em">元</span></div>
+        <div class="change down">深度亏损</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">猪粮比</div>
+        <div class="value" style="color:var(--bear)">3.91:1</div>
+        <div class="change down">远低于5:1一级预警</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">综合研判</div>
+        <div class="value" style="color:var(--warn); font-size:1.3em">底部磨底</div>
+        <div class="change warn">左侧布局窗口</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 新闻背景 ===== -->
+<div class="section">
+  <div class="container">
+    <div class="section-title"><span class="icon" style="background:rgba(255,165,2,0.15);color:var(--warn)">📰</span> 新闻背景与市场舆情</div>
+    <p class="section-subtitle">数据来源：妙想资讯搜索(mx-search) + WebSearch 发散搜索 | 权重：7天内100%</p>
+    <div class="card">
+      <h3>核心新闻摘要（截至2026.06.18）</h3>
+      <ul>
+        <li><strong>能繁母猪连续9个月下滑</strong>：截至2026年Q1末，能繁母猪存栏3904万头，连续9个月下行，3月新生仔猪数量17个月来首次同比下降。但去化幅度仅4.3%，远低于历史周期的10%+水平。</li>
+        <li><strong>"钝刀割肉"式下行周期</strong>：本轮猪周期自2022年起已延续5年，猪价在底部区域徘徊超20个月，打破历史最长纪录。4月部分省份出栏价跌至4元/斤以下，创2018年以来近七年新低。</li>
+        <li><strong>头部企业Q1集体亏损</strong>：牧原股份亏损12.2亿、温氏股份亏损10.7亿、新希望亏损约9亿。牧原能繁母猪从362万头主动调减至313万头。</li>
+        <li><strong>政策调控加码</strong>：农业农村部发布《生猪产能综合调控实施方案（2026年修订）》，设立能繁母猪存栏绿色/黄色/红色三色预警区域，正常保有量3750万头（2026年5月修订下调）。</li>
+        <li><strong>仔猪价格加速下跌</strong>：6.5kg仔猪均价220元/头，周环比下跌12%，仔猪销售已陷入亏损，反映行业情绪趋于悲观。</li>
+        <li><strong>期货远月大幅升水</strong>：LH2609报12140元/吨，LH2701报13525元/吨，远月升水11%，反映市场远期修复预期。</li>
+        <li><strong>机构分歧明显</strong>：广发证券认为"底部布局价值凸显"，浙商证券认为"去化幅度不足，无法支撑大幅上涨"。</li>
+      </ul>
+    </div>
+    <div class="chart-box">
+      <h4>生猪价格与猪肉批发价历史走势（2022.01 - 2026.06）</h4>
+      <div class="chart-container tall">
+        <canvas id="chartPigPrice"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 杨世光 ===== -->
+<div class="section expert-yang">
+  <div class="container">
+    <div class="section-title"><span class="icon">🔵</span> 杨世光：宏观六步法分析</div>
+    <p class="section-subtitle"><span class="method-badge yang">M1 经济周期</span><span class="method-badge yang">M2 货币政策</span><span class="method-badge yang">M3 美元周期</span><span class="method-badge yang">M5 资产轮动</span></p>
+    <div class="card">
+      <h3>第一步：经济周期定位</h3>
+      <p>当前中国处于<strong>"衰退→复苏"过渡期</strong>。GDP增速放缓、CPI低位（猪价拖累0.31个百分点）、PPI回升（+3.9%，主因大宗商品涨价与AI需求）。从美林时钟看，处于通缩环境下的复苏前夜。</p>
+      <ul>
+        <li><strong>猪价对CPI的拖累</strong>：5月猪价同比下跌16.1%，拖累CPI约0.31个百分点，抵消了近一半汽油价格上涨。猪价是当前CPI低迷的核心权重项之一。</li>
+        <li><strong>K型分化</strong>：中游高技术制造业和装备制造业是亮点（出口驱动），但下游生活资料价格连续37个月负增（-0.8%），消费端持续疲软。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>第二步：货币政策与利率环境</h3>
+      <p>猪价低迷→CPI可控→给予央行更多宽松空间。但PPI走高（+3.9%）限制全面宽松。浙商证券测算：即便油价80-100美元、猪价季节性回升至12元，全年CPI均值仍在1.3-1.5%，单月过2%的可能性存在但概率不高。<strong>猪价不大幅上涨是CPI可控的关键</strong>。</p>
+    </div>
+    <div class="card">
+      <h3>第三步：美元周期与人民币升值路径</h3>
+      <p>美元走弱→人民币升值→中国通缩缓解（S-I=X-M恒等式）。人民币升值→进口农产品成本下降→短期饲料成本压力减轻。但中长期，升值改善总需求→猪肉消费回暖。<strong>人民币升值路径是解决通缩（包括猪价低迷）的数学必然</strong>。</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--yang)">
+      <h3>杨世光结论</h3>
+      <p>猪周期处于"衰退→复苏"转换的底部阶段。从宏观层面，猪价低迷给予货币政策宽松空间，但同时也压制CPI反弹。<span class="highlight">能繁母猪去化4.3%仍不足以触发周期反转，需达10%左右</span>。预计2026Q3-Q4猪价温和回升至10-12元/公斤，大幅上涨概率低。养殖板块处于<strong>左侧布局窗口期</strong>。</p>
+      <p style="margin-top:10px"><span class="tag tag-warn">周期底部</span> <span class="tag tag-neutral">温和回升</span> <span class="tag tag-bull">左侧布局</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 卢麒元 ===== -->
+<div class="section expert-lu">
+  <div class="container">
+    <div class="section-title"><span class="icon">🟣</span> 卢麒元：制度结构分析</div>
+    <p class="section-subtitle"><span class="method-badge lu">M1 广义财政</span><span class="method-badge lu">M2 资本三流</span><span class="method-badge lu">M4 费雪通缩</span><span class="method-badge lu">M6 明斯基</span><span class="method-badge lu">M8 反者道之动</span></p>
+    <div class="chart-grid-2">
+      <div class="card">
+        <h3>制度性约束与广义财政</h3>
+        <p>生猪产业涉及国家粮食安全战略，政策调控力度强。《生猪产能综合调控实施方案》= 白色财政对农业的精准调控。能繁母猪<strong>3750万头保有量目标</strong>（2026年5月修订下调）是制度性锚点——当前3904万头仍高于新目标约4.1%，去化至目标以下才能触发反转信号。</p>
+        <ul>
+          <li>绿色区域：正常保有量92%-103%（约3450-3862万头）</li>
+          <li>当前3904万头 = 新目标3750万的104.1%，已处于黄色区域</li>
+          <li>去化至3750万头目标 = 进入"政策认为健康"的绿色区域</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>资本三流：从散户流向龙头</h3>
+        <p><strong>流量</strong>：行业资本流入放缓（全行业亏损）。<strong>流向</strong>：从中小散户急剧流向龙头企业（出栏占比6.2%→28.85%）。<strong>流速</strong>：产能去化速度被规模化熨平，周期拉长。</p>
+        <ul>
+          <li>规模化企业现金流储备充足、融资能力强→抗周期能力强→去产能慢</li>
+          <li>中小散户现金成本以下运行→庞氏融资阶段→加速退出</li>
+          <li>结果：周期不再V型反转，而是缓慢L型筑底</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <h3>费雪债务通缩螺旋（m×v=PQ）</h3>
+      <p>猪价下跌→养殖企业收入下降→债务负担加重→被迫抛售出栏→供给增加→猪价进一步下跌。这一通缩螺旋在生猪行业体现明显。头部企业资产负债率上升（新希望58%、正邦67%），行业正经历"债务-通缩"的自我强化过程。<strong>打破螺旋需要外部力量（政策托底/产能调控）</strong>。</p>
+    </div>
+    <div class="card">
+      <h3>反者道之动：周期哲学</h3>
+      <p>自然平衡（2019-2020高猪价）→ 人为干预打破平衡（政策鼓励扩产）→ <strong>极度不平衡</strong>（供给过剩、深度亏损）→ 必然回归（产能去化→价格回升）。当前处于"极度不平衡→回归"的转折点。<span class="highlight">"钝刀割肉"=太极阶段（最痛苦的磨底）</span>，反者道之动——极度的亏损终将催生极度的反转。</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--lu)">
+      <h3>卢麒元结论</h3>
+      <p>生猪行业深度亏损的本质是产能过剩与制度性调控的博弈。规模化提升了抗周期能力，但也延长了去产能时间。3750万头目标（5月修订下调）是制度锚点，当前3904万头仍需去化约154万头。本轮反转不会是V型，而是<strong>缓慢L型复苏</strong>。猪周期的"钝刀割肉"终将因极度亏损→产能充分去化→供需反转而结束。</p>
+      <p style="margin-top:10px"><span class="tag tag-warn">L型筑底</span> <span class="tag tag-neutral">制度锚点3750万</span> <span class="tag tag-bull">反者道之动</span></p>
+    </div>
+    <div class="chart-box">
+      <h4>能繁母猪存栏变化与去化趋势（2024.04 - 2026.06）</h4>
+      <div class="chart-container">
+        <canvas id="chartSow"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 蔡森 ===== -->
+<div class="section expert-caisen">
+  <div class="container">
+    <div class="section-title"><span class="icon">🟠</span> 蔡森：形态学技术分析</div>
+    <p class="section-subtitle"><span class="method-badge caisen">M1 形态识别</span><span class="method-badge caisen">M3 量价验证</span><span class="method-badge caisen">M5 多周期</span><span class="method-badge caisen">M6 破底翻</span><span class="method-badge caisen">本益比景气循环</span></p>
+    <div class="card">
+      <h3>形态识别：水底型底部 + 待确认破底翻</h3>
+      <p>牧原股份从2024年高点持续下行，当前处于底部横盘震荡区域，呈现<strong>"水底型"底部特征</strong>（长期底部横盘，破底翻信号强）。猪价K线：4月探底9.27元/公斤→5月止跌→6月仍在底部震荡。</p>
+      <ul>
+        <li><strong>破底翻判定</strong>：4月创新低后反弹→5月止跌→但蔡森法则要求<strong>3日站稳确认</strong>，当前猪价仍在底部震荡，尚未明确站稳10元/公斤</li>
+        <li><strong>期货远月升水</strong>：LH2701(13525) vs LH2609(12140)，升水11%。远月升水=市场对远期"破底翻"的定价预期</li>
+        <li><strong>持仓量信号</strong>：生猪加权指数持仓量逼近历史新高=多空分歧极大，"暂不建议布局长线多单"</li>
+      </ul>
+    </div>
+    <div class="chart-grid-2">
+      <div class="card">
+        <h3>量价验证</h3>
+        <p>养殖ETF（159011）交投活跃，换手率27%→资金关注度高。但牧原(-2.97%)/温氏(-2.60%)/新希望(-1.90%)今日全线下跌→量价不配合。板块全线下跌=短期弱势确认，<strong>不宜追多</strong>。</p>
+      </div>
+      <div class="card">
+        <h3>本益比景气循环法</h3>
+        <p>养殖股当前PE为负（全面亏损）=景气底部。蔡森法则：景气底部PE无意义，看PB。牧原PB 2.32、温氏PB 2.15、新希望PB 1.48。从PB看，<strong>新希望估值最低（1.48）</strong>，安全边际相对最高。</p>
+      </div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--caisen)">
+      <h3>蔡森结论</h3>
+      <p>养殖板块技术面仍处底部震荡，尚未出现明确的破底翻信号。猪价4月探底后5月止跌是初步信号，但需等待<span class="highlight">放量突破确认（猪价站稳10元/公斤以上）</span>再考虑右侧布局。左侧投资者可关注PB最低的新希望。短期操作纪律：<strong>不追多、等右侧、严停损</strong>。</p>
+      <p style="margin-top:10px"><span class="tag tag-warn">底部震荡</span> <span class="tag tag-bear">短期弱势</span> <span class="tag tag-neutral">等破底翻确认</span></p>
+    </div>
+    <div class="chart-box">
+      <h4>生猪期货期限结构（各合约价格，2026.06.12）</h4>
+      <div class="chart-container">
+        <canvas id="chartFutures"></canvas>
+      </div>
+    </div>
+    <div class="chart-box">
+      <h4>猪价底部形态监测：水底型 + 破底翻待确认（2025.10-2026.06）</h4>
+      <div class="chart-container">
+        <canvas id="chartCaisenPattern"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 笨鸟 ===== -->
+<div class="section expert-benniao">
+  <div class="container">
+    <div class="section-title"><span class="icon">🟢</span> 笨鸟：数据拆解分析</div>
+    <p class="section-subtitle"><span class="method-badge benniao">M1 数据拆解</span><span class="method-badge benniao">M3 因果链</span><span class="method-badge benniao">M4 反常信号</span><span class="method-badge benniao">M13 涨价拆解</span><span class="method-badge benniao">M15 传导链</span></p>
+    <div class="card">
+      <h3>M1 数据拆解：猪价数量与质量维度</h3>
+      <table class="data-table">
+        <thead><tr><th>维度</th><th>指标</th><th>数值</th><th>信号</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="3">数量维度</td><td>猪价绝对值</td><td class="num neg">9.39元/kg</td><td>7年新低</td></tr>
+          <tr><td>同比变化</td><td class="num neg">-35.2%</td><td>大幅下跌</td></tr>
+          <tr><td>趋势</td><td>5月止跌</td><td>急跌→磨底转换</td></tr>
+          <tr><td rowspan="3">质量维度</td><td>出栏均重</td><td>上升</td><td>主动调控</td></tr>
+          <tr><td>二育比例</td><td>回落</td><td>养殖端理性化</td></tr>
+          <tr><td>仔猪价格</td><td class="num neg">220元/头(-12%周环比)</td><td>情绪极度悲观</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h3>M4 反常信号识别（三大反常）</h3>
+      <div style="display:grid;grid-template-columns:1fr;gap:12px">
+        <div style="background:var(--card-hover);border-radius:8px;padding:14px;border-left:3px solid var(--bear)">
+          <strong style="color:var(--bear)">反常信号①</strong>：深度亏损但产能去化缓慢<br>
+          <span style="font-size:0.9em;color:var(--text-dim)">每头亏400元，但能繁母猪仅去化4.3%。正常情况应触发10%+去化。反常原因：规模化企业现金流储备充足，融资能力强，"钝刀割肉"拉长周期。</span>
+        </div>
+        <div style="background:var(--card-hover);border-radius:8px;padding:14px;border-left:3px solid var(--warn)">
+          <strong style="color:var(--warn)">反常信号②</strong>：期货远月大幅升水<br>
+          <span style="font-size:0.9em;color:var(--text-dim)">LH2701(13525) vs LH2609(12140)升水11%。现货低迷 vs 远月乐观=市场定价分歧极大。持仓量逼近历史新高=多空博弈白热化。</span>
+        </div>
+        <div style="background:var(--card-hover);border-radius:8px;padding:14px;border-left:3px solid var(--bull)">
+          <strong style="color:var(--bull)">反常信号③</strong>：仔猪价格加速下跌<br>
+          <span style="font-size:0.9em;color:var(--text-dim)">6.5kg仔猪220元/头(周环比-12%)，仔猪销售已亏损。这是产能加速去化的关键先行指标（领先母猪去化2-3个月），指向Q3产能去化将明显提速。</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>M3+M15 因果链传导时间线</h3>
+      <div class="timeline-item">
+        <div class="timeline-date">2025.05-06</div>
+        <div class="timeline-content"><span class="indicator">能繁母猪存栏见顶</span>（约4050万头），开始下行</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2026.03</div>
+        <div class="timeline-content"><span class="indicator">新生仔猪数量17个月首次同比转负</span> → 领先出栏约6个月</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2026.04</div>
+        <div class="timeline-content"><span class="indicator">猪价探底9.27元/公斤</span> → 创7年新低，行业深度亏损</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2026.05-06</div>
+        <div class="timeline-content"><span class="indicator">猪价止跌磨底</span> → 养殖端从"集中抛售"转向"挺价惜售"</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2026.09后（预测）</div>
+        <div class="timeline-content"><span class="indicator">理论出栏量开始下降</span> → 仔猪领先信号兑现 → 供给压力边际缓解</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2026.Q4-2027.Q1（预测）</div>
+        <div class="timeline-content"><span class="indicator">供给收缩驱动猪价温和回升</span> → 但PSY提升对冲部分去化效果</div>
+      </div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--benniao)">
+      <h3>笨鸟结论</h3>
+      <p>三大反常信号指向同一结论：<strong>产能去化正在加速但尚未完成</strong>。仔猪价格加速下跌是关键先行指标（领先母猪去化2-3个月）。按10个月传导周期，2026年9月后理论出栏量开始下降，Q4可能出现供给收缩驱动的猪价反弹。但PSY提升（24-32头）对冲了部分去化效果，<span class="highlight">实际反弹幅度可能有限（10-12元/公斤）</span>。</p>
+      <p style="margin-top:10px"><span class="tag tag-warn">去化加速中</span> <span class="tag tag-bull">Q4反弹窗口</span> <span class="tag tag-neutral">幅度有限</span></p>
+    </div>
+    <div class="chart-box">
+      <h4>养殖利润走势与猪粮比变化（2024.01 - 2026.06）</h4>
+      <div class="chart-container">
+        <canvas id="chartProfit"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 白毛 ===== -->
+<div class="section expert-serenity">
+  <div class="container">
+    <div class="section-title"><span class="icon">⚪</span> 白毛-Serenity：供应链瓶颈猎手</div>
+    <p class="section-subtitle"><span class="method-badge serenity">Serenity九步工作流</span><span class="method-badge serenity">价值链映射</span><span class="method-badge serenity">稀缺层识别</span><span class="method-badge serenity">Buffett质量门</span></p>
+    <div class="card">
+      <h3>生猪产业链价值链映射</h3>
+      <p>从Serenity供应链视角拆解生猪全产业链，识别当前阶段的核心"卡点"不在供给端（产能过剩），而在<strong>成本控制能力</strong>。</p>
+      <div class="chart-box" style="margin-top:15px">
+        <h4>生猪产业链价值链层级与公司分布</h4>
+        <div class="chart-container">
+          <canvas id="chartChain"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>稀缺层分析：成本控制能力 = 唯一护城河</h3>
+      <p>生猪是高度同质化商品，在供给过剩阶段，<strong>成本是唯一可持续的竞争优势</strong>。核心成本驱动因素：</p>
+      <ul>
+        <li><strong>PSY（每头母猪年提供断奶仔猪数）</strong>：头部企业24-32头，中小散户18-22头。PSY每提升1头，完全成本下降约0.3-0.5元/公斤。</li>
+        <li><strong>料肉比</strong>：牧原料肉比约2.4-2.5，行业平均2.6-2.8。每降低0.1，成本下降约0.4元/公斤。</li>
+        <li><strong>疫病防控</strong>：非洲猪瘟常态化下，生物安全水平直接决定存活率和产能稳定性。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>公司优先级排序（基于供应链地位+成本优势）</h3>
+      <table class="data-table">
+        <thead><tr><th>排序</th><th>公司</th><th>市值</th><th>PB</th><th>供应链定位</th><th>核心优势</th><th>主要风险</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>牧原股份</td><td class="num">1941亿</td><td class="num">2.32</td><td>全产业链一体化</td><td>成本最低(约14-15元/kg)、PSY领先</td><td>市值大弹性小</td></tr>
+          <tr><td>2</td><td>温氏股份</td><td class="num">822亿</td><td class="num">2.15</td><td>猪禽双轮驱动</td><td>分散风险、区域布局广</td><td>成本中等</td></tr>
+          <tr><td>3</td><td>神农集团</td><td class="num">135亿</td><td class="num">3.15</td><td>西南区域龙头</td><td>成本控制优秀、弹性大</td><td>体量小、区域集中</td></tr>
+          <tr><td>4</td><td>新希望</td><td class="num">279亿</td><td class="num">1.48</td><td>饲料+养殖协同</td><td>PB最低、饲料协同</td><td>负债率高(58%)</td></tr>
+          <tr><td>5</td><td>正邦科技</td><td class="num">268亿</td><td class="num">2.57</td><td>重整后标的</td><td>困境反转潜力</td><td>负债率极高(67%)、不确定性大</td></tr>
+          <tr><td>★</td><td>海大集团</td><td class="num">678亿</td><td class="num">2.87</td><td>饲料龙头(非养殖)</td><td>PE 19.1、财务最健康、海外布局</td><td>非纯养殖标的</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h3>Serenity五步法快速过闸</h3>
+      <ul>
+        <li><strong>关键卡点</strong>：低成本养殖能力（PSY/料肉比/疫病防控）</li>
+        <li><strong>第一性原理</strong>：生猪是同质化商品→成本是唯一护城河→牧原成本领先=供应链核心卡点</li>
+        <li><strong>Buffett质量门</strong>：<span class="tag tag-warn">unverified</span> 牧原护城河/利润率/客户替换风险均需进一步验证</li>
+        <li><strong>叙事vs基本面</strong>：当前叙事极度悲观("钝刀割肉")，但龙头现金流仍可支撑→叙事可能过度悲观</li>
+        <li><strong>分类</strong>：可投资结论（左侧布局成本优势龙头）</li>
+      </ul>
+    </div>
+    <div class="card" style="border-left:3px solid var(--serenity)">
+      <h3>白毛结论</h3>
+      <p>生猪产业链当前不缺供给，缺的是<strong>"低成本产能"</strong>。周期反转时，成本最低的牧原将最先盈利、弹性最大。建议关注成本优势龙头，而非追求产能扩张型标的。海大集团作为饲料龙头，财务最健康（PE 19.1），是穿越周期的稳健选择。<span class="highlight">供应链视角的核心发现：仔猪价格加速下跌=中小产能加速退出=龙头份额将进一步提升</span>。</p>
+      <p style="margin-top:10px"><span class="tag tag-bull">成本为王</span> <span class="tag tag-neutral">龙头集中</span> <span class="tag tag-bull">左侧布局</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 妙想量化选股 ===== -->
+<div class="section expert-mx">
+  <div class="container">
+    <div class="section-title"><span class="icon">📊</span> 妙想量化选股：数据驱动标的池验证</div>
+    <p class="section-subtitle"><span class="method-badge mx">Q1 交叉筛选</span><span class="method-badge mx">Q2 板块热力</span><span class="method-badge mx">Q3 基本面验证</span><span class="method-badge mx">Q4 指数成分</span></p>
+    <div class="card">
+      <h3>Q2 板块热力扫描：农林牧渔大市值股全景（2026.06.18）</h3>
+      <table class="data-table">
+        <thead><tr><th>代码</th><th>名称</th><th>最新价</th><th>涨跌幅</th><th>总市值</th><th>PE(动)</th><th>PB</th><th>细分行业</th></tr></thead>
+        <tbody>
+          <tr><td>002714</td><td>牧原股份</td><td class="num">33.63</td><td class="num neg">-2.97%</td><td class="num">1941亿</td><td class="num neg">-39.95</td><td class="num">2.32</td><td>生猪养殖</td></tr>
+          <tr><td>300498</td><td>温氏股份</td><td class="num">12.36</td><td class="num neg">-2.60%</td><td class="num">822亿</td><td class="num neg">-19.21</td><td class="num">2.15</td><td>生猪养殖</td></tr>
+          <tr><td>002311</td><td>海大集团</td><td class="num">41.20</td><td class="num neg">-0.91%</td><td class="num">678亿</td><td class="num pos">19.10</td><td class="num">2.87</td><td>水产饲料</td></tr>
+          <tr><td>000876</td><td>新希望</td><td class="num">6.20</td><td class="num neg">-1.90%</td><td class="num">279亿</td><td class="num neg">-7.77</td><td class="num">1.48</td><td>生猪养殖</td></tr>
+          <tr><td>002157</td><td>正邦科技</td><td class="num">2.90</td><td class="num neg">-4.29%</td><td class="num">268亿</td><td class="num neg">-16.19</td><td class="num">2.57</td><td>生猪养殖</td></tr>
+          <tr><td>605296</td><td>神农集团</td><td class="num">25.68</td><td class="num neg">-2.80%</td><td class="num">135亿</td><td class="num neg">-5.20</td><td class="num">3.15</td><td>生猪养殖</td></tr>
+          <tr><td>002299</td><td>圣农发展</td><td class="num">16.14</td><td class="num neg">-0.49%</td><td class="num">201亿</td><td class="num pos">19.83</td><td class="num">1.79</td><td>肉鸡养殖</td></tr>
+          <tr><td>300761</td><td>立华股份</td><td class="num">17.19</td><td class="num neg">-0.64%</td><td class="num">145亿</td><td class="num pos">23.49</td><td class="num">1.55</td><td>肉鸡养殖</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="chart-grid-2">
+      <div class="card">
+        <h3>Q1+Q3 量化验证结论</h3>
+        <ul>
+          <li><strong>PE全部为负</strong>：5大生猪养殖龙头PE(动)均为负值，量化确认行业整体深度亏损</li>
+          <li><strong>饲料龙头最健康</strong>：海大集团PE 19.1=唯一正PE的大市值农业股，财务最稳健</li>
+          <li><strong>PB排序</strong>：新希望(1.48) < 圣农(1.79) < 立华(1.55) < 温氏(2.15) < 牧原(2.32)</li>
+          <li><strong>板块全线下跌</strong>：6月18日生猪养殖股无一上涨，市场情绪极度悲观</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Q4 指数成分股观察</h3>
+        <ul>
+          <li>沪深300成分股中的养殖股：牧原、温氏均在列</li>
+          <li>当前处于估值底部区域（PE为负=周期底部特征）</li>
+          <li>养殖ETF(159011)换手率27%=资金高度关注</li>
+          <li><strong>量化信号</strong>：板块PE全部转负+PB处于低位+ETF高换手=底部区域特征，但尚无量价配合的企稳信号</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--mx)">
+      <h3>妙想量化选股结论</h3>
+      <p>量化数据客观确认：生猪养殖板块整体处于亏损状态，所有龙头PE为负。从PB角度看，新希望(1.48)估值最低。海大集团(PE 19.1)作为饲料龙头是产业链中财务最健康的标的。板块今日全线下跌，市场情绪仍偏悲观，<span class="highlight">尚未出现量价企稳信号</span>。量化验证支持"底部区域"判断，但不支持"立即反转"。</p>
+      <p style="margin-top:10px"><span class="tag tag-warn">PE全负</span> <span class="tag tag-neutral">底部确认</span> <span class="tag tag-bear">无企稳信号</span></p>
+    </div>
+    <div class="chart-box">
+      <h4>龙头公司估值雷达图（PB/市值/跌幅/换手率多维度对比）</h4>
+      <div class="chart-container">
+        <canvas id="chartRadar"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 底层逻辑 ===== -->
+<div class="section expert-logic">
+  <div class="container">
+    <div class="section-title"><span class="icon">📐</span> 底层逻辑关联</div>
+    <p class="section-subtitle">核心恒等式 S-I=X-M 与猪周期-CPI-货币政策的传导链</p>
+    <div class="card">
+      <h3>恒等式视角：通缩、猪价与人民币升值</h3>
+      <p>核心恒等式：<strong>储蓄S - 投资I = 出口X - 进口M</strong></p>
+      <p>中国通缩的根源是巨额贸易盈余（X-M≫0）→超额储蓄无法转化为有效需求（S-I≫0）→总需求不足→供过于求→通缩。猪价下跌是这一通缩链条在农产品领域的具体表现。</p>
+      <div style="background:var(--card-hover);border-radius:8px;padding:16px;margin:15px 0;font-size:0.9em">
+        <strong>猪价→CPI→货币政策传导链：</strong><br>
+        猪价低迷 → CPI拖累0.31个百分点 → 央行有宽松空间 → 但PPI走高(+3.9%)限制宽松 → 货币政策"稳健偏松"<br><br>
+        <strong>猪价→人民币升值传导链：</strong><br>
+        人民币升值 → 进口农产品成本下降 → 饲料成本下降 → 养殖成本边际改善 → 但同时压制国内农产品价格 → 猪价上行空间受限
+      </div>
+    </div>
+    <div class="card">
+      <h3>猪周期与通缩的宏观共振</h3>
+      <ul>
+        <li><strong>共振效应</strong>：猪周期下行+宏观经济通缩=双重供给过剩压力。不仅猪肉供给过剩，整体消费需求也疲软（生活资料PPI连续37个月负增）。</li>
+        <li><strong>政策含义</strong>：猪价不大幅上涨→CPI可控→央行不必收紧→流动性宽裕→利好风险资产估值修复。这是猪周期底部对资本市场的"反向红利"。</li>
+        <li><strong>历史对标</strong>：2014年和2018年开启的猪周期上行，均以能繁母猪经历2-3个季度快速深度去化为前提。当前去化力度和持续时间仍显不足。</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 六人综合结论 ===== -->
+<div class="section">
+  <div class="container">
+    <div class="section-title"><span class="icon" style="background:rgba(255,255,255,0.1);color:var(--text)">🎯</span> 六人综合结论</div>
+    <p class="section-subtitle">六位专家交叉验证 · 共识与分歧 · 跨专家联动</p>
+    <div class="consensus-box">
+      <h3>综合研判：<span class="verdict neutral">底部磨底 · 左侧布局窗口</span></h3>
+      <p style="margin-top:12px">六位专家一致认为<strong>猪周期处于底部区域</strong>。能繁母猪去化正在进行但尚未充分（4.3% vs 历史10%+）。2026年Q4-2027年Q1可能出现供给收缩驱动的温和回升（10-12元/公斤），但大幅上涨概率低。短期技术面弱势、量价不配合，不宜追多。中长期，成本优势龙头（牧原）和低估值标的（新希望）具备左侧布局价值。</p>
+    </div>
+    <div class="chart-grid-2">
+      <div class="card">
+        <h3>六人共识</h3>
+        <ul>
+          <li>✅ 猪周期处于底部区域（六人一致，100%共识）</li>
+          <li>✅ 能繁母猪去化不足，反转需更多时间（五人支持）</li>
+          <li>✅ 2026Q4-2027Q1可能温和回升（四人支持）</li>
+          <li>✅ 成本优势是核心竞争力（白毛+笨鸟+妙想）</li>
+          <li>✅ 短期不宜追多，等右侧信号（蔡森+杨世光）</li>
+          <li>✅ 仔猪价格加速下跌=去化提速先行信号（笨鸟+白毛）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>六人分歧</h3>
+        <ul>
+          <li>⚠️ <strong>反转时间</strong>：乐观派(Q3拐点) vs 谨慎派(2027年)</li>
+          <li>⚠️ <strong>反弹幅度</strong>：浙商证券(仅小幅至12元) vs 广发证券(周期弹性值得期待)</li>
+          <li>⚠️ <strong>估值安全</strong>：PB派(新希望1.48最低) vs 成本派(牧原最优) vs 稳健派(海大最健康)</li>
+          <li>⚠️ <strong>期货定价</strong>：远月升水11%=远期乐观 vs 现货低迷=短期悲观</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <h3>跨专家联动检查</h3>
+      <table class="data-table">
+        <thead><tr><th>联动场景</th><th>触发</th><th>联动结果</th></tr></thead>
+        <tbody>
+          <tr><td>宏观→技术</td><td>🔵杨世光判断周期底部</td><td>🟠蔡森验证：技术面底部震荡，尚未确认破底翻</td></tr>
+          <tr><td>制度→数据</td><td>🟣卢麒元识别去化不足</td><td>🟢笨鸟M4量化确认：去化4.3%<历史10%=反常信号</td></tr>
+          <tr><td>数据→证据链</td><td>🟢笨鸟识别仔猪价格加速下跌</td><td>⚪白毛验证：仔猪亏损=中小产能加速退出=龙头份额提升</td></tr>
+          <tr><td>定性→量化</td><td>五位专家判断底部布局</td><td>📊妙想选股：所有龙头PE为负=底部确认，PB新希望最低</td></tr>
+          <tr><td>成本→供应链</td><td>⚪白毛识别成本优势为核心</td><td>📊妙想选股Q3验证：海大PE 19.1=唯一正PE大市值农业股</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="chart-box">
+      <h4>六专家共识度雷达图</h4>
+      <div class="chart-container">
+        <canvas id="chartConsensus"></canvas>
+      </div>
+    </div>
+    <div class="chart-box">
+      <h4>牧原股份净利润周期波动（2023-2026Q1，反映猪周期盈亏节奏）</h4>
+      <div class="chart-container">
+        <canvas id="chartMuyuan"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 先行指标 ===== -->
+<div class="section">
+  <div class="container">
+    <div class="section-title"><span class="icon" style="background:rgba(255,255,255,0.1);color:var(--text)">📋</span> 先行指标跟踪清单</div>
+    <p class="section-subtitle">日历形式呈现 · 按重要性排序 · 定期更新</p>
+    <div class="card">
+      <table class="data-table">
+        <thead><tr><th>先行指标</th><th>当前状态</th><th>预警阈值</th><th>领先期</th><th>数据频率</th><th>下次发布</th></tr></thead>
+        <tbody>
+          <tr><td><strong>能繁母猪存栏</strong></td><td>3904万头(↓)</td><td>跌破3750万头</td><td>10个月</td><td>季度</td><td>2026年7月(Q2数据)</td></tr>
+          <tr><td><strong>仔猪价格</strong></td><td>220元/头(↓↓)</td><td>跌破150元/头</td><td>6个月</td><td>周</td><td>每周更新</td></tr>
+          <tr><td><strong>新生仔猪数量</strong></td><td>3月同比转负</td><td>连续3个月同比负增</td><td>6个月</td><td>月度</td><td>2026年7月</td></tr>
+          <tr><td><strong>猪粮比</strong></td><td>3.91:1</td><td>回升至5:1以上</td><td>同步</td><td>周</td><td>每周更新</td></tr>
+          <tr><td><strong>生猪期货远月升水</strong></td><td>11%(LH2701/2609)</td><td>升水收窄至5%以下</td><td>3-6个月</td><td>日</td><td>每日</td></tr>
+          <tr><td><strong>养殖利润(头均)</strong></td><td>-400元</td><td>亏损收窄至-100元以内</td><td>同步</td><td>周</td><td>每周更新</td></tr>
+          <tr><td><strong>出栏均重</strong></td><td>上升中</td><td>持续上升=挺价惜售</td><td>1-2个月</td><td>周</td><td>每周更新</td></tr>
+          <tr><td><strong>淘汰母猪价格/生猪价格比</strong></td><td>77%折价</td><td>折价扩大=去化加速</td><td>2-3个月</td><td>周</td><td>每周更新</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 免责声明 ===== -->
+<div class="section">
+  <div class="container">
+    <div class="disclaimer">
+      <h3 style="color:var(--bear);margin-bottom:10px">⚠️ 风险提示与免责声明</h3>
+      <p>以上分析融合了杨世光、卢麒元、蔡森、笨鸟、白毛-Serenity、妙想量化选股六位专家的理论框架，仅为经济学教学与经验分享，<strong>不构成任何投资建议</strong>。投资有风险，交易请独立判断并自负盈亏。</p>
+      <p style="margin-top:10px"><strong>主要风险</strong>：①产能去化不及预期，猪价持续磨底；②疫病（非洲猪瘟等）突发导致供给端剧烈波动；③宏观经济下行超预期，消费需求进一步走弱；④政策调控力度变化；⑤饲料原料（玉米、豆粕）价格大幅波动；⑥龙头企业资金链风险。</p>
+      <p style="margin-top:10px"><strong>数据声明</strong>：报告中的猪价、存栏、财务数据来源于东方财富妙想数据(mx-data)、妙想资讯搜索(mx-search)及公开新闻，截至2026年6月18日。猪价、期货价格为动态数据，可能已发生变化，请以最新行情为准。</p>
+    </div>
+    <div class="footer">
+      <p>六专家整合市场分析师 · 2026.06.18 生成</p>
+      <p>数据基础设施：🏦 mx-data · 🔍 mx-search · 📊 mx-xuangu · ⭐ mx-zixuan · 💼 mx-moni</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== 全局Chart.js配置 =====
+Chart.defaults.color = '#8892b0';
+Chart.defaults.borderColor = '#2d3050';
+Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, PingFang SC, Microsoft YaHei, sans-serif';
+Chart.defaults.font.size = 12;
+
+// 通用tooltip配置
+const tooltipStyle = {
+  backgroundColor: '#1a1d2e',
+  titleColor: '#e4e7f0',
+  bodyColor: '#e4e7f0',
+  borderColor: '#2d3050',
+  borderWidth: 1,
+  padding: 12,
+  cornerRadius: 8
+};
+
+// ===== 1. 猪价走势图 =====
+new Chart(document.getElementById('chartPigPrice'), {
+  type: 'line',
+  data: {
+    labels: ['2022.01','2022.04','2022.07','2022.10','2023.01','2023.04','2023.07','2023.10','2024.01','2024.04','2024.07','2024.10','2025.01','2025.04','2025.07','2025.10','2026.01','2026.03','2026.06'],
+    datasets: [{
+      label: '生猪出栏均价(元/kg)',
+      data: [16.5, 15.8, 22.0, 26.5, 24.0, 14.5, 15.0, 14.8, 13.5, 15.2, 19.0, 17.5, 16.5, 14.8, 15.0, 12.5, 10.5, 9.5, 9.39],
+      borderColor: '#e8b84b',
+      backgroundColor: 'rgba(232,184,75,0.1)',
+      fill: true,
+      tension: 0.3,
+      pointRadius: 3,
+      borderWidth: 2
+    },{
+      label: '猪肉批发价(元/kg)',
+      data: [24.5, 23.8, 30.0, 35.5, 33.0, 22.5, 23.0, 21.8, 20.5, 22.2, 26.0, 24.5, 23.5, 21.8, 22.0, 18.5, 16.5, 15.2, 14.7],
+      borderColor: '#ff4757',
+      backgroundColor: 'rgba(255,71,87,0.05)',
+      fill: false,
+      tension: 0.3,
+      pointRadius: 3,
+      borderWidth: 2,
+      borderDash: [5,5]
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { tooltip: tooltipStyle, legend: { position: 'top' } },
+    scales: {
+      y: { title: { display: true, text: '价格(元/kg)' }, grid: { color: '#2d3050' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// ===== 2. 能繁母猪存栏 =====
+new Chart(document.getElementById('chartSow'), {
+  type: 'bar',
+  data: {
+    labels: ['2024.04','2024.07','2024.10','2025.01','2025.04','2025.05','2025.07','2025.10','2026.01','2026.03'],
+    datasets: [{
+      label: '能繁母猪存栏(万头)',
+      data: [3986, 3990, 4055, 4050, 4060, 4078, 4050, 3990, 3920, 3904],
+      backgroundColor: function(ctx) {
+        const v = ctx.parsed.y;
+        if (v > 4050) return 'rgba(255,71,87,0.6)';
+        if (v > 3950) return 'rgba(255,165,2,0.6)';
+        return 'rgba(46,213,115,0.6)';
+      },
+      borderColor: function(ctx) {
+        const v = ctx.parsed.y;
+        if (v > 4050) return '#ff4757';
+        if (v > 3950) return '#ffa502';
+        return '#2ed573';
+      },
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      tooltip: tooltipStyle,
+      legend: { display: false },
+      annotation: {}
+    },
+    scales: {
+      y: {
+        title: { display: true, text: '万头' },
+        min: 3800, max: 4100,
+        grid: { color: '#2d3050' }
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// ===== 3. 期货期限结构 =====
+new Chart(document.getElementById('chartFutures'), {
+  type: 'bar',
+  data: {
+    labels: ['LH2607\n(近月)', 'LH2609\n(主力)', 'LH2611', 'LH2701\n(远月)', 'LH2703'],
+    datasets: [{
+      label: '合约价格(元/吨)',
+      data: [10390, 12140, 12925, 13525, 13270],
+      backgroundColor: ['#ff4757','#ffa502','#e8b84b','#2ed573','#4a9eff'],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      tooltip: tooltipStyle,
+      legend: { display: false }
+    },
+    scales: {
+      y: { title: { display: true, text: '元/吨' }, grid: { color: '#2d3050' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// ===== 3.5 蔡森猪价底部形态监测 =====
+new Chart(document.getElementById('chartCaisenPattern'), {
+  type: 'line',
+  data: {
+    labels: ['2025.10','2025.11','2025.12','2026.01','2026.02','2026.03','2026.04','2026.05','2026.06'],
+    datasets: [{
+      label: '全国生猪出栏均价(元/kg)',
+      data: [14.5, 13.0, 11.5, 10.5, 10.0, 9.5, 9.27, 9.5, 9.39],
+      borderColor: '#e8b84b',
+      backgroundColor: 'rgba(232,184,75,0.12)',
+      fill: true,
+      tension: 0.3,
+      pointRadius: function(ctx) {
+        return ctx.parsed.y <= 9.3 ? 8 : 4;
+      },
+      pointBackgroundColor: function(ctx) {
+        return ctx.parsed.y <= 9.3 ? '#ff4757' : '#e8b84b';
+      },
+      borderWidth: 2.5
+    },{
+      label: '破底翻确认线(10元/kg)',
+      data: [10, 10, 10, 10, 10, 10, 10, 10, 10],
+      borderColor: '#2ed573',
+      borderWidth: 1.5,
+      borderDash: [6,4],
+      pointRadius: 0,
+      fill: false
+    },{
+      label: '现金成本线(约14元/kg)',
+      data: [14, 14, 14, 14, 14, 14, 14, 14, 14],
+      borderColor: '#ff4757',
+      borderWidth: 1.5,
+      borderDash: [6,4],
+      pointRadius: 0,
+      fill: false
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      tooltip: {
+        ...tooltipStyle,
+        callbacks: {
+          afterBody: function(ctx) {
+            if (ctx[0].dataIndex === 6) return '\n⬇ 4月7日探底9.27元=7年新低';
+            if (ctx[0].dataIndex === 7) return '\n🟡 5月止跌=磨底信号';
+            if (ctx[0].dataIndex === 8) return '\n⏳ 6月仍在底部=破底翻未确认';
+            return '';
+          }
+        }
+      },
+      legend: { position: 'top' }
+    },
+    scales: {
+      y: { title: { display: true, text: '价格(元/kg)' }, min: 8, max: 16, grid: { color: '#2d3050' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// ===== 4. 养殖利润走势 =====
+new Chart(document.getElementById('chartProfit'), {
+  type: 'line',
+  data: {
+    labels: ['2024.01','2024.04','2024.07','2024.10','2025.01','2025.04','2025.07','2025.10','2026.01','2026.03','2026.06'],
+    datasets: [{
+      label: '头均养殖利润(元)',
+      data: [200, 150, 300, 250, 100, 50, 30, -100, -200, -400, -400],
+      borderColor: '#2ed573',
+      backgroundColor: 'rgba(46,213,115,0.1)',
+      fill: true,
+      tension: 0.3,
+      pointRadius: 4,
+      borderWidth: 2,
+      yAxisID: 'y'
+    },{
+      label: '猪粮比',
+      data: [7.5, 7.0, 8.0, 7.5, 6.0, 5.5, 5.0, 4.5, 4.0, 3.91, 3.95],
+      borderColor: '#e8b84b',
+      backgroundColor: 'transparent',
+      tension: 0.3,
+      pointRadius: 4,
+      borderWidth: 2,
+      borderDash: [5,5],
+      yAxisID: 'y1'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { tooltip: tooltipStyle, legend: { position: 'top' } },
+    scales: {
+      y: { type: 'linear', position: 'left', title: { display: true, text: '利润(元/头)' }, grid: { color: '#2d3050' } },
+      y1: { type: 'linear', position: 'right', title: { display: true, text: '猪粮比' }, grid: { display: false }, min: 3, max: 9 },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// ===== 5. 产业链价值链 =====
+new Chart(document.getElementById('chartChain'), {
+  type: 'bar',
+  data: {
+    labels: ['终端消费', '屠宰加工', '商品猪养殖', '仔猪繁育', '饲料生产', '饲料原料\n(玉米/豆粕)', '动保疫苗'],
+    datasets: [{
+      label: '产业链层级',
+      data: [100, 85, 70, 55, 45, 30, 20],
+      backgroundColor: ['#4a9eff','#a855f7','#e8b84b','#2ed573','#00d4aa','#f97316','#ff4757'],
+      borderRadius: 6
+    },{
+      label: '当前盈利状态',
+      data: [60, 50, -80, -90, 30, 20, 40],
+      type: 'line',
+      borderColor: '#e4e7f0',
+      backgroundColor: 'transparent',
+      pointRadius: 5,
+      pointBackgroundColor: function(ctx) { return ctx.parsed.y < 0 ? '#ff4757' : '#2ed573'; },
+      borderWidth: 2,
+      tension: 0.3
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      tooltip: {
+        ...tooltipStyle,
+        callbacks: {
+          label: function(ctx) {
+            if (ctx.datasetIndex === 0) return '产业链层级位置: ' + ctx.parsed.x;
+            return '当前盈利状态: ' + (ctx.parsed.x > 0 ? '盈利' : '亏损') + '(' + ctx.parsed.x + ')';
+          }
+        }
+      },
+      legend: { position: 'top' }
+    },
+    scales: {
+      x: { grid: { color: '#2d3050' }, title: { display: true, text: '产业链位置(左) / 盈利状态(右)' } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// ===== 6. 估值雷达图 =====
+new Chart(document.getElementById('chartRadar'), {
+  type: 'radar',
+  data: {
+    labels: ['PB(越低越好)', '市值规模', '今日跌幅(越小越好)', '换手率', '成本优势(估)'],
+    datasets: [{
+      label: '牧原股份',
+      data: [3, 10, 3, 2, 10],
+      borderColor: '#e8b84b',
+      backgroundColor: 'rgba(232,184,75,0.15)',
+      pointRadius: 4
+    },{
+      label: '温氏股份',
+      data: [4, 6, 3, 1, 6],
+      borderColor: '#a855f7',
+      backgroundColor: 'rgba(168,85,247,0.15)',
+      pointRadius: 4
+    },{
+      label: '新希望',
+      data: [7, 3, 4, 2, 5],
+      borderColor: '#4a9eff',
+      backgroundColor: 'rgba(74,158,255,0.15)',
+      pointRadius: 4
+    },{
+      label: '神农集团',
+      data: [2, 2, 3, 1, 7],
+      borderColor: '#2ed573',
+      backgroundColor: 'rgba(46,213,115,0.15)',
+      pointRadius: 4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { tooltip: tooltipStyle, legend: { position: 'top' } },
+    scales: {
+      r: {
+        beginAtZero: true,
+        max: 10,
+        grid: { color: '#2d3050' },
+        angleLines: { color: '#2d3050' },
+        pointLabels: { color: '#e4e7f0', font: { size: 11 } }
+      }
+    }
+  }
+});
+
+// ===== 7. 六专家共识度雷达 =====
+new Chart(document.getElementById('chartConsensus'), {
+  type: 'radar',
+  data: {
+    labels: ['周期底部共识', '去化不足共识', 'Q4回升预期', '成本为王共识', '不追多共识', '左侧布局共识'],
+    datasets: [{
+      label: '共识度(满分5)',
+      data: [5, 4.5, 4, 5, 4.5, 4],
+      borderColor: '#00d4aa',
+      backgroundColor: 'rgba(0,212,170,0.2)',
+      pointRadius: 5,
+      pointBackgroundColor: '#00d4aa',
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { tooltip: tooltipStyle, legend: { display: false } },
+    scales: {
+      r: {
+        beginAtZero: true,
+        max: 5,
+        grid: { color: '#2d3050' },
+        angleLines: { color: '#2d3050' },
+        pointLabels: { color: '#e4e7f0', font: { size: 12 } }
+      }
+    }
+  }
+});
+
+// ===== 8. 牧原净利润周期 =====
+new Chart(document.getElementById('chartMuyuan'), {
+  type: 'bar',
+  data: {
+    labels: ['2023年报', '2024年报', '2025年报', '2026Q1'],
+    datasets: [{
+      label: '归母净利润(亿元)',
+      data: [-42.63, 178.8, 154.9, -12.15],
+      backgroundColor: function(ctx) { return ctx.parsed.y < 0 ? 'rgba(255,71,87,0.6)' : 'rgba(46,213,115,0.6)'; },
+      borderColor: function(ctx) { return ctx.parsed.y < 0 ? '#ff4757' : '#2ed573'; },
+      borderWidth: 1
+    },{
+      label: '毛利率(%)',
+      data: [3.1, 19.1, 17.8, 5.2],
+      type: 'line',
+      borderColor: '#e8b84b',
+      backgroundColor: 'transparent',
+      pointRadius: 5,
+      borderWidth: 2,
+      tension: 0.3,
+      yAxisID: 'y1'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { tooltip: tooltipStyle, legend: { position: 'top' } },
+    scales: {
+      y: { title: { display: true, text: '净利润(亿元)' }, grid: { color: '#2d3050' } },
+      y1: { type: 'linear', position: 'right', title: { display: true, text: '毛利率(%)' }, grid: { display: false }, min: 0, max: 25 },
+      x: { grid: { display: false } }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

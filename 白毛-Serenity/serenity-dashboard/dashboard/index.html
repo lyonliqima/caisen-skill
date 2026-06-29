@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Serenity Signal Ledger</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <section class="hero reveal">
+      <div>
+        <p class="eyebrow">X / aleabitoreddit intelligence archive</p>
+        <h1>Serenity<br><span>Signal Ledger</span></h1>
+      </div>
+      <div class="hero-card">
+        <span class="pulse"></span>
+        <p>自动抓取帖子、回复和订阅帖，抽取 cashtag，关联 Yahoo 日线价格，并在曲线上标记原帖观点。</p>
+      </div>
+    </section>
+
+    <section class="kpis reveal delay-1" id="kpis"></section>
+
+    <section class="workbench reveal delay-2">
+      <aside class="panel symbols-panel">
+        <div class="panel-head">
+          <h2>Symbols</h2>
+          <input id="symbolSearch" placeholder="搜索 NVDA / TSM ..." />
+        </div>
+        <div class="tabs">
+          <button class="active" data-filter="all">全部</button>
+          <button data-filter="priced">有价格</button>
+          <button data-filter="hot">高频</button>
+        </div>
+        <div id="symbols" class="symbols"></div>
+      </aside>
+
+      <section class="panel chart-panel">
+        <div class="chart-head">
+          <div>
+            <p class="eyebrow">price x mention timeline</p>
+            <h2 id="activeTitle">选择一个 symbol</h2>
+          </div>
+          <div class="meta-strip" id="activeMeta"></div>
+        </div>
+        <div class="chart-wrap"><canvas id="priceChart"></canvas></div>
+        <div id="neighbors" class="neighbors"></div>
+      </section>
+    </section>
+
+    <section class="panel feed-panel reveal delay-3">
+      <div class="panel-head">
+        <h2>Latest Opinion Tape</h2>
+        <span>最新提及时间与内容</span>
+      </div>
+      <div id="feed" class="feed"></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

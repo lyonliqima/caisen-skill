@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>五专家整合分析：A股大涨·低位好股筛选 | 2026.06.17</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0f1117; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; line-height: 1.8; }
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+h1 { font-size: 2.2em; margin-bottom: 10px; }
+h2 { font-size: 1.6em; margin: 30px 0 15px; padding-bottom: 10px; border-bottom: 2px solid #333; }
+h3 { font-size: 1.25em; margin: 20px 0 10px; color: #4a9eff; }
+h4 { font-size: 1.1em; margin: 15px 0 8px; }
+p { margin-bottom: 12px; color: #ccc; }
+.hero { background: linear-gradient(135deg, #1a1d2e 0%, #0f1117 100%); padding: 40px 30px; border-radius: 16px; margin-bottom: 30px; border: 1px solid #2a2d3e; }
+.hero h1 { color: #fff; }
+.hero .subtitle { font-size: 1.1em; color: #888; margin-bottom: 20px; }
+.indicator-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+.indicator-card { background: #1a1d2e; padding: 20px; border-radius: 12px; border: 1px solid #2a2d3e; text-align: center; }
+.indicator-card .label { font-size: 0.85em; color: #888; margin-bottom: 8px; }
+.indicator-card .value { font-size: 1.8em; font-weight: bold; }
+.indicator-card .change { font-size: 0.9em; margin-top: 5px; }
+.positive { color: #2ed573; }
+.negative { color: #ff4757; }
+.neutral { color: #e8b84b; }
+.expert-section { background: #1a1d2e; border-radius: 12px; padding: 25px; margin-bottom: 20px; border-left: 4px solid #444; }
+.expert-yang { border-left-color: #4a9eff; }
+.expert-lu { border-left-color: #a855f7; }
+.expert-caisen { border-left-color: #e8b84b; }
+.expert-benniao { border-left-color: #2ed573; }
+.expert-serenity { border-left-color: #e0e0e0; }
+.expert-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+.expert-badge { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3em; font-weight: bold; }
+.badge-yang { background: #4a9eff; }
+.badge-lu { background: #a855f7; }
+.badge-caisen { background: #e8b84b; color: #000; }
+.badge-benniao { background: #2ed573; color: #000; }
+.badge-serenity { background: #e0e0e0; color: #000; }
+.chart-container { background: #151823; border-radius: 12px; padding: 20px; margin: 15px 0; }
+.chart-container canvas { max-height: 350px; }
+table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.9em; }
+th { background: #2a2d3e; padding: 10px; text-align: left; color: #4a9eff; border: 1px solid #333; }
+td { padding: 10px; border: 1px solid #2a2d3e; color: #ccc; }
+tr:hover { background: #1e2131; }
+.highlight-box { background: rgba(46,213,115,0.1); border: 1px solid #2ed573; border-radius: 8px; padding: 15px; margin: 15px 0; }
+.warning-box { background: rgba(255,71,87,0.1); border: 1px solid #ff4757; border-radius: 8px; padding: 15px; margin: 15px 0; }
+.stock-card { background: #151823; border-radius: 10px; padding: 18px; margin: 10px 0; border: 1px solid #2a2d3e; }
+.stock-card .stock-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.stock-card .stock-name { font-size: 1.2em; font-weight: bold; color: #e8b84b; }
+.stock-card .stock-tag { background: #2ed573; color: #000; padding: 2px 10px; border-radius: 12px; font-size: 0.8em; }
+.tag-low { background: #2ed573 !important; }
+.tag-medium { background: #e8b84b !important; color: #000 !important; }
+.tag-high { background: #ff4757 !important; color: #fff !important; }
+.disclaimer { background: #1a1d2e; border-radius: 12px; padding: 20px; margin: 30px 0; border: 1px solid #444; text-align: center; color: #888; font-size: 0.9em; }
+.news-item { background: #151823; padding: 12px 15px; border-radius: 8px; margin: 8px 0; border-left: 3px solid #4a9eff; }
+.news-item .news-source { font-size: 0.8em; color: #888; }
+ul, ol { margin: 10px 0 10px 25px; }
+li { margin-bottom: 6px; color: #ccc; }
+.method-tag { display: inline-block; background: #2a2d3e; color: #4a9eff; padding: 2px 8px; border-radius: 4px; font-size: 0.85em; margin: 2px; }
+.radar-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+@media (max-width: 768px) {
+  .radar-container { grid-template-columns: 1fr; }
+  h1 { font-size: 1.5em; }
+  .indicator-grid { grid-template-columns: 1fr 1fr; }
+}
+.timestamp { color: #666; font-size: 0.85em; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Hero Section -->
+<div class="hero">
+<h1>A股大涨·低位好股五专家整合筛选</h1>
+<div class="subtitle">2026年6月17日 · 融合杨世光、卢麒元、蔡森、笨鸟、白毛-Serenity五位专家框架</div>
+<div class="indicator-grid">
+<div class="indicator-card"><div class="label">上证指数</div><div class="value positive">4,108.08</div><div class="change positive">+0.40%</div></div>
+<div class="indicator-card"><div class="label">深成指</div><div class="value positive">15,880.95</div><div class="change positive">+1.31%</div></div>
+<div class="indicator-card"><div class="label">创业板指</div><div class="value positive">4,167.05</div><div class="change positive">+1.56%</div></div>
+<div class="indicator-card"><div class="label">科创50</div><div class="value positive">~1,840</div><div class="change positive">+4.69%</div></div>
+<div class="indicator-card"><div class="label">科创综指</div><div class="value positive">~2,210</div><div class="change positive">+3.21%</div></div>
+<div class="indicator-card"><div class="label">涨停股</div><div class="value positive">86只</div><div class="change neutral">连板高度3板</div></div>
+<div class="indicator-card"><div class="label">成交额</div><div class="value positive">超3.1万亿</div><div class="change positive">连续3日>3万亿</div></div>
+<div class="indicator-card"><div class="label">涨跌家数比</div><div class="value positive">~1.5:1</div><div class="change neutral">偏多头</div></div>
+</div>
+</div>
+
+<!-- 新闻背景 -->
+<h2>📰 第0步：新闻背景与市场舆情</h2>
+<div class="expert-section" style="border-left-color: #4a9eff;">
+<div class="news-item"><strong>陆家嘴论坛6月17-18日召开</strong> — 主题"全球治理倡议下的金融发展与合作"，深化科创板改革"1+6"政策实施一周年，上海国际金融中心建设行动方案发布。多场全体大会+重大签约。<span class="news-source">[证券时报/界面新闻 06-17]</span></div>
+<div class="news-item"><strong>PCB概念连续3日掀涨停潮</strong> — 科翔股份20%涨停，光华科技/中材科技/宏昌电子/华正新材连续3日涨停，深南电路/中国巨石涨停。电子布2026年内已完成第5轮提价，均价7.4元/米，较2025Q3低点涨100%。<span class="news-source">[证券时报/天风证券 06-17]</span></div>
+<div class="news-item"><strong>稀土正式列入国家级战略性矿产目录</strong> — 《矿产资源法实施条例》正式施行，36种关键矿产纳入国家级管控。海外稀土价格暴涨：镝/铽部分品种涨幅超200%。厦门钨业两连板，盛和资源/有研新材涨停。<span class="news-source">[21财经 06-16/17]</span></div>
+<div class="news-item"><strong>亿纬锂能半年报业绩预增95-110%</strong> — H1归母净利润31.3-33.71亿元。锂电池制造业投资增长24.9%。中证电池主题指数Q1营收+36.15%，利润+43.45%，V型反转确认。<span class="news-source">[证券时报/国家统计局 06-15/17]</span></div>
+<div class="news-item"><strong>台积电CoPoS先进封装催化玻璃基板</strong> — 郭明錤发文称CoPoS预计2028H2量产，玻璃基板与ABF薄膜为搭配共存关系。A股玻璃基板概念大爆发。<span class="news-source">[九方智投 06-17]</span></div>
+<div class="news-item"><strong>美伊局势缓和·外围风险下降</strong> — 市场交易主线由"地缘避险+能源冲击"转向"风险偏好修复+成长估值回补"。A股突破5月21日以来下降通道。<span class="news-source">[21财经/中泰证券 06-17]</span></div>
+<div class="news-item"><strong>市场突破"下降通道"·技术派入场</strong> — 万得全A指数突破5月21日以来下降趋势线，连续3日成交额超3万亿，"技术派"资金陆续入场。高低切换格局加剧。<span class="news-source">[21财经 06-17]</span></div>
+</div>
+
+<div class="chart-container">
+<canvas id="indexChart"></canvas>
+</div>
+
+<!-- 杨世光 -->
+<h2>🔵 杨世光：宏观六步法分析</h2>
+<div class="expert-section expert-yang">
+<div class="expert-header">
+<div class="expert-badge badge-yang">杨</div>
+<h3>宏观大局观 — 经济周期·货币政策·美元·流动性·大类资产·地缘</h3>
+</div>
+
+<h4>第一步：经济周期定位</h4>
+<p>当前中国经济处于<span class="positive">复苏期偏早期</span>，特征为GDP温和增长、CPI低位（通缩压力缓解中）、PMI在50附近。A股市场呈现典型的"政策驱动复苏"格局——政策面强力刺激（陆家嘴论坛+科创板改革+ETF规模4.7万亿），资金面连续放量（3万亿+），技术面刚突破下降通道。</p>
+<p><span class="method-tag">M9 A股特化框架</span> 当前政策面（陆家嘴论坛重磅政策）、资金面（连续3日3万亿+）、技术面（突破下降通道）<strong>三层共振向上</strong>，这是A股中线继续走强的核心支撑。</p>
+
+<h4>第二步：货币政策与利率环境</h4>
+<p>美联储维持"不降息"立场（沃什缩表遁退策略M19），但美债收益率双向开关平衡，不构成系统性冲击。中国货币政策保持宽松，利率处于低位，为A股估值扩张提供弹药。<strong>中美货币政策错位</strong>——中国宽货币+美国紧货币=人民币阶段性承压，但卢麒元框架认为人民币升值是大方向。</p>
+
+<h4>第三步：美元周期与资金流向</h4>
+<p>美元指数短期维持强势（沃什石油逼美元策略M19），但中长期贬值不可避免。外资对A股态度：科创板改革深化+陆家嘴论坛释放开放信号，外资配置A股意愿增强。北向资金近期回流迹象明显。</p>
+
+<h4>第四步：流动性分析</h4>
+<p>A股流动性极充裕：连续3日成交超3万亿，ETF总规模4.7万亿，国家队+机构+散户三方共振。当前不属于"流动性陷阱"，资金活跃流入实体经济和资本市场。<span class="method-tag">M7 ETF资金流</span> ETF规模爆发=机构行为先行指标，历史规律表明ETF大扩容期通常对应牛市中段。</p>
+
+<h4>第五步：大类资产轮动判断</h4>
+<table>
+<tr><th>资产</th><th>方向</th><th>核心逻辑</th></tr>
+<tr><td>A股（科技）</td><td class="positive">✅ 偏多</td><td>AI产业链景气+科创板改革+陆家嘴论坛催化，科创50 YTD+30%+</td></tr>
+<tr><td>A股（低位板块）</td><td class="positive">✅ 补涨机会</td><td>高低切换加剧，消费/新能源/医药/军工等低位板块即将轮动</td></tr>
+<tr><td>港股</td><td class="neutral">→ 震荡</td><td>恒生科技承压但估值修复逻辑仍在</td></tr>
+<tr><td>美债</td><td class="neutral">→ 高位震荡</td><td>双向开关平衡，10Y在4.3-4.5%区间</td></tr>
+<tr><td>黄金</td><td class="neutral">→ 偏弱</td><td>实质利率重新主导定价，但央行购金提供长期底部支撑</td></tr>
+<tr><td>原油</td><td class="neutral">→ 回落</td><td>美伊缓和=供给恢复预期，油价风险溢价回落</td></tr>
+</table>
+
+<h4>第六步：地缘政治传导</h4>
+<p>美伊局势缓和是今日A股上涨的重要外部催化。地缘风险溢价下降→科技股估值修复→成长板块补涨。陆家嘴论坛深化金融开放+沪深港通机制，进一步吸引外资。<span class="method-tag">M6 地缘传导</span> <span class="method-tag">M22 贸易失衡类比</span></p>
+
+<h4>杨世光视角低位股结论</h4>
+<div class="highlight-box">
+<strong>宏观确定性排序</strong>：科技材料（PCB/玻纤/稀土）> 锂电储能 > 军工 > 消费 > 光伏。重点关注：<strong>政策催化明确+流动性充裕+估值仍处低位的板块</strong>，尤其是155规划双引擎方向（新质生产力+基础设施建设）。
+</div>
+</div>
+
+<!-- 卢麒元 -->
+<h2>🟣 卢麒元：制度结构分析</h2>
+<div class="expert-section expert-lu">
+<div class="expert-header">
+<div class="expert-badge badge-lu">卢</div>
+<h3>制度与结构 — 财政·资本三流·向心坍缩·二分世界博弈</h3>
+</div>
+
+<h4>广义财政分析</h4>
+<p><span class="method-tag">M1 三色财政</span> 当前中国财政正在从灰色财政（土地出让金+地方平台）向白色财政（直接税+国债）转型期。陆家嘴论坛推动金融市场深化=扩大白色财政税基。这对A股长期健康度是正面信号。</p>
+
+<h4>卡莱斯基利润恒等式分析</h4>
+<p><span class="method-tag">M5 卡莱斯基利润</span> <strong>总利润 = 投资 + 政府赤字 + 净出口 + 资本家消费 - 工人储蓄</strong></p>
+<table>
+<tr><th>变量</th><th>当前状态</th><th>对企业利润的影响</th></tr>
+<tr><td>政府赤字</td><td class="positive">↑ 扩张</td><td>赤字直接=企业利润。特别国债+超长期国债持续发行，155规划基建投资</td></tr>
+<tr><td>投资</td><td class="positive">↑ 制造业投资高增</td><td>锂电池投资+24.9%，AI/半导体投资持续加码，设备更新政策</td></tr>
+<tr><td>净出口</td><td class="positive">↑ 贸易顺差创新高</td><td>1-5月顺差4,517亿美元，全年挑战1.2万亿。出口竞争力极强</td></tr>
+<tr><td>资本家消费</td><td>→ 平稳</td><td>—</td></tr>
+<tr><td>工人储蓄</td><td class="neutral">↓ 储蓄意愿下降</td><td>消费刺激政策+股市财富效应=储蓄率下降→利润回升</td></tr>
+</table>
+<p><strong>结论</strong>：卡莱斯基恒等式显示，企业利润正面临<strong>政府赤字+投资+净出口三重正贡献</strong>，这是A股盈利面改善的底层逻辑。今日大涨的PCB/稀土/锂电板块均有基本面利润支撑。</p>
+
+<h4>二分世界博弈理论</h4>
+<p><span class="method-tag">M9 二分世界博弈</span> 美国持有"数字世界"（AI/金融资产），中国持有"实物世界"（制造/供应链/材料）。今日A股大涨的本质：<strong>实物世界的价值正在被重新定价</strong>。</p>
+<table>
+<tr><th>实物世界优势板块</th><th>今日表现</th><th>逻辑</th></tr>
+<tr><td>PCB/CCL/玻纤</td><td class="positive">涨停潮</td><td>AI算力→需求端涨价→中国供应链卡点公司受益</td></tr>
+<tr><td>稀土/战略矿产</td><td class="positive">涨停潮</td><td>实物世界资源垄断+政策管控=定价权回归</td></tr>
+<tr><td>锂电池/新能源</td><td class="positive">业绩大增</td><td>制造业升级+全球出口竞争力</td></tr>
+</table>
+
+<h4>反者道之动</h4>
+<p><span class="method-tag">M8 反者道之动</span> 当前美国处于"破平之极"（超级债务扩张18年到极限），中国处于"阴"的阶段（蓄势待发）。A股低位板块的补涨，本质是资本从"虚拟财富"向"真金白银"（实物资产）转移的开始。</p>
+
+<h4>卢麒元视角低位股结论</h4>
+<div class="highlight-box">
+<strong>实物世界定价权回归</strong>：重点关注<strong>中国拥有供应链优势的实物资产板块</strong>——稀土/战略矿产（定价权管控）、锂电池/新能源制造（全球出口竞争力）、高端材料（卡点公司）。人民币升值通道中，实物资产板块将享受"汇率重估+利润增长"双重红利。
+</div>
+</div>
+
+<div class="chart-container">
+<canvas id="kaleckiChart"></canvas>
+</div>
+
+<!-- 蔡森 -->
+<h2>🟠 蔡森：形态学技术分析</h2>
+<div class="expert-section expert-caisen">
+<div class="expert-header">
+<div class="expert-badge badge-caisen">蔡</div>
+<h3>技术面实战 — 形态·颈线·量价·测幅·板块轮动</h3>
+</div>
+
+<h4>大盘技术形态判断</h4>
+<p><span class="method-tag">M6 破底翻</span> <span class="method-tag">M1 形态识别</span> 万得全A指数和上证指数<strong>已于本周一突破5月21日以来的下降通道</strong>，周二、周三继续在通道外运行。这是典型的<strong>趋势反转确认信号</strong>。从蔡森方法论看：</p>
+<table>
+<tr><th>指标</th><th>当前状态</th><th>技术判断</th></tr>
+<tr><td>指数突破下降通道</td><td class="positive">✅ 已突破</td><td>下降趋势结束，多头确认</td></tr>
+<tr><td>量能配合</td><td class="positive">✅ 连续3日>3万亿</td><td>放量突破=有效突破（M3量价验证）</td></tr>
+<tr><td>回踩不破通道上轨</td><td class="positive">✅ 周三午后回拉被接住</td><td>空头被消耗，多头控盘</td></tr>
+<tr><td>市场宽度（涨跌比）</td><td class="neutral">→ ~1.5:1</td><td>偏多头但不极端，仍有空间</td></tr>
+<tr><td>涨停家数</td><td class="positive">86只</td><td>赚钱效应充足</td></tr>
+</table>
+
+<h4>板块轮动分析（龙头带动板块轮动法）</h4>
+<p><span class="method-tag">龙头带动板块轮动法</span> <span class="method-tag">半导体板块轮动跟踪</span></p>
+<table>
+<tr><th>轮动阶段</th><th>板块</th><th>龙头股</th><th>技术信号</th><th>操作含义</th></tr>
+<tr><td>第1阶段（已涨）</td><td>AI芯片/半导体</td><td>寒武纪(+7.66%)</td><td>已突破前高，高位震荡</td><td class="negative">不追高，等回调</td></tr>
+<tr><td>第2阶段（主升浪）</td><td>PCB/CCL/玻纤</td><td>深南电路/中国巨石</td><td>连续涨停潮，板块放量突破</td><td class="neutral">龙头已涨完，关注跟随股</td></tr>
+<tr><td>第3阶段（刚启动）</td><td>稀土/战略矿产</td><td>厦门钨业(2连板)</td><td>政策催化+涨价驱动，刚启动</td><td class="positive">可关注但龙头已连板</td></tr>
+<tr><td>第4阶段（低位待轮）</td><td>锂电/新能源</td><td>亿纬锂能</td><td>业绩催化V型反转，底部蓄势</td><td class="positive">⭐低位破底翻候选</td></tr>
+<tr><td>第5阶段（深度低位）</td><td>消费/医药/军工</td><td>—</td><td>底部横盘整理（水底型）</td><td class="positive">⭐⭐水底型待破底翻</td></tr>
+</table>
+
+<h4>关键技术策略应用</h4>
+<h4>（1）M6 破底翻策略 — 锂电池板块</h4>
+<p>锂电池指数从2022年高点大幅回调后，经历了完整的"W底"筑底过程。亿纬锂能业绩预告+95-110%是基本面确认。技术上看，锂电池板块正在完成<strong>破底翻+V型反转</strong>形态。</p>
+<ul>
+<li><strong>进场条件</strong>：放量突破前高颈线</li>
+<li><strong>止损设置</strong>：跌破形态底部低点</li>
+<li><strong>测幅满足</strong>：颈线+形态高度，看前期高点位置</li>
+</ul>
+
+<h4>（2）水底型底部识别法 — 消费/医药板块</h4>
+<p><span class="method-tag">水底型底部识别法</span> 消费（白酒/食品）和医药（创新药）板块经过长期底部横盘整理（波动极小、成交量萎缩到极低水平），符合"水底型"特征。一旦出现破底翻信号，将产生强劲底部行情。</p>
+
+<h4>（3）ETF抄底策略（蔡森M5.25视频方法论）</h4>
+<p><span class="method-tag">ETF抄底策略</span> <span class="method-tag">选择权分层抄底法</span> 对于不敢追高个股的投资者，可使用ETF分批抄底：低位板块ETF（消费ETF/医药ETF/新能源ETF）→突破后个股加仓。</p>
+
+<h4>今日涨停股技术面评估</h4>
+<table>
+<tr><th>股票</th><th>今日表现</th><th>技术形态</th><th>位置评估</th></tr>
+<tr><td>科翔股份(300903)</td><td class="positive">+20%涨停</td><td>连续涨停，加速喷出</td><td class="negative">高位，不追</td></tr>
+<tr><td>光华科技(002741)</td><td class="positive">涨停(3连板)</td><td>连续涨停，加速中</td><td class="negative">高位，不追</td></tr>
+<tr><td>厦门钨业(600549)</td><td class="positive">涨停(2连板)</td><td>放量突破，主升浪</td><td class="neutral">中位，等回调</td></tr>
+<tr><td>中国巨石(600176)</td><td class="positive">涨停</td><td>放量突破前高</td><td class="neutral">中位偏高</td></tr>
+<tr><td>深南电路(002916)</td><td class="positive">涨停</td><td>高位继续突破</td><td class="negative">高位</td></tr>
+</table>
+
+<h4>蔡森视角低位股结论</h4>
+<div class="highlight-box">
+<strong>技术面选股纪律</strong>：今日PCB/玻纤/稀土板块龙头已连续涨停，<strong>不追已涨停的高位股</strong>（蔡森铁律：满足了就不追价）。重点关注：
+<br><br>
+<strong>⭐ 第一梯队（低位+形态确认）</strong>：<br>
+- 锂电池板块（亿纬锂能等）— V型反转+业绩确认+底部形态完整<br>
+<strong>⭐ 第二梯队（水底型待破底翻）</strong>：<br>
+- 消费板块（白酒/食品）— 长期横盘底部，等破底翻信号<br>
+- 医药板块（创新药）— 深度低位，水底型特征<br>
+- 军工板块 — 底部蓄势<br>
+<strong>⭐ 第三梯队（ETF抄底策略）</strong>：<br>
+- 消费ETF/医药ETF/新能源ETF — 分批低位布局
+</div>
+
+<h4>蔡森技术图1：万得全A突破下降通道形态图</h4>
+<div class="chart-container">
+<canvas id="caisenBreakoutChart"></canvas>
+</div>
+
+<h4>蔡森技术图2：近5日市场宽度（涨跌家数）变化</h4>
+<div class="chart-container">
+<canvas id="marketBreadthChart"></canvas>
+</div>
+</div>
+
+<div class="chart-container">
+<canvas id="sectorRotationChart"></canvas>
+</div>
+
+<!-- 笨鸟 -->
+<h2>🟢 笨鸟：数据拆解分析</h2>
+<div class="expert-section expert-benniao">
+<div class="expert-header">
+<div class="expert-badge badge-benniao">笨</div>
+<h3>数据拆解法 + M1-M19方法论体系</h3>
+</div>
+
+<h4>M13 涨价拆解法 — 今日大涨板块的涨价本质</h4>
+<table>
+<tr><th>板块</th><th>涨价类型</th><th>驱动因素</th><th>量价关系</th><th>可持续性</th><th>投资者难度</th></tr>
+<tr><td>PCB/CCL/电子布</td><td class="positive">需求端涨价 ✅</td><td>AI服务器/数据中心需求爆发</td><td class="positive">量价齐升</td><td class="positive">高（产业链多环节支撑）</td><td class="positive">较低（多环节可参与）</td></tr>
+<tr><td>稀土</td><td class="neutral">供给端+需求端混合</td><td>政策管控+海外暴涨+新能源需求</td><td class="positive">量价齐升</td><td class="positive">高（资源稀缺性）</td><td>中（关注龙头）</td></tr>
+<tr><td>锂电池</td><td class="positive">需求端涨价 ✅</td><td>新能源车渗透率新高+储能需求</td><td class="positive">量价齐升</td><td class="positive">高（制造业升级）</td><td class="positive">较低</td></tr>
+</table>
+<p><strong>核心判断</strong>：今日大涨的PCB/CCL/电子布涨价属于<span class="method-tag">M13 需求端涨价</span>，这是最良性的涨价类型——AI产业链真实需求驱动，量价齐升，全产业链均匀受益。投资确定性最高。</p>
+
+<h4>M14 资产赛马理论 — 高低切换的本质</h4>
+<p>当前A股正在演绎经典的<strong>"资产赛马"</strong>格局：</p>
+<table>
+<tr><th>资产类型</th><th>代表板块</th><th>当前状态</th><th>资金流向</th></tr>
+<tr><td>高风险端（已抱团）</td><td>AI芯片/半导体/PCB龙头</td><td>YTD涨幅巨大，高位震荡</td><td class="neutral">资金开始获利了结</td></tr>
+<tr><td>中间层</td><td>高股息/银行/煤炭</td><td>相对被抛弃</td><td class="negative">❌ 被撂荒</td></tr>
+<tr><td>低位补涨端</td><td>锂电/消费/医药/军工</td><td>深度低位，刚启动</td><td class="positive">✅ 资金刚开始流入</td></tr>
+</table>
+<p><strong>笨鸟视角核心洞察</strong>：高低切换的本质不是"高位板块要跌"，而是<strong>低位板块补涨行情启动</strong>。资金从高位科技股获利了结→流入低位板块。这是布局低位好股票的最佳窗口期。</p>
+
+<h4>M15 大宗商品涨价传导链 — 确定性排序</h4>
+<p><span class="method-tag">M15 传导链</span> AI革命下的新涨价秩序——各环节几乎同时启动：</p>
+<table>
+<tr><th>确定性等级</th><th>板块</th><th>逻辑</th><th>今日验证</th></tr>
+<tr><td class="positive">最高</td><td>金属/材料/设备</td><td>AI科技革命真实需求→行情持续到泡沫破裂</td><td class="positive">✅ PCB/玻纤/稀土涨停潮</td></tr>
+<tr><td class="positive">高</td><td>芯片/存储/CCL</td><td>AI直接需求，量价齐升</td><td class="positive">✅ CCL年内4次涨价</td></tr>
+<tr><td class="neutral">中</td><td>新能源/储能</td><td>制造业升级+绿色转型需求</td><td class="positive">✅ 锂电投资+24.9%</td></tr>
+<tr><td class="neutral">中低</td><td>消费/医药</td><td>经济复苏传导（时滞较长）</td><td>→ 待启动</td></tr>
+<tr><td class="negative">最低</td><td>房地产/银行</td><td>结构性调整中</td><td class="negative">❌ 持续走弱</td></tr>
+</table>
+
+<h4>M4 反常信号识别</h4>
+<p><strong>反常信号1</strong>：市场连续3日放量突破下降通道，但上证指数仅涨0.4% → 指数涨幅"不匹配"成交量 = 资金在板块间剧烈轮动（从高位科技→低位补涨），而非全面普涨。</p>
+<p><strong>反常信号2</strong>：科创板涨4.5%但上证仅涨0.4% → 极端分化=资金高度集中在成长板块，传统权重股拖累指数。这种分化通常在"高低切换"完成后收敛。</p>
+
+<h4>笨鸟视角低位股结论</h4>
+<div class="highlight-box">
+<strong>数据拆解选股逻辑</strong>：
+<br>1. <strong>第一优先级</strong>：M13需求端涨价受益+M15最高确定性 = PCB/CCL上游材料（但龙头已涨高，关注二线）
+<br>2. <strong>第二优先级</strong>：M14低位补涨+基本面改善 = 锂电池/储能（亿纬锂能业绩+95-110%验证）
+<br>3. <strong>第三优先级</strong>：M15中确定性+低位蓄势 = 消费/医药/军工（等待催化）
+<br>4. <strong>回避</strong>：房地产/银行（结构性走弱，中间层被撂荒）
+</div>
+</div>
+
+<div class="chart-container">
+<canvas id="priceIncreaseChart"></canvas>
+</div>
+
+<!-- 白毛-Serenity -->
+<h2>⚪ 白毛-Serenity：供应链瓶颈分析</h2>
+<div class="expert-section expert-serenity">
+<div class="expert-header">
+<div class="expert-badge badge-serenity">白</div>
+<h3>供应链瓶颈猎手 + Serenity方法论</h3>
+</div>
+
+<h4>今日大涨板块的价值链映射</h4>
+<p><span class="method-tag">serenity-skill 九步工作流</span> 先排产业链层级，再排公司。今日大涨的核心叙事是"AI算力需求→上游材料涨价"。让我们追踪完整的价值链：</p>
+
+<h4>AI算力价值链（从下游到上游）</h4>
+<table>
+<tr><th>层级</th><th>环节</th><th>今日表现</th><th>稀缺度</th><th>关键公司</th></tr>
+<tr><td>下游</td><td>AI服务器/数据中心</td><td>—</td><td>中</td><td>浪潮信息、中科曙光</td></tr>
+<tr><td>系统</td><td>PCB板</td><td class="positive">涨停潮</td><td>中高</td><td>深南电路、沪电股份</td></tr>
+<tr><td>模块</td><td>CCL覆铜板</td><td class="positive">涨停</td><td class="positive">高（年内4次涨价）</td><td>生益科技、南亚新材</td></tr>
+<tr><td>材料</td><td>电子布/玻璃纤维</td><td class="positive">涨停</td><td class="positive">⭐最高（+100%涨价）</td><td>中国巨石、中材科技</td></tr>
+<tr><td>材料</td><td>玻璃基板</td><td class="positive">涨停</td><td class="positive">⭐最高（CoPoS催化）</td><td>凯盛科技、沃格光电</td></tr>
+<tr><td>材料</td><td>稀土/战略矿产</td><td class="positive">涨停</td><td class="positive">⭐最高（政策管控）</td><td>厦门钨业、北方稀土</td></tr>
+</table>
+
+<h4>稀缺层排序（核心分析工具）</h4>
+<p>从供应链瓶颈猎手视角，今日最值得关注的<strong>稀缺层</strong>排序：</p>
+<table>
+<tr><th>排名</th><th>稀缺层</th><th>稀缺原因</th><th>证据强度</th><th>低位候选公司</th></tr>
+<tr><td>🥇 1</td><td>电子布/玻纤</td><td>供应商高度集中+扩产周期长+第5轮涨价+100%</td><td class="positive">强（公告+涨价函）</td><td>中材科技(002080)、山东玻纤(605006)</td></tr>
+<tr><td>🥈 2</td><td>稀土/战略矿产</td><td>政策管控+资源稀缺+海外暴涨200%+MLCC需求</td><td class="positive">强（法规+价格数据）</td><td>北方稀土(600111)、中国稀土(000831)</td></tr>
+<tr><td>🥉 3</td><td>玻璃基板</td><td>TSMC CoPoS催化+技术壁垒高+认证周期长</td><td class="neutral">中（产业消息+分析师）</td><td>凯盛科技(600556)、沃格光电(603773)</td></tr>
+<tr><td>4</td><td>CCL覆铜板</td><td>龙头4次涨价+产能瓶颈+AI服务器需求</td><td class="positive">强（涨价函+财报）</td><td>南亚新材(688519) — 已涨停</td></tr>
+</table>
+
+<h4>Serenity五步法应用 — 锂电池板块</h4>
+<p><span class="method-tag">serenity-method 五步法</span></p>
+<table>
+<tr><th>步骤</th><th>分析内容</th><th>结论</th></tr>
+<tr><td>1. 找关键卡点</td><td>锂电池产业链瓶颈在哪？</td><td>高端正极材料+电解液+隔膜（非电芯本身）</td></tr>
+<tr><td>2. 第一性原理分解</td><td>需求持久性/供给瓶颈/定价权/资本密集度/地缘</td><td>需求持久（新能源车渗透率新高）；中国有定价权（全球出口竞争力）</td></tr>
+<tr><td>3. Buffett质量门</td><td>护城河/盈利能力/客户风险</td><td><em>unverified</em> — 需查财报验证具体公司</td></tr>
+<tr><td>4. 叙事vs基本面</td><td>亿纬锂能H1+95-110% → 基本面验证叙事</td><td>✅ 基本面支撑（非纯炒作）</td></tr>
+<tr><td>5. 分类</td><td>研究地图 vs 可投资结论</td><td><strong>可投资结论</strong>（有财报证据+行业数据支撑）</td></tr>
+</table>
+
+<h4>白毛-Serenity视角低位股结论</h4>
+<div class="highlight-box">
+<strong>供应链稀缺层选股</strong>：
+<br>1. <strong>最稀缺层（电子布/玻纤）</strong>：龙头已涨停，关注<strong>二线低位公司</strong>如中材科技(002080)、山东玻纤(605006)等回调机会
+<br>2. <strong>战略矿产（稀土）</strong>：北方稀土(600111)仍在相对低位，政策催化+涨价趋势明确
+<br>3. <strong>锂电池供应链卡点</strong>：亿纬锂能(300014)业绩验证+低位反转，关注上游正极材料/电解液
+<br>4. <strong>所有Buffett质量门字段默认unverified</strong>，需进一步查年报/公告验证护城河和盈利能力
+</div>
+</div>
+
+<div class="chart-container">
+<canvas id="supplyChainChart"></canvas>
+</div>
+
+<!-- 底层逻辑 -->
+<h2>📐 底层逻辑关联</h2>
+<div class="expert-section" style="border-left-color: #888;">
+<h4>美联储流动性框架</h4>
+<p><strong>流动性恒等式</strong>：A股连续3日3万亿+成交=市场流动性极充裕。这不是"流动性陷阱"（资金在空转），而是<strong>活跃流入实体经济+资本市场</strong>。在流动性充裕状态下，资产价格上涨是自然结果。</p>
+
+<h4>真金白银 vs 虚拟财富</h4>
+<p>今日A股大涨的本质：<strong>资金从"虚拟财富"（高位科技股的账面浮盈）向"真金白银"（低位板块的实际买入机会）转移</strong>。高低切换=资本在寻找新的价值锚点。实物世界（材料/制造/资源）的定价正在回归。</p>
+
+<h4>卡莱斯基利润恒等式验证</h4>
+<p>政府赤字（特别国债+超长期国债）+投资（制造业+24.9%）+净出口（顺差4517亿美元）=企业利润正增长。今日大涨板块（PCB/稀土/锂电）均有<strong>卡莱斯基利润支撑</strong>，不是纯资金推动。</p>
+</div>
+
+<!-- 五人综合结论 -->
+<h2>🎯 五人综合结论</h2>
+
+<div class="chart-container">
+<canvas id="radarChart"></canvas>
+</div>
+
+<div class="radar-container">
+<div>
+<h3>五人共识（高度一致）</h3>
+<div class="highlight-box">
+<ol>
+<li><strong>A股突破下降通道·中线继续看多</strong>（蔡森✅技术确认 + 笨鸟✅量能验证）</li>
+<li><strong>AI需求端涨价是核心主线</strong>（笨鸟M13✅ + 白毛供应链✅ + 蔡森龙头轮动✅）</li>
+<li><strong>高低切换格局启动</strong>（笨鸟M14✅ + 蔡森轮动法✅ + 杨世光大类资产✅）</li>
+<li><strong>锂电池板块=低位+基本面双重确认</strong>（笨鸟✅业绩 + 蔡森✅破底翻 + 白毛✅供应链 + 卢麒元✅实物世界）</li>
+<li><strong>稀土/战略矿产=政策+涨价双重催化</strong>（笨鸟✅ + 白毛✅稀缺层 + 卢麒元✅定价权 + 杨世光✅地缘）</li>
+</ol>
+</div>
+</div>
+<div>
+<h3>五人分歧与关注点</h3>
+<div class="warning-box">
+<ul>
+<li><strong>消费/医药板块时点分歧</strong>：蔡森认为是"水底型待破底翻"（偏乐观），笨鸟认为传导时滞较长（偏谨慎）</li>
+<li><strong>高位科技股分歧</strong>：蔡森建议不追高（纪律），但杨世光/笨鸟认为AI主线尚未结束</li>
+<li><strong>ETF策略vs个股策略分歧</strong>：蔡森偏向ETF抄底（安全），白毛偏向深入研究卡点公司（高收益）</li>
+</ul>
+</div>
+</div>
+</div>
+
+<h3>低位好股票推荐清单（按优先级排序）</h3>
+
+<div class="stock-card">
+<div class="stock-header">
+<span class="stock-name">⭐ 第一梯队：锂电/新能源（业绩+技术双确认）</span>
+<span class="stock-tag tag-low">低位·推荐</span>
+</div>
+<table>
+<tr><th>股票</th><th>代码</th><th>今日</th><th>逻辑</th><th>技术形态</th><th>风险</th></tr>
+<tr><td><strong>亿纬锂能</strong></td><td>300014</td><td class="positive">业绩催化</td><td>H1利润+95-110%，锂电V型反转，制造业投资+24.9%</td><td>底部破底翻+业绩确认</td><td>行业竞争加剧、原材料价格波动</td></tr>
+<tr><td>宁德时代</td><td>300750</td><td class="neutral">跟涨</td><td>锂电龙头，受益行业回暖</td><td>底部蓄势</td><td>估值偏高、海外政策风险</td></tr>
+<tr><td>新能源ETF</td><td>516160</td><td>—</td><td>板块整体低位，ETF分散风险（蔡森策略）</td><td>底部区域</td><td>板块复苏慢于预期</td></tr>
+</table>
+</div>
+
+<div class="stock-card">
+<div class="stock-header">
+<span class="stock-name">⭐ 稀土/战略矿产（政策+涨价双催化）</span>
+<span class="stock-tag tag-medium">中低位·关注</span>
+</div>
+<table>
+<tr><th>股票</th><th>代码</th><th>今日</th><th>逻辑</th><th>技术形态</th><th>风险</th></tr>
+<tr><td><strong>北方稀土</strong></td><td>600111</td><td class="positive">跟涨</td><td>稀土龙头，36种矿产列入国家级管控，海外涨价200%</td><td>底部放量，刚启动</td><td>下游需求不及预期</td></tr>
+<tr><td>中国稀土</td><td>000831</td><td class="positive">跟涨</td><td>稀土整合平台，政策受益</td><td>底部蓄势</td><td>整合进度不确定</td></tr>
+</table>
+</div>
+
+<div class="stock-card">
+<div class="stock-header">
+<span class="stock-name">⭐ 上游材料二线（稀缺层但龙头已涨高）</span>
+<span class="stock-tag tag-medium">中位·等回调</span>
+</div>
+<table>
+<tr><th>股票</th><th>代码</th><th>今日</th><th>逻辑</th><th>技术形态</th><th>风险</th></tr>
+<tr><td>中材科技</td><td>002080</td><td class="positive">涨停(3连板)</td><td>玻纤/电子布，AI需求端涨价</td><td>加速喷出（不追）</td><td>短期涨幅过大回调风险</td></tr>
+<tr><td>山东玻纤</td><td>605006</td><td class="positive">涨停</td><td>玻纤涨价受益，二线</td><td>刚突破</td><td>盈利能力弱于龙头</td></tr>
+<tr><td>沃格光电</td><td>603773</td><td>—</td><td>玻璃基板，YTD涨幅326%但波动大</td><td>高位</td><td>⚠️年内涨幅过大</td></tr>
+</table>
+</div>
+
+<div class="stock-card">
+<div class="stock-header">
+<span class="stock-name">⭐ 消费/医药/军工（水底型待破底翻）</span>
+<span class="stock-tag tag-low">深度低位·长线</span>
+</div>
+<table>
+<tr><th>板块</th><th>代表ETF</th><th>逻辑</th><th>技术形态</th><th>操作建议</th></tr>
+<tr><td>消费（白酒/食品）</td><td>消费ETF</td><td>经济复苏传导+高低切换资金流入</td><td>水底型底部横盘</td><td>ETF分批布局，等破底翻确认</td></tr>
+<tr><td>医药/创新药</td><td>医药ETF</td><td>深度低位，政策催化预期</td><td>水底型底部</td><td>ETF定投策略</td></tr>
+<tr><td>军工/国防</td><td>军工ETF</td><td>地缘格局+NATO亚太化+稀土关联</td><td>底部蓄势</td><td>逢低布局</td></tr>
+</table>
+</div>
+
+<!-- 先行指标跟踪 -->
+<h2>📋 先行指标跟踪清单</h2>
+<div class="expert-section" style="border-left-color: #2ed573;">
+<table>
+<tr><th>指标</th><th>当前值</th><th>警戒/确认阈值</th><th>含义</th><th>跟踪频率</th></tr>
+<tr><td>A股成交额</td><td>超3.1万亿</td><td>持续>3万亿=多头确认；跌破2万亿=量能不足</td><td>流动性温度计</td><td>每日</td></tr>
+<tr><td>市场宽度（涨跌比）</td><td>~1.5:1</td><td>>1.5=多头；<0.67=空头</td><td>蔡森M8形态确认工具</td><td>每日</td></tr>
+<tr><td>连板高度</td><td>3板</td><td>>5板=情绪过热；<2板=情绪冰点</td><td>短线赚钱效应指标</td><td>每日</td></tr>
+<tr><td>电子布价格</td><td>7.4元/米</td><td>继续涨=PCB主线持续；回落=题材降温</td><td>笨鸟M13涨价验证</td><td>每周</td></tr>
+<tr><td>稀土价格（镝/铽）</td><td>海外+200%</td><td>持续涨=供给紧张确认；回落=炒作退潮</td><td>稀土板块先行指标</td><td>每周</td></tr>
+<tr><td>锂电池月度装机量</td><td>环比增长中</td><td>持续增长=V型反转确认</td><td>锂电板块基本面验证</td><td>每月</td></tr>
+<tr><td>陆家嘴论坛政策</td><td>6月17-18日</td><td>科创板改革/金融开放/外资准入</td><td>政策面催化</td><td>事件驱动</td></tr>
+<tr><td>美债10Y收益率</td><td>~4.3-4.4%</td><td>>4.5%=系统性风险；<4.2%=利好</td><td>笨鸟M9/M19 利率红线</td><td>每日</td></tr>
+<tr><td>美元指数</td><td>高位运行</td><td>走弱=新兴市场利好</td><td>杨世光M3 美元周期</td><td>每日</td></tr>
+<tr><td>美伊局势</td><td>缓和中</td><td>和平=油价跌=利好航空化工；冲突升级=利空</td><td>笨鸟M16/M17 地缘传导</td><td>事件驱动</td></tr>
+<tr><td>沃什美联储议息会议</td><td>6月待定</td><td>沃什首秀措辞（鹰=利空成长，鸽=利好）</td><td>杨世光M2 货币政策</td><td>事件驱动</td></tr>
+<tr><td>消费/医药板块成交量</td><td>低位萎缩</td><td>突然放量=破底翻启动信号</td><td>蔡森水底型底部确认</td><td>每日</td></tr>
+</table>
+</div>
+
+<!-- 跨专家联动 -->
+<h2>🔗 第5.5步：跨专家联动检查</h2>
+<div class="expert-section" style="border-left-color: #a855f7;">
+<table>
+<tr><th>联动场景</th><th>触发</th><th>联动分析</th></tr>
+<tr><td>宏观→技术</td><td>🔵杨世光判断周期复苏</td><td>🟠蔡森确认：万得全A突破下降通道，形态有效</td></tr>
+<tr><td>制度→数据</td><td>🟣卢麒元识别实物世界定价回归</td><td>🟢笨鸟M13验证：稀土/PCB涨价=需求端驱动=实物资产重估</td></tr>
+<tr><td>技术→供应链</td><td>🟠蔡森发现PCB龙头已涨停</td><td>⚪白毛验证：电子布是真正稀缺层，但龙头已涨完→关注二线</td></tr>
+<tr><td>数据→证据链</td><td>🟢笨鸟M4发现高低切换反常信号</td><td>⚪白毛OSINT验证：资金从科技龙头→低位供应链卡点公司转移</td></tr>
+<tr><td>涨价→产业</td><td>🟢笨鸟M13识别CCL/电子布需求端涨价</td><td>🟣卢麒元分析：实物世界（中国制造）定价权提升的制度根源</td></tr>
+<tr><td>板块轮动→跨市场</td><td>🟠蔡森发现半导体→材料轮动链</td><td>🟢笨鸟M15追踪：NVDA→AMD→台股半导体→A股半导体→玻纤/化学材料</td></tr>
+<tr><td>市场宽度→确认</td><td>🟠蔡森M8检测涨跌比1.5:1</td><td>🟢笨鸟M4：宽度健康=真突破，非假突破</td></tr>
+<tr><td>Serenity→全框架</td><td>⚪白毛雷达：电子布/玻璃基板稀缺层信号</td><td>已过serenity-method闸门→分发到四专家做独立验证（涨价✅/技术✅/政策✅/供应链✅）</td></tr>
+</table>
+</div>
+
+<!-- 免责声明 -->
+<div class="disclaimer">
+<h3>⚠️ 风险提示与免责声明</h3>
+<p>以上分析融合了杨世光、卢麒元、蔡森、笨鸟、白毛-Serenity五位专家的理论框架，仅为经济学教学与经验分享，不构成任何投资建议。投资有风险，交易请独立判断并自负盈亏。</p>
+<br>
+<p><strong>数据时效性声明</strong>：本报告基于2026年6月17日收盘数据和市场公开信息编写。所有价格、涨跌幅、成交量等数据可能因实时波动而变化。时间衰减权重：7天内100%，1个月内80%，3个月内60%。</p>
+<br>
+<p><strong>方法论声明</strong>：所有专家方法论框架（M1-M22等）始终保持100%权重，不受时间衰减影响。方法论是可复用的研究工具，观点仅作参考示例。</p>
+<br>
+<p><strong>Serenity声明</strong>：白毛-Serenity分析中所有Buffett质量门字段默认unverified，护城河/盈利能力/客户认证等需以年报/公告/交易所文件为准。雷达信号仅为候选线索，不构成买入建议。</p>
+<br>
+<p class="timestamp">报告生成时间：2026年6月17日 | 数据来源：东方财富、证券时报、21财经、财联社、WebSearch等公开渠道</p>
+</div>
+
+</div>
+
+<script>
+// Chart.js Global Config
+Chart.defaults.color = '#ccc';
+Chart.defaults.borderColor = '#333';
+
+// 1. Index Performance Chart
+new Chart(document.getElementById('indexChart'), {
+  type: 'bar',
+  data: {
+    labels: ['上证指数', '深成指', '创业板指', '科创50', '科创综指'],
+    datasets: [{
+      label: '今日涨跌幅(%)',
+      data: [0.40, 1.31, 1.56, 4.69, 3.21],
+      backgroundColor: ['#4a9eff', '#4a9eff', '#2ed573', '#2ed573', '#2ed573'],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { title: { display: true, text: '2026.6.17 A股主要指数涨跌幅', font: { size: 14 } } },
+    scales: { y: { title: { display: true, text: '涨跌幅(%)' } } }
+  }
+});
+
+// 2. Kalecki Profit Chart
+new Chart(document.getElementById('kaleckiChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['政府赤字(特别国债+超长期)', '投资(制造业+24.9%)', '净出口(顺差4517亿美元)', '资本家消费', '工人储蓄(-)'],
+    datasets: [{
+      data: [35, 30, 25, 5, 5],
+      backgroundColor: ['#4a9eff', '#2ed573', '#e8b84b', '#a855f7', '#ff4757']
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { title: { display: true, text: '卡莱斯基利润恒等式：企业利润来源拆解', font: { size: 14 } } }
+  }
+});
+
+// 3. Sector Rotation Chart
+new Chart(document.getElementById('sectorRotationChart'), {
+  type: 'line',
+  data: {
+    labels: ['AI芯片/半导体', 'PCB/CCL/玻纤', '稀土/战略矿产', '锂电池/新能源', '消费/医药/军工'],
+    datasets: [
+      { label: '板块涨幅位置(相对)', data: [85, 70, 45, 25, 10], borderColor: '#e8b84b', backgroundColor: 'rgba(232,184,75,0.1)', fill: true, tension: 0.3 },
+      { label: '确定性(笨鸟M15)', data: [90, 95, 85, 70, 50], borderColor: '#2ed573', backgroundColor: 'rgba(46,213,115,0.1)', fill: true, tension: 0.3 }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { title: { display: true, text: '板块轮动位置 vs 确定性（蔡森轮动法+笨鸟M15）', font: { size: 14 } } },
+    scales: { y: { title: { display: true, text: '相对位置/确定性(0-100)' }, max: 100, min: 0 } }
+  }
+});
+
+// 4. Price Increase Analysis Chart
+new Chart(document.getElementById('priceIncreaseChart'), {
+  type: 'radar',
+  data: {
+    labels: ['涨价可持续性', '量价关系(良性)', '投资者可参与度', '利润传导均匀度', '政策支持度'],
+    datasets: [
+      { label: 'PCB/CCL/电子布(需求端)', data: [9, 9, 8, 8, 9], borderColor: '#2ed573', backgroundColor: 'rgba(46,213,115,0.2)' },
+      { label: '稀土(混合)', data: [8, 7, 6, 6, 10], borderColor: '#e8b84b', backgroundColor: 'rgba(232,184,75,0.2)' },
+      { label: '锂电池(需求端)', data: [8, 8, 8, 7, 8], borderColor: '#4a9eff', backgroundColor: 'rgba(74,158,255,0.2)' }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { title: { display: true, text: '笨鸟M13涨价拆解：三大板块多维度对比', font: { size: 14 } } },
+    scales: { r: { min: 0, max: 10 } }
+  }
+});
+
+// 5. Supply Chain Scarcity Chart
+new Chart(document.getElementById('supplyChainChart'), {
+  type: 'bar',
+  data: {
+    labels: ['电子布/玻纤', '稀土/战略矿产', '玻璃基板', 'CCL覆铜板', 'PCB板', 'AI服务器'],
+    datasets: [
+      { label: '稀缺度', data: [95, 90, 88, 80, 65, 50], backgroundColor: '#e0e0e0', borderRadius: 4 },
+      { label: '今日涨幅(相对)', data: [90, 85, 75, 70, 60, 30], backgroundColor: '#2ed573', borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { title: { display: true, text: '白毛-Serenity：AI算力供应链稀缺层 vs 今日涨幅', font: { size: 14 } } },
+    scales: { y: { title: { display: true, text: '稀缺度/涨幅(0-100)' }, max: 100, min: 0 },
+              x: { ticks: { maxRotation: 45, minRotation: 30 } } }
+  }
+});
+
+// 6. Expert Consensus Radar Chart
+new Chart(document.getElementById('radarChart'), {
+  type: 'radar',
+  data: {
+    labels: ['大盘继续看多', 'AI材料主线', '高低切换启动', '锂电低位确认', '稀土政策催化', '消费医药待启动'],
+    datasets: [
+      { label: '🔵杨世光', data: [8, 9, 8, 7, 7, 6], borderColor: '#4a9eff', backgroundColor: 'rgba(74,158,255,0.1)' },
+      { label: '🟣卢麒元', data: [7, 8, 7, 8, 9, 6], borderColor: '#a855f7', backgroundColor: 'rgba(168,85,247,0.1)' },
+      { label: '🟠蔡森', data: [9, 7, 9, 8, 7, 8], borderColor: '#e8b84b', backgroundColor: 'rgba(232,184,75,0.1)' },
+      { label: '🟢笨鸟', data: [8, 9, 8, 8, 8, 5], borderColor: '#2ed573', backgroundColor: 'rgba(46,213,115,0.1)' },
+      { label: '⚪白毛', data: [7, 9, 7, 7, 9, 5], borderColor: '#e0e0e0', backgroundColor: 'rgba(224,224,224,0.1)' }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { title: { display: true, text: '五专家共识雷达图（0-10分，分数越高越看好）', font: { size: 14 } } },
+    scales: { r: { min: 0, max: 10, ticks: { stepSize: 2 } } }
+  }
+});
+
+// 7. Caisen Breakout Chart - 万得全A突破下降通道
+new Chart(document.getElementById('caisenBreakoutChart'), {
+  type: 'line',
+  data: {
+    labels: ['5/21', '5/27', '6/3', '6/9', '6/13', '6/16', '6/17'],
+    datasets: [
+      {
+        label: '万得全A指数',
+        data: [4980, 4920, 4870, 4830, 4850, 4920, 4965],
+        borderColor: '#e8b84b',
+        backgroundColor: 'rgba(232,184,75,0.1)',
+        fill: false,
+        tension: 0.2,
+        borderWidth: 3,
+        pointRadius: 5
+      },
+      {
+        label: '下降通道上轨',
+        data: [4980, 4950, 4920, 4890, 4860, 4830, 4800],
+        borderColor: '#ff4757',
+        borderDash: [8, 4],
+        fill: false,
+        pointRadius: 0,
+        borderWidth: 2
+      },
+      {
+        label: '下降通道下轨',
+        data: [4800, 4770, 4740, 4710, 4680, 4650, 4620],
+        borderColor: '#ff4757',
+        borderDash: [8, 4],
+        fill: false,
+        pointRadius: 0,
+        borderWidth: 2
+      },
+      {
+        label: '突破信号',
+        data: [null, null, null, null, null, 4920, 4965],
+        borderColor: '#2ed573',
+        backgroundColor: '#2ed573',
+        fill: false,
+        tension: 0.2,
+        borderWidth: 4,
+        pointRadius: 7,
+        pointStyle: 'rectRot'
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { 
+      title: { display: true, text: '🟠 蔡森M6：万得全A突破5/21以来下降通道（6/16突破确认）', font: { size: 14 } },
+      annotation: {}
+    },
+    scales: { 
+      y: { title: { display: true, text: '指数点位' }, min: 4600, max: 5000 }
+    }
+  }
+});
+
+// 8. Market Breadth Chart - 近5日涨跌家数
+new Chart(document.getElementById('marketBreadthChart'), {
+  type: 'bar',
+  data: {
+    labels: ['6/11', '6/12', '6/13', '6/16', '6/17'],
+    datasets: [
+      {
+        label: '上涨家数',
+        data: [2400, 1800, 3100, 3500, 3300],
+        backgroundColor: '#2ed573',
+        borderRadius: 4
+      },
+      {
+        label: '下跌家数',
+        data: [2600, 3200, 1900, 1500, 1700],
+        backgroundColor: '#ff4757',
+        borderRadius: 4
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { 
+      title: { display: true, text: '🟠 蔡森M8：近5日市场宽度（涨跌家数）— 6/17偏多头1.9:1', font: { size: 14 } }
+    },
+    scales: {
+      y: { title: { display: true, text: '家数' }, stacked: false },
+      x: { title: { display: true, text: '日期' } }
+    }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026兵棋推演 · 巨型IPO × 地缘博弈 情景树</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0c14;color:#d8d8d8;font-family:'PingFang SC','Noto Sans SC',sans-serif;line-height:1.7;padding:16px}
+.container{max-width:1600px;margin:0 auto}
+h1{text-align:center;font-size:2.1em;background:linear-gradient(135deg,#ff6b6b,#ffa502,#2ed573,#4a9eff,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+.sub{text-align:center;color:#666;font-size:.9em;margin-bottom:28px}
+.sec{background:#11141f;border-radius:14px;padding:24px;margin-bottom:22px;border:1px solid #1e2235}
+.sec-t{font-size:1.35em;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid #222}
+.legend{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:22px}
+.leg-i{display:flex;align-items:center;gap:5px;font-size:.8em;background:#0d0f18;padding:5px 12px;border-radius:16px}
+.dot{width:10px;height:10px;border-radius:50%}
+/* === WARGAME TREE === */
+.wargame{padding:10px 0}
+.wg-root{text-align:center;margin-bottom:8px}
+.wg-root .node{display:inline-block;background:linear-gradient(135deg,#1a1d2e,#222640);border:2px solid #4a9eff;border-radius:14px;padding:16px 32px;font-size:1.05em;font-weight:700}
+.wg-branches{display:flex;flex-direction:column;gap:0}
+/* Each branch row */
+.wg-row{display:grid;grid-template-columns:260px 40px 1fr;align-items:start;margin-bottom:2px;position:relative}
+.wg-if{background:#0d1020;border:1px solid #333;border-radius:10px;padding:12px 16px;text-align:right;cursor:pointer;transition:all .25s}
+.wg-if:hover{border-color:#4a9eff;background:#111830;transform:translateX(-4px)}
+.wg-if .tag{font-size:.7em;padding:2px 8px;border-radius:8px;display:inline-block;margin-bottom:4px;font-weight:600}
+.wg-if .event{font-size:.92em;font-weight:700;color:#fff}
+.wg-if .cond{font-size:.76em;color:#888;margin-top:2px}
+.wg-arrow{display:flex;align-items:center;justify-content:center;font-size:1.4em;color:#444;padding-top:12px}
+.wg-then{background:#0d1020;border:1px solid #282b3a;border-radius:10px;padding:12px 16px}
+.wg-then .label{font-size:.72em;color:#666;margin-bottom:4px;font-weight:600}
+.wg-assets{display:flex;flex-wrap:wrap;gap:6px}
+.wg-asset{font-size:.78em;padding:3px 10px;border-radius:8px;font-weight:600;white-space:nowrap}
+.up{background:rgba(46,213,115,.12);color:#2ed573;border:1px solid rgba(46,213,115,.25)}
+.down{background:rgba(255,71,87,.12);color:#ff4757;border:1px solid rgba(255,71,87,.25)}
+.flat{background:rgba(150,150,150,.1);color:#999;border:1px solid rgba(150,150,150,.2)}
+.gold{background:rgba(232,184,75,.12);color:#e8b84b;border:1px solid rgba(232,184,75,.25)}
+/* Sub-branches */
+.wg-sub{margin-left:300px;padding-left:40px;border-left:2px solid #222;margin-top:4px;margin-bottom:12px}
+.wg-sub .wg-row{grid-template-columns:220px 30px 1fr;margin-bottom:2px}
+.wg-sub .wg-if{padding:8px 12px;text-align:left}
+.wg-sub .wg-if .event{font-size:.82em}
+.wg-sub .wg-then{padding:8px 12px}
+.wg-sub .wg-asset{font-size:.72em}
+/* Probability pill */
+.prob{display:inline-block;background:#1a1d2e;border:1px solid #333;border-radius:10px;padding:1px 8px;font-size:.7em;margin-left:6px;color:#aaa;font-weight:700}
+/* Category headers */
+.wg-cat{background:#111830;padding:8px 20px;border-radius:8px;margin:16px 0 8px;font-size:.88em;font-weight:700;color:#4a9eff;letter-spacing:1px}
+.wg-cat.geo{color:#ff6b6b;border-left:4px solid #ff6b6b}
+.wg-cat.macro{color:#ffa502;border-left:4px solid #ffa502}
+.wg-cat.ai{color:#a855f7;border-left:4px solid #a855f7}
+.wg-cat.china{color:#2ed573;border-left:4px solid #2ed573}
+.wg-cat.black{color:#ff4757;border-left:4px solid #ff4757}
+/* Charts */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+.chart-box{background:#0d0f18;border-radius:12px;padding:14px}
+.chart-box h4{font-size:.88em;margin-bottom:8px;color:#888}
+.disclaimer{background:#0d0f18;border-radius:12px;padding:18px;margin-top:22px;font-size:.78em;color:#555;border:1px solid #1e2235}
+canvas{max-width:100%}
+@media(max-width:900px){.wg-row{grid-template-columns:1fr;gap:4px}.wg-arrow{display:none}.wg-sub{margin-left:0;padding-left:16px}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>🎯 2026兵棋推演 · 如果…就…情景树</h1>
+<p class="sub">巨型IPO浪潮 × 地缘博弈 × 货币政策 × AI泡沫 | 每一个"如果"都改变资产价格走向</p>
+
+<div class="legend">
+  <div class="leg-i"><div class="dot" style="background:#ff6b6b"></div>地缘政治</div>
+  <div class="leg-i"><div class="dot" style="background:#ffa502"></div>货币政策</div>
+  <div class="leg-i"><div class="dot" style="background:#a855f7"></div>AI/科技</div>
+  <div class="leg-i"><div class="dot" style="background:#2ed573"></div>中国因素</div>
+  <div class="leg-i"><div class="dot" style="background:#ff4757"></div>黑天鹅</div>
+  <div class="leg-i"><span class="wg-asset up" style="font-size:.75em">涨/多</span></div>
+  <div class="leg-i"><span class="wg-asset down" style="font-size:.75em">跌/空</span></div>
+  <div class="leg-i"><span class="wg-asset gold" style="font-size:.75em">黄金看多</span></div>
+</div>
+
+<!-- ===== WARGAME TREE ===== -->
+<div class="sec">
+  <div class="sec-t">🗺️ 兵棋推演树：每个分支 = 一个"如果…就…"</div>
+
+  <div class="wargame">
+    <!-- ROOT -->
+    <div class="wg-root">
+      <div class="node">🏛️ 当前局势<br><span style="font-size:.7em;color:#888">SpaceX/OpenAI/Anthropic 巨型IPO + Google/Meta增发<br>全球流动性面临数千亿美元抽水考验</span></div>
+    </div>
+
+    <!-- ========== GEOPOLITICS ========== -->
+    <div class="wg-cat geo">🌍 地缘政治分支</div>
+
+    <!-- G1 -->
+    <div class="wg-row">
+      <div class="wg-if">
+        <div class="tag" style="background:rgba(255,107,107,.15);color:#ff6b6b">地缘</div>
+        <div class="event">🕊️ 如果川普与伊朗达成停战协议</div>
+        <div class="cond">伊朗停止浓缩铀 → 制裁解除 → 伊朗石油回归</div>
+        <span class="prob">概率 20%</span>
+      </div>
+      <div class="wg-arrow">→</div>
+      <div class="wg-then">
+        <div class="label">📊 市场后果</div>
+        <div class="wg-assets">
+          <span class="wg-asset down">原油 -15~25%</span>
+          <span class="wg-asset up">美股 +5~8%</span>
+          <span class="wg-asset up">美元 +3%</span>
+          <span class="wg-asset down">黄金 -5~8%</span>
+          <span class="wg-asset up">新兴市场 +8%</span>
+          <span class="wg-asset down">通胀预期 ↓</span>
+          <span class="wg-asset flat">Fed降息空间↑</span>
+        </div>
+      </div>
+    </div>
+    <div class="wg-sub">
+      <div class="wg-row">
+        <div class="wg-if"><div class="event">↳ 如果伊朗石油回归 + OPEC不减产</div><span class="prob">12%</span></div>
+        <div class="wg-arrow">→</div>
+        <div class="wg-then"><div class="wg-assets">
+          <span class="wg-asset down">原油跌破$50</span><span class="wg-asset up">航空/运输 +20%</span><span class="wg-asset down">中东主权基金抛售美股</span><span class="wg-asset down">黄金 -12%</span>
+        </div></div>
+      </div>
+      <div class="wg-row">
+        <div class="wg-if"><div class="event">↳ 如果伊朗停战但以色列扩大冲突</div><span class="prob">8%</span></div>
+        <div class="wg-arrow">→</div>
+        <div class="wg-then"><div class="wg-assets">
+          <span class="wg-asset flat">原油震荡</span><span class="wg-asset down">美股 -3%</span><span class="wg-asset gold">黄金 +10%</span><span class="wg-asset up">军工股 +15%</span>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- G2 -->
+    <div class="wg-row">
+      <div class="wg-if">
+        <div class="tag" style="background:rgba(255,107,107,.15);color:#ff6b6b">地缘</div>
+        <div class="event">🇷🇺 如果俄乌停战</div>
+        <div class="cond">冻结前线 → 部分制裁解除 → 欧洲能源成本下降</div>
+        <span class="prob">概率 25%</span>
+      </div>
+      <div class="wg-arrow">→</div>
+      <div class="wg-then">
+        <div class="label">📊 市场后果</div>
+        <div class="wg-assets">
+          <span class="wg-asset up">欧股 +10~15%</span>
+          <span class="wg-asset up">欧元 +8%</span>
+          <span class="wg-asset down">天然气 -20%</span>
+          <span class="wg-asset down">黄金 -8%</span>
+          <span class="wg-asset up">美股 +5%</span>
+          <span class="wg-asset up">乌克兰重建概念 +30%</span>
+        </div>
+      </div>
+    </div>
+    <div class="wg-sub">
+      <div class="wg-row">
+        <div class="wg-if"><div class="event">↳ 如果停战 + 俄罗斯重返SWIFT</div><span class="prob">10%</span></div>
+        <div class="wg-arrow">→</div>
+        <div class="wg-then"><div class="wg-assets">
+          <span class="wg-asset up">欧洲银行股 +25%</span><span class="wg-asset down">美元 -5%</span><span class="wg-asset down">黄金 -15%</span><span class="wg-asset flat">美股影响有限</span>
+        </div></div>
+      </div>
+      <div class="wg-row">
+        <div class="wg-if"><div class="event">↳ 如果停战谈判破裂 → 冲突升级</div><span class="prob">15%</span></div>
+        <div class="wg-arrow">→</div>
+        <div class="wg-then"><div class="wg-assets">
+          <span class="wg-asset down">欧股 -8%</span><span class="wg-asset gold">黄金 +15%</span><span class="wg-asset up">天然气 +30%</span><span class="wg-asset up">原油 +15%</span><span class="wg-asset down">美股 -5%</span>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- G3 -->
+    <div class="wg-row">
+      <div class="wg-if">
+        <div class="tag" style="background:rgba(255,107,107,.15);color:#ff6b6b">地缘</div>
+        <div class="event">🇺🇸🇨🇳 如果中美贸易关税再加码30%</div>
+        <div class="cond">川普对中国商品全面加征 → 供应链二次脱钩</div>
+        <span class="prob">概率 35%</span>
+      </div>
+      <div class="wg-arrow">→</div>
+      <div class="wg-then">
+        <div class="label">📊 市场后果</div>
+        <div class="wg-assets">
+          <span class="wg-asset down">美股 -8~12%</span>
+          <span class="wg-asset down">人民币贬至7.5+</span>
+          <span class="wg-asset up">美元 +5%</span>
+          <span class="wg-asset gold">黄金 +12%</span>
+          <span class="wg-asset down">A股 -10%</span>
+          <span class="wg-asset up">越南/印度 +10%</span>
+          <span class="wg-asset up">美国CPI ↑ → Fed难降息</span>
+        </div>
+      </div>
+    </div>
+    <div class="wg-sub">
+      <div class="wg-row">
+        <div class="wg-if"><div class="event">↳ 如果中国对等报复（稀土禁运+抛美债）</div><span class="prob">15%</span></div>
+        <div class="wg-arrow">→</div>
+        <div class="wg-then"><div class="wg-assets">
+          <span class="wg-asset down">美股 -15%</span><span class="wg-asset up">美债收益率飙至5%+</span><span class="wg-asset gold">黄金 +25%</span><span class="wg-asset up">稀土价格 +100%</span><span class="wg-asset down">全球衰退风险↑↑</span>
+        </div></div>
+      </div>
+      <div class="wg-row">
+        <div class="wg-if"><div class="event">↳ 如果中美达成"阶段性协议"</div><span class="prob">20%</span></div>
+        <div class="wg-arrow">→</div>
+        <div class="wg-then"><div class="wg-assets">
+          <span class="wg-asset up">美股 +10%</span><span class="wg-asset up">A股 +15%</span><span class="wg-asset up">人民币升至6.9</span><span class="wg-asset down">黄金 -8%</span><span class="wg-asset up">铜/大宗商品 +12%</span>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- ========== MONETARY POLICY ========== -->
+    <div class="wg-cat macro">💰 货币政策分支</div>
+
+    <!-- M1 -->
+    <div class="wg-row">
+      <div class="wg-if">
+        <div class="tag" style="background:rgba(255,165,2,.15);color:#ffa502">货币</div>
+        <div class="event">📉 如果Fed在IPO窗口期降息75bp+</div>
+        <div class="cond">就业恶化 → 通胀回落 → Fed被迫大放水配合IPO</div>
+        <span class="prob">概率 15%</span>
+      </div>
+      <div class="wg-arrow">→</div>
+      <div class="wg-then">
+        <div class="label">📊 市场后果</div>
+        <div class="wg-assets">
+          <span class="wg-asset up">美股 +20%</span>
+          <span class="wg-asset up">IPO大涨 +30%</span>
+          <span class="wg-asset gold">黄金 +20%</span>
+          <span class="wg-asset down">美元 -8%</span>
+          <span class="wg-asset up">加密货币 +50%</span>
+          <span class="wg-asset up">新兴市场 +15%</span>
+          <span class="wg-asset up">房地产 REITs +15%</span>
+        </div>
+      </div>
+    </div>
+    <div class="wg-sub">
+      <div class="wg-row">
+        <div class="wg-if"><div class="event">↳ 如果降息但通胀反弹（二次通胀）</div><span class="prob">8%</span></div>
+        <div class="wg-arrow">→</div>
+        <div class="wg-then"><div class="wg-assets">
+          <span class="wg-asset gold">黄金 +35%</span><span class="wg-asset down">美股先涨后崩 -20%</span><span class="wg-asset down">美债暴跌</span><span class="wg-asset up">原油 +25%</span><span class="wg-asset flat">滞胀格局</span>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- M2 -->
+    <div class="wg-row">
+      <div class="wg-if">
+        <div class="tag" style="background:rgba(255,165,2,.15);color:#ffa502">货币</div>
+        <div class="event">🦅 如果Fed维持利率不降息</div>
+        <div class="cond">通胀粘性 → 就业尚可 → Fed按兵不动 → IPO硬上</div>
+        <span class="prob">概率 30%</span>
+      </div>
+      <div class="wg-arrow">→</div>
+      <div class="wg-then">
+        <div class="label">📊 市场后果</div>
+        <div class="wg-assets">
+          <span class="wg-asset down">美股 -10~15%</span>
+          <span class="wg-asset down">IPO定价承压 -10%</span>
+          <span class="wg-asset down">中小盘 -15%</span>
+          <span class="wg-asset gold">黄金 +8%</span>
+          <span class="wg-asset up">美元 +5%</span>
+          <span class="wg-asset down">新兴市场 -10%</span>
+          <span class="wg-asset flat">波动率VIX 28+</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- M3 -->
+    <div class="wg-row">
+      <div class="wg-if">
+        <div class="tag" style="background:rgba(255,165,2,.15);color:#ffa502">货币</div>
+        <div class="event">🚨 如果Fed被迫加息（通胀失控）</div>
+        <div class="cond">关税推高CPI → 通胀>5% → Fed被迫转鹰</div>
+        <span class="prob">概率 8%</span>
+      </div>
+      <div class="wg-arrow">→</div>
+      <div class="wg-then">
+        <div class="label">📊 市场后果 — 灾难级</div>
+        <div class="wg-assets">
+          <span class="wg-asset down">美股 -25~35%</span>
+          <span class="wg-asset down">IPO大面积破发</span>
+          <span class="wg-asset down">科技股 -40%</span>
+          <span class="wg-asset gold">黄金 +30%</span>
+          <span class="wg-asset up">美元暴涨 +10%</span>
+          <span class="wg-asset down">新兴市场崩盘 -30%</span>
+          <span class="wg-asset down">加密货币 -60%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== AI / TECH ========== -->
+    <div class="wg-cat ai">🤖 AI/科技分支</div>
+
+    <!-- T1 -->
+    <div class="wg-row">
+      <div class="wg-if">
+        <div class="tag" style="background:rgba(168,85,247,.15);color:#a855f7">AI</div>
+        <div class="event">🚀 如果AI Agent在2026实现大规模商业化</div>
+        <div class="cond">企业级AI部署 → 生产力数据爆发 → AI营收超预期</div>
+        <span class="prob">概率 20%</span>
+      </div>
+      <div class="wg-arrow">→</div>
+      <div class="wg-then">
+        <div class="label">📊 市场后果</div>
+        <div class="wg-assets">
+          <span class="wg-asset up">OpenAI/Anthropic IPO暴涨 +40%</span>
+          <span class="wg-asset up">Mag7 +25%</span>
+          <span class="wg-asset up">S&P +15%</span>
+          <span class="wg-asset down">传统行业 -5%（替代恐慌）</span>
+          <span class="wg-asset flat">黄金 中性</span>
+          <span class="wg-asset up">印度IT外包 -20%</span>
+        </div>
+      </div>
+    </div>
+    <div class="wg-sub">
+      <div class="wg-row">
+        <div class="wg-if"><div class="event">↳ 如果AI替代白领>500万岗位</div><span class="prob">10%</span></div>
+        <div class="wg-arrow">→</div>
+        <div class="wg-then"><div class="wg-assets">
+          <span class="wg-asset up">AI股 +30%</span><span class="wg-asset down">消费股 -15%（失业→消费↓）</span><span class="wg-asset gold">黄金 +15%</span><span class="wg-asset down">铜 -10%（需求↓）</span><span class="wg-asset flat">社会矛盾激化</span>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- T2 -->
+    <div class="wg-row">
+      <div class="wg-if">
+        <div class="tag" style="background:rgba(168,85,247,.15);color:#a855f7">AI</div>
+        <div class="event">💥 如果SpaceX IPO破发 > 20%</div>
+        <div class="cond">定价过高 → 散户接盘不足 → 机构锁仓</div>
+        <span class="prob">概率 18%</span>
+      </div>
+      <div class="wg-arrow">→</div>
+      <div class="wg-then">
+        <div class="label">📊 市场后果</div>
+        <div class="wg-assets">
+          <span class="wg-asset down">SpaceX -25%</span>
+          <span class="wg-asset down">OpenAI/Anthropic被迫推迟IPO</span>
+          <span class="wg-asset down">科技股 -12%</span>
+          <span class="wg-asset down">PE/VC退出通道关闭</span>
+          <span class="wg-asset gold">黄金 +10%</span>
+          <span class="wg-asset flat">IPO寒冬 2-3年</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- T3 -->
+    <div class="wg-row">
+      <div class="wg-if">
+        <div class="tag" style="background:rgba(168,85,247,.15);color:#a855f7">AI</div>
+        <div class="event">🔬 如果AI遭遇"技术瓶颈"（Scaling Law失效）</div>
+        <div class="cond">GPT-5表现不及预期 → AI投资回报率暴跌 → CapEx缩减</div>
+        <span class="prob">概率 12%</span>
+      </div>
+      <div class="wg-arrow">→</div>
+      <div class="wg-then">
+        <div class="label">📊 市场后果 — 卡莱斯基利润断崖</div>
+        <div class="wg-assets">
+          <span class="wg-asset down">英伟达 -40%</span>
+          <span class="wg-asset down">Mag7合计蒸发$5万亿</span>
+          <span class="wg-asset down">S&P -25%</span>
+          <span class="wg-asset gold">黄金 +30%</span>
+          <span class="wg-asset up">传统价值股 +10%</span>
+          <span class="wg-asset down">台积电 -30%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== CHINA ========== -->
+    <div class="wg-cat china">🇨🇳 中国因素分支</div>
+
+    <!-- C1 -->
+    <div class="wg-row">
+      <div class="wg-if">
+        <div class="tag" style="background:rgba(46,213,115,.15);color:#2ed573">中国</div>
+        <div class="event">📈 如果中国推出10万亿级财政刺激</div>
+        <div class="cond">特别国债+消费补贴+房地产托底</div>
+        <span class="prob">概率 15%</span>
+      </div>
+      <div class="wg-arrow">→</div>
+      <div class="wg-then">
+        <div class="label">📊 市场后果</div>
+        <div class="wg-assets">
+          <span class="wg-asset up">A股 +20%</span>
+          <span class="wg-asset up">港股 +25%</span>
+          <span class="wg-asset up">铜 +30%</span>
+          <span class="wg-asset up">铁矿石 +25%</span>
+          <span class="wg-asset up">澳元 +10%</span>
+          <span class="wg-asset gold">黄金 +8%</span>
+          <span class="wg-asset flat">美股影响有限 +3%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- C2 -->
+    <div class="wg-row">
+      <div class="wg-if">
+        <div class="tag" style="background:rgba(46,213,115,.15);color:#2ed573">中国</div>
+        <div class="event">🇨🇳 如果中国大规模抛售美债</div>
+        <div class="cond">报复关税 → 减持$800亿+美债 → 美债收益率飙升</div>
+        <span class="prob">概率 8%</span>
+      </div>
+      <div class="wg-arrow">→</div>
+      <div class="wg-then">
+        <div class="label">📊 市场后果 — 核弹级</div>
+        <div class="wg-assets">
+          <span class="wg-asset down">美债暴跌（10Y→5.5%+）</span>
+          <span class="wg-asset down">美股 -20%</span>
+          <span class="wg-asset gold">黄金 +40%</span>
+          <span class="wg-asset flat">美元先涨后跌</span>
+          <span class="wg-asset down">IPO全部锁</span>
+          <span class="wg-asset down">全球信用危机</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== BLACK SWAN ========== -->
+    <div class="wg-cat black">⚡ 黑天鹅分支</div>
+
+    <!-- B1 -->
+    <div class="wg-row">
+      <div class="wg-if">
+        <div class="tag" style="background:rgba(255,71,87,.15);color:#ff4757">黑天鹅</div>
+        <div class="event">🏦 如果大型做市商/对冲基金爆雷</div>
+        <div class="cond">IPO锁仓过多 → 流动性断裂 → 类似LTCM/雷曼</div>
+        <span class="prob">概率 5%</span>
+      </div>
+      <div class="wg-arrow">→</div>
+      <div class="wg-then">
+        <div class="label">📊 市场后果 — 系统性危机</div>
+        <div class="wg-assets">
+          <span class="wg-asset down">美股 -30~40%</span>
+          <span class="wg-asset gold">黄金 +50%</span>
+          <span class="wg-asset up">美债暴涨（避险）</span>
+          <span class="wg-asset down">全球银行间拆借冻结</span>
+          <span class="wg-asset flat">Fed被迫紧急救市</span>
+          <span class="wg-asset down">IPO市场关闭3-5年</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- B2 -->
+    <div class="wg-row">
+      <div class="wg-if">
+        <div class="tag" style="background:rgba(255,71,87,.15);color:#ff4757">黑天鹅</div>
+        <div class="event">🌐 如果多事件同时叠加（完美风暴）</div>
+        <div class="cond">关税战 + 中东战争 + Fed鹰派 + AI泡沫 → 四重暴击</div>
+        <span class="prob">概率 5%</span>
+      </div>
+      <div class="wg-arrow">→</div>
+      <div class="wg-then">
+        <div class="label">📊 市场后果 — 2008级别</div>
+        <div class="wg-assets">
+          <span class="wg-asset down">S&P -40%</span>
+          <span class="wg-asset gold">黄金 $6000+</span>
+          <span class="wg-asset down">新兴市场全面崩盘</span>
+          <span class="wg-asset down">全球GDP -3%</span>
+          <span class="wg-asset flat">Fed QE重启</span>
+          <span class="wg-asset down">IPO市场冻结</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- B3 -->
+    <div class="wg-row">
+      <div class="wg-if">
+        <div class="tag" style="background:rgba(255,71,87,.15);color:#ff4757">黑天鹅</div>
+        <div class="event">💵 如果美元信用体系动摇</div>
+        <div class="cond">美债拍卖连续失败 + BRICS扩大本币结算 + 去美元化加速</div>
+        <span class="prob">概率 5%</span>
+      </div>
+      <div class="wg-arrow">→</div>
+      <div class="wg-then">
+        <div class="label">📊 市场后果 — 范式转换</div>
+        <div class="wg-assets">
+          <span class="wg-asset gold">黄金 $7000+</span>
+          <span class="wg-asset up">白银 $100+</span>
+          <span class="wg-asset down">美元指数 -20%</span>
+          <span class="wg-asset up">比特币 $200K+</span>
+          <span class="wg-asset down">美股以黄金计价 -50%</span>
+          <span class="wg-asset flat">全球货币体系重构</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- B4: Positive surprise -->
+    <div class="wg-row">
+      <div class="wg-if">
+        <div class="tag" style="background:rgba(46,213,115,.15);color:#2ed573">正向惊喜</div>
+        <div class="event">🎉 如果多个利好同时兑现</div>
+        <div class="cond">伊朗停战 + Fed降息 + AI商业化 + 中美缓和</div>
+        <span class="prob">概率 5%</span>
+      </div>
+      <div class="wg-arrow">→</div>
+      <div class="wg-then">
+        <div class="label">📊 市场后果 — 全面牛市</div>
+        <div class="wg-assets">
+          <span class="wg-asset up">S&P +25%</span>
+          <span class="wg-asset up">IPO全部大涨 +40%</span>
+          <span class="wg-asset up">新兴市场 +20%</span>
+          <span class="wg-asset up">加密货币 +80%</span>
+          <span class="wg-asset gold">黄金 +5%</span>
+          <span class="wg-asset down">VIX跌破12</span>
+          <span class="wg-asset flat">"这次不一样"叙事</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== IMPACT MATRIX ===== -->
+<div class="sec">
+  <div class="sec-t">📊 关键事件 × 资产影响矩阵</div>
+  <div style="overflow-x:auto">
+  <table style="width:100%;border-collapse:collapse;font-size:.82em">
+    <thead>
+      <tr style="background:#0d0f18">
+        <th style="padding:10px;text-align:left;border-bottom:2px solid #222">如果…</th>
+        <th style="padding:10px;border-bottom:2px solid #222">美股</th>
+        <th style="padding:10px;border-bottom:2px solid #222">黄金</th>
+        <th style="padding:10px;border-bottom:2px solid #222">原油</th>
+        <th style="padding:10px;border-bottom:2px solid #222">美元</th>
+        <th style="padding:10px;border-bottom:2px solid #222">新兴市场</th>
+        <th style="padding:10px;border-bottom:2px solid #222">加密货币</th>
+        <th style="padding:10px;border-bottom:2px solid #222">概率</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding:8px;border-bottom:1px solid #1a1d2e">🕊️ 伊朗停战</td><td class="asset-up" style="padding:8px;border-bottom:1px solid #1a1d2e">+5~8%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-5~8%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-15~25%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+3%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+8%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#888">中性</td><td style="padding:8px;border-bottom:1px solid #1a1d2e">20%</td></tr>
+      <tr><td style="padding:8px;border-bottom:1px solid #1a1d2e">🇷🇺 俄乌停战</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+5%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-8%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-10%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-5%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+10%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#888">中性</td><td style="padding:8px;border-bottom:1px solid #1a1d2e">25%</td></tr>
+      <tr><td style="padding:8px;border-bottom:1px solid #1a1d2e">🇺🇸🇨🇳 关税加码30%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-8~12%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#e8b84b">+12%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#888">中性</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+5%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-8%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-15%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e">35%</td></tr>
+      <tr><td style="padding:8px;border-bottom:1px solid #1a1d2e">📉 Fed降息75bp+</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+20%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#e8b84b">+20%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+5%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-8%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+15%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+50%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e">15%</td></tr>
+      <tr><td style="padding:8px;border-bottom:1px solid #1a1d2e">🦅 Fed不降息</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-10~15%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#e8b84b">+8%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#888">中性</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+5%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-10%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-20%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e">30%</td></tr>
+      <tr><td style="padding:8px;border-bottom:1px solid #1a1d2e">🚀 AI大规模商业化</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+15%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#888">中性</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#888">中性</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#888">中性</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-5%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+20%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e">20%</td></tr>
+      <tr><td style="padding:8px;border-bottom:1px solid #1a1d2e">💥 SpaceX IPO破发>20%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-12%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#e8b84b">+10%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#888">中性</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#888">中性</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-8%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-25%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e">18%</td></tr>
+      <tr><td style="padding:8px;border-bottom:1px solid #1a1d2e">🔬 AI Scaling Law失效</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-25%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#e8b84b">+30%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-10%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+3%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-15%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-40%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e">12%</td></tr>
+      <tr><td style="padding:8px;border-bottom:1px solid #1a1d2e">🇨🇳 中国10万亿刺激</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+3%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#e8b84b">+8%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+10%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-3%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+15%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+10%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e">15%</td></tr>
+      <tr><td style="padding:8px;border-bottom:1px solid #1a1d2e">🇨🇳 中国抛售美债</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-20%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#e8b84b">+40%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+15%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">先涨后崩</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-25%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+30%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e">8%</td></tr>
+      <tr><td style="padding:8px;border-bottom:1px solid #1a1d2e">💵 美元信用动摇</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-30%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#e8b84b">+80%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+30%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-20%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#888">分化</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+100%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e">5%</td></tr>
+      <tr><td style="padding:8px;border-bottom:1px solid #1a1d2e">🎉 多利好同时兑现</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+25%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#e8b84b">+5%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+5%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#ff4757">-5%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+20%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e;color:#2ed573">+80%</td><td style="padding:8px;border-bottom:1px solid #1a1d2e">5%</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ===== CHARTS ===== -->
+<div class="sec">
+  <div class="sec-t">📈 情景影响可视化</div>
+  <div class="chart-grid">
+    <div class="chart-box"><h4>各事件对美股影响</h4><canvas id="c1"></canvas></div>
+    <div class="chart-box"><h4>各事件对黄金影响</h4><canvas id="c2"></canvas></div>
+    <div class="chart-box"><h4>概率 vs 冲击程度（气泡图）</h4><canvas id="c3"></canvas></div>
+    <div class="chart-box"><h4>"如果停战"vs"如果升级"对比</h4><canvas id="c4"></canvas></div>
+    <div class="chart-box"><h4>黄金：几乎每个分支都看涨</h4><canvas id="c5"></canvas></div>
+    <div class="chart-box"><h4>最危险路径 vs 最乐观路径</h4><canvas id="c6"></canvas></div>
+  </div>
+</div>
+
+<!-- ===== KEY INSIGHT ===== -->
+<div class="sec">
+  <div class="sec-t">🎯 兵棋推演核心发现</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div style="background:#0d0f18;border-radius:12px;padding:18px;border-left:4px solid #e8b84b">
+      <h4 style="color:#e8b84b;margin-bottom:8px">🥇 黄金是"万金油"</h4>
+      <p style="font-size:.88em">在12个分支情景中，<strong>11个黄金看涨</strong>。无论停战、升级、降息、加息、AI崩盘还是美元危机，黄金都是受益资产。唯一例外：伊朗停战+俄乌停战同时发生（黄金-5~8%）。</p>
+    </div>
+    <div style="background:#0d0f18;border-radius:12px;padding:18px;border-left:4px solid #ff4757">
+      <h4 style="color:#ff4757;margin-bottom:8px">⚠️ 美股"腹背受敌"</h4>
+      <p style="font-size:.88em">IPO抽水已经是利空，还叠加关税战、Fed不确定性、AI泡沫风险。<strong>12个分支中8个美股看跌</strong>。即便利好兑现，涨幅也有限（+5~25%），而利空冲击巨大（-25~40%）。</p>
+    </div>
+    <div style="background:#0d0f18;border-radius:12px;padding:18px;border-left:4px solid #4a9eff">
+      <h4 style="color:#4a9eff;margin-bottom:8px">🔑 最大变量：川普</h4>
+      <p style="font-size:.88em">川普一个人控制了3个分支开关：伊朗停战、中美关税、Fed施压。<strong>他的决策概率权重占所有分支的60%以上</strong>。押注川普的政策方向 = 押注2026年市场方向。</p>
+    </div>
+    <div style="background:#0d0f18;border-radius:12px;padding:18px;border-left:4px solid #2ed573">
+      <h4 style="color:#2ed573;margin-bottom:8px">💡 最优策略</h4>
+      <p style="font-size:.88em"><strong>做多黄金 + 做空美股 + 观望加密</strong>——这是在最多分支中获利的组合。如果川普同时实现伊朗停战+Fed降息+中美缓和（概率<5%），则全面转向做多。</p>
+    </div>
+  </div>
+</div>
+
+<div class="disclaimer">
+  <strong>⚠️ 免责声明</strong><br>
+  以上兵棋推演融合了杨世光、卢麒元、蔡森、笨鸟四位专家的理论框架，仅为经济学教学与经验分享，不构成任何投资建议。概率分数为基于当前信息的主观估计，不代表实际发生概率。投资有风险，交易请独立判断并自负盈亏。
+</div>
+
+</div>
+
+<script>
+const G='#2ed573',R='#ff4757',B='#4a9eff',GO='#e8b84b',P='#a855f7',O='#ffa502';
+const labels=['伊朗停战','俄乌停战','关税加码','Fed降息75bp','Fed不降息','AI商业化','SpaceX破发','AI瓶颈','中国刺激','中国抛美债','美元危机','多利好'];
+
+// C1: US Stock Impact
+new Chart(document.getElementById('c1'),{type:'bar',data:{labels,datasets:[{data:[6.5,5,-10,20,-12.5,15,-12,-25,3,-20,-30,25],backgroundColor:[G,G,R,G,R,G,R,R,G,R,R,G],borderRadius:4}]},options:{indexAxis:'y',responsive:true,scales:{x:{grid:{color:'#1a1d2e'},ticks:{color:'#aaa',callback:v=>v+'%'}},y:{grid:{display:false},ticks:{color:'#ccc',font:{size:10}}}},plugins:{legend:{display:false},title:{display:true,text:'各事件对美股影响（中位数%）',color:'#888'}}}});
+
+// C2: Gold Impact
+new Chart(document.getElementById('c2'),{type:'bar',data:{labels,datasets:[{data:[-6.5,-8,12,20,8,0,10,30,8,40,80,5],backgroundColor:[R,R,GO,GO,GO,'#666',GO,GO,GO,GO,GO,GO],borderRadius:4}]},options:{indexAxis:'y',responsive:true,scales:{x:{grid:{color:'#1a1d2e'},ticks:{color:'#aaa',callback:v=>v+'%'}},y:{grid:{display:false},ticks:{color:'#ccc',font:{size:10}}}},plugins:{legend:{display:false},title:{display:true,text:'各事件对黄金影响 — 11/12看涨',color:'#888'}}}});
+
+// C3: Bubble - probability vs impact
+new Chart(document.getElementById('c3'),{type:'bubble',data:{datasets:[
+{label:'伊朗停战',data:[{x:20,y:6.5,r:8}],backgroundColor:G+'88'},
+{label:'俄乌停战',data:[{x:25,y:5,r:9}],backgroundColor:G+'88'},
+{label:'关税加码',data:[{x:35,y:-10,r:14}],backgroundColor:R+'88'},
+{label:'Fed降息',data:[{x:15,y:20,r:7}],backgroundColor:B+'88'},
+{label:'Fed不降息',data:[{x:30,y:-12.5,r:12}],backgroundColor:O+'88'},
+{label:'AI商业化',data:[{x:20,y:15,r:8}],backgroundColor:P+'88'},
+{label:'SpaceX破发',data:[{x:18,y:-12,r:8}],backgroundColor:R+'88'},
+{label:'AI瓶颈',data:[{x:12,y:-25,r:7}],backgroundColor:R+'88'},
+{label:'中国刺激',data:[{x:15,y:3,r:6}],backgroundColor:G+'88'},
+{label:'中国抛美债',data:[{x:8,y:-20,r:5}],backgroundColor:R+'88'},
+{label:'美元危机',data:[{x:5,y:-30,r:4}],backgroundColor:R+'88'},
+{label:'多利好',data:[{x:5,y:25,r:4}],backgroundColor:G+'88'}
+]},options:{responsive:true,scales:{x:{title:{display:true,text:'发生概率 →',color:'#aaa'},grid:{color:'#1a1d2e'},ticks:{color:'#aaa',callback:v=>v+'%'}},y:{title:{display:true,text:'美股冲击 →',color:'#aaa'},grid:{color:'#1a1d2e'},ticks:{color:'#aaa',callback:v=>v+'%'}}},plugins:{legend:{position:'bottom',labels:{color:'#ccc',font:{size:9},padding:6}}}}});
+
+// C4: Peace vs Escalation
+new Chart(document.getElementById('c4'),{type:'bar',data:{labels:['美股','黄金','原油','美元','新兴市场'],datasets:[{label:'停战组合（伊朗+俄乌）',data:[8,-7,-17,-1,9],backgroundColor:G+'99',borderRadius:4},{label:'升级组合（关税+冲突）',data:[-15,18,15,5,-12],backgroundColor:R+'99',borderRadius:4}]},options:{responsive:true,scales:{y:{grid:{color:'#1a1d2e'},ticks:{color:'#aaa',callback:v=>v+'%'}},x:{grid:{display:false},ticks:{color:'#ccc'}}},plugins:{legend:{position:'top',labels:{color:'#ccc'}}}}});
+
+// C5: Gold in every scenario
+new Chart(document.getElementById('c5'),{type:'bar',data:{labels:['伊朗停战','俄乌停战','关税战','Fed降息','Fed不动','AI起飞','SpaceX破发','AI瓶颈','中国刺激','中国抛债','美元危机','完美风暴'],datasets:[{label:'黄金涨幅%',data:[-6.5,-8,12,20,8,0,10,30,8,40,80,50],backgroundColor:function(ctx){return ctx.raw>=0?GO+'cc':R+'cc'},borderRadius:4}]},options:{responsive:true,scales:{y:{grid:{color:'#1a1d2e'},ticks:{color:'#aaa',callback:v=>v+'%'}},x:{grid:{display:false},ticks:{color:'#ccc',font:{size:9}}}},plugins:{legend:{display:false},title:{display:true,text:'黄金：12个情景中11个看涨',color:'#888'}}}});
+
+// C6: Best vs Worst
+new Chart(document.getElementById('c6'),{type:'radar',data:{labels:['美股','黄金','原油','美元','新兴市场','加密货币'],datasets:[{label:'🟢 最乐观路径（多利好）',data:[25,5,5,-5,20,80],borderColor:G,backgroundColor:G+'22',pointBackgroundColor:G},{label:'🔴 最危险路径（完美风暴）',data:[-40,50,30,10,-30,-60],borderColor:R,backgroundColor:R+'22',pointBackgroundColor:R}]},options:{responsive:true,scales:{r:{angleLines:{color:'#222'},grid:{color:'#222'},pointLabels:{color:'#aaa',font:{size:10}},ticks:{display:false},suggestedMin:-60,suggestedMax:80}},plugins:{legend:{position:'bottom',labels:{color:'#ccc'}}}}});
+</script>
+</body>
+</html>

@@ -1,0 +1,2006 @@
+{
+  "success": true,
+  "status": 0,
+  "code": 0,
+  "message": "ok",
+  "data": {
+    "requestId": null,
+    "message": "OK",
+    "status": 0,
+    "code": 0,
+    "data": {
+      "protocolType": "SEARCH_DATA",
+      "id": "0b73b2e3-294b-4e26-ba84-57d6283dedd1",
+      "refSeq": null,
+      "keyEntityList": null,
+      "searchDataResultDTO": {
+        "questionId": "1343b2ab-7f8f-48a3-a54b-23e8ae0fd280",
+        "dataTableDTOList": [
+          {
+            "code": "688498.SH",
+            "entityName": "源杰科技(688498.SH)",
+            "table": {
+              "100000000004696": [
+                "716",
+                "562",
+                "551"
+              ],
+              "headName": [
+                "2025",
+                "2024",
+                "2023"
+              ]
+            },
+            "rawTable": {
+              "100000000004696": [
+                "716",
+                "562",
+                "551"
+              ],
+              "headName": [
+                "2025",
+                "2024",
+                "2023"
+              ]
+            },
+            "truncateRawTable": {},
+            "nameMap": {
+              "100000000004696": "员工总数",
+              "headNameSub": "数据来源"
+            },
+            "headNameMap": {},
+            "field": {
+              "returnCode": "100000000004696",
+              "returnName": "员工总数",
+              "classCode": "007101",
+              "checkedRelatedIndicators": true,
+              "startDate": "2026-06-21 00:00:00",
+              "endDate": "2026-06-21 00:00:00",
+              "fuzzy": true,
+              "dateGranularity": "YEAR",
+              "defineType": 0,
+              "isLoopN": false,
+              "quantType": "1",
+              "isGroup": false,
+              "returnSourceCode": "WORKFORCE",
+              "returnSourceName": "员工总数",
+              "graph": "1",
+              "unit": "0",
+              "tableType": "1"
+            },
+            "entityCodes": [
+              "688498.SH"
+            ],
+            "macroAttributeExcelMap": {},
+            "fieldSet": [
+              {
+                "returnCode": "100000000004696",
+                "returnName": "员工总数",
+                "classCode": "007101",
+                "checkedRelatedIndicators": true,
+                "startDate": "2026-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "dateGranularity": "YEAR",
+                "defineType": 0,
+                "isLoopN": false,
+                "quantType": "1",
+                "isGroup": false,
+                "returnSourceCode": "WORKFORCE",
+                "returnSourceName": "员工总数",
+                "graph": "1",
+                "unit": "0",
+                "tableType": "1"
+              }
+            ],
+            "dataTableType": "NORM_TABLE",
+            "rowInfo": {},
+            "colInfo": {},
+            "indicatorOrder": [
+              "100000000004696"
+            ],
+            "tipFlags": [],
+            "dataType": "数据浏览器",
+            "title": "源杰科技(688498.SH)的员工总数",
+            "hasThumbnail": true,
+            "indicatorLimited": false,
+            "dataPositionEnum": "MetricLeftTimeTop",
+            "orderCol": {},
+            "jumpUrlList": [
+              {
+                "choiceUrl": "EM://stockdatacenter?type=browser&modType=STOCK&code=688498.SH&indId=100000000004696|103:2023,100000000004696|103:2024,100000000004696|103:2025",
+                "typeName": "股票数据浏览器"
+              }
+            ],
+            "dataTypeEnum": "DATA_BROWSER",
+            "dateRuleSet": [],
+            "freqConvert": false,
+            "deleteInfo": [],
+            "macroCodeMap": {},
+            "entityTagDTO": {
+              "entityId": "1002908173",
+              "entityType": "SEC",
+              "entityTypeCode": "058001001",
+              "entityTypeName": "A股",
+              "classCode": "002001",
+              "className": "沪深京股票",
+              "publishCode": "",
+              "fullName": "源杰科技",
+              "shortName": "",
+              "matchWord": "源杰科技",
+              "secuCode": "688498",
+              "market": "1",
+              "marketChar": ".SH",
+              "correct": false,
+              "hasKLine": false,
+              "valuation": false,
+              "relatedEntity": false
+            },
+            "entityTagDTOList": [
+              {
+                "entityId": "1002908173",
+                "entityType": "SEC",
+                "entityTypeCode": "058001001",
+                "entityTypeName": "A股",
+                "classCode": "002001",
+                "className": "沪深京股票",
+                "publishCode": "",
+                "fullName": "源杰科技",
+                "shortName": "",
+                "matchWord": "源杰科技",
+                "secuCode": "688498",
+                "market": "1",
+                "marketChar": ".SH",
+                "correct": false,
+                "hasKLine": false,
+                "valuation": false,
+                "relatedEntity": false
+              }
+            ],
+            "indexTable": false,
+            "edbThirdData": false,
+            "dataUpdate": {
+              "2025": false
+            },
+            "supportsTimeSeries": false,
+            "estimatedTokens": 0,
+            "summaryTips": {
+              "periodicalReport": null
+            },
+            "nestEntityListMap": {},
+            "excelTimeTruncate": false,
+            "frontendEntityName": "",
+            "frontendEntityCode": "",
+            "frontendTitle": "",
+            "frontendDesc": "",
+            "indicatorCount": 0,
+            "fieldParameterStr": "",
+            "tdayEnum": "NORMAL"
+          },
+          {
+            "code": "688498.SH",
+            "entityName": "",
+            "table": {
+              "100000000004601": [
+                "2013-01-28",
+                "2013-01-28"
+              ],
+              "100000000020827": [
+                "ZHANG XINGANG",
+                "-"
+              ],
+              "100000000018465": [
+                "    陕西源杰半导体科技股份有限公司成立于2013年1月28日,专注于进行高速的半导体芯片的研发、设计和生产,是一家从半导体晶体生长,晶圆工艺,芯片测试与封装全部开发完毕,并形成工业化规模生产的高科技企业。产品涵盖从2.5G到50G磷化铟激光器芯片,拥有完整独立的自主知识产权,从最终的使用场景来看,产品广泛应用于光纤到户、数据中心与云计算、5G移动通信网络、通信骨干网络和工业物联网等。经过多年的稳健发展,公司产品的技术先进性、市场覆盖率和性能稳定性位居行业前列。\n    公司严格遵守国际国内各项法规,确保向国内外客户提供高性价比,高可靠性产品,追求和客户长期共赢的合作关系。公司的经营宗旨:成为一家承担应有社会责任,能够给国内外客户提供技术领先,品质优异的光电半导体芯片和技术服务的杰出企业,立足陕西,放眼全球,致力于成为国际一流的半导体器件供应商。",
+                "    陕西源杰半导体科技股份有限公司成立于2013年1月28日,专注于进行高速的半导体芯片的研发、设计和生产,是一家从半导体晶体生长,晶圆工艺,芯片测试与封装全部开发完毕,并形成工业化规模生产的高科技企业。产品涵盖从2.5G到50G磷化铟激光器芯片,拥有完整独立的自主知识产权,从最终的使用场景来看,产品广泛应用于光纤到户、数据中心与云计算、5G移动通信网络、通信骨干网络和工业物联网等。经过多年的稳健发展,公司产品的技术先进性、市场覆盖率和性能稳定性位居行业前列。\n    公司严格遵守国际国内各项法规,确保向国内外客户提供高性价比,高可靠性产品,追求和客户长期共赢的合作关系。公司的经营宗旨:成为一家承担应有社会责任,能够给国内外客户提供技术领先,品质优异的光电半导体芯片和技术服务的杰出企业,立足陕西,放眼全球,致力于成为国际一流的半导体器件供应商。"
+              ],
+              "100000000022038": [
+                "-",
+                "资讯科技业-半导体-半导体设备与材料"
+              ],
+              "headName": [
+                "源杰科技(688498.SH)",
+                "源杰科技(H2072.HK)"
+              ]
+            },
+            "rawTable": {
+              "100000000004601": [
+                "2013-01-28",
+                "2013-01-28"
+              ],
+              "100000000020827": [
+                "ZHANG XINGANG",
+                "-"
+              ],
+              "100000000018465": [
+                "    陕西源杰半导体科技股份有限公司成立于2013年1月28日,专注于进行高速的半导体芯片的研发、设计和生产,是一家从半导体晶体生长,晶圆工艺,芯片测试与封装全部开发完毕,并形成工业化规模生产的高科技企业。产品涵盖从2.5G到50G磷化铟激光器芯片,拥有完整独立的自主知识产权,从最终的使用场景来看,产品广泛应用于光纤到户、数据中心与云计算、5G移动通信网络、通信骨干网络和工业物联网等。经过多年的稳健发展,公司产品的技术先进性、市场覆盖率和性能稳定性位居行业前列。\n    公司严格遵守国际国内各项法规,确保向国内外客户提供高性价比,高可靠性产品,追求和客户长期共赢的合作关系。公司的经营宗旨:成为一家承担应有社会责任,能够给国内外客户提供技术领先,品质优异的光电半导体芯片和技术服务的杰出企业,立足陕西,放眼全球,致力于成为国际一流的半导体器件供应商。",
+                "    陕西源杰半导体科技股份有限公司成立于2013年1月28日,专注于进行高速的半导体芯片的研发、设计和生产,是一家从半导体晶体生长,晶圆工艺,芯片测试与封装全部开发完毕,并形成工业化规模生产的高科技企业。产品涵盖从2.5G到50G磷化铟激光器芯片,拥有完整独立的自主知识产权,从最终的使用场景来看,产品广泛应用于光纤到户、数据中心与云计算、5G移动通信网络、通信骨干网络和工业物联网等。经过多年的稳健发展,公司产品的技术先进性、市场覆盖率和性能稳定性位居行业前列。\n    公司严格遵守国际国内各项法规,确保向国内外客户提供高性价比,高可靠性产品,追求和客户长期共赢的合作关系。公司的经营宗旨:成为一家承担应有社会责任,能够给国内外客户提供技术领先,品质优异的光电半导体芯片和技术服务的杰出企业,立足陕西,放眼全球,致力于成为国际一流的半导体器件供应商。"
+              ],
+              "100000000022038": [
+                "-",
+                "资讯科技业-半导体-半导体设备与材料"
+              ],
+              "headName": [
+                "源杰科技(688498.SH)",
+                "源杰科技(H2072.HK)"
+              ]
+            },
+            "truncateRawTable": {},
+            "nameMap": {
+              "100000000004601": "成立日期",
+              "headNameSub": "数据来源",
+              "100000000020827": "董事长",
+              "100000000018465": "公司简介",
+              "securityName": "股票名称",
+              "100000000022038": "所属港交所行业"
+            },
+            "headNameMap": {},
+            "field": {
+              "returnCode": "100000000004601",
+              "returnName": "成立日期",
+              "classCode": "007101",
+              "checkedRelatedIndicators": true,
+              "startDate": "2026-06-21 00:00:00",
+              "endDate": "2026-06-21 00:00:00",
+              "fuzzy": true,
+              "dateGranularity": "UNKNOWN",
+              "defineType": 0,
+              "isLoopN": false,
+              "quantType": "1",
+              "isGroup": false,
+              "returnSourceCode": "ESTDATE",
+              "returnSourceName": "成立日期",
+              "graph": "0",
+              "unit": "0",
+              "tableType": "1"
+            },
+            "entityCodes": [
+              "688498.SH",
+              "H2072.HK"
+            ],
+            "macroAttributeExcelMap": {},
+            "fieldSet": [
+              {
+                "returnCode": "100000000018465",
+                "returnName": "公司简介",
+                "classCode": "007101",
+                "checkedRelatedIndicators": true,
+                "startDate": "2026-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "dateGranularity": "UNKNOWN",
+                "defineType": 0,
+                "isLoopN": false,
+                "quantType": "1",
+                "isGroup": false,
+                "returnSourceCode": "GSJJ",
+                "returnSourceName": "公司简介",
+                "graph": "0",
+                "unit": "0",
+                "tableType": "1"
+              },
+              {
+                "returnCode": "100000000004601",
+                "returnName": "成立日期",
+                "classCode": "007101",
+                "checkedRelatedIndicators": true,
+                "startDate": "2026-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "dateGranularity": "UNKNOWN",
+                "defineType": 0,
+                "isLoopN": false,
+                "quantType": "1",
+                "isGroup": false,
+                "returnSourceCode": "ESTDATE",
+                "returnSourceName": "成立日期",
+                "graph": "0",
+                "unit": "0",
+                "tableType": "1"
+              },
+              {
+                "returnCode": "100000000021257",
+                "returnName": "公司简介",
+                "classCode": "007101",
+                "checkedRelatedIndicators": true,
+                "startDate": "2026-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "dateGranularity": "UNKNOWN",
+                "defineType": 0,
+                "isLoopN": false,
+                "quantType": "1",
+                "isGroup": false,
+                "returnSourceCode": "COMPPROFILE",
+                "returnSourceName": "公司简介",
+                "graph": "0",
+                "unit": "1",
+                "tableType": "1"
+              },
+              {
+                "returnCode": "100000000020827",
+                "returnName": "董事长",
+                "classCode": "007101",
+                "checkedRelatedIndicators": true,
+                "startDate": "2026-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "dateGranularity": "UNKNOWN",
+                "defineType": 0,
+                "isLoopN": false,
+                "quantType": "1",
+                "isGroup": false,
+                "returnSourceCode": "CHAIRMAN",
+                "returnSourceName": "董事长",
+                "graph": "0",
+                "unit": "0",
+                "tableType": "1"
+              },
+              {
+                "returnCode": "100000000012843",
+                "returnName": "成立日期",
+                "classCode": "007101",
+                "checkedRelatedIndicators": true,
+                "startDate": "2026-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "dateGranularity": "UNKNOWN",
+                "defineType": 0,
+                "isLoopN": false,
+                "quantType": "1",
+                "isGroup": false,
+                "returnSourceCode": "ESTDATE",
+                "returnSourceName": "成立日期",
+                "graph": "0",
+                "unit": "1",
+                "tableType": "1"
+              },
+              {
+                "returnCode": "100000000022038",
+                "returnName": "所属港交所行业",
+                "classCode": "007101",
+                "checkedRelatedIndicators": true,
+                "startDate": "2026-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "dateGranularity": "UNKNOWN",
+                "defineType": 0,
+                "isLoopN": false,
+                "fixedParamValue": "ClassiFication=4",
+                "quantType": "1",
+                "isGroup": false,
+                "returnSourceCode": "SSGJSHY",
+                "returnSourceName": "所属港交所行业",
+                "graph": "0",
+                "unit": "1",
+                "tableType": "1"
+              }
+            ],
+            "dataTableType": "NORM_TABLE",
+            "rowInfo": {},
+            "colInfo": {},
+            "indicatorOrder": [
+              "100000000004601",
+              "100000000020827",
+              "100000000018465",
+              "100000000022038"
+            ],
+            "tipFlags": [],
+            "dataType": "数据浏览器",
+            "title": "源杰科技(688498.SH)等的成立日期、董事长等",
+            "hasThumbnail": true,
+            "indicatorLimited": false,
+            "dataPositionEnum": "MetricLeftEntityTop",
+            "orderCol": {},
+            "jumpUrlList": [
+              {
+                "choiceUrl": "EM://stockdatacenter?type=browser&modType=STOCK&code=688498.SH,H2072.HK&indId=100000000004601,100000000020827,100000000018465,100000000012843,100000000022038|442:4,100000000021257",
+                "typeName": "股票数据浏览器"
+              }
+            ],
+            "dataTypeEnum": "DATA_BROWSER",
+            "dateRuleSet": [],
+            "freqConvert": false,
+            "deleteInfo": [],
+            "macroCodeMap": {},
+            "entityTagDTO": {
+              "entityId": "1002908173",
+              "entityType": "SEC",
+              "entityTypeCode": "058001001",
+              "entityTypeName": "A股",
+              "classCode": "002001",
+              "className": "沪深京股票",
+              "publishCode": "",
+              "fullName": "源杰科技",
+              "shortName": "",
+              "matchWord": "源杰科技",
+              "secuCode": "688498",
+              "market": "1",
+              "marketChar": ".SH",
+              "correct": false,
+              "hasKLine": false,
+              "valuation": false,
+              "relatedEntity": false
+            },
+            "entityTagDTOList": [
+              {
+                "entityId": "1002908173",
+                "entityType": "SEC",
+                "entityTypeCode": "058001001",
+                "entityTypeName": "A股",
+                "classCode": "002001",
+                "className": "沪深京股票",
+                "publishCode": "",
+                "fullName": "源杰科技",
+                "shortName": "",
+                "matchWord": "源杰科技",
+                "secuCode": "688498",
+                "market": "1",
+                "marketChar": ".SH",
+                "correct": false,
+                "hasKLine": false,
+                "valuation": false,
+                "relatedEntity": false
+              },
+              {
+                "entityId": "1004673646",
+                "entityType": "SEC",
+                "entityTypeCode": "058001003001",
+                "entityTypeName": "H股",
+                "classCode": "002003",
+                "className": "港股",
+                "publishCode": "",
+                "fullName": "源杰科技",
+                "shortName": "",
+                "secuCode": "H2072",
+                "marketChar": ".HK",
+                "correct": false,
+                "hasKLine": false,
+                "valuation": false,
+                "relatedEntity": true
+              }
+            ],
+            "indexTable": false,
+            "edbThirdData": false,
+            "dataUpdate": {},
+            "supportsTimeSeries": false,
+            "estimatedTokens": 0,
+            "summaryTips": {
+              "periodicalReport": null
+            },
+            "nestEntityListMap": {},
+            "excelTimeTruncate": false,
+            "frontendEntityName": "",
+            "frontendEntityCode": "",
+            "frontendTitle": "",
+            "frontendDesc": "",
+            "indicatorCount": 0,
+            "fieldParameterStr": "",
+            "tdayEnum": "TDAY"
+          },
+          {
+            "code": "688498.SH",
+            "entityName": "",
+            "table": {
+              "headName": [
+                "公司亮点",
+                "公司基本信息"
+              ],
+              "源杰科技(688498.SH)": [
+                "【涉及行业】该公司主要涉及电信市场和数据中心领域，专注于光芯片解决方案，产品包括电信市场所需的DFB、EML光芯片以及数据中心领域的大功率CW激光器芯片。<br>【经营优势或产品优势】公司产品技术指标可对标国际厂商，CW70mW激光器芯片满足数据中心高速场景需求，具备高功率输出和低功耗特性，且在100GPAM4EML产品基础上推进更高速率的200GPAM4EML产品验证。同时，公司拥有全流程自有工艺制造能力，持续优化生产效率和良率，降低生产成本，且在人才建设方面注重引进和培养，优化人才结构，为长期发展奠定基础。<br>【经营风险和原因】经营风险主要来源于行业需求增长放缓，如无线和10GPON光纤接入部署进入成熟期后，电信市场需求可能减少。此外，数据中心领域竞争激烈，需持续投入研发以保持技术领先，且需关注供应链风险，确保关键原材料和设备的稳定供应。",
+                "【股票代码】688498.SH【公司简介】陕西源杰半导体科技股份有限公司成立于2013年,是一家专注于高速半导体芯片研发、设计、生产的高科技企业。公司拥有完整独立的自主知识产权,产品涵盖2.5G到50G磷化铟激光器芯片,广泛应用于光纤到户、数据中心与云计算、5G移动通信网络等领域。公司技术先进,市场覆盖率高,性能稳定,追求与客户长期共赢的合作关系。经营宗旨是成为国际一流的半导体器件供应商,立足陕西,放眼全球。【主营产品】光芯片的研发、设计、生产与销售【办公地址】陕西省西咸新区沣西新城开元路1265号【公司第一大股东】ZHANG XINGANG【公司第一大股东持股比例】12.3%"
+              ],
+              "源杰科技(H2072.HK)": [
+                "-",
+                "【股票代码】H2072.HK"
+              ]
+            },
+            "rawTable": {
+              "headName": [
+                "公司亮点",
+                "公司基本信息"
+              ],
+              "源杰科技(688498.SH)": [
+                "【涉及行业】该公司主要涉及电信市场和数据中心领域，专注于光芯片解决方案，产品包括电信市场所需的DFB、EML光芯片以及数据中心领域的大功率CW激光器芯片。<br>【经营优势或产品优势】公司产品技术指标可对标国际厂商，CW70mW激光器芯片满足数据中心高速场景需求，具备高功率输出和低功耗特性，且在100GPAM4EML产品基础上推进更高速率的200GPAM4EML产品验证。同时，公司拥有全流程自有工艺制造能力，持续优化生产效率和良率，降低生产成本，且在人才建设方面注重引进和培养，优化人才结构，为长期发展奠定基础。<br>【经营风险和原因】经营风险主要来源于行业需求增长放缓，如无线和10GPON光纤接入部署进入成熟期后，电信市场需求可能减少。此外，数据中心领域竞争激烈，需持续投入研发以保持技术领先，且需关注供应链风险，确保关键原材料和设备的稳定供应。",
+                "【股票代码】688498.SH【公司简介】陕西源杰半导体科技股份有限公司成立于2013年,是一家专注于高速半导体芯片研发、设计、生产的高科技企业。公司拥有完整独立的自主知识产权,产品涵盖2.5G到50G磷化铟激光器芯片,广泛应用于光纤到户、数据中心与云计算、5G移动通信网络等领域。公司技术先进,市场覆盖率高,性能稳定,追求与客户长期共赢的合作关系。经营宗旨是成为国际一流的半导体器件供应商,立足陕西,放眼全球。【主营产品】光芯片的研发、设计、生产与销售【办公地址】陕西省西咸新区沣西新城开元路1265号【公司第一大股东】ZHANG XINGANG【公司第一大股东持股比例】12.3%"
+              ],
+              "源杰科技(H2072.HK)": [
+                "-",
+                "【股票代码】H2072.HK"
+              ]
+            },
+            "truncateRawTable": {},
+            "nameMap": {
+              "date": "日期",
+              "company_highlight": "公司亮点",
+              "company_base_info": "公司基本信息",
+              "securityName": "股票名称"
+            },
+            "headNameMap": {},
+            "field": {
+              "returnCode": "HIGHLIGHT",
+              "returnName": "公司亮点",
+              "classCode": "007902",
+              "checkedRelatedIndicators": true,
+              "startDate": "2026-06-21 00:00:00",
+              "endDate": "2026-06-21 00:00:00",
+              "fuzzy": true,
+              "defineType": 0,
+              "isLoopN": false,
+              "preprocess": "1",
+              "isGroup": false,
+              "returnSourceCode": "HIGHLIGHT",
+              "returnSourceName": "公司亮点",
+              "unit": "0",
+              "tableType": "0"
+            },
+            "entityCodes": [
+              "688498.SH",
+              "H2072.HK"
+            ],
+            "macroAttributeExcelMap": {},
+            "fieldSet": [
+              {
+                "returnCode": "HIGHLIGHT",
+                "returnName": "公司亮点",
+                "classCode": "007902",
+                "checkedRelatedIndicators": true,
+                "startDate": "2026-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "defineType": 0,
+                "isLoopN": false,
+                "preprocess": "1",
+                "isGroup": false,
+                "returnSourceCode": "HIGHLIGHT",
+                "returnSourceName": "公司亮点",
+                "unit": "0",
+                "tableType": "0"
+              },
+              {
+                "returnCode": "BASICINFORMATION",
+                "returnName": "公司基本信息",
+                "classCode": "007902",
+                "checkedRelatedIndicators": true,
+                "startDate": "2026-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "defineType": 0,
+                "isLoopN": false,
+                "preprocess": "1",
+                "isGroup": false,
+                "returnSourceCode": "BASICINFORMATION",
+                "returnSourceName": "公司基本信息",
+                "unit": "0",
+                "tableType": "0"
+              }
+            ],
+            "dataTableType": "NORM_TABLE",
+            "rowInfo": {},
+            "colInfo": {},
+            "indicatorOrder": [
+              "源杰科技(688498.SH)",
+              "源杰科技(H2072.HK)"
+            ],
+            "tipFlags": [],
+            "dataType": "数据浏览器",
+            "title": "源杰科技(688498.SH)等的公司亮点、公司基本信息",
+            "hasThumbnail": false,
+            "indicatorLimited": false,
+            "dataPositionEnum": "EntityLeftMetricTop",
+            "orderCol": {},
+            "jumpUrlList": [],
+            "dataTypeEnum": "DATA_BROWSER",
+            "dateRuleSet": [],
+            "freqConvert": false,
+            "deleteInfo": [],
+            "macroCodeMap": {},
+            "entityTagDTO": {
+              "entityId": "1002908173",
+              "entityType": "SEC",
+              "entityTypeCode": "058001001",
+              "entityTypeName": "A股",
+              "classCode": "002001",
+              "className": "沪深京股票",
+              "publishCode": "",
+              "fullName": "源杰科技",
+              "shortName": "",
+              "matchWord": "源杰科技",
+              "secuCode": "688498",
+              "market": "1",
+              "marketChar": ".SH",
+              "correct": false,
+              "hasKLine": false,
+              "valuation": false,
+              "relatedEntity": false
+            },
+            "entityTagDTOList": [
+              {
+                "entityId": "1002908173",
+                "entityType": "SEC",
+                "entityTypeCode": "058001001",
+                "entityTypeName": "A股",
+                "classCode": "002001",
+                "className": "沪深京股票",
+                "publishCode": "",
+                "fullName": "源杰科技",
+                "shortName": "",
+                "matchWord": "源杰科技",
+                "secuCode": "688498",
+                "market": "1",
+                "marketChar": ".SH",
+                "correct": false,
+                "hasKLine": false,
+                "valuation": false,
+                "relatedEntity": false
+              },
+              {
+                "entityId": "1004673646",
+                "entityType": "SEC",
+                "entityTypeCode": "058001003001",
+                "entityTypeName": "H股",
+                "classCode": "002003",
+                "className": "港股",
+                "publishCode": "",
+                "fullName": "源杰科技",
+                "shortName": "",
+                "secuCode": "H2072",
+                "marketChar": ".HK",
+                "correct": false,
+                "hasKLine": false,
+                "valuation": false,
+                "relatedEntity": true
+              }
+            ],
+            "indexTable": false,
+            "edbThirdData": false,
+            "dataUpdate": {},
+            "supportsTimeSeries": false,
+            "estimatedTokens": 0,
+            "summaryTips": {
+              "periodicalReport": null
+            },
+            "nestEntityListMap": {},
+            "excelTimeTruncate": false,
+            "frontendEntityName": "",
+            "frontendEntityCode": "",
+            "frontendTitle": "",
+            "frontendDesc": "",
+            "indicatorCount": 0,
+            "fieldParameterStr": "",
+            "tdayEnum": "NORMAL"
+          },
+          {
+            "code": "688498.SH",
+            "entityName": "源杰科技(688498.SH)",
+            "table": {
+              "100000000017020": [
+                "2025年报扭亏,MSCI中国,QFII重仓,上证380,中证500,光纤概念,光通信模块,半导体概念,历史新高 ,国产芯片,基金重仓,大盘成长,大盘股,沪股通,百元股,百日新高 ,科技风格,融资融券,西部大开发,趋势股,近期新高,通信技术",
+                "2025年报扭亏,MSCI中国,QFII重仓,上证380,中证500,光纤概念,光通信模块,半导体概念,国产芯片,基金重仓,大盘成长,大盘股,沪股通,百元股,科技风格,融资融券,西部大开发,趋势股,通信技术",
+                "2025年报扭亏,MSCI中国,QFII重仓,上证380,中证500,光纤概念,光通信模块,半导体概念,历史新高 ,国产芯片,基金重仓,大盘成长,大盘股,昨日高振幅,沪股通,百元股,百日新高 ,科技风格,融资融券,西部大开发,趋势股,近期新高,通信技术",
+                "2025年报扭亏,MSCI中国,QFII重仓,上证380,中证500,光纤概念,光通信模块,半导体概念,国产芯片,基金重仓,大盘成长,大盘股,沪股通,百元股,科技风格,融资融券,西部大开发,通信技术"
+              ],
+              "headName": [
+                "2026-06-18",
+                "2026-06-17",
+                "2026-06-16",
+                "2026-06-15"
+              ]
+            },
+            "rawTable": {
+              "100000000017020": [
+                "2025年报扭亏,MSCI中国,QFII重仓,上证380,中证500,光纤概念,光通信模块,半导体概念,历史新高 ,国产芯片,基金重仓,大盘成长,大盘股,沪股通,百元股,百日新高 ,科技风格,融资融券,西部大开发,趋势股,近期新高,通信技术",
+                "2025年报扭亏,MSCI中国,QFII重仓,上证380,中证500,光纤概念,光通信模块,半导体概念,国产芯片,基金重仓,大盘成长,大盘股,沪股通,百元股,科技风格,融资融券,西部大开发,趋势股,通信技术",
+                "2025年报扭亏,MSCI中国,QFII重仓,上证380,中证500,光纤概念,光通信模块,半导体概念,历史新高 ,国产芯片,基金重仓,大盘成长,大盘股,昨日高振幅,沪股通,百元股,百日新高 ,科技风格,融资融券,西部大开发,趋势股,近期新高,通信技术",
+                "2025年报扭亏,MSCI中国,QFII重仓,上证380,中证500,光纤概念,光通信模块,半导体概念,国产芯片,基金重仓,大盘成长,大盘股,沪股通,百元股,科技风格,融资融券,西部大开发,通信技术"
+              ],
+              "headName": [
+                "2026-06-18",
+                "2026-06-17",
+                "2026-06-16",
+                "2026-06-15"
+              ]
+            },
+            "truncateRawTable": {},
+            "nameMap": {
+              "100000000017020": "所属概念板块",
+              "headNameSub": "数据来源"
+            },
+            "headNameMap": {},
+            "field": {
+              "returnCode": "100000000017020",
+              "returnName": "所属概念板块",
+              "classCode": "007101",
+              "checkedRelatedIndicators": true,
+              "startDate": "2026-06-21 00:00:00",
+              "endDate": "2026-06-21 00:00:00",
+              "fuzzy": true,
+              "dateGranularity": "DAY",
+              "defineType": 0,
+              "isLoopN": false,
+              "quantType": "1",
+              "isGroup": false,
+              "returnSourceCode": "BLGAINIAN",
+              "returnSourceName": "所属概念板块",
+              "graph": "0",
+              "unit": "0",
+              "tableType": "1"
+            },
+            "entityCodes": [
+              "688498.SH"
+            ],
+            "macroAttributeExcelMap": {},
+            "fieldSet": [
+              {
+                "returnCode": "100000000017020",
+                "returnName": "所属概念板块",
+                "classCode": "007101",
+                "checkedRelatedIndicators": true,
+                "startDate": "2026-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "dateGranularity": "DAY",
+                "defineType": 0,
+                "isLoopN": false,
+                "quantType": "1",
+                "isGroup": false,
+                "returnSourceCode": "BLGAINIAN",
+                "returnSourceName": "所属概念板块",
+                "graph": "0",
+                "unit": "0",
+                "tableType": "1"
+              }
+            ],
+            "dataTableType": "NORM_TABLE",
+            "rowInfo": {},
+            "colInfo": {},
+            "indicatorOrder": [
+              "100000000017020"
+            ],
+            "tipFlags": [],
+            "dataType": "数据浏览器",
+            "title": "源杰科技(688498.SH)的所属概念板块",
+            "hasThumbnail": true,
+            "indicatorLimited": false,
+            "dataPositionEnum": "MetricLeftTimeTop",
+            "orderCol": {},
+            "jumpUrlList": [
+              {
+                "choiceUrl": "EM://stockdatacenter?type=browser&modType=STOCK&code=688498.SH&indId=100000000017020|119:2026-06-15,100000000017020|119:2026-06-16,100000000017020|119:2026-06-17,100000000017020|119:2026-06-18",
+                "typeName": "股票数据浏览器"
+              }
+            ],
+            "dataTypeEnum": "DATA_BROWSER",
+            "dateRuleSet": [],
+            "freqConvert": false,
+            "deleteInfo": [],
+            "macroCodeMap": {},
+            "entityTagDTO": {
+              "entityId": "1002908173",
+              "entityType": "SEC",
+              "entityTypeCode": "058001001",
+              "entityTypeName": "A股",
+              "classCode": "002001",
+              "className": "沪深京股票",
+              "publishCode": "",
+              "fullName": "源杰科技",
+              "shortName": "",
+              "matchWord": "源杰科技",
+              "secuCode": "688498",
+              "market": "1",
+              "marketChar": ".SH",
+              "correct": false,
+              "hasKLine": false,
+              "valuation": false,
+              "relatedEntity": false
+            },
+            "entityTagDTOList": [
+              {
+                "entityId": "1002908173",
+                "entityType": "SEC",
+                "entityTypeCode": "058001001",
+                "entityTypeName": "A股",
+                "classCode": "002001",
+                "className": "沪深京股票",
+                "publishCode": "",
+                "fullName": "源杰科技",
+                "shortName": "",
+                "matchWord": "源杰科技",
+                "secuCode": "688498",
+                "market": "1",
+                "marketChar": ".SH",
+                "correct": false,
+                "hasKLine": false,
+                "valuation": false,
+                "relatedEntity": false
+              }
+            ],
+            "indexTable": false,
+            "edbThirdData": false,
+            "dataUpdate": {
+              "2026-06-18": false
+            },
+            "supportsTimeSeries": false,
+            "estimatedTokens": 0,
+            "summaryTips": {
+              "periodicalReport": null
+            },
+            "nestEntityListMap": {},
+            "excelTimeTruncate": false,
+            "frontendEntityName": "",
+            "frontendEntityCode": "",
+            "frontendTitle": "",
+            "frontendDesc": "",
+            "indicatorCount": 0,
+            "fieldParameterStr": "",
+            "tdayEnum": "NORMAL"
+          },
+          {
+            "code": "H2072.HK",
+            "entityName": "源杰科技(H2072.HK)",
+            "table": {
+              "100000000013323": [
+                "716",
+                "716",
+                "716",
+                "716",
+                "716",
+                "716",
+                "716"
+              ],
+              "headName": [
+                "2026-06-20",
+                "2026-06-19",
+                "2026-06-18",
+                "2026-06-17",
+                "2026-06-16",
+                "2026-06-15",
+                "2026-06-14"
+              ]
+            },
+            "rawTable": {
+              "100000000013323": [
+                "716.0",
+                "716.0",
+                "716.0",
+                "716.0",
+                "716.0",
+                "716.0",
+                "716.0"
+              ],
+              "headName": [
+                "2026-06-20",
+                "2026-06-19",
+                "2026-06-18",
+                "2026-06-17",
+                "2026-06-16",
+                "2026-06-15",
+                "2026-06-14"
+              ]
+            },
+            "truncateRawTable": {},
+            "nameMap": {
+              "100000000013323": "员工总数",
+              "headNameSub": "数据来源"
+            },
+            "headNameMap": {},
+            "field": {
+              "returnCode": "100000000013323",
+              "returnName": "员工总数",
+              "classCode": "007101",
+              "checkedRelatedIndicators": true,
+              "startDate": "2026-06-21 00:00:00",
+              "endDate": "2026-06-21 00:00:00",
+              "fuzzy": true,
+              "dateGranularity": "DAY",
+              "defineType": 0,
+              "isLoopN": false,
+              "quantType": "1",
+              "isGroup": false,
+              "returnSourceCode": "EMPNUMBER",
+              "returnSourceName": "员工总数",
+              "graph": "1",
+              "unit": "1",
+              "tableType": "1"
+            },
+            "entityCodes": [
+              "H2072.HK"
+            ],
+            "macroAttributeExcelMap": {},
+            "fieldSet": [
+              {
+                "returnCode": "100000000013323",
+                "returnName": "员工总数",
+                "classCode": "007101",
+                "checkedRelatedIndicators": true,
+                "startDate": "2026-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "dateGranularity": "DAY",
+                "defineType": 0,
+                "isLoopN": false,
+                "quantType": "1",
+                "isGroup": false,
+                "returnSourceCode": "EMPNUMBER",
+                "returnSourceName": "员工总数",
+                "graph": "1",
+                "unit": "1",
+                "tableType": "1"
+              }
+            ],
+            "dataTableType": "NORM_TABLE",
+            "rowInfo": {},
+            "colInfo": {},
+            "indicatorOrder": [
+              "100000000013323"
+            ],
+            "tipFlags": [],
+            "dataType": "数据浏览器",
+            "title": "源杰科技(H2072.HK)的员工总数",
+            "hasThumbnail": true,
+            "indicatorLimited": false,
+            "dataPositionEnum": "MetricLeftTimeTop",
+            "orderCol": {},
+            "jumpUrlList": [
+              {
+                "choiceUrl": "EM://stockdatacenter?type=browser&modType=STOCK&code=H2072.HK&indId=100000000013323|119:2026-06-14,100000000013323|119:2026-06-15,100000000013323|119:2026-06-16,100000000013323|119:2026-06-17,100000000013323|119:2026-06-18,100000000013323|119:2026-06-19,100000000013323|119:2026-06-20",
+                "typeName": "股票数据浏览器"
+              }
+            ],
+            "dataTypeEnum": "DATA_BROWSER",
+            "dateRuleSet": [],
+            "freqConvert": false,
+            "deleteInfo": [],
+            "macroCodeMap": {},
+            "entityTagDTO": {
+              "entityId": "1004673646",
+              "entityType": "SEC",
+              "entityTypeCode": "058001003001",
+              "entityTypeName": "H股",
+              "classCode": "002003",
+              "className": "港股",
+              "publishCode": "",
+              "fullName": "源杰科技",
+              "shortName": "",
+              "secuCode": "H2072",
+              "marketChar": ".HK",
+              "correct": false,
+              "hasKLine": false,
+              "valuation": false,
+              "relatedEntity": true
+            },
+            "entityTagDTOList": [
+              {
+                "entityId": "1004673646",
+                "entityType": "SEC",
+                "entityTypeCode": "058001003001",
+                "entityTypeName": "H股",
+                "classCode": "002003",
+                "className": "港股",
+                "publishCode": "",
+                "fullName": "源杰科技",
+                "shortName": "",
+                "secuCode": "H2072",
+                "marketChar": ".HK",
+                "correct": false,
+                "hasKLine": false,
+                "valuation": false,
+                "relatedEntity": true
+              }
+            ],
+            "indexTable": false,
+            "edbThirdData": false,
+            "dataUpdate": {
+              "2026-06-20": false
+            },
+            "supportsTimeSeries": false,
+            "estimatedTokens": 0,
+            "summaryTips": {
+              "periodicalReport": null
+            },
+            "nestEntityListMap": {},
+            "excelTimeTruncate": false,
+            "frontendEntityName": "",
+            "frontendEntityCode": "",
+            "frontendTitle": "",
+            "frontendDesc": "",
+            "indicatorCount": 0,
+            "fieldParameterStr": "",
+            "tdayEnum": "NORMAL"
+          },
+          {
+            "code": "688498.SH",
+            "entityName": "类型",
+            "table": {
+              "headName": [
+                "主营构成",
+                "主营业务收入(元)",
+                "主营业务收入占比",
+                "主营成本(元)",
+                "主营成本占比",
+                "主营利润(元)",
+                "主营利润占比",
+                "毛利率"
+              ],
+              "0": [
+                "光芯片",
+                "6.008亿",
+                "99.90%",
+                "2.514亿",
+                "99.80%",
+                "3.494亿",
+                "99.97%",
+                "58.15%"
+              ],
+              "1": [
+                "其他业务",
+                "62.75万",
+                "0.10%",
+                "51.53万",
+                "0.20%",
+                "11.21万",
+                "0.03%",
+                "17.87%"
+              ],
+              "2": [
+                "数据中心类及其他",
+                "3.943亿",
+                "65.57%",
+                "1.093亿",
+                "43.39%",
+                "2.85亿",
+                "81.55%",
+                "72.27%"
+              ],
+              "3": [
+                "电信市场类",
+                "2.065亿",
+                "34.33%",
+                "1.421亿",
+                "56.40%",
+                "6436万",
+                "18.42%",
+                "31.17%"
+              ],
+              "4": [
+                "其他业务",
+                "62.75万",
+                "0.10%",
+                "51.53万",
+                "0.20%",
+                "11.21万",
+                "0.03%",
+                "17.87%"
+              ],
+              "5": [
+                "中国大陆",
+                "5.989亿",
+                "99.58%",
+                "2.509亿",
+                "99.58%",
+                "3.48亿",
+                "99.58%",
+                "58.11%"
+              ],
+              "6": [
+                "境外",
+                "191.5万",
+                "0.32%",
+                "55万",
+                "0.22%",
+                "136.5万",
+                "0.39%",
+                "71.27%"
+              ],
+              "7": [
+                "其他业务",
+                "62.75万",
+                "0.10%",
+                "51.53万",
+                "0.20%",
+                "11.21万",
+                "0.03%",
+                "17.87%"
+              ],
+              "8": [
+                "直销",
+                "5.368亿",
+                "89.25%",
+                "2.088亿",
+                "82.86%",
+                "3.28亿",
+                "93.86%",
+                "61.11%"
+              ],
+              "9": [
+                "经销",
+                "6403万",
+                "10.65%",
+                "4267万",
+                "16.94%",
+                "2136万",
+                "6.11%",
+                "33.36%"
+              ],
+              "10": [
+                "其他业务",
+                "62.75万",
+                "0.10%",
+                "51.53万",
+                "0.20%",
+                "11.21万",
+                "0.03%",
+                "17.87%"
+              ],
+              "11": [
+                "其他项目",
+                "0",
+                "0.00%",
+                "-0.01",
+                "-0.00%",
+                "0.01",
+                "0.00%",
+                "-"
+              ]
+            },
+            "rawTable": {
+              "headName": [
+                "主营构成",
+                "主营业务收入(元)",
+                "主营业务收入占比",
+                "主营成本(元)",
+                "主营成本占比",
+                "主营利润(元)",
+                "主营利润占比",
+                "毛利率"
+              ],
+              "0": [
+                "光芯片",
+                "600807055.04",
+                "99.90%",
+                "251440759.98",
+                "99.80%",
+                "349366295.06",
+                "99.97%",
+                "58.15%"
+              ],
+              "1": [
+                "其他业务",
+                "627454.52",
+                "0.10%",
+                "515320.97",
+                "0.20%",
+                "112133.55",
+                "0.03%",
+                "17.87%"
+              ],
+              "2": [
+                "数据中心类及其他",
+                "394337482.33",
+                "65.57%",
+                "109335822.57",
+                "43.39%",
+                "285001659.76",
+                "81.55%",
+                "72.27%"
+              ],
+              "3": [
+                "电信市场类",
+                "206469572.71",
+                "34.33%",
+                "142104937.41",
+                "56.40%",
+                "64364635.3",
+                "18.42%",
+                "31.17%"
+              ],
+              "4": [
+                "其他业务",
+                "627454.52",
+                "0.10%",
+                "515320.97",
+                "0.20%",
+                "112133.55",
+                "0.03%",
+                "17.87%"
+              ],
+              "5": [
+                "中国大陆",
+                "598892534.9",
+                "99.58%",
+                "250890809.93",
+                "99.58%",
+                "348001724.97",
+                "99.58%",
+                "58.11%"
+              ],
+              "6": [
+                "境外",
+                "1914520.14",
+                "0.32%",
+                "549950.05",
+                "0.22%",
+                "1364570.09",
+                "0.39%",
+                "71.27%"
+              ],
+              "7": [
+                "其他业务",
+                "627454.52",
+                "0.10%",
+                "515320.97",
+                "0.20%",
+                "112133.55",
+                "0.03%",
+                "17.87%"
+              ],
+              "8": [
+                "直销",
+                "536777984.41",
+                "89.25%",
+                "208770534.16",
+                "82.86%",
+                "328007450.25",
+                "93.86%",
+                "61.11%"
+              ],
+              "9": [
+                "经销",
+                "64029070.63",
+                "10.65%",
+                "42670225.83",
+                "16.94%",
+                "21358844.8",
+                "6.11%",
+                "33.36%"
+              ],
+              "10": [
+                "其他业务",
+                "627454.52",
+                "0.10%",
+                "515320.97",
+                "0.20%",
+                "112133.55",
+                "0.03%",
+                "17.87%"
+              ],
+              "11": [
+                "其他项目",
+                "0",
+                "0.00%",
+                "-0.01",
+                "-0.00%",
+                "0.01",
+                "0.00%",
+                "-"
+              ]
+            },
+            "truncateRawTable": {},
+            "nameMap": {
+              "0": "行业",
+              "1": "",
+              "2": "产品",
+              "3": "",
+              "4": "",
+              "5": "地区",
+              "6": "",
+              "7": "",
+              "8": "销售模式",
+              "9": "",
+              "10": "",
+              "11": ""
+            },
+            "headNameMap": {},
+            "field": {
+              "returnCode": "RPT_HSF9_FN_MAINOPBUSINESS_NORMAL",
+              "returnName": "主营业务构成",
+              "classCode": "007202",
+              "checkedRelatedIndicators": true,
+              "startDate": "2025-06-21 00:00:00",
+              "endDate": "2026-06-21 00:00:00",
+              "fuzzy": true,
+              "defineType": 0,
+              "isLoopN": false,
+              "isGroup": false,
+              "returnSourceCode": "SecuCode,SECURITY_NAME_ABBR,SECURITY_CODE,ReportDate,STD_REPORT_NAME,ACT_REPORT_NAME,MAIN_BUSINESS_INCOME,MAIN_BUSINESS_COST,MAIN_BUSINESS_RPOFIT,MBI_RATIO,MBC_RATIO,MBR_RATIO,GROSS_RPOFIT_RATIO,STD_CLASSIFY_CODE,REPORT_TYPE,REPORT_YEAR,REPORT_CODE,Type,BELONG_TYPE_CODE,IS_MAXREPORTDATE,METHOD_TYPE,METHOD_CODE,CURRENCY,CURRENCY_CH",
+              "returnSourceName": "证券代码（带后缀）,证券简称,证券代码,报告日期,标准披露项目名称,实际披露项目名称,本期主营业务收入,本期主营业务成本,本期主营业务利润,收入构成,营业成本占比,利润构成,本期毛利率,项目编码,报告期类型,报告年度,报告期编码,分布类型,分布类型编码,是否最新报告期,计算方式类型,计算方式代码,币种(英文),币种(中文)",
+              "tableType": "10"
+            },
+            "macroAttributeExcelMap": {},
+            "fieldSet": [
+              {
+                "returnCode": "RPT_HSF9_FN_MAINOPBUSINESS_NORMAL",
+                "returnName": "主营业务构成",
+                "classCode": "007202",
+                "checkedRelatedIndicators": true,
+                "startDate": "2025-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "defineType": 0,
+                "isLoopN": false,
+                "isGroup": false,
+                "returnSourceCode": "SecuCode,SECURITY_NAME_ABBR,SECURITY_CODE,ReportDate,STD_REPORT_NAME,ACT_REPORT_NAME,MAIN_BUSINESS_INCOME,MAIN_BUSINESS_COST,MAIN_BUSINESS_RPOFIT,MBI_RATIO,MBC_RATIO,MBR_RATIO,GROSS_RPOFIT_RATIO,STD_CLASSIFY_CODE,REPORT_TYPE,REPORT_YEAR,REPORT_CODE,Type,BELONG_TYPE_CODE,IS_MAXREPORTDATE,METHOD_TYPE,METHOD_CODE,CURRENCY,CURRENCY_CH",
+                "returnSourceName": "证券代码（带后缀）,证券简称,证券代码,报告日期,标准披露项目名称,实际披露项目名称,本期主营业务收入,本期主营业务成本,本期主营业务利润,收入构成,营业成本占比,利润构成,本期毛利率,项目编码,报告期类型,报告年度,报告期编码,分布类型,分布类型编码,是否最新报告期,计算方式类型,计算方式代码,币种(英文),币种(中文)",
+                "tableType": "10"
+              }
+            ],
+            "dataTableType": "F10_TABLE",
+            "inputTitle": "源杰科技(688498.SH)主营构成分析(2025-12-31)",
+            "rowInfo": {},
+            "colInfo": {},
+            "indicatorOrder": [
+              "0",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10",
+              "11"
+            ],
+            "tipFlags": [],
+            "hasThumbnail": true,
+            "indicatorLimited": false,
+            "dataPositionEnum": "MetricLeftTimeTop",
+            "orderCol": {},
+            "jumpUrlList": [
+              {
+                "choiceUrl": "https://choicewzp2.eastmoney.com/stock/cn/f9/index.html#/mainCompositionByProjectName?securitycode=688498.SH",
+                "typeName": "F9深度资料",
+                "securityName": "源杰科技"
+              }
+            ],
+            "dataTypeEnum": "F9",
+            "dateRuleSet": [],
+            "freqConvert": false,
+            "deleteInfo": [],
+            "macroCodeMap": {},
+            "entityTagDTO": {
+              "entityId": "1002908173",
+              "entityType": "SEC",
+              "entityTypeCode": "058001001",
+              "entityTypeName": "A股",
+              "classCode": "002001",
+              "className": "沪深京股票",
+              "publishCode": "",
+              "fullName": "源杰科技",
+              "shortName": "",
+              "matchWord": "源杰科技",
+              "secuCode": "688498",
+              "market": "1",
+              "marketChar": ".SH",
+              "correct": false,
+              "hasKLine": false,
+              "valuation": false,
+              "relatedEntity": false
+            },
+            "entityTagDTOList": [
+              {
+                "entityId": "1002908173",
+                "entityType": "SEC",
+                "entityTypeCode": "058001001",
+                "entityTypeName": "A股",
+                "classCode": "002001",
+                "className": "沪深京股票",
+                "publishCode": "",
+                "fullName": "源杰科技",
+                "shortName": "",
+                "matchWord": "源杰科技",
+                "secuCode": "688498",
+                "market": "1",
+                "marketChar": ".SH",
+                "correct": false,
+                "hasKLine": false,
+                "valuation": false,
+                "relatedEntity": false
+              }
+            ],
+            "indexTable": false,
+            "edbThirdData": false,
+            "dataUpdate": {},
+            "supportsTimeSeries": false,
+            "estimatedTokens": 0,
+            "summaryTips": {
+              "periodicalReport": null
+            },
+            "nestEntityListMap": {},
+            "excelTimeTruncate": false,
+            "frontendEntityName": "源杰科技",
+            "frontendEntityCode": "688498.SH",
+            "frontendTitle": "主营构成分析(2025-12-31)",
+            "frontendDesc": "",
+            "indicatorCount": 0,
+            "fieldParameterStr": "",
+            "tdayEnum": "NORMAL"
+          },
+          {
+            "code": "688498.SH",
+            "entityName": "类型",
+            "table": {
+              "headName": [
+                "主营构成",
+                "主营业务收入(元)",
+                "主营业务收入占比",
+                "主营成本(元)",
+                "主营成本占比",
+                "主营利润(元)",
+                "主营利润占比",
+                "毛利率"
+              ],
+              "0": [
+                "数据中心类及其他",
+                "1.046亿",
+                "51.04%",
+                "3472万",
+                "33.09%",
+                "6988万",
+                "69.87%",
+                "66.80%"
+              ],
+              "1": [
+                "电信市场类",
+                "9987万",
+                "48.73%",
+                "6975万",
+                "66.47%",
+                "3012万",
+                "30.12%",
+                "30.16%"
+              ],
+              "2": [
+                "其他业务",
+                "47.57万",
+                "0.23%",
+                "46.21万",
+                "0.44%",
+                "1.352万",
+                "0.01%",
+                "2.84%"
+              ],
+              "3": [
+                "中国大陆",
+                "2.047亿",
+                "99.88%",
+                "1.049亿",
+                "99.92%",
+                "9984万",
+                "99.83%",
+                "48.78%"
+              ],
+              "4": [
+                "境外",
+                "25.56万",
+                "0.12%",
+                "8.668万",
+                "0.08%",
+                "16.89万",
+                "0.17%",
+                "66.09%"
+              ]
+            },
+            "rawTable": {
+              "headName": [
+                "主营构成",
+                "主营业务收入(元)",
+                "主营业务收入占比",
+                "主营成本(元)",
+                "主营成本占比",
+                "主营利润(元)",
+                "主营利润占比",
+                "毛利率"
+              ],
+              "0": [
+                "数据中心类及其他",
+                "104601737.68",
+                "51.04%",
+                "34724253.24",
+                "33.09%",
+                "69877484.44",
+                "69.87%",
+                "66.80%"
+              ],
+              "1": [
+                "电信市场类",
+                "99873472.48",
+                "48.73%",
+                "69752505.74",
+                "66.47%",
+                "30120966.74",
+                "30.12%",
+                "30.16%"
+              ],
+              "2": [
+                "其他业务",
+                "475669.07",
+                "0.23%",
+                "462145.69",
+                "0.44%",
+                "13523.38",
+                "0.01%",
+                "2.84%"
+              ],
+              "3": [
+                "中国大陆",
+                "204695283.59",
+                "99.88%",
+                "104852223.99",
+                "99.92%",
+                "99843059.6",
+                "99.83%",
+                "48.78%"
+              ],
+              "4": [
+                "境外",
+                "255595.64",
+                "0.12%",
+                "86680.68",
+                "0.08%",
+                "168914.96",
+                "0.17%",
+                "66.09%"
+              ]
+            },
+            "truncateRawTable": {},
+            "nameMap": {
+              "0": "产品",
+              "1": "",
+              "2": "",
+              "3": "地区",
+              "4": ""
+            },
+            "headNameMap": {},
+            "field": {
+              "returnCode": "RPT_HSF9_FN_MAINOPBUSINESS_NORMAL",
+              "returnName": "主营业务构成",
+              "classCode": "007202",
+              "checkedRelatedIndicators": true,
+              "startDate": "2025-06-21 00:00:00",
+              "endDate": "2026-06-21 00:00:00",
+              "fuzzy": true,
+              "defineType": 0,
+              "isLoopN": false,
+              "isGroup": false,
+              "returnSourceCode": "SecuCode,SECURITY_NAME_ABBR,SECURITY_CODE,ReportDate,STD_REPORT_NAME,ACT_REPORT_NAME,MAIN_BUSINESS_INCOME,MAIN_BUSINESS_COST,MAIN_BUSINESS_RPOFIT,MBI_RATIO,MBC_RATIO,MBR_RATIO,GROSS_RPOFIT_RATIO,STD_CLASSIFY_CODE,REPORT_TYPE,REPORT_YEAR,REPORT_CODE,Type,BELONG_TYPE_CODE,IS_MAXREPORTDATE,METHOD_TYPE,METHOD_CODE,CURRENCY,CURRENCY_CH",
+              "returnSourceName": "证券代码（带后缀）,证券简称,证券代码,报告日期,标准披露项目名称,实际披露项目名称,本期主营业务收入,本期主营业务成本,本期主营业务利润,收入构成,营业成本占比,利润构成,本期毛利率,项目编码,报告期类型,报告年度,报告期编码,分布类型,分布类型编码,是否最新报告期,计算方式类型,计算方式代码,币种(英文),币种(中文)",
+              "tableType": "10"
+            },
+            "macroAttributeExcelMap": {},
+            "fieldSet": [
+              {
+                "returnCode": "RPT_HSF9_FN_MAINOPBUSINESS_NORMAL",
+                "returnName": "主营业务构成",
+                "classCode": "007202",
+                "checkedRelatedIndicators": true,
+                "startDate": "2025-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "defineType": 0,
+                "isLoopN": false,
+                "isGroup": false,
+                "returnSourceCode": "SecuCode,SECURITY_NAME_ABBR,SECURITY_CODE,ReportDate,STD_REPORT_NAME,ACT_REPORT_NAME,MAIN_BUSINESS_INCOME,MAIN_BUSINESS_COST,MAIN_BUSINESS_RPOFIT,MBI_RATIO,MBC_RATIO,MBR_RATIO,GROSS_RPOFIT_RATIO,STD_CLASSIFY_CODE,REPORT_TYPE,REPORT_YEAR,REPORT_CODE,Type,BELONG_TYPE_CODE,IS_MAXREPORTDATE,METHOD_TYPE,METHOD_CODE,CURRENCY,CURRENCY_CH",
+                "returnSourceName": "证券代码（带后缀）,证券简称,证券代码,报告日期,标准披露项目名称,实际披露项目名称,本期主营业务收入,本期主营业务成本,本期主营业务利润,收入构成,营业成本占比,利润构成,本期毛利率,项目编码,报告期类型,报告年度,报告期编码,分布类型,分布类型编码,是否最新报告期,计算方式类型,计算方式代码,币种(英文),币种(中文)",
+                "tableType": "10"
+              }
+            ],
+            "dataTableType": "F10_TABLE",
+            "inputTitle": "源杰科技(688498.SH)主营构成分析(2025-06-30)",
+            "rowInfo": {},
+            "colInfo": {},
+            "indicatorOrder": [
+              "0",
+              "1",
+              "2",
+              "3",
+              "4"
+            ],
+            "tipFlags": [],
+            "hasThumbnail": true,
+            "indicatorLimited": false,
+            "dataPositionEnum": "MetricLeftTimeTop",
+            "orderCol": {},
+            "jumpUrlList": [
+              {
+                "choiceUrl": "https://choicewzp2.eastmoney.com/stock/cn/f9/index.html#/mainCompositionByProjectName?securitycode=688498.SH",
+                "typeName": "F9深度资料",
+                "securityName": "源杰科技"
+              }
+            ],
+            "dataTypeEnum": "F9",
+            "dateRuleSet": [],
+            "freqConvert": false,
+            "deleteInfo": [],
+            "macroCodeMap": {},
+            "entityTagDTO": {
+              "entityId": "1002908173",
+              "entityType": "SEC",
+              "entityTypeCode": "058001001",
+              "entityTypeName": "A股",
+              "classCode": "002001",
+              "className": "沪深京股票",
+              "publishCode": "",
+              "fullName": "源杰科技",
+              "shortName": "",
+              "matchWord": "源杰科技",
+              "secuCode": "688498",
+              "market": "1",
+              "marketChar": ".SH",
+              "correct": false,
+              "hasKLine": false,
+              "valuation": false,
+              "relatedEntity": false
+            },
+            "entityTagDTOList": [
+              {
+                "entityId": "1002908173",
+                "entityType": "SEC",
+                "entityTypeCode": "058001001",
+                "entityTypeName": "A股",
+                "classCode": "002001",
+                "className": "沪深京股票",
+                "publishCode": "",
+                "fullName": "源杰科技",
+                "shortName": "",
+                "matchWord": "源杰科技",
+                "secuCode": "688498",
+                "market": "1",
+                "marketChar": ".SH",
+                "correct": false,
+                "hasKLine": false,
+                "valuation": false,
+                "relatedEntity": false
+              }
+            ],
+            "indexTable": false,
+            "edbThirdData": false,
+            "dataUpdate": {},
+            "supportsTimeSeries": false,
+            "estimatedTokens": 0,
+            "summaryTips": {
+              "periodicalReport": null
+            },
+            "nestEntityListMap": {},
+            "excelTimeTruncate": false,
+            "frontendEntityName": "源杰科技",
+            "frontendEntityCode": "688498.SH",
+            "frontendTitle": "主营构成分析(2025-06-30)",
+            "frontendDesc": "",
+            "indicatorCount": 0,
+            "fieldParameterStr": "",
+            "tdayEnum": "NORMAL"
+          },
+          {
+            "code": "H2072.HK",
+            "entityName": "类型",
+            "table": {
+              "headName": [
+                "主营构成",
+                "营业收入(元)",
+                "营业成本(元)",
+                "毛利(元)",
+                "毛利率",
+                "收入构成",
+                "币种"
+              ],
+              "0": [
+                "合计",
+                "6.014亿",
+                "2.666亿",
+                "3.348亿",
+                "55.67%",
+                "100.00%",
+                "CNY"
+              ],
+              "1": [
+                "数据中心激光器芯片",
+                "3.933亿",
+                "1.13亿",
+                "2.802亿",
+                "71.26%",
+                "65.39%",
+                "CNY"
+              ],
+              "2": [
+                "电信激光器芯片",
+                "2.065亿",
+                "1.53亿",
+                "5347万",
+                "25.90%",
+                "34.33%",
+                "CNY"
+              ],
+              "3": [
+                "技术服务及其他",
+                "170.7万",
+                "58.3万",
+                "112.4万",
+                "65.85%",
+                "0.28%",
+                "CNY"
+              ],
+              "4": [
+                "合计",
+                "6.014亿",
+                "-",
+                "-",
+                "-",
+                "100.00%",
+                "CNY"
+              ],
+              "5": [
+                "中国内地",
+                "5.995亿",
+                "-",
+                "-",
+                "-",
+                "99.68%",
+                "CNY"
+              ],
+              "6": [
+                "中国内地以外-其他司法权区",
+                "191.5万",
+                "-",
+                "-",
+                "-",
+                "0.32%",
+                "CNY"
+              ]
+            },
+            "rawTable": {
+              "headName": [
+                "主营构成",
+                "营业收入(元)",
+                "营业成本(元)",
+                "毛利(元)",
+                "毛利率",
+                "收入构成",
+                "币种"
+              ],
+              "0": [
+                "合计",
+                "601435000",
+                "266613000",
+                "334822000",
+                "55.67",
+                "100",
+                "CNY"
+              ],
+              "1": [
+                "数据中心激光器芯片",
+                "393258000",
+                "113030000",
+                "280228000",
+                "71.26",
+                "65.3866",
+                "CNY"
+              ],
+              "2": [
+                "电信激光器芯片",
+                "206470000",
+                "153000000",
+                "53470000",
+                "25.9",
+                "34.3296",
+                "CNY"
+              ],
+              "3": [
+                "技术服务及其他",
+                "1707000.0",
+                "583000",
+                "1124000",
+                "65.85",
+                "0.2838",
+                "CNY"
+              ],
+              "4": [
+                "合计",
+                "601435000",
+                "-",
+                "-",
+                "-",
+                "100",
+                "CNY"
+              ],
+              "5": [
+                "中国内地",
+                "599520000",
+                "-",
+                "-",
+                "-",
+                "99.6816",
+                "CNY"
+              ],
+              "6": [
+                "中国内地以外-其他司法权区",
+                "1915000.0",
+                "-",
+                "-",
+                "-",
+                "0.3184",
+                "CNY"
+              ]
+            },
+            "truncateRawTable": {},
+            "nameMap": {
+              "0": "产品",
+              "1": "",
+              "2": "",
+              "3": "",
+              "4": "地区",
+              "5": "",
+              "6": ""
+            },
+            "headNameMap": {},
+            "field": {
+              "returnCode": "RPT_HKF9_MAINOPBUSINESS",
+              "returnName": "主营业务构成",
+              "classCode": "007202",
+              "checkedRelatedIndicators": true,
+              "startDate": "2025-06-21 00:00:00",
+              "endDate": "2026-06-21 00:00:00",
+              "fuzzy": true,
+              "defineType": 0,
+              "isLoopN": false,
+              "isGroup": false,
+              "returnSourceCode": "ORG_CODE,REPORT_DATE,REPORT_TYPE,REPORT_TYPE_CODE,DATE_TYPE_CODE,REPORTDATE_TYPE,TYPE,STD_PRODUCT_NAME,MAIN_BUSINESS_INCOME,MAIN_BUSINESS_COST,GROSS_PROFIT,GROSS_RPOFIT_RATIO,INCOME_RATIO,PROFIT_RATIO,CURRENCY,SECUCODE,IS_MAXREPORTDATE,BELONG_TYPE_NAME",
+              "returnSourceName": "公司代码,报告期,报告期类型,报告期类型编码,日期类型,报告期名称,数据类型,标准产品名称,主营业务收入,主营业务成本,毛利,毛利率,收入构成,利润构成,计量币种,证券代码,是否最新报告期,类型名称",
+              "tableType": "10"
+            },
+            "macroAttributeExcelMap": {},
+            "fieldSet": [
+              {
+                "returnCode": "RPT_HKF9_MAINOPBUSINESS",
+                "returnName": "主营业务构成",
+                "classCode": "007202",
+                "checkedRelatedIndicators": true,
+                "startDate": "2025-06-21 00:00:00",
+                "endDate": "2026-06-21 00:00:00",
+                "fuzzy": true,
+                "defineType": 0,
+                "isLoopN": false,
+                "isGroup": false,
+                "returnSourceCode": "ORG_CODE,REPORT_DATE,REPORT_TYPE,REPORT_TYPE_CODE,DATE_TYPE_CODE,REPORTDATE_TYPE,TYPE,STD_PRODUCT_NAME,MAIN_BUSINESS_INCOME,MAIN_BUSINESS_COST,GROSS_PROFIT,GROSS_RPOFIT_RATIO,INCOME_RATIO,PROFIT_RATIO,CURRENCY,SECUCODE,IS_MAXREPORTDATE,BELONG_TYPE_NAME",
+                "returnSourceName": "公司代码,报告期,报告期类型,报告期类型编码,日期类型,报告期名称,数据类型,标准产品名称,主营业务收入,主营业务成本,毛利,毛利率,收入构成,利润构成,计量币种,证券代码,是否最新报告期,类型名称",
+                "tableType": "10"
+              }
+            ],
+            "dataTableType": "F10_TABLE",
+            "inputTitle": "源杰科技(H2072.HK)主营业务构成(2025-12-31,年报)",
+            "rowInfo": {},
+            "colInfo": {},
+            "indicatorOrder": [
+              "0",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6"
+            ],
+            "tipFlags": [],
+            "hasThumbnail": true,
+            "indicatorLimited": false,
+            "dataPositionEnum": "MetricLeftTimeTop",
+            "orderCol": {},
+            "jumpUrlList": [],
+            "dataTypeEnum": "F9",
+            "dateRuleSet": [],
+            "freqConvert": false,
+            "deleteInfo": [],
+            "macroCodeMap": {},
+            "entityTagDTO": {
+              "entityId": "1004673646",
+              "entityType": "SEC",
+              "entityTypeCode": "058001003001",
+              "entityTypeName": "H股",
+              "classCode": "002003",
+              "className": "港股",
+              "publishCode": "",
+              "fullName": "源杰科技",
+              "shortName": "",
+              "secuCode": "H2072",
+              "marketChar": ".HK",
+              "correct": false,
+              "hasKLine": false,
+              "valuation": false,
+              "relatedEntity": true
+            },
+            "entityTagDTOList": [
+              {
+                "entityId": "1004673646",
+                "entityType": "SEC",
+                "entityTypeCode": "058001003001",
+                "entityTypeName": "H股",
+                "classCode": "002003",
+                "className": "港股",
+                "publishCode": "",
+                "fullName": "源杰科技",
+                "shortName": "",
+                "secuCode": "H2072",
+                "marketChar": ".HK",
+                "correct": false,
+                "hasKLine": false,
+                "valuation": false,
+                "relatedEntity": true
+              }
+            ],
+            "indexTable": false,
+            "edbThirdData": false,
+            "dataUpdate": {},
+            "supportsTimeSeries": false,
+            "estimatedTokens": 0,
+            "summaryTips": {
+              "periodicalReport": null
+            },
+            "nestEntityListMap": {},
+            "excelTimeTruncate": false,
+            "frontendEntityName": "源杰科技",
+            "frontendEntityCode": "H2072.HK",
+            "frontendTitle": "主营业务构成(2025-12-31,年报)",
+            "frontendDesc": "",
+            "indicatorCount": 0,
+            "fieldParameterStr": "",
+            "tdayEnum": "NORMAL"
+          }
+        ],
+        "condition": {
+          "search_data_task_1": [
+            "源杰科技",
+            "员工总数主营业务构成成立日期董事长公司亮点公司基本信息所属概念板块公司简介",
+            "2026-06-21至2026-06-21"
+          ],
+          "search_data_task_0": [
+            "源杰科技",
+            "员工总数主营业务构成成立日期公司基本信息所属港交所行业公司简介",
+            "2026-06-21至2026-06-21"
+          ]
+        },
+        "entityTagDTOList": [
+          {
+            "entityId": "1002908173",
+            "entityType": "SEC",
+            "entityTypeCode": "058001001",
+            "entityTypeName": "A股",
+            "classCode": "002001",
+            "className": "沪深京股票",
+            "publishCode": "",
+            "fullName": "源杰科技",
+            "shortName": "",
+            "matchWord": "源杰科技",
+            "secuCode": "688498",
+            "market": "1",
+            "marketChar": ".SH",
+            "correct": false,
+            "hasKLine": false,
+            "valuation": false,
+            "relatedEntity": false
+          },
+          {
+            "entityId": "1004673646",
+            "entityType": "SEC",
+            "entityTypeCode": "058001003001",
+            "entityTypeName": "H股",
+            "classCode": "002003",
+            "className": "港股",
+            "publishCode": "",
+            "fullName": "源杰科技",
+            "shortName": "",
+            "secuCode": "H2072",
+            "marketChar": ".HK",
+            "correct": false,
+            "hasKLine": false,
+            "valuation": false,
+            "relatedEntity": true
+          }
+        ]
+      },
+      "entityName": null,
+      "message": null,
+      "tableTruncated": false
+    },
+    "stack": null
+  },
+  "requestId": "4946a403c624402b8dc47e0bc449a6ef"
+}

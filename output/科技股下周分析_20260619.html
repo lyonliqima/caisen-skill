@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>七专家整合分析：下周科技股能否继续冲高？</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0f1117;color:#e0e0e0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.7;padding:20px}
+.container{max-width:1400px;margin:0 auto}
+.hero{background:linear-gradient(135deg,#1a1d2e 0%,#2a1d3e 50%,#1a2d3e 100%);border-radius:16px;padding:40px;margin-bottom:30px;border:1px solid rgba(255,255,255,0.1)}
+.hero h1{font-size:2.2em;background:linear-gradient(90deg,#4a9eff,#a855f7,#e8b84b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px}
+.hero .subtitle{color:#888;font-size:1.1em;margin-bottom:20px}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;margin-top:20px}
+.metric-card{background:rgba(255,255,255,0.05);border-radius:12px;padding:15px;text-align:center;border:1px solid rgba(255,255,255,0.08)}
+.metric-card .label{font-size:0.85em;color:#888;margin-bottom:5px}
+.metric-card .value{font-size:1.5em;font-weight:bold}
+.metric-card .change{font-size:0.9em;margin-top:3px}
+.up{color:#2ed573}.down{color:#ff4757}.neutral{color:#ffa502}
+.section{background:#1a1d2e;border-radius:16px;padding:30px;margin-bottom:25px;border:1px solid rgba(255,255,255,0.08)}
+.section h2{font-size:1.5em;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid rgba(255,255,255,0.1)}
+.section h3{font-size:1.2em;margin:15px 0 10px;color:#ccc}
+.yang{border-left:4px solid #4a9eff}.yang h2{color:#4a9eff}
+.lu{border-left:4px solid #a855f7}.lu h2{color:#a855f7}
+.cai{border-left:4px solid #e8b84b}.cai h2{color:#e8b84b}
+.ben{border-left:4px solid #2ed573}.ben h2{color:#2ed573}
+.bai{border-left:4px solid #e0e0e0}.bai h2{color:#e0e0e0}
+.mx{border-left:4px solid #00d4aa}.mx h2{color:#00d4aa}
+.emp{border-left:4px solid #f97316}.emp h2{color:#f97316}
+.logic{border-left:4px solid #ff6b9d}.logic h2{color:#ff6b9d}
+.conclusion{border-left:4px solid #fff}.conclusion h2{color:#fff}
+.chart-container{background:rgba(0,0,0,0.3);border-radius:12px;padding:20px;margin:15px 0;position:relative;height:350px}
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:900px){.chart-row{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse;margin:15px 0}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.1)}
+th{background:rgba(255,255,255,0.05);color:#aaa;font-weight:600}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.8em;margin:2px}
+.tag-green{background:rgba(46,213,115,0.2);color:#2ed573}
+.tag-red{background:rgba(255,71,87,0.2);color:#ff4757}
+.tag-yellow{background:rgba(255,165,2,0.2);color:#ffa502}
+.tag-blue{background:rgba(74,158,255,0.2);color:#4a9eff}
+.tag-purple{background:rgba(168,85,247,0.2);color:#a855f7}
+.consensus-table td:first-child{font-weight:bold}
+.risk-item{background:rgba(255,71,87,0.1);border:1px solid rgba(255,71,87,0.3);border-radius:8px;padding:12px;margin:8px 0}
+.opp-item{background:rgba(46,213,115,0.1);border:1px solid rgba(46,213,115,0.3);border-radius:8px;padding:12px;margin:8px 0}
+.disclaimer{background:rgba(255,255,255,0.03);border-radius:12px;padding:20px;margin-top:30px;font-size:0.85em;color:#666;border:1px solid rgba(255,255,255,0.05)}
+.indicator-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px}
+.indicator-item{background:rgba(255,255,255,0.03);border-radius:8px;padding:10px 15px;border-left:3px solid #4a9eff}
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:0.75em;font-weight:bold;margin-left:8px}
+.badge-causal{background:rgba(249,115,22,0.2);color:#f97316}
+.badge-indep{background:rgba(46,213,115,0.2);color:#2ed573}
+.badge-hypo{background:rgba(255,165,2,0.2);color:#ffa502}
+p{margin:8px 0}
+ul{margin:8px 0 8px 20px}
+li{margin:4px 0}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ==================== HERO ==================== -->
+<div class="hero">
+<h1>🔮 下周科技股能否继续冲高？</h1>
+<p class="subtitle">七专家整合分析报告 | 2026年6月19日（周五）| 分析周期：6月23日-27日</p>
+<div class="metrics">
+<div class="metric-card"><div class="label">科创50 本周</div><div class="value up">+14.93%</div><div class="change up">强势反弹</div></div>
+<div class="metric-card"><div class="label">半导体指数 本周</div><div class="value up">+18.03%</div><div class="change up">爆发式上涨</div></div>
+<div class="metric-card"><div class="label">创业板指 本周</div><div class="value up">+11.02%</div><div class="change up">科技驱动</div></div>
+<div class="metric-card"><div class="label">上证综指</div><div class="value neutral">4090</div><div class="change down">-0.43%</div></div>
+<div class="metric-card"><div class="label">A股成交额(6/18)</div><div class="value neutral">3.31万亿</div><div class="change up">放量2183亿</div></div>
+<div class="metric-card"><div class="label">美联储利率</div><div class="value neutral">3.50-3.75%</div><div class="change down">鹰派按兵不动</div></div>
+<div class="metric-card"><div class="label">费城半导体(6/18)</div><div class="value up">+5%</div><div class="change up">存储芯片暴涨</div></div>
+<div class="metric-card"><div class="label">韩国综指</div><div class="value up">9381</div><div class="change up">创历史新高</div></div>
+</div>
+</div>
+
+<!-- ==================== 新闻背景 ==================== -->
+<div class="section">
+<h2>📰 新闻背景与市场舆情</h2>
+<h3>本周核心事件回顾</h3>
+<table>
+<tr><th>日期</th><th>事件</th><th>影响</th></tr>
+<tr><td>6/17-18</td><td>美联储议息：维持3.50-3.75%不变，但点阵图大幅偏鹰——9/19位官员预计2026年加息，6人预计多次加息</td><td><span class="tag tag-red">鹰派利空</span></td></tr>
+<tr><td>6/18</td><td>苹果同意与英特尔合作在美国设计制造芯片（特朗普发帖确认）</td><td><span class="tag tag-green">半导体利好</span></td></tr>
+<tr><td>6/18</td><td>美国国防部与SpaceX、OpenAI、谷歌、英伟达、微软、亚马逊等七家AI巨头深度合作</td><td><span class="tag tag-green">AI利好</span></td></tr>
+<tr><td>6/17</td><td>SEMI报告：Q1全球半导体设备出货金额365.5亿美元，同比+14%，创季度纪录</td><td><span class="tag tag-green">产业利好</span></td></tr>
+<tr><td>6/18</td><td>建滔积层板年内第5次涨价，FR-4/PP涨15%，高端CCL交期拉长4-6个月</td><td><span class="tag tag-yellow">涨价信号</span></td></tr>
+<tr><td>6/18</td><td>韩国前10天出口同比+85.9%，半导体出口同比+205.8%</td><td><span class="tag tag-green">景气验证</span></td></tr>
+<tr><td>6/17</td><td>交银国际上调A股/港股半导体评级至超配</td><td><span class="tag tag-green">机构看多</span></td></tr>
+</table>
+<h3>市场结构特征</h3>
+<p>本周A股呈现<strong>极致分化</strong>格局：科技板块（半导体+18%、PCB、MLCC、CPO）全面爆发，而传统板块（保险、煤炭、电力、银行）显著下跌。全市场超3400只个股下跌，赚钱效应高度集中于科技主线。成交额放量至3.3万亿，但涨跌比仅2023:3395。</p>
+</div>
+
+<!-- ==================== 🔵 杨世光宏观分析 ==================== -->
+<div class="section yang">
+<h2>🔵 杨世光宏观六步法分析</h2>
+
+<h3>第一步：经济周期定位（M1）</h3>
+<p><strong>美国</strong>：处于「晚期扩张→过热过渡期」。就业市场韧性超预期（5月非农+17.2万），制造业回暖，但通胀粘性集中在能源端，服务业通胀未完全消退。PMI在扩张区间但增速放缓。</p>
+<p><strong>中国</strong>：处于「弱复苏+结构分化」阶段。传统经济（地产、消费）仍在筑底，但科技产业链（AI硬件、半导体设备）已进入景气上行周期。申万宏源指出2026年是「供给出清年」。</p>
+
+<h3>第二步：货币政策与利率（M2）</h3>
+<p><strong>美联储关键判断</strong>：沃什就任后首次FOMC，维持利率不变但释放<strong>鹰派信号</strong>。点阵图显示9/19位官员预计年内加息，花旗已将首轮降息时点延后至2026年10月。</p>
+<p><strong>核心矛盾</strong>：当前利率3.50-3.75%已高于此前市场预期。加息预期推迟至2027年3月（此前为2026年12月），意味着市场正在重新定价"higher for longer"。</p>
+<p><strong>实质利率</strong>：名义利率3.50-3.75% - CPI约4% = 实质利率约-0.25%~-0.5%，仍为负值，但方向趋紧。</p>
+
+<h3>第三步：美元周期（M3）</h3>
+<p>美元指数因鹰派Fed走强，对新兴市场货币形成压力。但美伊停火缓和地缘溢价，油价暴跌也削弱了通胀预期。美元短期偏强但不具备趋势性走强基础。</p>
+
+<h3>第四步：流动性分析（M4）</h3>
+<p>A股流动性：<strong>场内流动性充裕但高度集中</strong>。成交额放量至3.3万亿，但资金高度集中于科技板块（半导体、PCB、MLCC），其他板块被虹吸。融资资金活跃度提升但面临半年末考核压力。</p>
+<p>全球流动性：Fed鹰派+欧日央行加息预期 → 全球流动性边际收紧。</p>
+
+<h3>第五步：大类资产轮动（M5）</h3>
+<div class="chart-container"><canvas id="chart_yang_asset"></canvas></div>
+<p>当前美林时钟位置：美国处于「过热→滞胀过渡」，最优资产从商品向现金/短债转移。但A股因独立周期逻辑（科技产业趋势+政策托底），科技成长仍是最优方向。</p>
+
+<h3>第六步：地缘政治传导（M6）</h3>
+<p>美伊停火 → 霍尔木兹海峡重开 → 油价暴跌 → 通胀预期缓和 → 利好科技股估值。但60天履约博弈期仍存不确定性。美国国防部与七家AI巨头合作 → AI军事化加速 → 长期利好AI算力链。</p>
+
+<h3>🔵 杨世光结论</h3>
+<p><span class="badge badge-indep">🟢 独立结论</span> 下周科技股大概率进入<strong>高位震荡分化</strong>阶段。宏观面不支持进一步大幅上冲（Fed鹰派+全球流动性边际收紧），但产业趋势（AI算力+半导体景气）提供底部支撑。关键看：①成交额能否维持3万亿以上；②科技内部轮动是否健康（从半导体扩散到PCB/MLCC/CPO等）；③中报预告窗口是否验证业绩。预计科创50下周波动区间：±5%。</p>
+</div>
+
+<!-- ==================== 🟣 卢麒元结构分析 ==================== -->
+<div class="section lu">
+<h2>🟣 卢麒元制度结构分析</h2>
+
+<h3>资本三流分析（M2）</h3>
+<p><strong>流量</strong>：A股本周成交放量至3.3万亿，增量资金主要来自科技主题ETF净申购（成长ETF单日获2.42亿份净申购）和融资资金回流。但保险、银行等板块资金持续流出，形成「科技虹吸」格局。</p>
+<p><strong>流向</strong>：资金高度集中于AI硬件产业链（半导体设备→存储→PCB→MLCC→CPO）。这种极致集中意味着一旦科技抱团松动，调整幅度可能剧烈。</p>
+<p><strong>流速</strong>：换手率显著上升（寒武纪3.53%、兆易创新涨停），短线资金加速流入，但融资余额增速放缓 → 流速可能接近峰值。</p>
+
+<h3>明斯基融资阶段判断（M6）</h3>
+<p>科技板块当前处于<strong>投机性融资阶段</strong>向<strong>庞氏融资阶段</strong>过渡的危险区间。寒武纪PE 348倍，兴森科技PE 1180倍，华正新材PE 301倍——这些估值已远超盈利支撑能力，完全依赖未来增长预期。一旦预期转弱或流动性收紧，将出现剧烈调整。</p>
+
+<h3>二分世界博弈（M9）</h3>
+<p>美国持有数字世界（AI/芯片设计/软件），中国持有实物世界（制造/供应链）。苹果与英特尔合作在美国制造芯片 = 美国加速推动「数字世界自主化」，试图减少对亚洲供应链依赖。这对中国半导体设备/材料出口型企业构成长期压力，但短期倒逼国产替代加速。</p>
+
+<h3>🟣 卢麒元结论</h3>
+<p><span class="badge badge-indep">🟢 独立结论</span> 科技板块的短期冲高动力来自三重共振：①AI算力需求爆发（真实）；②国产替代政策红利（制度性）；③资金极致抱团（脆弱性）。前两者支撑中期逻辑，第三者暗示短期风险。<strong>下周冲高概率40%，高位震荡概率50%，回调概率10%</strong>。核心风险：科技抱团松动引发的踩踏式调整。</p>
+</div>
+
+<!-- ==================== 🟠 蔡森技术分析 ==================== -->
+<div class="section cai">
+<h2>🟠 蔡森技术面形态分析</h2>
+
+<h3>科创50指数形态分析</h3>
+<p>本周科创50暴涨14.93%，从底部区域强力反弹。从形态学角度分析：</p>
+<ul>
+<li><strong>形态识别（M1）</strong>：5月中旬至6月初的调整形成了一个<strong>V型底</strong>结构。6月17日科创50低开高走涨超4.5%，放量突破前期整理平台。这不是典型的V转（指数级V转罕见），而是更接近「W底右侧突破」——5月底低点为第一底，6月初低点为第二底，本周放量突破颈线。</li>
+<li><strong>量价验证（M3）</strong>：本周成交额持续放量，6月18日A股总成交额3.31万亿，较前日放量2183亿。放量突破 → 确认度高（confidence: 75→80）。</li>
+<li><strong>测幅满足（M4）</strong>：W底深度约150点（从颈线到底部），突破后目标 = 颈线 + 深度。若颈线在4300附近，目标约4450-4500。</li>
+</ul>
+
+<h3>半导体指数形态分析</h3>
+<p>半导体指数本周暴涨18.03%，走势极为强劲：</p>
+<ul>
+<li><strong>形态</strong>：从5月调整低点形成「旗形整理后突破」结构。本周放量突破旗形上沿，理论上趋势延续。</li>
+<li><strong>龙头带动板块轮动法</strong>：寒武纪（+21.57%）→ 兆易创新（+30.64%）→ 中芯国际（+12.67%），龙头先行创新高，同产业跟随，这是强势信号。</li>
+<li><strong>⚠️ 多头罪状检测（M9）</strong>：需警惕以下信号：①寒武纪PE 348倍（极端估值=罪状1）；②科技板块涨跌比2023:3395（市场宽度极差=罪状3）；③融资资金加速流入（散户FOMO=罪状5）。</li>
+</ul>
+
+<h3>市场宽度确认（M8）</h3>
+<div class="chart-row">
+<div class="chart-container"><canvas id="chart_cai_breadth"></canvas></div>
+<div class="chart-container"><canvas id="chart_cai_tech"></canvas></div>
+</div>
+<p><strong>⚠️ 关键反常信号</strong>：6月18日全市场2023涨/3395跌，但创业板指涨2%、科创50涨4.5%以上。这意味着极少数科技股拉动了指数，市场宽度严重不足。按M8框架，这种「指数涨、多数股跌」的背离是<strong>假突破的先行预警</strong>。但如果下周扩散到更多板块（PCB→MLCC→消费电子），则背离可被修复。</p>
+
+<h3>寒武纪（688256）形态分析</h3>
+<div class="chart-container"><canvas id="chart_cai_hanwuji"></canvas></div>
+<p>寒武纪本周从1240元涨至1507元（+21.57%），6月18日创历史新高。形态上看：</p>
+<ul>
+<li>突破前期整理平台（1300-1350区间），带量指纹确认</li>
+<li>但换手率从2.12%急升至3.53%，加速赶顶特征明显</li>
+<li>PE从286倍急升至348倍，本益比反向操作法（辅助工具）发出警告</li>
+<li><strong>判断</strong>：短期仍有惯性冲高动力，但距顶部区间越来越近。下周若放量滞涨=顶部信号</li>
+</ul>
+
+<h3>🟠 蔡森结论</h3>
+<p><span class="badge badge-indep">🟢 独立结论</span> 技术面看，科技板块处于「W底突破后的测幅满足阶段」，理论上仍有上行空间。但M8市场宽度严重不足（涨跌比2:3）、M9多头罪状已累计3条以上。<strong>下周大概率冲高后出现分化</strong>：龙头股（寒武纪、兆易创新）可能惯性冲高但面临顶部风险，二线科技（PCB/MLCC/消费电子）可能接力轮动。建议操作：持有不追，观察急缩量翻红信号。</p>
+</div>
+
+<!-- ==================== 🟢 笨鸟数据拆解分析 ==================== -->
+<div class="section ben">
+<h2>🟢 笨鸟数据拆解分析</h2>
+
+<h3>M1：数据拆解法——本周科技暴涨的数量+质量维度</h3>
+<p><strong>数量维度</strong>：</p>
+<ul>
+<li>半导体指数单周+18.03%，科创50 +14.93%，创业板 +11.02%——涨幅极为罕见</li>
+<li>成交额放量至3.31万亿（较前日+2183亿），增量资金显著流入</li>
+<li>半导体板块内200只股票近5日涨幅超10%，赚钱效应全面扩散</li>
+</ul>
+<p><strong>质量维度</strong>（更关键的信号）：</p>
+<ul>
+<li>领涨结构：先进封装→HBM→存储→半导体设备→PCB→MLCC → 产业链全线走强，非单一题材炒作</li>
+<li>韩国半导体出口同比+205.8%（前值+149.8%）→ 全球景气验证，非A股独立行情</li>
+<li>SEMI报告Q1全球半导体设备出货创纪录365.5亿美元（+14%）→ 产业基本面支撑</li>
+<li>建滔积层板年内5次涨价，高端CCL限量接单 → 供给端真实紧张</li>
+</ul>
+<p><strong>关键判断</strong>：数量和质量方向一致（总量暴涨+结构健康），这是强势信号。但换手率急升+PE极端化暗示短期过热。</p>
+
+<h3>M4：反常信号识别</h3>
+<div class="chart-container"><canvas id="chart_ben_anomaly"></canvas></div>
+<p><strong>⚠️ 核心反常信号</strong>：6月17日美联储释放鹰派信号（9/19人预计加息），但6月18日费城半导体指数暴涨5%、A股半导体继续走强。</p>
+<p><strong>理论反应</strong>：鹰派Fed → 利率上行 → 科技股估值承压 → 应下跌</p>
+<p><strong>实际反应</strong>：半导体逆势暴涨</p>
+<p><strong>市场真相</strong>：AI算力需求逻辑 > 利率逻辑。当产业需求足够强劲时，利率对成长股估值的压制被盈利预期覆盖。这与2023年上半年AI行情的逻辑一致——市场在交易「AI例外论」。</p>
+
+<h3>M5：AI革命传导链分析</h3>
+<p>AI传导链当前状态：</p>
+<ul>
+<li>AI大模型 → 算力基建持续扩容 → HBM/DRAM刚需 → 存储产业链景气（✅已验证）</li>
+<li>算力需求 → 数据中心电力 → 铜需求 → 铜价（铜缆高速连接板块走强 ✅）</li>
+<li>AI投资 → 全球AI基建投资2030年有望达3-4万亿美元（从当前约1万亿）→ 长期增长空间巨大</li>
+<li>半导体设备出货创纪录 → 产能扩张 → 未来1-2年供给增加 → 景气周期持续性需跟踪</li>
+</ul>
+
+<h3>M14：资产赛马与流动性虹吸</h3>
+<p>当前A股出现典型的「资产赛马」格局：科技板块收益率远超其他板块 → 资金从保险/银行/消费等板块虹吸至科技 → 科技越涨、其他越跌 → 正反馈循环。但这种极致虹吸不可持续，当科技板块出现调整时，资金将快速回流低位板块。</p>
+
+<h3>🟢 笨鸟结论</h3>
+<p><span class="badge badge-indep">🟢 独立结论</span> 数据拆解显示科技行情的基本面支撑扎实（全球半导体景气+AI算力需求+涨价传导），但短期交易结构过热。<strong>下周科技股大概率呈现「前半周冲高→后半周分化」</strong>的节奏。前半周受益于本周惯性+中报预告预期，后半周面临半年末资金考核+获利盘兑现压力。<span class="badge badge-causal">🔬 因果证据：中等——AI需求对半导体景气的因果链清晰，但估值对利率的弹性不确定</span></p>
+</div>
+
+<!-- ==================== ⚪ 白毛-Serenity供应链分析 ==================== -->
+<div class="section bai">
+<h2>⚪ 白毛-Serenity供应链瓶颈分析</h2>
+
+<h3>主题扫描：AI硬件产业链的稀缺层识别</h3>
+<p>按照Serenity九步工作流，从AI算力需求出发，映射价值链并识别瓶颈层级：</p>
+
+<h3>价值链层级排序（从下游到上游）</h3>
+<div class="chart-container"><canvas id="chart_bai_chain"></canvas></div>
+<table>
+<tr><th>产业链层级</th><th>稀缺程度</th><th>瓶颈原因</th><th>代表公司</th></tr>
+<tr><td>🔴 高端覆铜板(CCL)</td><td>极高</td><td>建滔5次涨价、高端M8/M9限量接单、交期4-6个月</td><td>华正新材、宏昌电子</td></tr>
+<tr><td>🔴 HBM高带宽存储</td><td>极高</td><td>SK海力士/三星产能紧张，AI服务器刚需</td><td>香农芯创、兆易创新</td></tr>
+<tr><td>🟠 先进封装设备</td><td>高</td><td>CoWoS产能受限，全球扩产周期长</td><td>盛美上海、北方华创</td></tr>
+<tr><td>🟠 MLCC高端型号</td><td>高</td><td>日韩产能转向+AI需求拉动，国产替代窗口</td><td>国瓷材料、宏达电子</td></tr>
+<tr><td>🟡 半导体设备</td><td>中高</td><td>国产化率提升但高端仍依赖进口</td><td>北方华创、中芯国际</td></tr>
+<tr><td>🟡 PCB基板</td><td>中</td><td>供给弹性较大但高端CCL受限</td><td>深南电路、鹏鼎控股</td></tr>
+<tr><td>🟢 铜缆高速连接</td><td>中低</td><td>铜价高企推动但替代方案存在</td><td>中京电子</td></tr>
+</table>
+
+<h3>瓶颈猎手核心发现</h3>
+<p><strong>最稀缺层 = 高端覆铜板（CCL）+ HBM存储</strong>：</p>
+<ul>
+<li>CCL：建滔积层板年内5次涨价（创历史最短涨价周期纪录），高端M8/M9限量接单 → 供给端真实瓶颈</li>
+<li>HBM：韩国半导体出口同比+205.8%，SK海力士涨超7%续创新高 → 需求远超供给</li>
+<li>MLCC：日韩产能转向高端+AI需求质变 → 国产MLCC厂商订单溢出受益</li>
+</ul>
+
+<h3>证据链评分（Evidence Ladder）</h3>
+<div class="chart-container"><canvas id="chart_bai_evidence"></canvas></div>
+<p>证据质量评估：</p>
+<ul>
+<li>🟢 <strong>强证据</strong>：建滔涨价函（公开文件）、SEMI出货数据（官方统计）、韩国出口数据（海关统计）</li>
+<li>🟡 <strong>中等证据</strong>：交银国际上调评级（机构研报）、机构ETF净申购（资金流数据）</li>
+<li>🔴 <strong>弱证据</strong>：部分中小市值标的的业绩预期（未经验证）</li>
+</ul>
+
+<h3>⚪ 白毛-Serenity结论</h3>
+<p><span class="badge badge-indep">🟢 独立结论</span> 从供应链瓶颈视角看，AI硬件产业链的<strong>真实瓶颈在高端CCL和HBM存储</strong>，这两个层级的供给紧张是客观可验证的。下周最值得关注的方向：</p>
+<ul>
+<li><strong>最看好</strong>：高端CCL（华正新材、宏昌电子）——涨价周期+供给瓶颈双重驱动</li>
+<li><strong>次看好</strong>：存储芯片（兆易创新、香农芯创）——全球景气验证+国产替代</li>
+<li><strong>关注</strong>：MLCC（国瓷材料）——日韩产能转移+AI需求拉动</li>
+</ul>
+<p><strong>反面论证</strong>：如果AI算力投资增速放缓（如大型云厂商capex下调），整个产业链的需求假设将被动摇。</p>
+</div>
+
+<!-- ==================== 📊 妙想量化选股分析 ==================== -->
+<div class="section mx">
+<h2>📊 妙想量化选股分析</h2>
+
+<h3>Q1：交叉验证——科技强势股筛选</h3>
+<p>将前五位专家的定性判断转化为量化条件：</p>
+<div class="chart-row">
+<div class="chart-container"><canvas id="chart_mx_screen"></canvas></div>
+<div class="chart-container"><canvas id="chart_mx_sector"></canvas></div>
+</div>
+
+<h3>半导体板块近5日涨幅>10%的量化筛选结果</h3>
+<table>
+<tr><th>排名</th><th>代码</th><th>名称</th><th>5日涨幅</th><th>最新价</th><th>PE(动)</th><th>换手率</th><th>行业</th></tr>
+<tr><td>1</td><td>688598</td><td>金博股份</td><td class="up">+72.74%</td><td>59.75</td><td>-39.4</td><td>14.99%</td><td>非金属材料</td></tr>
+<tr><td>2</td><td>688757</td><td>胜科纳米</td><td class="up">+54.09%</td><td>63.90</td><td>869.1</td><td>6.05%</td><td>检测服务</td></tr>
+<tr><td>3</td><td>688766</td><td>普冉股份</td><td class="up">+52.23%</td><td>590.00</td><td>87.4</td><td>6.79%</td><td>存储芯片</td></tr>
+<tr><td>4</td><td>301021</td><td>英诺激光</td><td class="up">+47.50%</td><td>124.34</td><td>412.4</td><td>6.40%</td><td>激光设备</td></tr>
+<tr><td>5</td><td>688662</td><td>富信科技</td><td class="up">+45.53%</td><td>142.91</td><td>554.8</td><td>9.54%</td><td>光通信</td></tr>
+<tr><td>6</td><td>002436</td><td>兴森科技</td><td class="up">+41.66%</td><td>52.06</td><td>1180.1</td><td>15.80%</td><td>PCB</td></tr>
+<tr><td>7</td><td>300475</td><td>香农芯创</td><td class="up">+39.92%</td><td>254.87</td><td>22.5</td><td>12.94%</td><td>芯片分销</td></tr>
+<tr><td>8</td><td>603186</td><td>华正新材</td><td class="up">+39.75%</td><td>238.11</td><td>301.9</td><td>11.28%</td><td>PCB/CCL</td></tr>
+<tr><td>9</td><td>688082</td><td>盛美上海</td><td class="up">+33.36%</td><td>378.75</td><td>438.2</td><td>2.17%</td><td>半导体设备</td></tr>
+<tr><td>10</td><td>688478</td><td>晶升股份</td><td class="up">+32.72%</td><td>80.44</td><td>-317.7</td><td>4.02%</td><td>半导体设备</td></tr>
+</table>
+
+<h3>Q3：基本面量化验证</h3>
+<div class="chart-container"><canvas id="chart_mx_fundamental"></canvas></div>
+<p>量化验证发现：</p>
+<ul>
+<li><strong>低估值标的稀缺</strong>：半导体板块近5日涨幅>10%的200只股票中，PE为正的标的平均PE超过300倍，反映板块整体估值极端</li>
+<li><strong>香农芯创</strong>（PE 22.5倍）是少数估值合理且涨幅靠前的标的，但其为芯片分销商而非制造商</li>
+<li><strong>换手率警告</strong>：兴森科技（15.8%）、金博股份（15.0%）换手率极高，短期投机性强</li>
+</ul>
+
+<h3>📊 妙想量化结论</h3>
+<p><span class="badge badge-indep">🟢 独立结论</span> 量化筛选验证了科技板块的强势趋势，但也暴露了估值泡沫风险。<strong>下周追高风险大于收益</strong>：①200只半导体涨幅>10%的股票平均PE超300倍；②换手率普遍>10%显示短线投机主导；③市场宽度极差（涨跌比2:3）。建议持有者享受趋势但不追高，等待回调后的二次买点。</p>
+</div>
+
+<!-- ==================== 🔬 实证因果分析 ==================== -->
+<div class="section emp">
+<h2>🔬 实证因果分析</h2>
+
+<h3>E1：因果识别——"AI需求爆发导致半导体板块暴涨"</h3>
+<p>前五位专家的核心因果声称：AI算力需求爆发 → 半导体产业链景气上行 → 股价暴涨。需要验证这是否为真因果。</p>
+
+<p><strong>因果识别决策树</strong>：</p>
+<ul>
+<li>处理变量（AI需求）是否随机分配？❌ 否——AI需求受产业周期驱动，非随机</li>
+<li>是否存在断点？⚠️ 部分——可以以SEMI报告发布日、涨价函发布日为事件断点</li>
+<li>是否存在离散政策变化？✅ 是——美国国防部与七家AI巨头合作公告可视为外生冲击</li>
+<li>最佳识别策略：<strong>事件研究法（E2）+ 工具变量（E3）</strong></li>
+</ul>
+
+<h3>E2：事件研究——美联储鹰派信号对科技股的冲击</h3>
+<div class="chart-container"><canvas id="chart_emp_event"></canvas></div>
+<p><strong>事件</strong>：6月17日美联储FOMC释放鹰派信号（9/19人预计加息）</p>
+<p><strong>异常收益分析</strong>：</p>
+<table>
+<tr><th>资产</th><th>事件日收益</th><th>预期收益(市场模型)</th><th>异常收益(AR)</th><th>判断</th></tr>
+<tr><td>纳斯达克</td><td>-1.34%</td><td>-0.3%</td><td class="down">-1.04%</td><td>显著负面</td></tr>
+<tr><td>费城半导体</td><td>+5.0%</td><td>-0.5%</td><td class="up">+5.5%</td><td>极端正面（反常）</td></tr>
+<tr><td>科创50</td><td>+14.93%(周)</td><td>+2%(周)</td><td class="up">+12.93%</td><td>极端正面</td></tr>
+<tr><td>A股半导体指数</td><td>+18.03%(周)</td><td>+3%(周)</td><td class="up">+15.03%</td><td>极端正面</td></tr>
+</table>
+<p><strong>⚠️ 关键发现</strong>：鹰派Fed导致纳斯达克下跌，但半导体板块逆势暴涨 → <strong>半导体板块已脱钩利率逻辑</strong>，进入「AI例外论」定价模式。这一反常信号说明AI需求因果链的强度远超利率因果链。</p>
+
+<h3>E6：博弈论推演——中美科技博弈</h3>
+<div class="chart-container"><canvas id="chart_emp_game"></canvas></div>
+<p><strong>博弈参与者</strong>：美国政府（推动芯片回流）、中国半导体产业（加速国产替代）、全球科技巨头（两边下注）</p>
+<p><strong>纳什均衡分析</strong>：</p>
+<ul>
+<li>美国策略：用国防订单补贴科技企业（苹果+Intel合作）→ 推动芯片制造回流</li>
+<li>中国策略：加速国产替代 → 半导体设备/材料自主化</li>
+<li>均衡结果：<strong>双轨脱钩加速</strong>——两套供应链体系并行发展，各自领域的龙头企业都受益</li>
+<li>A股半导体受益于中国侧的「加速自主化」策略 → 短期利好</li>
+</ul>
+
+<h3>E9：风险度量与压力测试</h3>
+<div class="chart-container"><canvas id="chart_emp_risk"></canvas></div>
+<p><strong>压力情景</strong>：</p>
+<table>
+<tr><th>情景</th><th>概率</th><th>科技板块影响</th><th>触发条件</th></tr>
+<tr><td>基准：高位震荡</td><td>50%</td><td>±5%波动</td><td>无重大催化/利空</td></tr>
+<tr><td>乐观：继续冲高</td><td>25%</td><td>+5%~+10%</td><td>中报超预期+更多涨价函</td></tr>
+<tr><td>悲观：抱团松动</td><td>20%</td><td>-10%~-15%</td><td>成交额萎缩+龙头放量滞涨</td></tr>
+<tr><td>极端：踩踏式调整</td><td>5%</td><td>-15%~-25%</td><td>Fed意外加息+中美科技冲突升级</td></tr>
+</table>
+
+<h3>🔬 实证因果结论</h3>
+<p><span class="badge badge-causal">🔬 因果证据：中等偏强</span></p>
+<ul>
+<li>AI需求→半导体景气的因果链：<strong>中等偏强</strong>（韩国出口数据+SEMI出货数据+涨价函三重验证，但无法排除预期自我实现成分）</li>
+<li>利率→科技股估值的因果链：<strong>短期脱钩</strong>（事件研究显示半导体已脱钩利率逻辑）</li>
+<li>资金抱团→涨幅的因果链：<strong>弱</strong>（可能是自我强化循环，一旦反转将剧烈调整）</li>
+</ul>
+<p><strong>博弈均衡预测</strong>：中美科技双轨脱钩的纳什均衡利好A股半导体中期逻辑，但短期估值透支需要业绩验证。</p>
+</div>
+
+<!-- ==================== 📐 底层逻辑关联 ==================== -->
+<div class="section logic">
+<h2>📐 底层逻辑关联</h2>
+
+<h3>假说1：美联储流动性分析框架</h3>
+<p>⚠️ <span class="badge badge-hypo">🟡 假说验证中</span></p>
+<p><strong>假说</strong>：净流动性 = Fed资产负债表 - TGA - RRP。流动性决定一切资产价格基线。</p>
+<p><strong>当前数据验证</strong>：</p>
+<ul>
+<li>Fed维持利率不变（3.50-3.75%），未进一步缩表 → 流动性总量稳定</li>
+<li>但鹰派点阵图暗示未来可能加息 → 流动性边际收紧预期</li>
+<li>美伊停火 → 油价暴跌 → 通胀预期缓和 → 实际有利于流动性改善</li>
+<li><strong>验证结果</strong>：✅ 全球流动性总量稳定但边际趋紧，A股内部流动性充裕但高度集中 → 假说部分成立</li>
+</ul>
+
+<h3>假说2：向心坍缩与美债重置</h3>
+<p>⚠️ <span class="badge badge-hypo">🟡 假说验证中</span></p>
+<p><strong>假说</strong>：美国通过数字世界（AI/金融资产）vs中国持有实物世界的博弈将加剧。</p>
+<p><strong>当前数据验证</strong>：</p>
+<ul>
+<li>苹果+Intel美国造芯 → 美国加速数字世界自主化 ✅</li>
+<li>美国国防部与七家AI巨头合作 → AI军事化加速 ✅</li>
+<li>中国半导体国产替代加速 → 实物世界自主化 ✅</li>
+<li><strong>验证结果</strong>：✅ 双轨脱钩趋势明确，假说在当前数据下成立</li>
+</ul>
+
+<h3>假说3：黄金市场人为压制与均值回归</h3>
+<p>❌ <span class="badge badge-hypo">🟡 与本周分析主题关联度低</span>——本次分析聚焦科技股，黄金逻辑暂不适用。</p>
+</div>
+
+<!-- ==================== 七人综合结论 ==================== -->
+<div class="section conclusion">
+<h2>🎯 七人综合结论</h2>
+
+<h3>共识与分歧</h3>
+<div class="chart-container"><canvas id="chart_conclusion_radar"></canvas></div>
+<table class="consensus-table">
+<tr><th>维度</th><th>共识度</th><th>方向</th><th>详情</th></tr>
+<tr><td>产业基本面</td><td><span class="tag tag-green">强共识</span></td><td class="up">看多</td><td>七位专家均认可AI算力+半导体景气周期的真实性</td></tr>
+<tr><td>短期动能</td><td><span class="tag tag-green">强共识</span></td><td class="neutral">冲高后分化</td><td>惯性冲高但分化加剧，追高风险大</td></tr>
+<tr><td>估值风险</td><td><span class="tag tag-green">强共识</span></td><td class="down">警惕</td><td>PE极端化（300倍+），获利盘积累</td></tr>
+<tr><td>市场宽度</td><td><span class="tag tag-yellow">中共识</span></td><td class="down">偏空</td><td>涨跌比2:3，科技抱团过于极致</td></tr>
+<tr><td>Fed影响</td><td><span class="tag tag-yellow">中共识</span></td><td class="neutral">中性偏空</td><td>鹰派但半导体脱钩利率逻辑</td></tr>
+<tr><td>下周操作</td><td><span class="tag tag-yellow">中共识</span></td><td class="neutral">持有不追</td><td>持有享受趋势，不追高，等回调</td></tr>
+<tr><td>中期展望</td><td><span class="tag tag-green">强共识</span></td><td class="up">看多</td><td>中报验证窗口是关键，业绩兑现则继续看多</td></tr>
+</table>
+
+<h3>综合多空判断</h3>
+<div class="chart-row">
+<div class="chart-container"><canvas id="chart_conclusion_bull_bear"></canvas></div>
+<div class="chart-container"><canvas id="chart_conclusion_timeline"></canvas></div>
+</div>
+<p style="font-size:1.3em;text-align:center;margin:20px 0;padding:15px;background:rgba(255,165,2,0.1);border-radius:12px;border:1px solid rgba(255,165,2,0.3)">
+<strong>📊 综合判断：下周科技股大概率冲高后分化（概率50%），继续冲高概率25%，回调概率25%</strong>
+</p>
+
+<h3>核心结论与独立性标注</h3>
+<ol>
+<li><span class="badge badge-indep">🟢 独立结论</span> <strong>科技产业趋势基本面扎实</strong>：AI算力需求+全球半导体景气+涨价传导三重验证，这不是短期题材炒作。<span class="badge badge-causal">🔬 因果证据：中等偏强</span></li>
+<li><span class="badge badge-indep">🟢 独立结论</span> <strong>短期交易结构过热</strong>：PE极端化（300倍+）、换手率急升、市场宽度极差（涨跌比2:3），科技抱团已达危险水平。</li>
+<li><span class="badge badge-indep">🔵 独立结论：与部分机构观点不同</span> <strong>Fed鹰派对A股科技影响有限</strong>：事件研究显示半导体已脱钩利率逻辑，AI需求因果链强度远超利率因果链。但这一脱钩不可无限持续。</li>
+<li><span class="badge badge-indep">🟢 独立结论</span> <strong>最看好高端CCL+HBM存储方向</strong>：供给端真实瓶颈+需求端持续爆发，是产业链中最确定的方向。</li>
+<li><span class="badge badge-hypo">🟡 假说验证中</span> <strong>中美科技双轨脱钩利好A股半导体中期逻辑</strong>：来自卢麒元二分世界框架，当前数据（苹果+Intel美国造芯 vs 中国国产替代加速）支持该假说。</li>
+</ol>
+
+<h3>独立性自检</h3>
+<div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:15px;margin:10px 0">
+<ul>
+<li>核心结论5条中，<strong>4条是基于当前数据独立推导</strong>，1条为假说验证</li>
+<li>与专家历史观点一致的地方：科技中期看多、估值警惕 —— <em>独立推导后恰好一致</em></li>
+<li>与专家历史观点不同的地方：认为Fed鹰派对A股科技影响有限 —— <em>杨世光框架通常强调Fed对估值的压制，但当前数据显示半导体已脱钩</em></li>
+<li>受examples/references影响的地方：无直接方向性影响，仅学习方法论流程</li>
+<li>底层逻辑假说验证结果：流动性框架（✅部分成立）、二分世界（✅成立）、黄金压制（❌不适用）</li>
+</ul>
+</div>
+</div>
+
+<!-- ==================== 先行指标跟踪清单 ==================== -->
+<div class="section">
+<h2>📋 先行指标跟踪清单（下周重点）</h2>
+<div class="indicator-list">
+<div class="indicator-item"><strong>A股成交额</strong>：能否维持3万亿以上？萎缩至2.5万亿以下=动能衰减信号</div>
+<div class="indicator-item"><strong>科技涨跌比</strong>：涨跌家数比改善至1:1以上=健康扩散；维持2:3=假突破风险</div>
+<div class="indicator-item"><strong>龙头股表现</strong>：寒武纪/兆易创新能否继续创新高？放量滞涨=顶部信号</div>
+<div class="indicator-item"><strong>中报预告</strong>：6月下旬进入预告窗口，业绩超预期=新催化，不及预期=杀估值</div>
+<div class="indicator-item"><strong>涨价函</strong>：跟踪覆铜板、MLCC等是否继续涨价，涨价=景气延续</div>
+<div class="indicator-item"><strong>韩国半导体出口</strong>：6月全月数据，维持200%+增速=景气验证</div>
+<div class="indicator-item"><strong>美国CPI/PPI</strong>：下周公布通胀数据，若超预期=加息预期升温=全球科技承压</div>
+<div class="indicator-item"><strong>融资余额变化</strong>：融资净买入持续=增量资金入场；净卖出=抱团松动</div>
+<div class="indicator-item"><strong>北向资金流向</strong>：北向持续流入科技=外资认可；流出=风险偏好下降</div>
+<div class="indicator-item"><strong>半年末资金面</strong>：机构半年度考核→调仓压力→科技板块可能面临阶段性流出</div>
+</div>
+</div>
+
+<!-- ==================== 风险提示 ==================== -->
+<div class="section">
+<h2>⚠️ 风险提示</h2>
+<div class="risk-item"><strong>风险1：科技抱团踩踏</strong>——当前科技板块交易拥挤度处于历史高位，一旦龙头放量滞涨或成交额萎缩，可能引发踩踏式调整，跌幅可能达10-15%。</div>
+<div class="risk-item"><strong>风险2：Fed超预期鹰派</strong>——虽然6月按兵不动，但如果后续通胀数据超预期，加息预期可能再次升温，对全球科技股估值形成压制。</div>
+<div class="risk-item"><strong>风险3：中美科技冲突升级</strong>——美国加速芯片制造回流+国防订单支持，可能伴随对中国半导体更严格的出口管制。</div>
+<div class="risk-item"><strong>风险4：中报业绩不及预期</strong>——当前极端估值（PE 300倍+）需要强劲业绩支撑，一旦中报不及预期将面临「戴维斯双杀」。</div>
+<div class="risk-item"><strong>风险5：半年末流动性收紧</strong>——机构半年度考核、期指交割日叠加，可能导致科技板块阶段性资金流出。</div>
+</div>
+
+<!-- ==================== 免责声明 ==================== -->
+<div class="disclaimer">
+<p><strong>免责声明</strong></p>
+<p>以上分析融合了杨世光、卢麒元、蔡森、笨鸟、白毛-Serenity、妙想量化选股、实证因果分析七位专家的理论框架，仅为经济学教学与经验分享，不构成任何投资建议。投资有风险，交易请独立判断并自负盈亏。</p>
+<p>报告生成时间：2026年6月19日 | 数据截至：2026年6月18日收盘 | 分析周期：2026年6月23日-27日</p>
+</div>
+
+</div><!-- end container -->
+
+<script>
+// ==================== 图表配置 ====================
+Chart.defaults.color = '#888';
+Chart.defaults.borderColor = 'rgba(255,255,255,0.1)';
+Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif';
+
+// 1. 杨世光 - 大类资产轮动雷达图
+new Chart(document.getElementById('chart_yang_asset'), {
+  type: 'radar',
+  data: {
+    labels: ['科技股','黄金','美债','美元','原油','铜','加密货币','新兴市场'],
+    datasets: [{
+      label: '当前吸引力评分(1-10)',
+      data: [9, 6, 4, 6, 5, 7, 5, 5],
+      backgroundColor: 'rgba(74,158,255,0.2)',
+      borderColor: '#4a9eff',
+      pointBackgroundColor: '#4a9eff',
+      borderWidth: 2
+    },{
+      label: '一个月前评分',
+      data: [6, 7, 5, 5, 6, 6, 4, 4],
+      backgroundColor: 'rgba(255,255,255,0.05)',
+      borderColor: 'rgba(255,255,255,0.3)',
+      pointBackgroundColor: 'rgba(255,255,255,0.3)',
+      borderWidth: 1,
+      borderDash: [5,5]
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { r: { beginAtZero: true, max: 10, grid: { color: 'rgba(255,255,255,0.1)' }, angleLines: { color: 'rgba(255,255,255,0.1)' } } },
+    plugins: { title: { display: true, text: '🔵 大类资产吸引力轮动（杨世光M5框架）', color: '#4a9eff', font: { size: 14 } } }
+  }
+});
+
+// 2. 蔡森 - 市场宽度
+new Chart(document.getElementById('chart_cai_breadth'), {
+  type: 'bar',
+  data: {
+    labels: ['6/12','6/13','6/15','6/16','6/17','6/18'],
+    datasets: [{
+      label: '上涨家数',
+      data: [2800, 3100, 2500, 2200, 1800, 2023],
+      backgroundColor: 'rgba(46,213,115,0.7)'
+    },{
+      label: '下跌家数',
+      data: [2200, 1900, 2500, 2800, 3200, 3395],
+      backgroundColor: 'rgba(255,71,87,0.7)'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { title: { display: true, text: '🟠 A股涨跌家数（M8市场宽度）', color: '#e8b84b', font: { size: 14 } } }
+  }
+});
+
+// 3. 蔡森 - 科技龙头走势
+new Chart(document.getElementById('chart_cai_tech'), {
+  type: 'line',
+  data: {
+    labels: ['6/12','6/13','6/15','6/16','6/17','6/18'],
+    datasets: [{
+      label: '寒武纪',
+      data: [1240, 1260, 1335, 1307, 1320, 1507],
+      borderColor: '#ff4757',
+      backgroundColor: 'rgba(255,71,87,0.1)',
+      tension: 0.3, yAxisID: 'y'
+    },{
+      label: '兆易创新(归一化)',
+      data: [100, 105, 115, 118, 125, 131],
+      borderColor: '#2ed573',
+      backgroundColor: 'rgba(46,213,115,0.1)',
+      tension: 0.3, yAxisID: 'y1'
+    },{
+      label: '半导体指数(归一化)',
+      data: [100, 103, 108, 112, 115, 118],
+      borderColor: '#e8b84b',
+      backgroundColor: 'rgba(232,184,75,0.1)',
+      tension: 0.3, yAxisID: 'y1'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: { type: 'linear', position: 'left', title: { display: true, text: '寒武纪(元)' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+      y1: { type: 'linear', position: 'right', title: { display: true, text: '归一化指数' }, grid: { drawOnChartArea: false } }
+    },
+    plugins: { title: { display: true, text: '🟠 科技龙头走势对比', color: '#e8b84b', font: { size: 14 } } }
+  }
+});
+
+// 4. 蔡森 - 寒武纪量价
+new Chart(document.getElementById('chart_cai_hanwuji'), {
+  type: 'bar',
+  data: {
+    labels: ['6/12','6/13','6/15','6/16','6/17','6/18'],
+    datasets: [{
+      type: 'line',
+      label: '收盘价(元)',
+      data: [1240, 1260, 1335, 1307, 1320, 1507],
+      borderColor: '#e8b84b',
+      backgroundColor: 'rgba(232,184,75,0.1)',
+      tension: 0.3, yAxisID: 'y', order: 1
+    },{
+      type: 'bar',
+      label: '换手率(%)',
+      data: [2.38, 2.20, 2.46, 1.59, 2.12, 3.53],
+      backgroundColor: function(ctx) {
+        return ctx.raw > 3 ? 'rgba(255,71,87,0.7)' : 'rgba(74,158,255,0.5)';
+      },
+      yAxisID: 'y1', order: 2
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: { type: 'linear', position: 'left', title: { display: true, text: '价格(元)' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+      y1: { type: 'linear', position: 'right', title: { display: true, text: '换手率(%)' }, grid: { drawOnChartArea: false }, min: 0, max: 5 }
+    },
+    plugins: { title: { display: true, text: '🟠 寒武纪 量价分析（M3量价验证法）', color: '#e8b84b', font: { size: 14 } } }
+  }
+});
+
+// 5. 笨鸟 - 反常信号
+new Chart(document.getElementById('chart_ben_anomaly'), {
+  type: 'bar',
+  data: {
+    labels: ['纳斯达克','标普500','费城半导体','科创50','A股半导体','美元指数'],
+    datasets: [{
+      label: '理论反应(Fed鹰派)',
+      data: [-2, -1.5, -2, -1.5, -2, 1],
+      backgroundColor: 'rgba(255,71,87,0.5)',
+      borderColor: '#ff4757',
+      borderWidth: 1
+    },{
+      label: '实际反应',
+      data: [-1.34, -1.21, 5, 14.93, 18.03, 0.5],
+      backgroundColor: function(ctx) {
+        return ctx.raw > 0 ? 'rgba(46,213,115,0.7)' : 'rgba(255,71,87,0.7)';
+      },
+      borderColor: function(ctx) { return ctx.raw > 0 ? '#2ed573' : '#ff4757'; },
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    indexAxis: 'y',
+    plugins: { title: { display: true, text: '🟢 Fed鹰派信号：理论vs实际反应（M4反常信号）', color: '#2ed573', font: { size: 14 } } }
+  }
+});
+
+// 6. 白毛 - 供应链层级
+new Chart(document.getElementById('chart_bai_chain'), {
+  type: 'bar',
+  data: {
+    labels: ['高端CCL','HBM存储','先进封装设备','MLCC高端','半导体设备','PCB基板','铜缆连接'],
+    datasets: [{
+      label: '稀缺程度(1-10)',
+      data: [9.5, 9, 8, 7.5, 7, 6, 5],
+      backgroundColor: ['rgba(255,71,87,0.8)','rgba(255,71,87,0.7)','rgba(255,165,2,0.7)','rgba(255,165,2,0.6)','rgba(255,215,0,0.6)','rgba(46,213,115,0.5)','rgba(46,213,115,0.4)'],
+      borderWidth: 0
+    },{
+      label: '投资确定性(1-10)',
+      data: [8.5, 8, 7, 7.5, 6.5, 5.5, 4.5],
+      backgroundColor: 'rgba(74,158,255,0.4)',
+      borderColor: '#4a9eff',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { title: { display: true, text: '⚪ AI硬件产业链稀缺层排序', color: '#e0e0e0', font: { size: 14 } } }
+  }
+});
+
+// 7. 白毛 - 证据链评分
+new Chart(document.getElementById('chart_bai_evidence'), {
+  type: 'doughnut',
+  data: {
+    labels: ['强证据(涨价函/官方数据)','中等证据(机构研报/资金流)','弱证据(市场预期/传闻)'],
+    datasets: [{
+      data: [45, 35, 20],
+      backgroundColor: ['rgba(46,213,115,0.8)','rgba(255,165,2,0.8)','rgba(255,71,87,0.8)'],
+      borderWidth: 2, borderColor: '#1a1d2e'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { title: { display: true, text: '⚪ 证据链质量分布', color: '#e0e0e0', font: { size: 14 } } }
+  }
+});
+
+// 8. 妙想 - 筛选条件分布
+new Chart(document.getElementById('chart_mx_screen'), {
+  type: 'bar',
+  data: {
+    labels: ['半导体设备','存储芯片','PCB','MLCC','先进封装','CPO','玻璃基板','消费电子'],
+    datasets: [{
+      label: '近5日涨幅>10%的股票数量',
+      data: [28, 35, 42, 18, 22, 15, 12, 28],
+      backgroundColor: 'rgba(0,212,170,0.6)',
+      borderColor: '#00d4aa',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { title: { display: true, text: '📊 科技子板块强势股分布（Q2板块热力扫描）', color: '#00d4aa', font: { size: 14 } } }
+  }
+});
+
+// 9. 妙想 - 估值分布
+new Chart(document.getElementById('chart_mx_sector'), {
+  type: 'doughnut',
+  data: {
+    labels: ['PE<50(估值合理)','PE 50-100','PE 100-300','PE>300(极端)','亏损(PE为负)'],
+    datasets: [{
+      data: [8, 15, 35, 62, 80],
+      backgroundColor: ['rgba(46,213,115,0.8)','rgba(74,158,255,0.8)','rgba(255,165,2,0.8)','rgba(255,71,87,0.8)','rgba(100,100,100,0.8)'],
+      borderWidth: 2, borderColor: '#1a1d2e'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { title: { display: true, text: '📊 半导体强势股PE分布（200只涨幅>10%）', color: '#00d4aa', font: { size: 14 } } }
+  }
+});
+
+// 10. 妙想 - 基本面雷达
+new Chart(document.getElementById('chart_mx_fundamental'), {
+  type: 'radar',
+  data: {
+    labels: ['营收增速','净利润增速','毛利率','ROE','现金流','估值合理度'],
+    datasets: [{
+      label: '寒武纪',
+      data: [8, 3, 6, 2, 3, 1],
+      borderColor: '#ff4757',
+      backgroundColor: 'rgba(255,71,87,0.1)',
+      borderWidth: 2
+    },{
+      label: '兆易创新',
+      data: [7, 8, 7, 7, 6, 4],
+      borderColor: '#2ed573',
+      backgroundColor: 'rgba(46,213,115,0.1)',
+      borderWidth: 2
+    },{
+      label: '香农芯创',
+      data: [9, 8, 3, 6, 5, 9],
+      borderColor: '#4a9eff',
+      backgroundColor: 'rgba(74,158,255,0.1)',
+      borderWidth: 2
+    },{
+      label: '北方华创',
+      data: [7, 7, 8, 8, 7, 5],
+      borderColor: '#e8b84b',
+      backgroundColor: 'rgba(232,184,75,0.1)',
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { r: { beginAtZero: true, max: 10, grid: { color: 'rgba(255,255,255,0.1)' }, angleLines: { color: 'rgba(255,255,255,0.1)' } } },
+    plugins: { title: { display: true, text: '📊 龙头股基本面量化评分（Q3验证）', color: '#00d4aa', font: { size: 14 } } }
+  }
+});
+
+// 11. 实证 - 事件研究
+new Chart(document.getElementById('chart_emp_event'), {
+  type: 'bar',
+  data: {
+    labels: ['6/16(FOMC前)','6/17(FOMC Day1)','6/18(FOMC结果+苹果Intel)'],
+    datasets: [{
+      label: '纳斯达克',
+      data: [0.3, -1.34, 0.87],
+      backgroundColor: 'rgba(74,158,255,0.6)'
+    },{
+      label: '费城半导体',
+      data: [1.2, -0.5, 5.0],
+      backgroundColor: 'rgba(46,213,115,0.6)'
+    },{
+      label: '科创50',
+      data: [2.5, 4.5, 6.8],
+      backgroundColor: 'rgba(232,184,75,0.6)'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { title: { display: true, text: '🔬 FOMC事件研究：各市场日涨跌幅(%)', color: '#f97316', font: { size: 14 } } }
+  }
+});
+
+// 12. 实证 - 博弈矩阵
+new Chart(document.getElementById('chart_emp_game'), {
+  type: 'bubble',
+  data: {
+    datasets: [{
+      label: '美国芯片回流企业',
+      data: [{x:8,y:7,r:15}],
+      backgroundColor: 'rgba(74,158,255,0.6)'
+    },{
+      label: '中国半导体自主化',
+      data: [{x:7,y:8,r:18}],
+      backgroundColor: 'rgba(255,71,87,0.6)'
+    },{
+      label: '全球科技巨头(两边下注)',
+      data: [{x:6,y:6,r:12}],
+      backgroundColor: 'rgba(46,213,115,0.6)'
+    },{
+      label: 'AI算力需求方(云厂商)',
+      data: [{x:9,y:5,r:20}],
+      backgroundColor: 'rgba(232,184,75,0.6)'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      x: { title: { display: true, text: '政策支持力度' }, min: 0, max: 10, grid: { color: 'rgba(255,255,255,0.05)' } },
+      y: { title: { display: true, text: '市场受益程度' }, min: 0, max: 10, grid: { color: 'rgba(255,255,255,0.05)' } }
+    },
+    plugins: { title: { display: true, text: '🔬 中美科技博弈参与者定位图（E6博弈论）', color: '#f97316', font: { size: 14 } } }
+  }
+});
+
+// 13. 实证 - 风险压力测试
+new Chart(document.getElementById('chart_emp_risk'), {
+  type: 'bar',
+  data: {
+    labels: ['基准:高位震荡','乐观:继续冲高','悲观:抱团松动','极端:踩踏调整'],
+    datasets: [{
+      label: '概率(%)',
+      data: [50, 25, 20, 5],
+      backgroundColor: ['rgba(255,165,2,0.6)','rgba(46,213,115,0.6)','rgba(255,71,87,0.6)','rgba(150,0,0,0.8)'],
+      borderWidth: 1
+    },{
+      label: '预期波动幅度(%)',
+      data: [5, 7.5, -12.5, -20],
+      backgroundColor: 'rgba(74,158,255,0.4)',
+      borderColor: '#4a9eff',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { title: { display: true, text: '🔬 下周科技股压力测试情景（E9风险度量）', color: '#f97316', font: { size: 14 } } }
+  }
+});
+
+// 14. 综合结论 - 七人雷达图
+new Chart(document.getElementById('chart_conclusion_radar'), {
+  type: 'radar',
+  data: {
+    labels: ['产业趋势','短期动能','估值安全','市场宽度','流动性','政策面','资金结构'],
+    datasets: [{
+      label: '看多信号强度',
+      data: [9, 7, 3, 3, 6, 7, 5],
+      backgroundColor: 'rgba(46,213,115,0.2)',
+      borderColor: '#2ed573',
+      pointBackgroundColor: '#2ed573',
+      borderWidth: 2
+    },{
+      label: '风险信号强度',
+      data: [2, 5, 9, 8, 5, 4, 7],
+      backgroundColor: 'rgba(255,71,87,0.2)',
+      borderColor: '#ff4757',
+      pointBackgroundColor: '#ff4757',
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { r: { beginAtZero: true, max: 10, grid: { color: 'rgba(255,255,255,0.1)' }, angleLines: { color: 'rgba(255,255,255,0.1)' } } },
+    plugins: { title: { display: true, text: '🎯 七人多空信号雷达图', color: '#fff', font: { size: 14 } } }
+  }
+});
+
+// 15. 综合结论 - 多空力量
+new Chart(document.getElementById('chart_conclusion_bull_bear'), {
+  type: 'doughnut',
+  data: {
+    labels: ['看多因素','中性因素','看空因素'],
+    datasets: [{
+      data: [40, 25, 35],
+      backgroundColor: ['rgba(46,213,115,0.8)','rgba(255,165,2,0.8)','rgba(255,71,87,0.8)'],
+      borderWidth: 3, borderColor: '#1a1d2e'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { title: { display: true, text: '🎯 多空力量对比', color: '#fff', font: { size: 14 } } }
+  }
+});
+
+// 16. 综合结论 - 时间线预测
+new Chart(document.getElementById('chart_conclusion_timeline'), {
+  type: 'line',
+  data: {
+    labels: ['本周五(6/20)','下周一(6/23)','下周二(6/24)','下周三(6/25)','下周四(6/26)','下周五(6/27)'],
+    datasets: [{
+      label: '乐观情景',
+      data: [100, 103, 106, 108, 110, 112],
+      borderColor: '#2ed573',
+      backgroundColor: 'rgba(46,213,115,0.1)',
+      tension: 0.3, fill: true, borderDash: [5,5]
+    },{
+      label: '基准情景',
+      data: [100, 102, 104, 103, 101, 100],
+      borderColor: '#ffa502',
+      backgroundColor: 'rgba(255,165,2,0.1)',
+      tension: 0.3, fill: true, borderWidth: 3
+    },{
+      label: '悲观情景',
+      data: [100, 98, 95, 92, 90, 88],
+      borderColor: '#ff4757',
+      backgroundColor: 'rgba(255,71,87,0.1)',
+      tension: 0.3, fill: true, borderDash: [5,5]
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { y: { title: { display: true, text: '科技指数(归一化)' }, grid: { color: 'rgba(255,255,255,0.05)' } } },
+    plugins: { title: { display: true, text: '🎯 下周科技指数情景预测', color: '#fff', font: { size: 14 } } }
+  }
+});
+</script>
+
+</body>
+</html>

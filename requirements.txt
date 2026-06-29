@@ -1,0 +1,23 @@
+# 七专家分析师 Agent - 核心依赖（必装，轻量）
+# 用途: 保证 mx-* 数据工具层、新闻聚合、agent 基础功能可正常运行
+# 安装: pip install -r requirements.txt
+
+# --- HTTP / 数据处理 ---
+requests>=2.28.0
+urllib3>=2.0.0
+pandas>=2.0.0
+openpyxl>=3.0.0
+
+# --- 环境变量读取（.env 支持） ---
+python-dotenv>=1.0.0
+
+# --- 日志 ---
+loguru>=0.7.0
+
+# --- 网页抓取（新闻聚合 / 股吧舆情） ---
+beautifulsoup4>=4.12.0
+lxml>=5.0.0
+
+# --- 文本处理 ---
+markdown>=3.5.0
+jieba>=0.42.0

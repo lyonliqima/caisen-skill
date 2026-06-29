@@ -1,0 +1,16 @@
+# 知识卡导出索引文件
+schema_version: 1
+locale: zh-CN
+branch: Q0DeR-MaG1C-BrAnCh-Fo2-NoN-GiT-Or-No-C0MmIt
+exported_at: "2026-06-05T01:58:47Z"
+modules:
+    "":
+        dir_name: 蔡森形态学技术分析知识库
+        title: 蔡森形态学技术分析知识库
+        scope:
+            - caisen-technical-analysis/examples.md
+            - caisen-technical-analysis/reference.md
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []

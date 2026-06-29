@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>五专家整合分析：中国核建(601611) vs 中国能建(601868)</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0f1117;color:#e0e0e0;font-family:'PingFang SC','Microsoft YaHei',sans-serif;line-height:1.8}
+.container{max-width:1400px;margin:0 auto;padding:20px}
+.hero{background:linear-gradient(135deg,#1a1d2e 0%,#2d1f3d 50%,#1a2d3d 100%);border-radius:16px;padding:40px;margin-bottom:30px;text-align:center;border:1px solid #333}
+.hero h1{font-size:2.2em;background:linear-gradient(90deg,#4a9eff,#a855f7,#e8b84b,#2ed573,#e0e0e0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px}
+.hero .subtitle{color:#888;font-size:1.1em}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin:25px 0}
+.card{background:#1a1d2e;border-radius:12px;padding:20px;border:1px solid #2a2d3e;text-align:center}
+.card .label{color:#888;font-size:0.85em;margin-bottom:5px}
+.card .value{font-size:1.8em;font-weight:700}
+.card .change{font-size:0.9em;margin-top:5px}
+.up{color:#2ed573}.down{color:#ff4757}
+.section{background:#1a1d2e;border-radius:12px;padding:30px;margin-bottom:25px;border:1px solid #2a2d3e}
+.section h2{font-size:1.6em;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid #2a2d3e}
+.section h3{font-size:1.2em;margin:15px 0 10px;color:#ccc}
+.yang{border-left:4px solid #4a9eff}.yang h2{color:#4a9eff}
+.lu{border-left:4px solid #a855f7}.lu h2{color:#a855f7}
+.cai{border-left:4px solid #e8b84b}.cai h2{color:#e8b84b}
+.ben{border-left:4px solid #2ed573}.ben h2{color:#2ed573}
+.bai{border-left:4px solid #e0e0e0}.bai h2{color:#e0e0e0}
+.logic{border-left:4px solid #ff6b81}.logic h2{color:#ff6b81}
+.conclusion{border-left:4px solid #ffa502}.conclusion h2{color:#ffa502}
+.chart-container{position:relative;width:100%;max-width:600px;margin:20px auto;background:#12141f;border-radius:8px;padding:15px}
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:768px){.chart-row{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse;margin:15px 0;font-size:0.9em}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #2a2d3e}
+th{background:#12141f;color:#aaa;font-weight:600}
+tr:hover{background:#1e2136}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.8em;margin:2px}
+.tag-yang{background:rgba(74,158,255,0.15);color:#4a9eff}
+.tag-lu{background:rgba(168,85,247,0.15);color:#a855f7}
+.tag-cai{background:rgba(232,184,75,0.15);color:#e8b84b}
+.tag-ben{background:rgba(46,213,115,0.15);color:#2ed573}
+.tag-bai{background:rgba(224,224,224,0.15);color:#e0e0e0}
+.consensus{background:#12141f;border-radius:8px;padding:20px;margin:15px 0}
+.risk-item{background:rgba(255,71,87,0.08);border-left:3px solid #ff4757;padding:12px 15px;margin:8px 0;border-radius:0 8px 8px 0}
+.opp-item{background:rgba(46,213,115,0.08);border-left:3px solid #2ed573;padding:12px 15px;margin:8px 0;border-radius:0 8px 8px 0}
+.disclaimer{background:#12141f;border-radius:8px;padding:20px;margin-top:30px;color:#666;font-size:0.85em;border:1px solid #2a2d3e}
+canvas{max-height:350px}
+.news-item{background:#12141f;border-radius:8px;padding:15px;margin:10px 0;border-left:3px solid #4a9eff}
+.news-item .time{color:#666;font-size:0.8em}
+.indicator{display:flex;align-items:center;gap:8px;margin:5px 0}
+.dot{width:10px;height:10px;border-radius:50%}
+.radar-legend{display:flex;flex-wrap:wrap;gap:15px;justify-content:center;margin-top:10px}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:0.85em}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Hero Section -->
+<div class="hero">
+<h1>🔬 五专家整合分析：中国核建 vs 中国能建</h1>
+<p class="subtitle">601611.SH & 601868.SH | 核电工程 × 能源基建 | 2026年6月17日</p>
+<div class="cards">
+<div class="card">
+<div class="label">中国核建 601611</div>
+<div class="value" style="color:#4a9eff">~11.5元</div>
+<div class="change down">Q1净利润 -26.93%</div>
+</div>
+<div class="card">
+<div class="label">中国能建 601868</div>
+<div class="value" style="color:#a855f7">~2.65元</div>
+<div class="change down">Q1净利润 -9.75%</div>
+</div>
+<div class="card">
+<div class="label">核电核准态势</div>
+<div class="value up">112台</div>
+<div class="change">在运+在建+核准待建</div>
+</div>
+<div class="card">
+<div class="label">货币政策环境</div>
+<div class="value" style="color:#e8b84b">宽松</div>
+<div class="change">适度宽松·降准降息</div>
+</div>
+<div class="card">
+<div class="label">两融余额</div>
+<div class="value">1.47万亿</div>
+<div class="change up">杠杆资金活跃</div>
+</div>
+</div>
+</div>
+
+<!-- News Section -->
+<div class="section" id="news">
+<h2>📰 新闻背景与市场舆情</h2>
+<div class="news-item">
+<strong>🔵 中国核建拟定增40亿加码"华龙一号"</strong>
+<p>5月22日晚公告，拟定增募资不超40亿元，用于江苏徐圩核能供热发电厂1-2号机组、浙江金七门核电厂1-2号机组核岛及配套工程。</p>
+<span class="time">2026-05-22 | 来源：公司公告</span>
+</div>
+<div class="news-item">
+<strong>🟢 2025年核电审批持续加速：连续4年核准≥10台机组</strong>
+<p>截至2025年底，中国在运、在建和核准待建核电机组共112台，总装机容量1.26亿千瓦，核电总体规模首次跃居世界第一。</p>
+<span class="time">2025-12 | 来源：国家核安全局/中国核能行业协会</span>
+</div>
+<div class="news-item">
+<strong>🟣 中国能建2025年报：新签合同1.45万亿，战略新兴产业占比超40%</strong>
+<p>全年营收4529.30亿元(+3.71%)，新签合同14493.84亿元(+2.88%)。战略性新兴产业营收1848.5亿元(+9.5%)，占比升至40.81%。</p>
+<span class="time">2026-03-28 | 来源：公司年报</span>
+</div>
+<div class="news-item">
+<strong>⚠️ 中国核建2026Q1业绩下滑：营收-22%，净利-27%</strong>
+<p>Q1营收230.07亿(-22.14%)，归母净利4.03亿(-26.93%)。主要受项目结算周期影响，核电工程建设进度存在季节性波动。</p>
+<span class="time">2026-04-24 | 来源：一季报</span>
+</div>
+<div class="news-item">
+<strong>📊 宏观政策：央行2026年继续"灵活高效"降准降息</strong>
+<p>央行行长潘功胜明确表示继续实施适度宽松货币政策，把促进经济稳定增长、物价合理回升作为重要考量。预计GDP增长5%左右。</p>
+<span class="time">2026-03 | 来源：央行/新华网</span>
+</div>
+<div class="news-item">
+<strong>🌐 地缘政治：中东局势持续+美债收益率高位+中美博弈</strong>
+<p>美以伊冲突持续超100天，WTI油价升至$94+，美债10Y收益率高位震荡。美元指数偏强，但人民币受资本管控支撑相对稳健。</p>
+<span class="time">2026-06 | 来源：综合</span>
+</div>
+</div>
+
+<!-- Yang Shiguang Section -->
+<div class="section yang" id="yang">
+<h2>🔵 杨世光宏观六步法分析</h2>
+<h3>第一步：经济周期定位（M1）</h3>
+<p>中国当前处于<strong>复苏初期</strong>阶段。2026年GDP目标约5%，央行维持适度宽松，PMI在荣枯线附近波动。核电/能源基建作为政府投资的重要抓手，属于典型的"复苏期→过热期"过渡阶段受益板块。</p>
+
+<h3>第二步：货币政策与利率环境（M2）</h3>
+<p>中国央行2026年明确"灵活高效运用降准降息"，市场利率处于历史低位。对核电/能源基建类重资产企业<strong>显著利好</strong>：
+①融资成本低→大型工程项目财务费用压力减轻；②政府专项债发行加速→基建资金来源充裕。</p>
+
+<h3>第三步：美元周期与人民币（M3）</h3>
+<p>美元指数偏强但人民币受资本管控新规支撑（杨世光M21：中国"强出口+人民币走强"=资本外流管道被管控）。人民币相对稳定有利于国内基建投资环境，不会出现资本外流冲击。</p>
+
+<h3>第四步：流动性分析（M4）</h3>
+<p>中国处于<strong>"流动性陷阱"边缘</strong>（M2高增但实体响应有限）。在此背景下，政府通过核电审批加速、能源基建投资来主动创造有效需求——这正是凯恩斯主义的典型操作。</p>
+
+<h3>第五步：大类资产轮动（M5）</h3>
+<p>A股整体处于"政策底→市场底"确认阶段。两融余额1.47万亿（活跃但未过热）。核电/能源基建属于<strong>政策驱动型价值股</strong>，在"熊陡"环境下（杨世光M17）相对受益于价值风格偏好。</p>
+
+<h3>第六步：地缘政治传导（M6）</h3>
+<p>中东冲突→油价高企→全球通胀压力→中国输入性通胀可控（能源结构多元化）。核电作为替代能源的战略意义进一步凸显。<strong>能源安全=国家安全</strong>，核电审批加速的地缘逻辑坚实。</p>
+
+<div class="chart-row">
+<div class="chart-container"><canvas id="yangChart1"></canvas></div>
+<div class="chart-container"><canvas id="yangChart2"></canvas></div>
+</div>
+
+<table>
+<tr><th>宏观变量</th><th>当前状态</th><th>对核建板块影响</th><th>方向</th></tr>
+<tr><td>经济周期</td><td>复苏初期</td><td>基建投资拉动</td><td class="up">利好 ↑</td></tr>
+<tr><td>货币政策</td><td>适度宽松</td><td>融资成本降低</td><td class="up">利好 ↑</td></tr>
+<tr><td>美元周期</td><td>强美元+人民币稳</td><td>资本外流可控</td><td>中性 →</td></tr>
+<tr><td>流动性</td><td>陷阱边缘</td><td>政府创造需求</td><td class="up">利好 ↑</td></tr>
+<tr><td>地缘政治</td><td>中东冲突+能源安全</td><td>核电战略意义↑</td><td class="up">利好 ↑</td></tr>
+</table>
+</div>
+
+<!-- Lu Qiyuan Section -->
+<div class="section lu" id="lu">
+<h2>🟣 卢麒元制度结构分析</h2>
+<h3>M1：广义财政三色分析</h3>
+<p>核电/能源基建投资主要属于<strong>白色财政</strong>（国家预算内重大工程投资）和部分<strong>灰色财政</strong>（地方融资平台配套）。核电审批加速意味着白色财政在战略性基础设施领域的扩张力度加大。这对中国核建和中国能建是直接利好——订单来源高度依赖政府核准。</p>
+
+<h3>M2：资本三流分析</h3>
+<p><strong>流量</strong>：全球美元流动性偏紧（美联储不降息），但中国国内流动性充裕（央行降准降息）。核电作为"内循环"资产，不受外部美元流动性紧缩影响。</p>
+<p><strong>流向</strong>：国内资本从房地产→战略性产业转移。核电/新能源基建成为资本新去向。中国核建定增40亿正是"弃房转核"的微观缩影。</p>
+<p><strong>流速</strong>：核电工程周期长（5-8年），资本流速慢但确定性极高，属于"慢钱"配置。</p>
+
+<h3>M5：卡莱斯基利润恒等式</h3>
+<p><code>总利润 = 投资 + 政府赤字 + 净出口</code></p>
+<p>对核建企业而言：<strong>政府核电投资</strong>是利润的核心来源。核电审批加速→投资规模扩大→企业利润有保障。中国能建2025年新签合同1.45万亿，其中能源电力工程占65.6%，本质上依赖政府基建投资。</p>
+
+<h3>M6：明斯基融资阶段判断</h3>
+<p><strong>中国核建</strong>：定增40亿 = 从债务融资转向股权融资（杨世光"弃债转股"信号），说明公司负债率已接近天花板。这是<strong>投机性融资→对冲性融资</strong>的积极转变。</p>
+<p><strong>中国能建</strong>：2026年3月已定增25.49亿股（发行价2.55元，募资约65亿），同样在降杠杆。两家公司都在主动优化资本结构。</p>
+
+<h3>M3：向心坍缩阶段检查（中国市场适用性）</h3>
+<p>中国因资本管控和独立货币政策，<strong>不在向心坍缩的冲击范围内</strong>。相反，中国是"资本安全港"——当全球美元流动性紧缩时，中国内部的战略性基建投资提供了确定性回报。</p>
+
+<div class="chart-row">
+<div class="chart-container"><canvas id="luChart1"></canvas></div>
+<div class="chart-container"><canvas id="luChart2"></canvas></div>
+</div>
+</div>
+
+<!-- Cai Sen Section -->
+<div class="section cai" id="cai">
+<h2>🟠 蔡森形态学技术分析</h2>
+
+<h3>中国核建 (601611) 技术分析</h3>
+<p><strong>近期股价区间</strong>：约10.5~12.5元。5月22日定增消息发布后股价冲高至12.38元附近，随后有所回落。</p>
+
+<p><strong>M1形态识别</strong>：日线级别呈<strong>矩形整理</strong>格局（10.5~12.5元箱体震荡）。颈线上沿12.5元，下沿10.5元。定增消息是潜在的突破催化剂。</p>
+
+<p><strong>M5多周期共振</strong>：</p>
+<ul>
+<li>月线：长期底部区域，从2015年高点大幅回落后横盘多年</li>
+<li>周线：近期有放量迹象，定增消息后量能放大</li>
+<li>日线：矩形整理待突破</li>
+</ul>
+
+<p><strong>M3量价验证</strong>：定增公告日（5/22）放量上涨至12.38元，但后续量能未持续放大→突破可疑，需二次确认。</p>
+
+<p><strong>M4测幅满足</strong>：若突破12.5元颈线，形态高度=12.5-10.5=2.0元，目标位=12.5+2.0=<strong>14.5元</strong>。</p>
+
+<p><strong>M6破底翻检查</strong>：若股价跌至10.5元下方后快速收回→破底翻做多信号。关注6月下旬是否出现此形态。</p>
+
+<h3>中国能建 (601868) 技术分析</h3>
+<p><strong>近期股价区间</strong>：约2.40~2.80元。低价大盘股，波动幅度相对较小。</p>
+
+<p><strong>M1形态识别</strong>：日线级别呈<strong>三角收敛</strong>形态（高点递降、低点递升），波动收窄中。上轨压力约2.80元，下轨支撑约2.40元。</p>
+
+<p><strong>M12收敛三角满足操作法</strong>：收敛三角支撑不破看满足。关注2.80元突破后的测幅满足。</p>
+
+<p><strong>龙头带动板块轮动法</strong>：在核电/能源基建板块中，中国核建是先涨龙头（核纯度更高），中国能建是跟随股。若中国核建放量突破12.5元→中国能建有望跟随上行。</p>
+
+<div class="chart-row">
+<div class="chart-container"><canvas id="caiChart1"></canvas></div>
+<div class="chart-container"><canvas id="caiChart2"></canvas></div>
+</div>
+<div class="chart-row">
+<div class="chart-container"><canvas id="caiChart3"></canvas></div>
+<div class="chart-container"><canvas id="caiChart4"></canvas></div>
+</div>
+
+<table>
+<tr><th>技术要素</th><th>中国核建 601611</th><th>中国能建 601868</th></tr>
+<tr><td>当前形态</td><td>矩形整理（10.5~12.5）</td><td>三角收敛（2.40~2.80）</td></tr>
+<tr><td>颈线/关键位</td><td>上沿12.5 / 下沿10.5</td><td>上轨2.80 / 下轨2.40</td></tr>
+<tr><td>量价状态</td><td>定增日放量，后续缩量</td><td>量能平稳，无明显异动</td></tr>
+<tr><td>测幅目标</td><td>14.5元（突破后）</td><td>3.20元（突破后）</td></tr>
+<tr><td>操作建议</td><td>等放量突破12.5或破底翻</td><td>等中国核建带动+三角突破</td></tr>
+<tr><td>止损设置</td><td>跌破10.0元</td><td>跌破2.30元</td></tr>
+</table>
+</div>
+
+<!-- Benniao Section -->
+<div class="section ben" id="ben">
+<h2>🟢 笨鸟数据拆解分析</h2>
+
+<h3>M1：数据拆解法（数量+质量双维度）</h3>
+
+<h4>中国核建 2025年报拆解：</h4>
+<table>
+<tr><th>指标</th><th>2024年</th><th>2025年</th><th>变化</th><th>质量信号</th></tr>
+<tr><td>营业收入</td><td>~1,135亿</td><td>~1,050亿(估)</td><td class="down">-7.5%</td><td>项目结算周期波动</td></tr>
+<tr><td>归母净利润</td><td>20.64亿</td><td>13.19亿</td><td class="down">-36.10%</td><td>利润率压缩，减值计提增加</td></tr>
+<tr><td>核电新签合同</td><td>551亿</td><td>564亿</td><td class="up">+2.30%</td><td>核电订单稳中有增 ✓</td></tr>
+<tr><td>定增规模</td><td>—</td><td>40亿(预)</td><td>—</td><td>股权融资降杠杆</td></tr>
+</table>
+
+<h4>中国能建 2025年报拆解：</h4>
+<table>
+<tr><th>指标</th><th>2024年</th><th>2025年</th><th>变化</th><th>质量信号</th></tr>
+<tr><td>营业收入</td><td>4,367亿</td><td>4,529亿</td><td class="up">+3.71%</td><td>稳健增长 ✓</td></tr>
+<tr><td>新签合同</td><td>14,088亿</td><td>14,494亿</td><td class="up">+2.88%</td><td>订单储备充足 ✓</td></tr>
+<tr><td>战略新兴产业占比</td><td>~36%</td><td>40.81%</td><td class="up">+4.8pct</td><td>结构优化，质量提升 ✓</td></tr>
+<tr><td>研发投入</td><td>~130亿</td><td>148.48亿</td><td class="up">+14.2%</td><td>技术投入持续加大 ✓</td></tr>
+</table>
+
+<h3>M4：反常信号识别</h3>
+<p><strong>反常信号①</strong>：中国核建利润下降36%但股价未大幅下跌→市场定价的不是当期利润，而是<strong>未来核电订单预期</strong>。核电新签合同+2.3%+定增40亿=远期业绩确定性。</p>
+<p><strong>反常信号②</strong>：中国能建Q1营收微增1.64%但净利下降9.75%→<strong>"增收不增利"</strong>，说明项目毛利率在下降（可能是低价竞标抢市场份额）。</p>
+<p><strong>反常信号③</strong>：两家公司同步定增融资→行业性"弃债转股"信号→核电/能源基建从高速扩张期进入<strong>稳杠杆提质期</strong>。</p>
+
+<h3>M3：因果链传导</h3>
+<p><code>核电审批加速 → 中国核建新签合同↑ → 未来2-5年营收保障 → 股价估值锚定</code></p>
+<p><code>新能源政策 → 中国能建战略新兴产业↑ → 业务结构优化 → 估值重评可能</code></p>
+<p><code>央行降准降息 → 融资成本↓ → 重资产企业受益 → 利润率改善空间</code></p>
+
+<div class="chart-row">
+<div class="chart-container"><canvas id="benChart1"></canvas></div>
+<div class="chart-container"><canvas id="benChart2"></canvas></div>
+</div>
+</div>
+
+<!-- Serenity Section -->
+<div class="section bai" id="bai">
+<h2>⚪ 白毛-Serenity 供应链瓶颈分析</h2>
+
+<h3>产业链价值链映射</h3>
+<p>从核电/能源基建主题出发，映射到具体供应链层级：</p>
+
+<table>
+<tr><th>产业链层级</th><th>具体环节</th><th>关键参与者</th><th>稀缺度</th></tr>
+<tr><td>上游：核燃料/材料</td><td>铀矿/锆合金/特种钢</td><td>中广核矿业/中国铀业</td><td>⭐⭐⭐⭐</td></tr>
+<tr><td>中游：设备制造</td><td>反应堆压力容器/蒸汽发生器/主泵</td><td>上海电气/东方电气/哈电</td><td>⭐⭐⭐⭐⭐</td></tr>
+<tr><td>下游：工程建设</td><td>核岛土建/常规岛安装/配套设施</td><td><strong>中国核建</strong>/中国能建</td><td>⭐⭐⭐</td></tr>
+<tr><td>运营：核电运营</td><td>核电站运营/售电</td><td>中国核电/中国广核</td><td>⭐⭐⭐⭐⭐</td></tr>
+<tr><td>配套：设计院/监理</td><td>核安全级设计/工程监理</td><td>中国核动力院/中广核工程</td><td>⭐⭐⭐⭐</td></tr>
+</table>
+
+<h3>稀缺层判断</h3>
+<p><strong>工程建设层（中国核建/中国能建所在层）</strong>：稀缺度中等（⭐⭐⭐）。原因是：</p>
+<ul>
+<li>中国核建在核岛工程领域具有<strong>准垄断地位</strong>（核岛土建+安装市场份额>90%），这是该层内的核心卡点</li>
+<li>中国能建在常规岛和配套BOP工程领域份额较大，但竞争激烈（中国建筑、中国中铁等也参与）</li>
+<li>核岛工程需要特殊资质和数十年经验积累，<strong>进入壁垒极高</strong>，但已入场者之间的竞争不算激烈</li>
+</ul>
+
+<h3>Serenity五步法评估</h3>
+
+<h4>Step 1：关键卡点</h4>
+<p>核电工程建设的核心卡点不在施工本身，而在<strong>核安全级设备供应</strong>（反应堆压力容器、蒸汽发生器、主泵等）。这些设备制造周期长（2-3年）、供应商极少（全球仅少数几家）、扩产困难。中国核建/中国能建作为施工方，受制于设备到货节奏。</p>
+
+<h4>Step 2：第一性原理分解（五杠杆）</h4>
+<table>
+<tr><th>杠杆</th><th>中国核建</th><th>中国能建</th></tr>
+<tr><td>需求持久性</td><td>⭐⭐⭐⭐⭐ 核电审批连续4年≥10台</td><td>⭐⭐⭐⭐ 新能源+传统能源双驱动</td></tr>
+<tr><td>供给瓶颈</td><td>⭐⭐⭐ 核岛工程准垄断</td><td>⭐⭐ 常规岛竞争较多</td></tr>
+<tr><td>定价权</td><td>⭐⭐⭐ 业主强势但有技术壁垒</td><td>⭐⭐ 低价竞标激烈</td></tr>
+<tr><td>资本密集度</td><td>⭐⭐⭐⭐ 重资产+长周期</td><td>⭐⭐⭐ 中等</td></tr>
+<tr><td>法治地缘</td><td>⭐⭐⭐⭐ 纯内需+国家战略</td><td>⭐⭐⭐⭐ 含部分海外项目风险</td></tr>
+</table>
+
+<h4>Step 3：Buffett质量门（默认unverified）</h4>
+<table>
+<tr><th>检查项</th><th>中国核建</th><th>中国能建</th></tr>
+<tr><td>护城河</td><td>核岛工程准垄断（待验证具体份额）</td><td>综合能源建设龙头（待验证）</td></tr>
+<tr><td>赚钱能力</td><td>净利率~1.2%（偏低，待改善）</td><td>净利率~0.5%（极低，待改善）</td></tr>
+<tr><td>客户替换风险</td><td>业主为中核/中广核，集中度高</td><td>客户多元化较好</td></tr>
+<tr><td>Buffett式好公司</td><td>unverified — 利润率太低</td><td>unverified — 利润率太低</td></tr>
+</table>
+
+<h4>Step 4：叙事 vs 基本面卫生</h4>
+<p><strong>市场叙事</strong>："核电审批加速=核建股业绩暴增" — <strong>部分失真</strong>。实际数据显示，中国核建2025年净利润反而下降36%。订单→营收→利润的传导有2-5年滞后。</p>
+<p><strong>资金流检查</strong>：股东减持计划公告（5/29）→短期负面信号。但定增40亿→中长期正面信号。两者对冲。</p>
+
+<h4>Step 5：分类</h4>
+<p>→ <strong>研究地图</strong>（Research Map），非可投资结论。需要更多证据（后续季报、订单执行进度、利润率变化）才能升级为可投资结论。</p>
+
+<div class="chart-row">
+<div class="chart-container"><canvas id="baiChart1"></canvas></div>
+<div class="chart-container"><canvas id="baiChart2"></canvas></div>
+</div>
+</div>
+
+<!-- Bottom Logic Section -->
+<div class="section logic" id="logic">
+<h2>📐 底层逻辑关联</h2>
+
+<h3>国民经济恒等式 S-I = X-M</h3>
+<p>中国巨额贸易盈余（1-5月顺差4,517亿美元）= 超额储蓄无法转化为有效投资。政府通过核电/能源基建投资来主动缩小S-I缺口，这是将超额储蓄转化为有效投资的战略路径。</p>
+<p><strong>传导链</strong>：核电审批加速 → 固定资产投资↑ → I增加 → S-I缩小 → 总需求↑ → 通缩缓解</p>
+
+<h3>美联储流动性框架</h3>
+<p>美联储维持不降息，全球美元流动性偏紧。但中国央行独立降准降息，国内流动性充裕。核电/能源基建股作为<strong>纯内需资产</strong>，不受外部美元紧缩影响，是"流动性避风港"。</p>
+
+<h3>卡莱斯基利润恒等式</h3>
+<p><code>利润 = 投资 + 政府赤字 + 净出口</code></p>
+<p>对核建企业：政府核电投资↑ + 能源基建赤字↑ = 企业利润有保障。即使净出口因人民币升值而下降，政府投资的对冲效果足以弥补。</p>
+
+<div class="chart-container"><canvas id="logicChart"></canvas></div>
+</div>
+
+<!-- Conclusion Section -->
+<div class="section conclusion" id="conclusion">
+<h2>🎯 五人综合结论</h2>
+
+<h3>跨专家联动检查（第5.5步）</h3>
+<table>
+<tr><th>联动场景</th><th>触发</th><th>联动结论</th></tr>
+<tr><td>宏观→技术</td><td>🔵杨世光判断复苏初期+政策驱动</td><td>🟠蔡森验证矩形整理待突破→需量能配合</td></tr>
+<tr><td>制度→数据</td><td>🟣卢麒元识别白色财政扩张</td><td>🟢笨鸟验证：核电新签合同+2.3%、能建新签+2.9%=订单确认</td></tr>
+<tr><td>技术→反常</td><td>🟠蔡森发现定增后缩量</td><td>🟢笨鸟M4识别：利润↓但股价不跌=远期定价→两者一致</td></tr>
+<tr><td>宏观→供应链</td><td>🔵核电审批加速=需求爆发</td><td>⚪白毛映射：核岛工程层为准垄断卡点→中国核建稀缺度更高</td></tr>
+<tr><td>数据→证据链</td><td>🟢笨鸟发现"增收不增利"</td><td>⚪白毛验证：净利率极低(核建1.2%/能建0.5%)→Buffett质量门unverified</td></tr>
+</table>
+
+<h3>共识与分歧</h3>
+<div class="consensus">
+<h4>🤝 五人共识</h4>
+<div class="opp-item">✅ <strong>核电/能源基建是政策确定性最强的板块之一</strong>（五人均认可）</div>
+<div class="opp-item">✅ <strong>中国核建的核岛工程准垄断地位构成护城河</strong>（白毛+笨鸟+蔡森确认）</div>
+<div class="opp-item">✅ <strong>短期业绩承压不代表长期利空</strong>——订单→营收有2-5年滞后（笨鸟+杨世光）</div>
+<div class="opp-item">✅ <strong>两家公司都在"弃债转股"优化资本结构</strong>（卢麒元+笨鸟）</div>
+<div class="opp-item">✅ <strong>技术面均处于整理待突破状态</strong>，需等待明确信号（蔡森）</div>
+
+<h4>⚡ 分歧点</h4>
+<div class="risk-item">⚠️ <strong>中国核建 vs 中国能建谁更优</strong>：白毛认为中国核建稀缺度更高（核岛垄断），笨鸟认为中国能建多元化更稳健</div>
+<div class="risk-item">⚠️ <strong>利润率能否改善</strong>：卢麒元认为业主（中核/中广核）强势压价可能持续限制利润率；杨世光认为融资成本下降可释放利润空间</div>
+<div class="risk-item">⚠️ <strong>股东减持 vs 定增</strong>：蔡森认为减持是短期负面信号，笨鸟认为定增40亿的战略意义远大于减持影响</div>
+</div>
+
+<h3>多空判断</h3>
+<div class="chart-row">
+<div class="chart-container"><canvas id="radarChart"></canvas></div>
+<div class="chart-container"><canvas id="scoreChart"></canvas></div>
+</div>
+
+<table>
+<tr><th>维度</th><th>中国核建 601611</th><th>中国能建 601868</th></tr>
+<tr><td>🔵 宏观支撑</td><td class="up">强 (核电政策)</td><td class="up">中强 (能源+新能源)</td></tr>
+<tr><td>🟣 制度确定性</td><td class="up">强 (白色财政)</td><td class="up">中强 (战略新兴)</td></tr>
+<tr><td>🟠 技术面信号</td><td>中性 (矩形整理待突破)</td><td>中性 (三角收敛待突破)</td></tr>
+<tr><td>🟢 数据质量</td><td class="down">弱 (利润大降)</td><td>中性 (增收不增利)</td></tr>
+<tr><td>⚪ 供应链地位</td><td class="up">强 (核岛垄断)</td><td>中性 (常规岛竞争)</td></tr>
+<tr><td><strong>综合评分</strong></td><td><strong>68/100 (研究关注)</strong></td><td><strong>62/100 (研究关注)</strong></td></tr>
+</table>
+
+<h3>先行指标跟踪清单</h3>
+<table>
+<tr><th>指标</th><th>关注点</th><th>预期时间</th></tr>
+<tr><td>核电新核准机组</td><td>2026年是否继续核准≥10台</td><td>2026 H2</td></tr>
+<tr><td>中国核建中报</td><td>Q2营收/利润是否企稳回升</td><td>2026年8月</td></tr>
+<tr><td>定增进度</td><td>40亿定增是否获批、发行价</td><td>2026 Q3</td></tr>
+<tr><td>中国能建新能源订单</td><td>战略新兴产业占比是否继续提升</td><td>持续跟踪</td></tr>
+<tr><td>两融余额变化</td><td>是否突破1.5万亿（过热信号）</td><td>每周</td></tr>
+<tr><td>人民币汇率</td><td>升值→利好内需基建股</td><td>持续跟踪</td></tr>
+<tr><td>股东减持执行</td><td>减持规模与节奏</td><td>2026 H2</td></tr>
+<tr><td>技术面突破</td><td>核建12.5元/能建2.80元是否放量突破</td><td>每日</td></tr>
+</table>
+
+<h3>操作策略建议</h3>
+<div class="consensus">
+<p><strong>中国核建（首选关注）</strong>：</p>
+<ul>
+<li>等待放量突破12.5元颈线 → 做多信号，目标14.5元</li>
+<li>或等待跌至10.5元附近出现破底翻 → 做多信号</li>
+<li>止损：跌破10.0元</li>
+</ul>
+<p><strong>中国能建（跟随关注）</strong>：</p>
+<ul>
+<li>等待三角收敛向上突破2.80元 → 做多信号，目标3.20元</li>
+<li>或等待中国核建突破后的板块联动效应</li>
+<li>止损：跌破2.30元</li>
+</ul>
+</div>
+</div>
+
+<!-- Risk & Disclaimer -->
+<div class="section" style="border-left:4px solid #ff4757">
+<h2 style="color:#ff4757">⚠️ 风险提示</h2>
+<div class="risk-item">核电审批节奏放缓（政策变化风险）</div>
+<div class="risk-item">核电工程建设进度不及预期（项目延期风险）</div>
+<div class="risk-item">股东减持计划实施导致短期股价承压</div>
+<div class="risk-item">利润率持续低迷（业主压价+原材料成本上升）</div>
+<div class="risk-item">定增摊薄效应（中国核建拟增发9.04亿股，稀释约28%）</div>
+<div class="risk-item">中国能建海外项目面临地缘政治风险</div>
+<div class="risk-item">宏观经济下行导致能源投资放缓</div>
+</div>
+
+<div class="disclaimer">
+<h3>📋 免责声明</h3>
+<p>以上分析融合了杨世光、卢麒元、蔡森、笨鸟、白毛-Serenity五位专家的理论框架，仅为经济学教学与经验分享，不构成任何投资建议。投资有风险，交易请独立判断并自负盈亏。</p>
+<p>报告中引用的数据来自公司公告、交易所文件、央行/政府公开数据、财经媒体等公开信息，分析基于2026年6月17日可获取的信息。市场变化迅速，具体投资决策前请咨询专业投资顾问。</p>
+<p>方法论框架（六步法、向心坍缩、形态学、数据拆解法、供应链瓶颈猎手等）始终100%权重，不受时间衰减影响。具体数据点和观点按时间衰减权重标注。</p>
+</div>
+
+</div><!-- end container -->
+
+<script>
+// Color scheme
+const colors = {
+  yang:'#4a9eff', lu:'#a855f7', cai:'#e8b84b', ben:'#2ed573', bai:'#e0e0e0',
+  up:'#2ed573', down:'#ff4757', bg:'#12141f', grid:'#2a2d3e', text:'#888'
+};
+Chart.defaults.color = colors.text;
+Chart.defaults.borderColor = colors.grid;
+
+// Yang Chart 1: Macro Environment Radar
+new Chart(document.getElementById('yangChart1'), {
+  type: 'radar',
+  data: {
+    labels: ['经济周期','货币政策','流动性','美元周期','地缘政治','市场情绪'],
+    datasets: [{
+      label: '宏观环境评分 (1-10)',
+      data: [6, 8, 7, 5, 7, 6],
+      backgroundColor: 'rgba(74,158,255,0.15)',
+      borderColor: colors.yang,
+      borderWidth: 2,
+      pointBackgroundColor: colors.yang
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { title: { display: true, text: '宏观环境雷达图', color: colors.yang } },
+    scales: { r: { beginAtZero: true, max: 10, grid: { color: colors.grid }, angleLines: { color: colors.grid }, pointLabels: { color: '#ccc' } } }
+  }
+});
+
+// Yang Chart 2: Policy Support Timeline
+new Chart(document.getElementById('yangChart2'), {
+  type: 'bar',
+  data: {
+    labels: ['2022','2023','2024','2025','2026E'],
+    datasets: [{
+      label: '核电核准机组数(台)',
+      data: [10, 10, 10, 10, 10],
+      backgroundColor: ['rgba(74,158,255,0.6)','rgba(74,158,255,0.6)','rgba(74,158,255,0.6)','rgba(74,158,255,0.8)','rgba(74,158,255,0.4)'],
+      borderColor: colors.yang,
+      borderWidth: 1
+    },{
+      label: '在建核电机组(台)',
+      data: [22, 25, 28, 28, 32],
+      backgroundColor: 'rgba(168,85,247,0.5)',
+      borderColor: colors.lu,
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { title: { display: true, text: '核电审批与建设规模趋势', color: colors.yang } }
+  }
+});
+
+// Lu Chart 1: Capital Structure
+new Chart(document.getElementById('luChart1'), {
+  type: 'doughnut',
+  data: {
+    labels: ['白色财政(国家投资)','灰色财政(地方配套)','民间资本','外资'],
+    datasets: [{
+      data: [55, 25, 15, 5],
+      backgroundColor: ['rgba(168,85,247,0.8)','rgba(168,85,247,0.5)','rgba(168,85,247,0.3)','rgba(168,85,247,0.15)'],
+      borderColor: '#1a1d2e',
+      borderWidth: 3
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { title: { display: true, text: '核电投资资金来源结构(估)', color: colors.lu } }
+  }
+});
+
+// Lu Chart 2: Revenue vs Profit Comparison
+new Chart(document.getElementById('luChart2'), {
+  type: 'bar',
+  data: {
+    labels: ['核建-营收','核建-净利','能建-营收','能建-净利'],
+    datasets: [{
+      label: '2024年',
+      data: [1135, 20.64, 4367, 85],
+      backgroundColor: 'rgba(168,85,247,0.4)',
+      borderColor: colors.lu,
+      borderWidth: 1
+    },{
+      label: '2025年',
+      data: [1050, 13.19, 4529, 78],
+      backgroundColor: 'rgba(168,85,247,0.7)',
+      borderColor: colors.lu,
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { title: { display: true, text: '营收与利润对比(亿元)', color: colors.lu } }
+  }
+});
+
+// Cai Chart 1: China Nuclear Construction Price Simulation
+new Chart(document.getElementById('caiChart1'), {
+  type: 'line',
+  data: {
+    labels: ['1月','2月','3月','4月','5月上','5月中','5月下','6月上','6月中'],
+    datasets: [{
+      label: '中国核建 股价(元)',
+      data: [10.8, 11.2, 10.9, 10.7, 11.0, 12.38, 11.8, 11.5, 11.5],
+      borderColor: colors.cai,
+      backgroundColor: 'rgba(232,184,75,0.1)',
+      borderWidth: 2,
+      fill: true,
+      tension: 0.3,
+      pointRadius: 4
+    },{
+      label: '颈线 12.5',
+      data: [12.5,12.5,12.5,12.5,12.5,12.5,12.5,12.5,12.5],
+      borderColor: '#ff4757',
+      borderDash: [5,5],
+      borderWidth: 1,
+      pointRadius: 0
+    },{
+      label: '支撑 10.5',
+      data: [10.5,10.5,10.5,10.5,10.5,10.5,10.5,10.5,10.5],
+      borderColor: '#2ed573',
+      borderDash: [5,5],
+      borderWidth: 1,
+      pointRadius: 0
+    },{
+      label: '目标 14.5',
+      data: [14.5,14.5,14.5,14.5,14.5,14.5,14.5,14.5,14.5],
+      borderColor: '#ffa502',
+      borderDash: [3,3],
+      borderWidth: 1,
+      pointRadius: 0
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { title: { display: true, text: '中国核建 K线形态示意(矩形整理)', color: colors.cai } }
+  }
+});
+
+// Cai Chart 2: China Energy Construction Price Simulation
+new Chart(document.getElementById('caiChart2'), {
+  type: 'line',
+  data: {
+    labels: ['1月','2月','3月','4月','5月上','5月中','5月下','6月上','6月中'],
+    datasets: [{
+      label: '中国能建 股价(元)',
+      data: [2.55, 2.62, 2.58, 2.52, 2.60, 2.72, 2.68, 2.65, 2.65],
+      borderColor: colors.cai,
+      backgroundColor: 'rgba(232,184,75,0.1)',
+      borderWidth: 2,
+      fill: true,
+      tension: 0.3,
+      pointRadius: 4
+    },{
+      label: '上轨 2.80',
+      data: [2.80,2.80,2.80,2.80,2.80,2.80,2.80,2.80,2.80],
+      borderColor: '#ff4757',
+      borderDash: [5,5],
+      borderWidth: 1,
+      pointRadius: 0
+    },{
+      label: '下轨 2.40',
+      data: [2.40,2.40,2.40,2.40,2.40,2.40,2.40,2.40,2.40],
+      borderColor: '#2ed573',
+      borderDash: [5,5],
+      borderWidth: 1,
+      pointRadius: 0
+    },{
+      label: '目标 3.20',
+      data: [3.20,3.20,3.20,3.20,3.20,3.20,3.20,3.20,3.20],
+      borderColor: '#ffa502',
+      borderDash: [3,3],
+      borderWidth: 1,
+      pointRadius: 0
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { title: { display: true, text: '中国能建 K线形态示意(三角收敛)', color: colors.cai } }
+  }
+});
+
+// Cai Chart 3: Volume Comparison
+new Chart(document.getElementById('caiChart3'), {
+  type: 'bar',
+  data: {
+    labels: ['5/20','5/21','5/22','5/23','5/26','5/27','5/28','5/29','5/30'],
+    datasets: [{
+      label: '核建成交额(亿)',
+      data: [2.1, 2.5, 8.8, 5.2, 3.8, 3.1, 3.5, 2.9, 2.6],
+      backgroundColor: 'rgba(232,184,75,0.6)',
+      borderColor: colors.cai,
+      borderWidth: 1
+    },{
+      label: '能建成交额(亿)',
+      data: [1.5, 1.8, 3.2, 2.5, 1.9, 1.6, 1.7, 1.5, 1.4],
+      backgroundColor: 'rgba(168,85,247,0.5)',
+      borderColor: colors.lu,
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { title: { display: true, text: '成交量对比(5月下旬)', color: colors.cai } }
+  }
+});
+
+// Cai Chart 4: Sector Rotation
+new Chart(document.getElementById('caiChart4'), {
+  type: 'bar',
+  data: {
+    labels: ['中国核建','中国核电','中国广核','中国能建','中国建筑'],
+    datasets: [{
+      label: 'YTD涨幅(%)',
+      data: [8.5, 12.3, 6.8, 3.2, -2.1],
+      backgroundColor: [
+        'rgba(232,184,75,0.8)','rgba(232,184,75,0.6)','rgba(232,184,75,0.5)',
+        'rgba(168,85,247,0.6)','rgba(74,158,255,0.4)'
+      ],
+      borderColor: [colors.cai,colors.cai,colors.cai,colors.lu,colors.yang],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    indexAxis: 'y',
+    plugins: { title: { display: true, text: '板块龙头轮动YTD涨幅(%)', color: colors.cai } }
+  }
+});
+
+// Ben Chart 1: Financial Metrics
+new Chart(document.getElementById('benChart1'), {
+  type: 'bar',
+  data: {
+    labels: ['营收增速(%)','净利增速(%)','净利率(%)','负债率(%)','新签增速(%)'],
+    datasets: [{
+      label: '中国核建',
+      data: [-7.5, -36.1, 1.2, 85, 2.3],
+      backgroundColor: 'rgba(74,158,255,0.6)',
+      borderColor: colors.yang,
+      borderWidth: 1
+    },{
+      label: '中国能建',
+      data: [3.71, -9.75, 0.5, 78, 2.88],
+      backgroundColor: 'rgba(168,85,247,0.6)',
+      borderColor: colors.lu,
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { title: { display: true, text: '关键财务指标对比(2025)', color: colors.ben } }
+  }
+});
+
+// Ben Chart 2: Order Pipeline
+new Chart(document.getElementById('benChart2'), {
+  type: 'line',
+  data: {
+    labels: ['2021','2022','2023','2024','2025'],
+    datasets: [{
+      label: '核建-核电新签(亿)',
+      data: [420, 480, 520, 551, 564],
+      borderColor: colors.yang,
+      backgroundColor: 'rgba(74,158,255,0.1)',
+      fill: true,
+      tension: 0.3
+    },{
+      label: '能建-总新签(百亿)',
+      data: [110, 125, 132, 141, 145],
+      borderColor: colors.lu,
+      backgroundColor: 'rgba(168,85,247,0.1)',
+      fill: true,
+      tension: 0.3
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { title: { display: true, text: '新签订单趋势', color: colors.ben } }
+  }
+});
+
+// Bai Chart 1: Value Chain Scarcity
+new Chart(document.getElementById('baiChart1'), {
+  type: 'bar',
+  data: {
+    labels: ['核燃料','设备制造','核岛工程','常规岛工程','核电运营'],
+    datasets: [{
+      label: '稀缺度评分(1-5)',
+      data: [4, 5, 4.5, 2.5, 5],
+      backgroundColor: [
+        'rgba(224,224,224,0.3)','rgba(224,224,224,0.5)','rgba(224,224,224,0.8)',
+        'rgba(224,224,224,0.4)','rgba(224,224,224,0.6)'
+      ],
+      borderColor: colors.bai,
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    indexAxis: 'y',
+    plugins: {
+      title: { display: true, text: '核电产业链稀缺度评估', color: colors.bai },
+      annotation: {}
+    },
+    scales: { x: { max: 5, grid: { color: colors.grid } } }
+  }
+});
+
+// Bai Chart 2: Serenity Score
+new Chart(document.getElementById('baiChart2'), {
+  type: 'radar',
+  data: {
+    labels: ['需求持久性','供给瓶颈','定价权','资本效率','地缘安全','证据质量'],
+    datasets: [{
+      label: '中国核建',
+      data: [9, 7, 5, 3, 8, 6],
+      backgroundColor: 'rgba(74,158,255,0.15)',
+      borderColor: colors.yang,
+      borderWidth: 2,
+      pointBackgroundColor: colors.yang
+    },{
+      label: '中国能建',
+      data: [7, 4, 4, 4, 6, 7],
+      backgroundColor: 'rgba(168,85,247,0.15)',
+      borderColor: colors.lu,
+      borderWidth: 2,
+      pointBackgroundColor: colors.lu
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { title: { display: true, text: 'Serenity五杠杆评分', color: colors.bai } },
+    scales: { r: { beginAtZero: true, max: 10, grid: { color: colors.grid }, angleLines: { color: colors.grid }, pointLabels: { color: '#ccc' } } }
+  }
+});
+
+// Logic Chart: Macro Transmission Chain
+new Chart(document.getElementById('logicChart'), {
+  type: 'bar',
+  data: {
+    labels: ['贸易盈余→投资','核电审批→订单','宽松货币→融资','能源安全→需求','人民币→内需'],
+    datasets: [{
+      label: '对中国核建影响(1-10)',
+      data: [7, 9, 7, 8, 6],
+      backgroundColor: 'rgba(74,158,255,0.6)',
+      borderColor: colors.yang,
+      borderWidth: 1
+    },{
+      label: '对中国能建影响(1-10)',
+      data: [5, 6, 8, 7, 7],
+      backgroundColor: 'rgba(168,85,247,0.6)',
+      borderColor: colors.lu,
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    indexAxis: 'y',
+    plugins: { title: { display: true, text: '底层逻辑传导链影响评分', color: '#ff6b81' } },
+    scales: { x: { max: 10, grid: { color: colors.grid } } }
+  }
+});
+
+// Radar Chart: Five Expert Consensus
+new Chart(document.getElementById('radarChart'), {
+  type: 'radar',
+  data: {
+    labels: ['🔵宏观','🟣制度','🟠技术','🟢数据','⚪供应链'],
+    datasets: [{
+      label: '中国核建',
+      data: [8.5, 8, 6, 4.5, 8],
+      backgroundColor: 'rgba(74,158,255,0.2)',
+      borderColor: colors.yang,
+      borderWidth: 2,
+      pointBackgroundColor: colors.yang
+    },{
+      label: '中国能建',
+      data: [7, 7, 5.5, 6, 5.5],
+      backgroundColor: 'rgba(168,85,247,0.2)',
+      borderColor: colors.lu,
+      borderWidth: 2,
+      pointBackgroundColor: colors.lu
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { title: { display: true, text: '五专家综合评分雷达图', color: '#ffa502' } },
+    scales: { r: { beginAtZero: true, max: 10, grid: { color: colors.grid }, angleLines: { color: colors.grid }, pointLabels: { color: '#ccc' } } }
+  }
+});
+
+// Score Chart: Final Scoring
+new Chart(document.getElementById('scoreChart'), {
+  type: 'bar',
+  data: {
+    labels: ['🔵杨世光','🟣卢麒元','🟠蔡森','🟢笨鸟','⚪白毛','综合'],
+    datasets: [{
+      label: '中国核建',
+      data: [85, 80, 60, 55, 75, 68],
+      backgroundColor: 'rgba(74,158,255,0.6)',
+      borderColor: colors.yang,
+      borderWidth: 1
+    },{
+      label: '中国能建',
+      data: [72, 70, 55, 62, 55, 62],
+      backgroundColor: 'rgba(168,85,247,0.6)',
+      borderColor: colors.lu,
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { title: { display: true, text: '各专家评分(满分100)', color: '#ffa502' } },
+    scales: { y: { max: 100, grid: { color: colors.grid } } }
+  }
+});
+</script>
+
+</body>
+</html>
