@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """
-蔡森破底翻量化筛选器 v5 — 新浪API全链路稳定版
+蔡森破底翻量化筛选器 v7 — 东方财富首选 + 新浪/腾讯 fallback
 - 新浪列表API获取上涨股
-- 新浪K线API获取历史数据
+- K线数据源（按优先级自动降级）：
+    1) 东方财富 push2his（前复权日K，免key，首选）
+    2) 新浪 K线API
+    3) 腾讯财经 fqkline（并发抗造，最终兜底）
 - 修复版算法：遍历所有局部低点，全程检查破底翻
 """
 import requests
@@ -13,6 +16,14 @@ from datetime import datetime
 import concurrent.futures
 import time
 import random
+import argparse
+
+# ============================================================
+# 运行参数（可用命令行覆盖，便于「节流全量版」一键复跑）
+# ============================================================
+MAX_WORKERS = 8                  # 并发线程数（默认8；全量扫描建议 3）
+REQUEST_DELAY = (0.05, 0.10)     # 每只股票随机延时区间(秒)，避免被代理限流
+USE_EASTMONEY = True             # 是否启用东方财富(首选)；沙箱不可达时用 --no-eastmoney 跳过
 
 H = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)', 'Referer': 'https://finance.sina.com.cn/'}
 
@@ -54,19 +65,88 @@ def get_risers():
     return risers
 
 # ============================================================
-# 2. 新浪K线API
+# 2. K线API（东方财富首选 + 新浪 + 腾讯 三级 fallback）
+#    数据源优先级：东方财富(push2his) > 新浪 > 腾讯财经
+#    每个源失败自动降级，避免单一接口限流导致整轮失败。
+#    三者均返回统一结构：list[dict(date,open,close,high,low,volume)]
 # ============================================================
-def get_kline(code):
+def _secid_of(code):
+    # sh600519 -> 1.600519 ; sz300454 -> 0.300454
+    return ('1.' + code[2:]) if code.startswith('sh') else ('0.' + code[2:])
+
+def get_kline_eastmoney(code):
+    # 东方财富前复权日K（免key）。字段：f51=日期 f52=开 f53=收 f54=高 f55=低 f56=量
+    # 首选数据源；被限流/不可达时由调用方自动降级到新浪/腾讯。
+    secid = _secid_of(code)
+    hosts = [
+        'https://push2his.eastmoney.com/api/qt/stock/kline/get',
+        'https://push2.eastmoney.com/api/qt/stock/kline/get',
+    ]
+    params = {'secid': secid, 'fields1': 'f1,f2,f3',
+              'fields2': 'f51,f52,f53,f54,f55,f56',
+              'klt': '101', 'fqt': '1', 'lmt': '250', 'end': '20500101'}
+    h_em = {**H, 'Referer': 'https://quote.eastmoney.com/'}
+    for host in hosts:
+        try:
+            r = requests.get(host, params=params, headers=h_em, timeout=8)
+            j = r.json()
+            kls = (j.get('data') or {}).get('klines')
+            if not kls:
+                continue
+            out = []
+            for s in kls:
+                p = s.split(',')
+                if len(p) < 6:
+                    continue
+                try:
+                    out.append({'date': p[0], 'open': float(p[1]), 'close': float(p[2]),
+                                'high': float(p[3]), 'low': float(p[4]), 'volume': float(p[5])})
+                except (ValueError, TypeError):
+                    continue
+            if len(out) >= 40:
+                return out
+        except Exception:
+            continue
+    return None
+
+def get_kline_sina(code):
     url = 'https://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData'
     params = {'symbol': code, 'scale': '240', 'ma': 'no', 'datalen': '250'}  # 250日≈1年
-    for attempt in range(3):
+    r = requests.get(url, params=params, headers=H, timeout=8)
+    data = json.loads(r.text)
+    if not data or len(data) < 40: return None
+    return data  # list of dicts: close/high/low/volume
+
+def get_kline_tencent(code):
+    # 腾讯财经前复权日K，免key、并发抗造；返回 [日期,开,收,高,低,量]
+    url = 'https://web.ifzq.gtimg.cn/appstock/app/fqkline/get'
+    r = requests.get(url, params={'param': f'{code},day,,,250,qfq'}, headers=H, timeout=8)
+    j = r.json()
+    node = (j.get('data') or {}).get(code)
+    if not node: return None
+    arr = node.get('qfqday') or node.get('day')
+    if not arr: return None
+    out = []
+    for row in arr:
+        if len(row) < 6: continue
         try:
-            r = requests.get(url, params=params, headers=H, timeout=10)
-            data = json.loads(r.text)
-            if not data or len(data) < 40: return None
-            return data  # list of dicts
-        except:
-            time.sleep(0.5 * (attempt + 1))
+            out.append({'date': row[0], 'open': float(row[1]), 'close': float(row[2]),
+                        'high': float(row[3]), 'low': float(row[4]), 'volume': float(row[5])})
+        except (ValueError, TypeError):
+            continue
+    return out if len(out) >= 40 else None
+
+def get_kline(code):
+    # 数据源优先级：东方财富(可关) -> 新浪 -> 腾讯；每个源失败重试1次
+    sources = (get_kline_eastmoney, get_kline_sina, get_kline_tencent) if USE_EASTMONEY \
+              else (get_kline_sina, get_kline_tencent)
+    for fn in sources:
+        for attempt in range(2):
+            try:
+                d = fn(code)
+                if d: return d
+            except Exception:
+                time.sleep(0.4 * (attempt + 1))
     return None
 
 # ============================================================
@@ -167,16 +247,27 @@ def detect_podifan(kdata, code, name, change_pct):
 def scan_one(args):
     code, name, chg = args
     try:
-        time.sleep(0.05 + random.random() * 0.05)
+        time.sleep(random.uniform(*REQUEST_DELAY))
         kdata = get_kline(code)
         return detect_podifan(kdata, code, name, chg)
     except: return None
 
 # ============================================================
 def main():
+    global MAX_WORKERS, REQUEST_DELAY, USE_EASTMONEY
+    ap = argparse.ArgumentParser(description='蔡森破底翻量化筛选器')
+    ap.add_argument('--workers', type=int, default=MAX_WORKERS, help='并发线程数（全量扫描建议3）')
+    ap.add_argument('--delay', type=float, default=REQUEST_DELAY[1], help='每只股票最大随机延时(秒)')
+    ap.add_argument('--no-eastmoney', action='store_true', help='跳过东方财富(沙箱不可达时加速)')
+    args = ap.parse_args()
+    MAX_WORKERS = args.workers
+    REQUEST_DELAY = (0.0, args.delay)
+    USE_EASTMONEY = not args.no_eastmoney
+
     print("=" * 70)
-    print("  蔡森破底翻量化筛选器 v6 — 破底翻 + 长期历史低位")
+    print("  蔡森破底翻量化筛选器 v7 — 东方财富首选 + 破底翻 + 长期历史低位")
     print("  过滤：历史分位<30% + 距年高跌幅>40%")
+    print(f"  运行模式: 线程={MAX_WORKERS}  延时≤{args.delay}s  东方财富={'开' if USE_EASTMONEY else '关(跳过)'}")
     print("=" * 70)
     
     print("\n[1/3] 拉取上涨股...")
@@ -187,10 +278,10 @@ def main():
     
     stocks = [(r['code'], r['name'], r['change']) for r in risers]  # code已带sh/sz前缀
     
-    print(f"\n[2/3] 扫描{len(stocks)}只 (8线程)...")
+    print(f"\n[2/3] 扫描{len(stocks)}只 ({MAX_WORKERS}线程)...")
     results = []; done = 0; fails = 0; t1 = time.time()
     
-    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
         futs = {ex.submit(scan_one, s): s for s in stocks}
         for f in concurrent.futures.as_completed(futs):
             done += 1
