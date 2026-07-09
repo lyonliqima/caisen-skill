@@ -14,6 +14,8 @@ kline_*.json
 caisen-0618-baidu.txt
 caisen-0618-frames/
 
+stock-partner-team/.review-cache/
+
 # ===== env / local =====
 .venv/
 venv/
