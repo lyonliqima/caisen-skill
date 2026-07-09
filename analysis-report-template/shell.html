@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}}</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root{
+  --bg:#0f1419; --panel:#161b22; --panel2:#1c232c; --border:#2a3441;
+  --text:#e6edf3; --muted:#8b98a5; --up:#ff4d4f; --down:#1ec77a;
+  --gold:#ffd166; --accent:#4a9eff; --warn:#ff9f43; --purple:#c084fc;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Noto Sans SC",-apple-system,system-ui,sans-serif;line-height:1.65;padding:24px;}
+.report{max-width:960px;margin:0 auto;}
+header.hero{border-bottom:1px solid var(--border);padding-bottom:18px;margin-bottom:24px;}
+header.hero h1{font-size:1.9rem;font-weight:700;letter-spacing:.02em;}
+header.hero .meta{color:var(--muted);font-size:.85rem;margin-top:6px;}
+.kicker{color:var(--accent);font-size:.8rem;letter-spacing:.15em;font-weight:600;margin-bottom:10px;text-transform:uppercase;}
+section.block{margin:28px 0;}
+section.block > h2{font-size:1.3rem;font-weight:700;margin-bottom:14px;padding-left:10px;border-left:4px solid var(--accent);}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:14px 0;}
+.card h3{font-size:1.05rem;font-weight:600;margin-bottom:8px;}
+.muted{color:var(--muted);font-size:.9rem;}
+.up{color:var(--up);font-weight:600;}
+.down{color:var(--down);font-weight:600;}
+.gold{color:var(--gold);font-weight:600;}
+.warn{color:var(--warn);font-weight:600;}
+.purple{color:var(--purple);font-weight:600;}
+/* 评分卡 */
+.verdict{background:linear-gradient(135deg,#161b22,#1c232c);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin:18px 0;}
+.verdict .dir{font-size:1.4rem;font-weight:800;}
+.verdict .conf{float:right;font-size:1.1rem;color:var(--gold);font-weight:700;}
+.verdict ul{margin:10px 0 0 18px;font-size:.95rem;}
+.verdict li{margin:4px 0;}
+/* 图表 */
+.chart-box{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:16px 0;}
+.chart-box .cap{color:var(--muted);font-size:.8rem;margin-top:8px;text-align:center;}
+canvas{max-width:100%;}
+/* 表格 */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.9rem;}
+th,td{border:1px solid var(--border);padding:8px 11px;text-align:left;}
+th{background:var(--panel2);font-weight:600;}
+td.cons{color:var(--down);} td.div{color:var(--warn);}
+/* 兵棋推演树 */
+.scenario{border-left:3px solid var(--accent);padding-left:14px;margin:12px 0;}
+.scenario .cond{font-weight:600;color:var(--text);}
+.scenario .arrow{color:var(--muted);margin:0 6px;}
+.scenario .res{font-weight:600;}
+.scenario .child{margin-left:18px;border-left:2px dashed var(--border);padding-left:12px;margin-top:8px;}
+.tag{display:inline-block;font-size:.72rem;padding:1px 8px;border-radius:999px;margin-right:6px;vertical-align:middle;}
+.tag.up{background:rgba(255,77,79,.15);} .tag.down{background:rgba(30,199,122,.15);}
+.tag.gold{background:rgba(255,209,102,.15);} .tag.neutral{background:rgba(139,152,165,.18);color:var(--muted);}
+/* 证据/证伪 */
+.evidence{border-left:3px solid var(--accent);background:var(--panel);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.92rem;}
+.falsify{border-left:3px solid var(--warn);background:rgba(255,159,67,.08);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.92rem;}
+.falsify b{color:var(--warn);}
+/* 免责 */
+footer.disclaimer{margin-top:36px;padding-top:16px;border-top:1px solid var(--border);color:var(--muted);font-size:.78rem;line-height:1.5;}
+footer.disclaimer b{color:var(--text);}
+</style>
+</head>
+<body>
+<div class="report">
+<header class="hero">
+  <div class="kicker">整合市场分析 · 方法论推导</div>
+  <h1>{{TITLE}}</h1>
+  <div class="meta">{{DATE}}</div>
+</header>
+{{BODY}}
+<footer class="disclaimer">
+  <b>风险提示与免责声明</b>：本报告所有结论均由方法论工具独立推导，非对任何机构或个人的投资建议。市场有风险，决策须自行承担后果。专家观点仅作待验证假说，已用当前数据独立检验。
+</footer>
+</div>
+<script>
+/* 图表helper：模型只需写 <canvas id="x"></canvas> 后调用 drawXxx(id, ...) 即可，无需完整 Chart.js 配置 */
+function _base(type, id, data, opts){
+  opts = opts || {};
+  const ctx = document.getElementById(id);
+  if(!ctx) return;
+  const colors = {up:'#ff4d4f', down:'#1ec77a', gold:'#ffd166', accent:'#4a9eff', warn:'#ff9f43', purple:'#c084fc', muted:'#8b98a5'};
+  const ds = (Array.isArray(data.datasets)?data.datasets:[data]).map((d,i)=>({
+    label:d.label||'', data:d.data,
+    borderColor:d.color||opts.colors&&opts.colors[i]||colors.accent,
+    backgroundColor:(d.color||colors.accent)+(opts.fill?'33':'')||'rgba(74,158,255,.15)',
+    fill: !!opts.fill, tension:.25, pointRadius:2, borderWidth:2
+  }));
+  new Chart(ctx,{type:type,data:{labels:data.labels,datasets:ds},
+    options:{responsive:true,plugins:{legend:{labels:{color:'#e6edf3'}}},
+      scales:type==='radar'?{}:{x:{ticks:{color:'#8b98a5'},grid:{color:'#2a3441'}},y:{ticks:{color:'#8b98a5'},grid:{color:'#2a3441'}}}}}});
+}
+function drawLine(id,labels,datasets,opts){_base('line',id,{labels,datasets:_norm(datasets)},opts);}
+function drawBar(id,labels,datasets,opts){_base('bar',id,{labels,datasets:_norm(datasets)},opts);}
+function drawDoughnut(id,labels,values,opts){_base('doughnut',id,{labels,datasets:[{data:values,color:opts&&opts.colors}]},opts);}
+function drawRadar(id,axes,values,opts){_base('radar',id,{labels:axes,datasets:[{data:values,color:opts&&opts.color}]},{colors:[opts&&opts.color]});}
+function _norm(d){return (typeof d[0]==='object')?d:d.map((v,i)=>({label:'系列'+(i+1),data:v}));}
+</script>
+</body>
+</html>
