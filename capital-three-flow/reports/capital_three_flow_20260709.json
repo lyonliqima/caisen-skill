@@ -1,0 +1,120 @@
+{
+  "as_of": "2026-07-09",
+  "demo": true,
+  "north_flow_note": null,
+  "fx_rate": {
+    "date": "2026-07-09",
+    "symbol": "USDCNY",
+    "name": "美元人民币",
+    "rate": 7.21,
+    "change_pct": 0.15,
+    "unit": "USD/CNY"
+  },
+  "volume": {
+    "m2": 3200000.0,
+    "m2_yoy": 10.5,
+    "m2_unit": "亿元",
+    "m2_abs_size": "极大",
+    "m2_growth": "中性(收敛区间)",
+    "main_force_net_inflow": 600.0,
+    "margin_total": 15100.0,
+    "margin_delta": 200.0,
+    "leverage_dir": "加杠杆",
+    "effective_entity_flow": 1920000.0,
+    "gdp_nominal": 330000.0
+  },
+  "velocity": {
+    "V_macro": 0.4125,
+    "V_formula": "V = 年化名义GDP(季×4) / M2（宏观流速）",
+    "money_multiplier": 8.4211,
+    "money_multiplier_formula": "货币乘数 = M2 / 基础货币(储备货币)",
+    "micro_leverage_velocity": 0.06,
+    "micro_leverage_velocity_formula": "微观流速 = 融资买入额 / 融资余额（杠杆资金日周转%）",
+    "sector_gross_turnover": 9800.0
+  },
+  "direction": {
+    "D_market": 0.6154,
+    "D_fx": 0.2857,
+    "HHI": 0.1693,
+    "HHI_note": null,
+    "sector_count": 11,
+    "market_net": 800.0,
+    "fx_change": 80.0
+  },
+  "indices": {
+    "CFCI": 100,
+    "CFEI": 0.6458,
+    "CRI": 40.23,
+    "cri_usdcny_available": true,
+    "cfei_credit_turnover_available": false
+  },
+  "score": {
+    "S_flow": 1,
+    "S_velocity": 0,
+    "S_direction": 1,
+    "S_total": 2,
+    "verdict": "三流同向共振 —— 趋势力量确立，宏观趋势可顺势",
+    "notes": []
+  },
+  "trading_reference": {
+    "liquidity_regime": "中性 → 仓位均衡",
+    "liquidity_detail": "M2绝对量极大，同比10.5%（中性(收敛区间)）；杠杆加杠杆",
+    "risk_appetite": "风险偏好回升（内+外双流入）",
+    "internal_preference": "A股内部资金净流入（风险偏好回升）",
+    "cross_flow": "资本小幅回流：外汇储备环比升 80.0 亿美元，D_fx=0.2857 → 境外资金回流入境",
+    "north_note": "北向净流量已停更，跨境外流仅以外储变动代理（非个股级北向买卖）",
+    "micro_velocity_note": "宏观流速正常；杠杆资金日周转 6.00%（活跃）；板块集中度 HHI=0.1693 → 中度集中",
+    "strategy_tilt": "均衡（动量/反转各半）",
+    "sector_top": [
+      {
+        "name": "半导体",
+        "net": 180.0,
+        "pct": 2.8
+      },
+      {
+        "name": "银行",
+        "net": 90.0,
+        "pct": 1.1
+      },
+      {
+        "name": "电力设备",
+        "net": 60.0,
+        "pct": 0.6
+      },
+      {
+        "name": "汽车",
+        "net": 40.0,
+        "pct": 0.4
+      },
+      {
+        "name": "有色金属",
+        "net": 35.0,
+        "pct": 0.5
+      }
+    ],
+    "sector_bottom": [
+      {
+        "name": "房地产",
+        "net": -45.0,
+        "pct": -1.6
+      },
+      {
+        "name": "煤炭",
+        "net": -30.0,
+        "pct": -1.0
+      },
+      {
+        "name": "计算机",
+        "net": -20.0,
+        "pct": -0.8
+      },
+      {
+        "name": "食品饮料",
+        "net": -10.0,
+        "pct": -0.5
+      }
+    ],
+    "sector_net_sum": 340.0,
+    "sector_count": 11
+  }
+}

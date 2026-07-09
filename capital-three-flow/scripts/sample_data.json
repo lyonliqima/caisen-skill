@@ -1,0 +1,31 @@
+{
+  "as_of": "2026-07-09",
+  "demo": true,
+  "m2": {"date": "2026-06-30", "m2": 3200000.0, "m2_yoy": 10.5, "unit": "亿元"},
+  "gdp": {"date": "2026Q2", "value": 330000.0, "unit": "亿元"},
+  "forex": {"date": "2026-06-30", "reserve": 32000.0, "gold": 7300.0, "change": 80.0, "unit": "亿美元"},
+  "base_money": {"date": "2026-06-30", "base_money": 380000.0, "unit": "亿元"},
+  "margin": {"date": "2026-07-09", "financing": 15000.0, "securities": 100.0, "total": 15100.0, "total_prev": 14900.0, "delta": 200.0, "fin_buy": 900.0, "unit": "亿元"},
+  "main_force": {"date": "2026-07-09", "net_inflow": 600.0, "unit": "亿元"},
+  "fx_rate": {"date": "2026-07-09", "symbol": "USDCNY", "name": "美元人民币", "rate": 7.21, "change_pct": 0.15, "unit": "USD/CNY"},
+  "sector_flow": {
+    "date": "2026-07-09",
+    "count": 11,
+    "gross": 9800.0,
+    "unit_note": "原始单位不一，HHI 无量纲不依赖单位",
+    "sectors": [
+      {"name": "半导体", "net": 180.0, "pct": 2.8, "inflow": 320.0, "outflow": 140.0},
+      {"name": "银行", "net": 90.0, "pct": 1.1, "inflow": 160.0, "outflow": 70.0},
+      {"name": "电力设备", "net": 60.0, "pct": 0.6, "inflow": 120.0, "outflow": 60.0},
+      {"name": "汽车", "net": 40.0, "pct": 0.4, "inflow": 90.0, "outflow": 50.0},
+      {"name": "医药生物", "net": 25.0, "pct": -0.2, "inflow": 60.0, "outflow": 35.0},
+      {"name": "食品饮料", "net": -10.0, "pct": -0.5, "inflow": 40.0, "outflow": 50.0},
+      {"name": "计算机", "net": -20.0, "pct": -0.8, "inflow": 45.0, "outflow": 65.0},
+      {"name": "房地产", "net": -45.0, "pct": -1.6, "inflow": 25.0, "outflow": 70.0},
+      {"name": "煤炭", "net": -30.0, "pct": -1.0, "inflow": 30.0, "outflow": 60.0},
+      {"name": "有色金属", "net": 35.0, "pct": 0.5, "inflow": 80.0, "outflow": 45.0},
+      {"name": "非银金融", "net": 15.0, "pct": 0.1, "inflow": 55.0, "outflow": 40.0}
+    ]
+  },
+  "north_flow": null
+}

@@ -1,0 +1,126 @@
+# 资本三流观测 —— 指标与权重配置
+# 所有阈值、权重均可在此集中调整，无需改代码。
+
+# ── 数据采集开关 ─────────────────────────────────────────────
+# 每个数据源独立开关；采集失败自动降级（返回 None），不影响其它指标。
+# akshare 函数名均已对照当前 master 源码核实（见 references/data_sources.md）。
+# 标注（已移除）的项为 2024-08 后交易所停更 / akshare 已下线的接口，仅作记录。
+sources:
+  m2:                # 广义货币 M2（月）— 央行
+    enabled: true
+    akshare_fn: macro_china_money_supply
+    cache_days: 365
+  gdp_nominal:       # 名义 GDP（季）— 统计局（用于流速 V=GDP/M2）
+    enabled: true
+    akshare_fn: macro_china_gdp
+    cache_days: 730
+  forex_reserve:     # 外汇储备（月）— 外管局，取"国家外汇储备"
+    enabled: true
+    akshare_fn: macro_china_foreign_exchange_gold
+    cache_days: 365
+  base_money:        # 基础货币（月）— 央行，取"储备货币"算货币乘数
+    enabled: true
+    akshare_fn: macro_china_central_bank_balance
+    cache_days: 365
+  margin:            # 融资融券余额（日）— 上交所/深交所
+    enabled: true
+    akshare_fn: macro_china_market_margin_sh
+    cache_days: 30
+  main_force:        # 大盘主力资金净流入（日）— 东财，取"主力净流入-净额"
+    enabled: true
+    akshare_fn: stock_market_fund_flow
+    cache_days: 30
+  fx_rate:           # 人民币汇率 USD/CNY（实时）— 东财外汇，取 USDCNY 最新价/涨跌幅
+    enabled: true
+    akshare_fn: forex_spot_em
+    cache_days: 1
+  sector_flow:       # 板块（行业）资金流（即时）— 同花顺，取各行业主力净流入算 HHI
+    enabled: true
+    akshare_fn: stock_fund_flow_industry
+    cache_days: 1
+  # ── 已移除 / 不可用（仅记录，不采集）──
+  north_flow:        # （已移除）北向净流量 2024-08-19 起停更，akshare 已下掉接口
+    enabled: false
+    akshare_fn: null
+  social_financing:  # （已移除）akshare master 无对应函数
+    enabled: false
+    akshare_fn: null
+  usd_index:         # （已移除）master 无 macro_usa_dollar_index
+    enabled: false
+    akshare_fn: null
+
+# ── 流向综合指数 CFCI 权重 ──────────────────────────────────
+# 各分项净流入对 CFCI(-100~+100) 的贡献权重，须求和≈1
+# 注：北向净流量自2024-08停更、akshare已移除，故 CFCI 现由
+#     主力资金(main_flow) + 融资变化(margin_flow) + 外汇变动(fx_flow) 三项构成；
+# 某分项缺失时由 calculator 自动按可用项重新归一化。
+cfci_weights:
+  main_flow:   0.40   # 大盘主力资金净流入（市场内资本流向）
+  margin_flow: 0.30   # 融资融券余额变化（杠杆资金流向）
+  fx_flow:     0.30   # 外汇储备变动（跨境资本流向代理）
+
+# ── 流转效率指数 CFEI 权重 ──────────────────────────────────
+cfei_weights:
+  money_multiplier: 0.30   # 货币乘数 = M2 / 基础货币
+  velocity:        0.40   # 货币流通速度 = GDP / M2
+  credit_turnover: 0.30   # 信贷周转率 = 社融增量 / M2
+
+# ── 走资风险指数 CRI 权重 ───────────────────────────────────
+# 两项求和应 = 1；某分项缺失时 calculator 自动重新归一化（见 cri_usdcny_available）。
+cri_weights:
+  forex_change: 0.65  # 外汇储备变动（主）：外储降 → 风险升
+  usdcny:       0.35  # 人民币贬值压力（外部代理）：USD/CNY 涨 → 风险升
+
+# ── 三流共振打分阈值 ───────────────────────────────────────
+# 单维度打分: 扩张/净流入/加快 = +1, 持平 = 0, 收缩/净流出/放缓 = -1
+scoring:
+  volume:
+    # M2 同比变动（%）判定流量扩张/收缩
+    m2_yoy_up: 10.0      # ≥ 此值 → +1
+    m2_yoy_down: 7.0     # ≤ 此值 → -1; 之间 → 0
+    # 大盘主力资金净流入（亿元）判定市场内流量方向
+    main_flow_up: 300     # ≥ → +1
+    main_flow_down: -300  # ≤ → -1
+  velocity:
+    # 货币流通速度 V = GDP/M2（宏观流速）
+    v_up: 0.45        # ≥ → +1（流速正常/加快）
+    v_down: 0.40      # ≤ → -1（流速偏低/空转）
+  direction:
+    # 目标领域（A股+实体）净流向方向系数 D
+    d_up: 0.1            # D ≥ → +1（净流入）
+    d_down: -0.1         # D ≤ → -1（净流出）
+    # 人民币贬值压力阈值（USD/CNY 当日涨跌幅 %）：
+    #   ≥ +usdcny_weak → 资本外流压力（方向 -1）
+    #   ≤ -usdcny_weak → 人民币升值支撑（方向 +1）
+    usdcny_weak: 0.2
+
+# ── M2 增速基准带（判定"流量大不大"）──────────────────────
+# 近5年 M2 同比常态约 7%~12%：<low 偏收缩，>high 偏扩张，之间中性收敛
+m2_bands:
+  low: 8.0
+  high: 11.0
+
+# ── 综合判定 ───────────────────────────────────────────────
+verdict:
+  resonance_min: 2     # S ≥ 2 → 三流同向共振，趋势确立
+  chaos_max: 0         # S ≤ 0 → 三流背离紊乱，混沌期
+
+# ── 板块资金流交易参考排名 ─────────────────────────────────
+sector_ranking:
+  top_n: 5        # 净流入前 N 行业（多头方向）
+  bottom_n: 5     # 净流出前 N 行业（空头/回避方向）
+
+# ── 板块流向集中度 HHI 解读阈值 ────────────────────────────
+# HHI = Σ (|行业主力净流入_i| / Σ|净流入|)²，取值 [1/N, 1]
+#   N 为行业数；HHI 越高 = 资金越集中少数板块（趋势强但结构脆）
+hhi:
+  concentrated: 0.18   # ≥ 此值 → 资金高度集中（少数板块吸金）
+  balanced:    0.08    # ≤ 此值 → 资金分散（普涨/结构健康）
+  # 介于 balanced~concentrated 之间 → 中度集中
+
+# ── 输出 ───────────────────────────────────────────────────
+output:
+  reports_dir: reports
+  cache_dir: data/cache
+  # 报告保留天数
+  keep_reports_days: 90
