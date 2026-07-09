@@ -1,51 +1,24 @@
-# ===== 敏感信息（必排除）=====
-.env
-.env.local
-*.key
-*.pem
-secrets/
+# ===== archived: kept on disk for traceability, NOT in git =====
+_archive/
 
-# ===== macOS =====
-.DS_Store
-._*
-
-# ===== Python =====
+# ===== run artifacts (regenerated; never commit) =====
+output/
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
+破底翻候选_*.csv
+*.csv
+capital-three-flow/reports/
+kline_*.json
+*.html
+*transcript*.txt
+*会议纪要*.txt
+caisen-0618-baidu.txt
+caisen-0618-frames/
+
+# ===== env / local =====
 .venv/
 venv/
-env/
-ENV/
-*.egg-info/
-.eggs/
-dist/
-build/
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
+*.pyc
+.DS_Store
 
-# ===== Jupyter =====
-.ipynb_checkpoints/
-
-# ===== IDE =====
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# ===== 日志 / 临时文件 =====
-*.log
-logs/
-*.tmp
-*.bak
-
-# ===== 数据库文件 =====
-*.db
-*.sqlite
-*.sqlite3
-
-# ===== Qoder 本地缓存（按需保留）=====
-# .qoder/ 目录含 agent 配置，可保留
+# ===== secrets =====
+.env

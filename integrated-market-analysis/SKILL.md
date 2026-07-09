@@ -1,4 +1,4 @@
---
+---
 name: integrated-market-analysis
 description: 四方法论整合市场分析框架（方法论驱动，非观点驱动）。每次分析用四套方法论工具箱独立推导结论，专家观点仅作为方法论的实战示例参考。输出带丰富可视化图表+兵棋推演情景树的HTML报告。适用于任何市场分析。
 ---
@@ -434,16 +434,16 @@ description: 四方法论整合市场分析框架（方法论驱动，非观点�
 - 卢麒元框架：`lu-qiyuan-analysis/SKILL.md`
 - 蔡森框架：`caisen-technical-analysis/SKILL.md`
 - 笨鸟框架：`benniao-analysis/SKILL.md`
-- 底层逻辑：`底层逻辑/*.md`
+- 底层逻辑：`base-logic/*.md`
 
 **辅助参考**（低权重）：
 
 *新闻与舆情*：
-- 新闻聚合：`alphaear-news/SKILL.md`
-- 行情数据：`alphaear-stock/SKILL.md`
-- 情绪分析：`alphaear-sentiment/SKILL.md`
+- 新闻聚合：`alphaear`（news 模块，详见 `alphaear/references/alphaear-news.md`）
+- 行情数据：`alphaear`（stock 模块，详见 `alphaear/references/alphaear-stock.md`）
+- 情绪分析：`alphaear`（sentiment 模块，详见 `alphaear/references/alphaear-sentiment.md`）
 - 舆情研究：`last30days/SKILL.md`
-- 全网搜索：`alphaear-search/SKILL.md`
+- 全网搜索：`alphaear`（search 模块，详见 `alphaear/references/alphaear-search.md`）
 
 *个股深度研究*（Anthropic financial-services，按需参考）：
 - 财报分析：`anthropic-fs-skills/earnings-analysis/SKILL.md`

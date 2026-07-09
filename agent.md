@@ -8,7 +8,7 @@
 **触发条件**：用户提到「选破底翻股票」「挑破底翻」「破底翻筛选」「找破底翻」等类似表述。
 
 **执行动作**：直接运行脚本
-`/Users/weihaoli/Desktop/蔡森 skill/蔡森破底翻量化筛选器.py`
+`./蔡森破底翻量化筛选器.py`
 
 **脚本要点（运行前须知）**：
 - 数据源：
@@ -25,54 +25,18 @@
   - 按 confidence（60~75）评分，并输出分级（极高 ≥70 / 高 67-69 / 中 63-66 / 低 60-62）。
 - 输出：
   - 控制台打印分级候选列表与统计。
-  - 同时写 CSV：`/Users/weihaoli/Desktop/蔡森 skill/破底翻候选_YYYYMMDD.csv`（utf-8-sig）。
+  - 同时写 CSV：`./破底翻候选_YYYYMMDD.csv`（utf-8-sig）。
 - 依赖：`requests`、`pandas`、`numpy`。建议用 managed Python 的 venv：
-  `/Users/weihaoli/.workbuddy/binaries/python/envs/default/bin/python`
+  `./venv/bin/python（首次：python3 -m venv venv && venv/bin/pip install -r requirements.txt；WorkBuddy 托管 Python 的 venv 路径随机器/用户名变化，请以自建 venv 为准）`
 - 耗时：受网络与线程（8 线程）影响，通常几分钟；失败时脚本会跳过并计入失败数。
 
-**注意**：运行后向用户展示结果（候选清单 / CSV 路径）。CSV 默认落在用户 Desktop 的蔡森 skill 目录。
+**注意**：运行后向用户展示结果（候选清单 / CSV 路径）。CSV 默认落在仓库根目录。
 
 ## 约定 2：M头/双顶「跌幅满足」计算（两头顶中点法）
 
-**触发条件**：画 M头/双顶（double-top）形态，且需要计算/绘制「跌幅满足」（测幅满足、等幅下跌目标）。
+> **已归位到方法论本体**：完整的「两头顶中点法」规则（MID=(头1+头2)/2、H=MID−颈线、两波等距满足、配色、实战案例、易错点）已写入 `caisen-technical-analysis/SKILL.md` 的「M头/双顶 跌幅满足修正」小节。本约定仅作触发索引，不再重复维护规则细节，避免两处不同步。
 
-**核心规则（用户2026-07-08手把手纠正，蔡森教学图验证）**：
-- M头/双顶的 **H 测量基准 = 两个头的中点连到颈线**，不是单用绝对最高点、也不是单用较低峰。
-- 教学图验证（蔡森「M头跌幅满足计算」截图）：两个头 100 和 110，中点 = (100+110)/2 = **105**，颈线 80
-  - H = 105 − 80 = **25** → 满足1 = 80−25 = **55** ✅，满足2 = 55−25 = **30** ✅（与图示完全吻合）
-  - 注意：图上的 105 恰为两头顶中点，不是「较低峰」、也不是最高点 110。
-
-**计算流程（5步）**：
-1. 标注两个头：左峰（头1）、右峰（头2 / DT2）。
-2. 画颈线：黑色**水平线**（多点触碰的价位平台，蔡森「点多的为主」）。
-3. 求两头顶中点：**MID = (头1 + 头2) / 2**。
-4. 算 H：**H = MID（中点） − 颈线**。蓝色竖线从中点拉到颈线，标注 H 值。
-5. 投射两波跌幅满足（绿色水平线）：
-   - 第一波满足 = 颈线 − H（绿色实线）
-   - 第二波满足 = 满足1 − H = 颈线 − 2H（绿色虚线）
-   - 两波等距（都是 H 单位）。
-
-**配色规范（与画线图一致）**：
-| 元素 | 颜色 | 类型 |
-|------|------|------|
-| 颈线 | 黑色 #000000 | 水平粗线 |
-| 双顶连线 | 红 #e74c3c | 斜实线（头1→头2） |
-| 两头顶中点 | 紫 #8e44ad | 点线（参考标注用） |
-| 形态高度H | 蓝 #4a9eff | 竖线（中点→颈线） |
-| 第一波满足 | 绿 #2ed573 | 水平实线 |
-| 第二波满足 | 绿 #2ed573 | 水平虚线 |
-| 破线箭头 | 红 #e74c3c | 向下箭头（颈线跌破处） |
-
-**实战案例（BABA 9988.HK，2026-07-08）**：
-- 头1（左峰）= 186.2 ｜ 头2（右峰）= 174.2 ｜ 颈线 = 140
-- MID = 180.2 ｜ H = 40.2 ｜ 满足1 = 99.8 ｜ 满足2 = 59.6
-- 当前 109 > 满足1（99.8）→ 第一波尚未满足；年内低 88.65 介于满足1~2之间。
-
-**易错点（务必避免）**：
-- ❌ 用绝对最高点（左峰186.2）单测 H → 会高估 H，目标价偏低。
-- ❌ 用较低峰（右峰174.2）单测 H → 也会算错（H偏小）。
-- ✅ 必须用 **(头1+头2)/2** 的中点。
-- 头肩顶（非双顶）的 H 才是「头部最高点 − 颈线」，与M头的中点法不同，别混。
+**触发条件**：画 M头/双顶（double-top）形态，且需要计算/绘制「跌幅满足」（测幅满足、等幅下跌目标）时，按 `caisen-technical-analysis` 的上述小节执行。
 
 **交付格式**：只用 matplotlib 渲染**静态 PNG**，配合肉眼看图判读形态；不要用 ECharts/Chart.js 等交互缩放组件。
 
@@ -81,11 +45,11 @@
 **触发条件**：用户提到「**看看三流**」「三流」「跑三流」「三流日报」「监控资本流向」「今天钱往哪流」等类似表述（含用户原话「看看三流」）。
 
 **执行动作**：直接运行主副本脚本
-`/Users/weihaoli/Desktop/蔡森 skill/capital-three-flow/scripts/monitor.py`
+`./capital-three-flow/scripts/monitor.py`
 
 **运行方式（运行前须知）**：
 - 真实数据（推荐，需 akshare + 用户本机网络）：
-  `/Users/weihaoli/.workbuddy/binaries/python/envs/capital-three-flow/bin/python /Users/weihaoli/Desktop/蔡森 skill/capital-three-flow/scripts/monitor.py`
+  `./venv/bin/python（首次：python3 -m venv venv && venv/bin/pip install -r requirements.txt；WorkBuddy 托管 Python 的 venv 路径随机器/用户名变化，请以自建 venv 为准） ./capital-three-flow/scripts/monitor.py`
 - 离线验证 / 沙箱环境（不联网，用样例数据验证逻辑）：
   上述命令末尾加 `--demo`
 - 强制刷新（绕过本地缓存重拉）：加 `--force`
@@ -102,14 +66,14 @@
   - **股票交易参考模块**：把三流翻译为 流动性背景(仓位)/资本流向(多空+板块排名)/微观流速(策略)/综合姿态，输出到报告「四、股票交易参考」段落 + JSON 的 `trading_reference` 字段。纯方法论翻译，非投资建议。
 - 数据源：akshare 封装（外管局 M2/外储、央行基础货币、上交所融资融券、同花顺板块资金流 在沙箱可过；
   东方财富系「大盘主力净流入 / 人民币实时汇率」在沙箱被网络层掐断，**需在用户本机跑**才拿得到全量）。
-- 依赖 venv：`/Users/weihaoli/.workbuddy/binaries/python/envs/capital-three-flow/bin/python`（已装 pandas/numpy/pyyaml/akshare）。
+- 依赖 venv：`./venv/bin/python（首次：python3 -m venv venv && venv/bin/pip install -r requirements.txt；WorkBuddy 托管 Python 的 venv 路径随机器/用户名变化，请以自建 venv 为准）`（已装 pandas/numpy/pyyaml/akshare）。
 - 产出：主副本 `reports/` 下每日 `capital_three_flow_YYYYMMDD.json` + `.md` 日报。
 
 **注意**：运行后向用户展示结果（日报 md / JSON 路径）。完整说明见主副本 `SKILL.md` 与 `references/`。
 
 ## 约定 4：研判评分卡（股票/期货分析强制输出）
 
-**触发条件**：任何「股票 / 期货」类分析——八专家整合、破底翻、蔡森画线、妙想个股、资本三流交易参考等，**凡给出方向性结论**（涨/跌/震荡）的报告或回复。
+**触发条件**：任何「股票 / 期货」类分析——九专家整合、破底翻、蔡森画线、妙想个股、资本三流交易参考等，**凡给出方向性结论**（涨/跌/震荡）的报告或回复。
 
 **执行动作**：结论处必须输出一张「研判评分卡」，凝练不啰嗦，三要素缺一不可：
 
@@ -125,8 +89,8 @@
 
 **统一规范（已同步）**：
 - 用户级长期记忆 `~/.workbuddy/MEMORY.md`「分析输出规范 · 研判评分卡」段。
-- 八专家 skill：`caisen-8-experts-analyst/SKILL.md` 第6步「报告结构」1.5 项 + 第6.5步自检清单。
-- 跨所有 skill 通用，不限于八专家。
+- 九专家 skill：`caisen-9-experts-analyst/SKILL.md` 第6步「报告结构」1.5 项 + 第6.5步自检清单。
+- 跨所有 skill 通用，不限于九专家。
 
 **示例（赛轮轮胎 601058）**：
 > 方向：📈 震荡偏多 ｜ 置信度：62/100

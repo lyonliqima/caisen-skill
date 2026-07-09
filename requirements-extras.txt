@@ -13,7 +13,7 @@ Pillow>=10.0.0
 yfinance>=0.2.30
 akshare>=1.10.0
 
-# --- NLP / 语义搜索（alphaear-search / alphaear-sentiment，体积大） ---
+# --- NLP / 语义搜索（alphaear 套件 search / sentiment 模块，体积大） ---
 scikit-learn>=1.3.0
 sentence-transformers>=2.2.0
 transformers>=4.36.0
