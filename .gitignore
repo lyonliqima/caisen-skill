@@ -24,3 +24,9 @@ venv/
 
 # ===== secrets =====
 .env
+
+# ===== workbuddy internal state (memory/identity/secrets; never commit) =====
+.workbuddy/
+
+# ===== 9-experts runtime evidence tables (regenerated per run; never commit) =====
+caisen-9-experts-analyst/_run/

@@ -49,6 +49,16 @@
     },
     "independence_color":{"type": "string", "enum": ["🟢","🔵","🟡"], "description": "独立性三色（审计用）：🟢独立一致 / 🔵独立分歧 / 🟡假说验证中。长期 🔵≈0 ＝回声室警告"},
 
+    "market_prior": {"type": "object", "description": "市场先验（约定4第10项）：宏观/事件类必填，记录 Polymarket 赔率与本体系置信度偏差；个股类填 {applicable:false}。复盘用「与市场共识分歧的预测」命中率衡量真正 alpha",
+      "properties": {
+        "applicable":   {"type": "boolean", "description": "是否宏观/事件类（需 Polymarket 先验）；个股类=false"},
+        "polymarket":   {"type": ["string","null"], "description": "Polymarket 对应市场赔率原文，如 'Fed Sep cut Yes=68%'；个股类=null"},
+        "my_confidence":{"type": ["integer","null"], "description": "本体系对该二元命题的置信度(0-100)"},
+        "divergence_pct":{"type": ["number","null"], "description": "偏差(百分点)= my_confidence − 隐含概率；正=比市场更乐观/更确信"},
+        "reason":       {"type": ["string","null"], "description": "一句话差异理由"}
+      }
+    },
+
     "status":        {"type": "string", "enum": ["open","hit","miss","partial"], "description": "复盘状态，由 score.py / 人工回填"},
     "actual_return":{"type": ["number","null"], "description": "实际区间收益%（扣除交易成本前），到期由 score.py 或 mx-moni 回填"},
     "review_date":   {"type": ["string","null"], "description": "复盘日期 YYYY-MM-DD，回填时写入"},

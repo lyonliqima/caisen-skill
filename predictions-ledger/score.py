@@ -85,6 +85,13 @@ def _outcome(r):
     return {"hit": 1.0, "miss": 0.0, "partial": 0.5}.get(str(r.get("status")), None)
 
 
+def _market_prior(r):
+    mp = r.get("market_prior")
+    if isinstance(mp, dict) and mp.get("applicable") is True:
+        return mp
+    return None
+
+
 def _main_prob(r):
     sc = r.get("scenarios") or {}
     key = DIR_PROB.get(r.get("direction"))
@@ -155,9 +162,23 @@ def stats(recs):
         if "破底翻" in str(r.get("methodology", "")):
             wf.setdefault(r.get("time_window", "?"), []).append(r)
 
+    # 市场先验 / 与市场共识分歧的命中率（真正的 alpha 读数）
+    mp_recs = [r for r in jud if _market_prior(r)]
+    div = [r for r in mp_recs
+           if isinstance(_market_prior(r).get("divergence_pct"), (int, float))
+           and abs(_market_prior(r)["divergence_pct"]) >= 10]
+    beat = [r for r in mp_recs
+            if (_market_prior(r).get("divergence_pct") or 0) > 0]
+    mp = dict(n=len(mp_recs),
+              all=_hit_rate(mp_recs),
+              divergent_n=len(div),
+              divergent=_hit_rate(div),
+              beat_n=len(beat),
+              beat=_hit_rate(beat))
+
     return dict(n=n, overall=overall, by_skill=by_skill, by_asset=by_asset,
                by_conf=by_conf, cal=cal, brier=brier, colors=colors,
-               bench_filled=bench_filled, wf=wf)
+               bench_filled=bench_filled, wf=wf, mp=mp)
 
 
 def fmt_rate(t):
@@ -250,6 +271,17 @@ def render(recs, quiet):
     else:
         lines.append("- 暂无破底翻判定样本。建经验胜率表时务必：参数在前一段定、在后一段验，禁止全历史调参+全历史验证。")
 
+    lines.append("\n## 八、与市场共识分歧的预测命中率（真正 alpha 读数）\n")
+    mp = st["mp"]
+    if mp["n"]:
+        lines.append("- 含市场先验记录：**%d** 条；其中与市场分歧（偏差≥10pct）**%d** 条。" % (mp["n"], mp["divergent_n"]))
+        lines.append("- 全部含先验预测命中率：**%s**" % fmt_rate(mp["all"]))
+        lines.append("- **分歧预测**（|偏差|≥10pct）命中率：**%s**" % fmt_rate(mp["divergent"]))
+        lines.append("- 比市场更确信（偏差>0）的预测命中率：**%s**" % fmt_rate(mp["beat"]))
+        lines.append("- 解读：体系的 alpha 不在「跟市场一致时对」，而在「跟市场分歧且对」。分歧预测命中率长期 > 整体命中率 = 你有信息优势；反之 = 在瞎抬杠。")
+    else:
+        lines.append("- 暂无含 `market_prior` 的判定记录（宏观/事件类评分卡未填 Polymarket 先验）。")
+
     lines.append("\n---\n*本文件由 predictions-ledger/score.py 自动生成，判定数据由人工 / mx-moni 回填。*")
     text = "\n".join(lines) + "\n"
 
@@ -262,6 +294,8 @@ def render(recs, quiet):
         c["🔵"], tot))
     if c["🔵"] == 0 and tot >= 5:
         print("  ⚠️ 回声室警告：🔵 长期为 0")
+    if st["mp"]["divergent_n"]:
+        print("  分歧预测命中率 %s (n=%d)" % (fmt_rate(st["mp"]["divergent"]), st["mp"]["divergent_n"]))
 
     if not quiet:
         os.makedirs(REPORTS, exist_ok=True)
