@@ -524,7 +524,7 @@ risk-control-expert是第八人，在前七位专家给出结论、推荐标的�
 
 ### 第6步：生成HTML报告
 
-将分析结果生成为HTML文件，保存到工作区 `output/` 目录（如 `output/{主题}-analysis-{日期}.html`）。
+将分析结果生成为HTML文件，保存到**蔡森 skill 根目录的 `output/`**（即 `/Users/weihaoli/Desktop/蔡森 skill/output/{主题}-analysis-{日期}.html`）——这是用户指定的"记到"位置，与 `predictions-ledger/` 同根。WorkBuddy 会话内的临时 `output/` 仅作预览，归档以蔡森 skill 目录为权威副本。
 
 **HTML技术要求**：
 - 使用 Chart.js CDN：`<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>`

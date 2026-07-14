@@ -211,7 +211,7 @@ Step 4：结合形态判断所处阶段
 | references/charting-toolkit.md | K线划线方法/四色系统/平台工具/多平台联动/通达信速查/半导体轮动/涨跌幅标注/时间衰减权重机制 |
 | references/core-strategies.md | 两大核心策略（破底翻/假突破）与期权操作纪律 |
 | references/foreign-capital.md | 外资养套杀三步法 / 量价背离庞氏信号 / 本益比反向操作 / 带量指纹确认 / 外资卖股转ETF链条 |
-| references/market-tactics.md | 石油库存临界点 / 缺口存亡确认 / AI盈亏平衡测算 / 战争反市场法则 / 选择权分层抄底 / 龙头带动轮动 |
+| references/market-tactics.md | 石油库存临界点 / 缺口存亡确认（含利多缺口铁律）/ 起涨点支撑法 / AI盈亏平衡测算 / 战争反市场法则 / 选择权分层抄底 / 龙头带动轮动 |
 | references/new-6-18-patterns.md | 6-17/6-18 新增：水底型底部 / 本益比景气循环 / 颈线陷阱出货 / 弱势股做空 / 倍数ETF / 利空利多反作 / 多点共振 / 右侧逃命 / 量先价行（含末尾「时间衰减权重」小节） |
 | references/overview.md | 方法论总纲 + 核心理念（方法全景树与原则） |
 | references/practical-discipline.md | 二度破底翻净化 / 小波段高胜率纪律 / 整理盘预警 / 回拉低点支撑线画法 / 新股主力攻击成本停损 / 急缩量翻红标记 |

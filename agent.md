@@ -110,3 +110,15 @@
 > 看多：①关税套利产能放量(柬/印尼/墨) ②提价顺价毛利回升(Q1 +2.13pct) ③估值低位 PE 8–9x
 > 看空：①人民币升值汇兑损失(>1亿) ②股东+37%散户化 ③美国关税突变
 > 总结：橡胶涨非正相关；赛轮能否涨看产能兑现+顺价，非橡胶价。
+
+## 约定 5：分析产出「记到」蔡森 skill 目录（2026-07-14 用户要求）
+
+**适用范围**：所有蔡森方法论相关的分析产出——九专家整合、破底翻、蔡森画线、资本三流、妙想个股等。
+
+**执行动作**：
+- 工具/模板一律用 `/Users/weihaoli/Desktop/蔡森 skill/` 根目录内的脚本与 `analysis-report-template/`。
+- **HTML 报告存到蔡森 skill 根的 `output/`**（即 `/Users/weihaoli/Desktop/蔡森 skill/output/{主题}-analysis-{日期}.html`）——这是用户指定的"记到"位置。
+- **研判评分卡/预测一律 `append.py` 进 `predictions-ledger/ledger.jsonl`**（同根，约定4已写明）。
+- 不要在 WorkBuddy 临时 `output/` 仅留存一份；**必须以蔡森 skill 目录为权威归档副本**。WorkBuddy 副本可保留作预览，但落盘归档归位到蔡森 skill。
+
+**注意**：WorkBuddy 会话里的 deliverable 仍用 present_files 展示，但落盘归档地址固定为蔡森 skill 目录。
