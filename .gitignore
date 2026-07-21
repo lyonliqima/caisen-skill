@@ -4,6 +4,7 @@ _archive/
 # ===== run artifacts (regenerated; never commit) =====
 output/
 __pycache__/
+.cache/
 破底翻候选_*.csv
 *.csv
 capital-three-flow/reports/
