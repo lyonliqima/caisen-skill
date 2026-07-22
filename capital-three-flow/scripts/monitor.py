@@ -133,7 +133,40 @@ def render_markdown(r: dict) -> str:
                 lines.append(f"| 空 | {s.get('name')} | {fmt(s.get('net'))} | {fmt(s.get('pct'), '%')} |")
         lines.append("")
 
-    lines.append("## 五、数据说明与免责声明")
+    # ── 向心坍缩全球风险早期预警（卢麒元 M3 扩展）──
+    cr = r.get("collapse_risk") or {}
+    if cr:
+        lines.append("## 五、向心坍缩全球风险早期预警（卢麒元 M3 扩展）")
+        lines.append(f"- **当前阶段判定**：**{cr.get('stage')}**")
+        c = cr.get("counts", {})
+        lines.append(f"- **分级计数**：观察预警 {c.get('watch')} ｜ 风险升温 {c.get('warm')} ｜ "
+                     f"坍缩临界点 {c.get('critical')} ｜ 平稳 {c.get('normal')} ｜ 缺失/手动 {c.get('missing')}")
+        cats = cr.get("catalysts") or []
+        if cats:
+            lines.append(f"- ⚠️ **已触发坍缩重大催化项**：{', '.join(cats)} → 直接上调至加速坍缩预警")
+        if cr.get("cftc_jpy_unwind"):
+            lines.append("- ⚠️ CFTC 日元投机空头连续两周快速回落（套息平仓前兆）")
+        rows = cr.get("indicators", []) or []
+        if rows:
+            lines.append("")
+            lines.append("| 指标 | 数值 | 级别 | 组 |")
+            lines.append("|------|------|------|----|")
+            for it in rows:
+                v = it.get("value")
+                vstr = f"{v}{it.get('unit') or ''}" if v is not None else "缺失/手动"
+                lines.append(f"| {it.get('name')} | {vstr} | {it.get('level')} | {it.get('group')} |")
+        # 屏障观测（不触发崩盘阈值，区分外部冲击 vs 本土风险）
+        tr = cr.get("transmission") or {}
+        tr_on = [k for k, v in tr.items() if v]
+        if tr_on:
+            lines.append("")
+            lines.append(f"- **国内传导屏障观测（已触发）**：{', '.join(tr_on)}")
+        lines.append("")
+        lines.append("> 判定纪律：单一指标越线 ≠ 风险成立；须多指标同步突破临界区间，方判踩踏进入加速阶段。"
+                     "越靠前组（日元套息/美元流动性）越具先导性。完整阈值见 lu-qiyuan-analysis/references/collapse-risk-indicators.md。")
+        lines.append("")
+
+    lines.append("## 六、数据说明与免责声明")
     lines.append("> 数据源：akshare（M2/GDP/外储/基础货币/融资融券/主力资金/人民币汇率/板块资金流），函数名见 references/data_sources.md。")
     lines.append("> 北向/南向净流量自2024-08-19起停更、akshare已移除；跨境流向以外汇储备变动代理，并辅以人民币汇率(USD/CNY)作外部贬值压力代理。")
     lines.append("> 板块资金流 HHI 由行业主力净流入分布计算，衡量资金集中度（越高越集中少数板块）。")
@@ -174,6 +207,11 @@ def main():
         print(f"[monitor] 观测日期: {result.get('as_of')}  demo={result.get('demo')}")
         print(f"[monitor] CFCI={result['indices']['CFCI']}  CFEI={result['indices']['CFEI']}  CRI={result['indices']['CRI']}")
         print(f"[monitor] 三流得分 S={sc.get('S_total')} → {sc.get('verdict')}")
+        cr = result.get("collapse_risk") or {}
+        if cr:
+            cc = cr.get("counts", {})
+            print(f"[monitor] 向心坍缩风险阶段：{cr.get('stage')} "
+                  f"（观察 {cc.get('watch')} / 升温 {cc.get('warm')} / 临界 {cc.get('critical')}）")
         print(f"[monitor] 报告: {md_path}")
         print(f"[monitor] 数据: {json_path}")
 

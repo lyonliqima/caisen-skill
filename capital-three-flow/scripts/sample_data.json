@@ -27,5 +27,25 @@
       {"name": "非银金融", "net": 15.0, "pct": 0.1, "inflow": 55.0, "outflow": 40.0}
     ]
   },
-  "north_flow": null
+  "north_flow": null,
+  "global_collapse_risk": {
+    "as_of": "2026-07-09",
+    "akshare": false,
+    "indicators": {
+      "usdjpy": {"value": 158.0, "source": "demo", "status": "live"},
+      "us_jp_spread": {"value": 340.0, "source": "demo", "status": "live"},
+      "jgb10y": {"value": 0.95, "source": "demo", "status": "live"},
+      "fra_ois": {"value": null, "source": "需专业源(暂手动)", "status": "manual"},
+      "us10y": {"value": 4.55, "source": "demo", "status": "live"},
+      "dxy": {"value": 107.5, "source": "demo", "status": "live"},
+      "brent": {"value": 97.0, "source": "demo", "status": "live"},
+      "usdkrw": {"value": 1410.0, "source": "demo", "status": "live"},
+      "vix": {"value": 24.0, "source": "demo", "status": "live"}
+    },
+    "qualitative": {
+      "cftc_jpy_unwind": false,
+      "geopolitical": {"hormuz": false, "mideast_export_cut": false, "us_iran_conflict": false},
+      "transmission": {"northbound_4w_outflow": false, "cny_weak_but_pboc": false, "domestic_credit_tightening": false}
+    }
+  }
 }

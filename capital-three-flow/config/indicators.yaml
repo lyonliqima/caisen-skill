@@ -124,3 +124,184 @@ output:
   cache_dir: data/cache
   # 报告保留天数
   keep_reports_days: 90
+
+# ════════════════════════════════════════════════════════════════
+# 向心坍缩全球风险早期预警指标体系（卢麒元 M3 扩展）
+# 来源：lu-qiyuan-analysis/references/collapse-risk-indicators.md
+# 五级传导链：日元套息 → 美元流动性 → 地缘能源 → 非美压力 → 风险情绪
+# 三级阈值：观察预警(watch) / 风险升温(warm) / 坍缩临界点(critical)
+# 方向 direction: up 表示"数值越高越危险"（本框架全部为 up）。
+# 分类逻辑（calculator.compute_collapse_risk）：
+#   v >= critical            → critical（坍缩临界点）
+#   warm_low <= v (<crit)    → warm（风险升温）
+#   watch_low <= v (<warm_low)→ watch（观察预警）
+#   v < watch_low            → normal（平稳）
+# 定性指标(kind: qualitative) 无数值阈值，由 data/qualitative_state.json 人工/订阅源置位，
+# 其中 hormuz / mideast_export_cut / us_iran_conflict 为"坍缩重大催化项"，任一为真直接上调风险等级。
+# ════════════════════════════════════════════════════════════════
+global_collapse_risk:
+  indicators:
+    # ── ① 日元套息交易先导组（最高优先级）──
+    usdjpy:
+      name: "美元兑日元 USD/JPY"
+      group: "①日元套息先导组"
+      direction: up
+      watch_low: 152
+      warm_low: 156
+      warm_high: 160
+      critical: 160
+      unit: "JPY/USD"
+      akshare_fn: "forex_spot_em(USDJPY)"
+      note: "突破160=日银容忍贬值上限打破，套息盘抢跑平仓火源"
+    us_jp_spread:
+      name: "美日10年期利差 US10Y−JP10Y"
+      group: "①日元套息先导组"
+      direction: up
+      watch_low: 320
+      warm_low: 350
+      warm_high: 380
+      critical: 380
+      unit: "bp"
+      akshare_fn: "bond_zh_us_rate(美10Y) − macro_japan_yield_curve(日10Y)"
+      note: "利差扩张喂养套息；快速收窄(美债下/日债上)→杠杆平仓"
+    jgb10y:
+      name: "日本10年期国债收益率 JGB10Y"
+      group: "①日元套息先导组"
+      direction: up
+      watch_low: 0.9
+      warm_low: 1.0
+      warm_high: 1.1
+      critical: 1.15
+      unit: "%"
+      akshare_fn: "macro_japan_yield_curve(10Y)"
+      note: "日债收益率上行=变相融资成本抬升；>1.15触发政策被迫转向预期"
+    cftc_jpy:
+      name: "日元套息CFTC非商业净持仓"
+      group: "①日元套息先导组"
+      kind: qualitative
+      signal: "投机空头规模创阶段新高后连续两周快速回落"
+      note: "空头了结=大规模平仓启动前兆（需人工/订阅源判断）"
+
+    # ── ② 全球美元流动性核心组（资本三流·流量/流速）──
+    fra_ois:
+      name: "离岸美元流动性 FRA-OIS利差"
+      group: "②美元流动性核心组"
+      direction: up
+      watch_low: 18
+      warm_low: 30
+      warm_high: 50
+      critical: 60
+      unit: "bp"
+      akshare_fn: "（需专业源，暂手动）"
+      note: "上行=离岸美元荒，非美资产流动性被抽干"
+    us10y:
+      name: "美国10年期美债收益率 US10Y"
+      group: "②美元流动性核心组"
+      direction: up
+      watch_low: 4.35
+      warm_low: 4.50
+      warm_high: 4.70
+      critical: 4.80
+      unit: "%"
+      akshare_fn: "bond_zh_us_rate(美国国债收益率10年)"
+      note: "长端上行抬升全球风险资产分母，强化美元向心"
+    fed_balance:
+      name: "美联储资产负债表/SRF使用"
+      group: "②美元流动性核心组"
+      kind: qualitative
+      signal: "持续缩表 + SRF使用规模持续走高"
+      note: "SRF走高=银行间美元流动性紧张（环境信号，无单点阈值）"
+    dxy:
+      name: "美元指数 DXY"
+      group: "②美元流动性核心组"
+      direction: up
+      watch_low: 106.5
+      warm_low: 108
+      warm_high: 110
+      critical: 110
+      unit: "pt"
+      akshare_fn: "macro_usa_dollar_index（master已移除，待验证）"
+      note: "强美元自我强化，非美被动承压、消耗外储"
+
+    # ── ③ 能源与地缘变量（资本三流·流向）──
+    brent:
+      name: "布伦特原油 Brent"
+      group: "③能源与地缘组"
+      direction: up
+      watch_low: 88
+      warm_low: 95
+      warm_high: 105
+      critical: 110
+      unit: "美元/桶"
+      akshare_fn: "macro_oil_brent（待验证）"
+      note: "高位持续=能源进口国消耗美元储备、放大输入通胀"
+    hormuz:
+      name: "霍尔木兹海峡航运受袭/通行受限"
+      group: "③能源与地缘组"
+      kind: qualitative
+      signal: "航运遭袭或通行受限"
+      note: "坍缩重大催化项（任意一条直接上调风险等级）"
+    mideast_export_cut:
+      name: "中东主要产油国主动削减出口"
+      group: "③能源与地缘组"
+      kind: qualitative
+      signal: "主要产油国主动削减出口"
+      note: "坍缩重大催化项"
+    us_iran_conflict:
+      name: "美伊直接军事冲突升级"
+      group: "③能源与地缘组"
+      kind: qualitative
+      signal: "美伊直接军事冲突升级"
+      note: "坍缩重大催化项"
+
+    # ── ④ 非美经济体脆弱性指标 ──
+    usdkrw:
+      name: "美元兑韩元 USD/KRW"
+      group: "④非美经济体脆弱性组"
+      direction: up
+      watch_low: 1420
+      warm_low: 1440
+      warm_high: 1460
+      critical: 1460
+      unit: "KRW/USD"
+      akshare_fn: "forex_spot_em(USDKRW)"
+      note: "汇率失控=东亚货币贬值竞赛扩散（风险升温区间用户未给精确值，取1420~1460插值）"
+    em_fx_reserve:
+      name: "新兴市场外汇储备增速"
+      group: "④非美经济体脆弱性组"
+      kind: qualitative
+      signal: "工业国/新兴市场外储连续3月环比下滑；多国抛售美债稳汇率"
+      note: "抛售美债→美债收益率上行→加剧向心坍缩（自救即加剧）"
+    em_cds:
+      name: "新兴市场主权CDS"
+      group: "④非美经济体脆弱性组"
+      kind: qualitative
+      signal: "CDS持续走高，主权违约预期升温"
+      note: "主权风险→外资撤离→资产踩踏"
+
+    # ── ⑤ 风险情绪与资产踩踏确认指标 ──
+    vix:
+      name: "VIX美股恐慌指数"
+      group: "⑤风险情绪确认组"
+      direction: up
+      watch_low: 22
+      warm_low: 25
+      warm_high: 30
+      critical: 32
+      unit: "pt"
+      akshare_fn: "stock_us_spot_em(VIX)（待验证）"
+      note: "踩踏确认：股跌+美债抛售+黄金弱+商品跌+非美杀跌=抢美元现金"
+
+  # 定性/屏障观测（区分外部冲击 vs 本土系统性风险，不触发崩盘阈值）
+  transmission_observations:
+    northbound_4w_outflow: "北向资金连续4周大额净流出"
+    cny_weak_but_pboc: "人民币快速走弱但央行启动调控、外储稳定"
+    domestic_credit_tightening: "国内信用环境独立收紧（重点观察）"
+
+  # 简易判定规则（实操）
+  verdict_rule:
+    mild_pressure: "1~2 个指标进入观察预警区间，其余平稳 → 温和压力（常态）"
+    risk_warming: "≥3 个指标进入风险升温区间，且最好包含[日元/原油/美债]其中两项 → 风险升温"
+    collapse_accel_any_of:
+      - "≥4 项指标触及坍缩临界点"
+      - "出现中东航道阻断 / 日本央行超预期加息等突发催化"

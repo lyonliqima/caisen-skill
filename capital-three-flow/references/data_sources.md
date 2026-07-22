@@ -63,3 +63,51 @@
 6. **微观流速（融资买入额）**：`macro_china_market_margin_sh` 除融资/融券余额外，还含 `融资买入额`（单位元→亿元）。其 ÷融资余额 = 杠杆资金**日周转速度**（微观流速代理），沙箱可取到（上交所源）。
 7. **板块毛周转/涨跌幅**：`stock_fund_flow_industry` 另含 `流入资金`/`流出资金`（板块间毛周转，衡量微观资本活跃度）与 `行业-涨跌幅`（板块当日表现，用于交易参考多空榜的涨跌幅列）。
 8. **交易参考模块**：`calculator.build_trading_reference()` 把三流翻译为「流动性背景 / 资本流向(跨境+板块排名) / 微观流速 / 策略倾向 / 板块多空榜」，纯方法论翻译，非投资建议。
+
+## 七、向心坍缩全球风险指标（卢麒元 M3 扩展）数据源
+
+> 该指标组（见 `config/indicators.yaml` 的 `global_collapse_risk:` 与
+> `lu-qiyuan-analysis/references/collapse-risk-indicators.md`）监测全球宏观级"套息→美元流动性→
+> 地缘能源→非美压力→风险情绪"级联。多数全球指标**无可靠免费实时源**，`collector.fetch_global_collapse_risk()`
+> 对可用项 best-effort 拉取、对不可用项优雅降级（记 `None` / `manual`），绝不编造。
+
+### 7.1 数值型指标 — akshare 候选函数（best-effort，待本机+网络验证）
+
+| 指标 | akshare 候选函数 | 取数逻辑 | 状态 |
+|------|------------------|----------|------|
+| USD/JPY | `forex_spot_em()` | 过滤 `代码=="USDJPY"` 或名称含"美元日元"，取`最新价` | 预计可用 ✅ |
+| US10Y | `bond_zh_us_rate()` | 取最新行含"美国…10年"列 | 预计可用 ✅ |
+| JGB10Y | `macro_japan_yield_curve()` | 取含"10"列 | 待验证 ⚠️ |
+| 美日利差 | 由 US10Y − JGB10Y 计算 | — | 取决于两者 |
+| DXY | `macro_usa_dollar_index()` | master 中已移除（见第三节） | 大概率降级 ❌ |
+| Brent | `macro_oil_brent()` | 取最新值 | 待验证 ⚠️ |
+| USD/KRW | `forex_spot_em()` | 过滤 `代码=="USDKRW"` 或名称含"美元韩元" | 预计可用 ✅ |
+| VIX | `stock_us_spot_em()` | 过滤名称含"VIX" | 待验证 ⚠️ |
+| FRA-OIS | （无免费源） | 需专业/订阅终端 | 标记 `manual` |
+
+> 说明：除 `forex_spot_em` 外，其余全球函数未经逐函数核对，实跑时若某函数不存在会抛
+> `AttributeError`，采集器捕获后将该项记 `missing`，不影响其它指标与整体流水线。
+
+### 7.2 定性 / 催化项 — 由用户或订阅源维护
+
+无免费实时源、且属"定性信号 / 突发催化"的指标（CFTC 日元持仓、美联储 SRF、新兴市场外储、
+新兴市场 CDS、三项地缘硬信号），**不自动采集**，改由 `data/qualitative_state.json` 人工/订阅源置位：
+
+```json
+{
+  "cftc_jpy_unwind": false,
+  "geopolitical": {"hormuz": false, "mideast_export_cut": false, "us_iran_conflict": false},
+  "transmission": {"northbound_4w_outflow": false, "cny_weak_but_pboc": false, "domestic_credit_tightening": false}
+}
+```
+
+- 三项 `geopolitical` 为**坍缩重大催化项**：任一为 `true` → 判定直接跳至"加速坍缩预警"。
+- `cftc_jpy_unwind` 为套息平仓前兆信号；`transmission` 三项为"国内传导屏障观测"，不触发崩盘阈值，
+  仅用于区分外部冲击与本土系统性风险。
+- 文件缺失时 `collector._load_qualitative_state()` 返回全 `false` 默认值，报告标注"未触发"。
+
+### 7.3 判定逻辑位置
+
+- 分级（watch/warm/critical）与阶段定级（平稳/温和压力/风险升温/加速坍缩预警）在
+  `calculator.compute_collapse_risk()` 完成，阈值全部来自 `indicators.yaml`，改阈值无需动代码。
+- 简易判定规则（≥4 临界 / ≥3 升温含日元原油美债 / 地缘催化）见 `collapse-risk-indicators.md` 第五节。

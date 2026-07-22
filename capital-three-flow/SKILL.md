@@ -49,6 +49,12 @@ python scripts/monitor.py --demo --dashboard
 2. `calculator.run_all()` —— 计算三维指标 + 三指数 + 共振打分 S（含板块资金流 HHI、人民币贬值压力进 CRI）
 3. `monitor` —— 写出 `reports/capital_three_flow_YYYYMMDD.json` 与 `.md`，可选起大屏
 
+**附加指标组（卢麒元 M3 扩展 · 向心坍缩全球风险早期预警）**：
+- `collector.fetch_global_collapse_risk()` 在 `collect()` 内一并调用，采集"套息→美元流动性→地缘能源→非美压力→风险情绪"五级全球指标，best-effort 从 akshare 拉取、不可用项降级为 `None`/`manual`。
+- `calculator.compute_collapse_risk()` 按三级阈值分级，输出**阶段判定**（平稳 / 温和压力 / 风险升温 / 加速坍缩预警）、各级计数与触发催化项；报告在"六、向心坍缩全球风险早期预警"段落呈现。
+- 阈值集中在 `config/indicators.yaml` 的 `global_collapse_risk:` 块；定性/地缘催化项由 `data/qualitative_state.json` 人工/订阅源置位。
+- 完整指标体系见 `lu-qiyuan-analysis/references/collapse-risk-indicators.md`。
+
 ## 目录结构
 
 ```

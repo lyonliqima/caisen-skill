@@ -371,6 +371,167 @@ def fetch_sector_flow(ak, force=False):
         return None
 
 
+# ── 向心坍缩全球风险指标（卢麒元 M3 扩展）────────────────────
+# 套息→美元流动性→地缘能源→非美压力→风险情绪 五级早期预警指标。
+# 数值项 best-effort 从 akshare 拉取；定性/催化项来自 data/qualitative_state.json。
+QUALITATIVE_PATH = os.path.join(SKILL_DIR, "data", "qualitative_state.json")
+
+
+def _load_qualitative_state() -> dict:
+    """加载定性/催化项状态（用户或订阅源维护）。缺失时全部置 False。
+    结构：cftc_jpy_unwind(bool) / geopolitical{hormuz,mideast_export_cut,us_iran_conflict} /
+          transmission{northbound_4w_outflow,cny_weak_but_pboc,domestic_credit_tightening}"""
+    default = {
+        "cftc_jpy_unwind": False,
+        "geopolitical": {"hormuz": False, "mideast_export_cut": False, "us_iran_conflict": False},
+        "transmission": {"northbound_4w_outflow": False, "cny_weak_but_pboc": False,
+                         "domestic_credit_tightening": False},
+    }
+    try:
+        if os.path.exists(QUALITATIVE_PATH):
+            with open(QUALITATIVE_PATH, "r", encoding="utf-8") as f:
+                user = json.load(f)
+            merged = json.loads(json.dumps(default))
+            for k, v in (user or {}).items():
+                if isinstance(v, dict) and isinstance(merged.get(k), dict):
+                    merged[k].update(v)
+                else:
+                    merged[k] = v
+            return merged
+    except Exception:
+        pass
+    return default
+
+
+def _get_usdjpy(ak):
+    df = ak.forex_spot_em()
+    row = df[df["代码"] == "USDJPY"]
+    if not row.empty:
+        return _safe_float(row.iloc[0].get("最新价"))
+    nm = df[df["名称"].astype(str).str.contains("美元日元")]
+    if not nm.empty:
+        return _safe_float(nm.iloc[0].get("最新价"))
+    return None
+
+
+def _get_us10y(ak):
+    df = ak.bond_zh_us_rate()
+    last = df.iloc[-1]
+    for c in last.index:
+        if "美国" in str(c) and ("10年" in str(c) or "10Y" in str(c) or "十年" in str(c)):
+            return _safe_float(last[c])
+    return None
+
+
+def _get_jp10y(ak):
+    try:
+        df = ak.macro_japan_yield_curve()
+        last = df.iloc[-1]
+        for c in last.index:
+            if "10" in str(c):
+                return _safe_float(last[c])
+    except Exception:
+        pass
+    return None
+
+
+def _get_dxy(ak):
+    try:
+        df = ak.macro_usa_dollar_index()
+        last = df.iloc[-1]
+        for c in (last.get("美元指数"), last.get("close"), last.get(df.columns[-1])):
+            v = _safe_float(c)
+            if v is not None:
+                return v
+    except Exception:
+        pass
+    return None
+
+
+def _get_brent(ak):
+    try:
+        df = ak.macro_oil_brent()
+        last = df.iloc[-1]
+        v = _safe_float(last.get("value") or last.get(df.columns[-1]))
+        return v
+    except Exception:
+        pass
+    return None
+
+
+def _get_usdkrw(ak):
+    df = ak.forex_spot_em()
+    row = df[df["代码"] == "USDKRW"]
+    if not row.empty:
+        return _safe_float(row.iloc[0].get("最新价"))
+    nm = df[df["名称"].astype(str).str.contains("美元韩元")]
+    if not nm.empty:
+        return _safe_float(nm.iloc[0].get("最新价"))
+    return None
+
+
+def _get_vix(ak):
+    try:
+        df = ak.stock_us_spot_em()
+        row = df[df["名称"].astype(str).str.contains("VIX")]
+        if not row.empty:
+            v = _safe_float(row.iloc[0].get("最新价") or row.iloc[0].get("涨跌幅"))
+            return v
+    except Exception:
+        pass
+    return None
+
+
+def fetch_global_collapse_risk(ak, force=False):
+    """向心坍缩全球风险指标（卢麒元 M3 扩展）。
+    尝试从 akshare 拉取全球宏观指标，失败/无源项优雅降级（记 None + status），绝不编造。
+    定性/催化项来自 qualitative_state.json。
+    返回 {"as_of", "indicators":{key:{value,source,status}}, "qualitative":{...}, "akshare":bool}。"""
+    cached = None if force else _load_cache("global_collapse_risk")
+    if cached:
+        return cached
+    if ak is None:
+        return {"as_of": str(date.today()), "indicators": {}, "qualitative": _load_qualitative_state(),
+                "akshare": False}
+
+    indicators = {}
+    # 数值型（有免费 akshare 候选源，best-effort）
+    attempts = {
+        "usdjpy": (_get_usdjpy, "forex_spot_em(USDJPY)"),
+        "us10y": (_get_us10y, "bond_zh_us_rate(美10Y)"),
+        "jgb10y": (_get_jp10y, "macro_japan_yield_curve(10Y)"),
+        "dxy": (_get_dxy, "macro_usa_dollar_index"),
+        "brent": (_get_brent, "macro_oil_brent"),
+        "usdkrw": (_get_usdkrw, "forex_spot_em(USDKRW)"),
+        "vix": (_get_vix, "stock_us_spot_em(VIX)"),
+    }
+    for key, (fn, src) in attempts.items():
+        try:
+            val = fn(ak)
+            indicators[key] = {"value": val, "source": src, "status": "live" if val is not None else "missing"}
+        except Exception as e:
+            indicators[key] = {"value": None, "source": src, "status": "missing", "error": str(e)}
+
+    # 美日利差 = 美10Y − 日10Y（需两者均可得）
+    try:
+        us = indicators.get("us10y", {}).get("value")
+        jp = indicators.get("jgb10y", {}).get("value")
+        if us is not None and jp is not None:
+            indicators["us_jp_spread"] = {"value": round(us - jp, 2), "source": "us10y − jgb10y", "status": "live"}
+        else:
+            indicators["us_jp_spread"] = {"value": None, "source": "us10y − jgb10y", "status": "missing"}
+    except Exception:
+        indicators["us_jp_spread"] = {"value": None, "source": "us10y − jgb10y", "status": "missing"}
+
+    # 需专业/订阅源的数值项（FRA-OIS）—— 标记 manual，待人工/订阅源补全
+    indicators["fra_ois"] = {"value": None, "source": "需专业源(暂手动)", "status": "manual"}
+
+    out = {"as_of": str(date.today()), "indicators": indicators,
+           "qualitative": _load_qualitative_state(), "akshare": True}
+    _save_cache("global_collapse_risk", out)
+    return out
+
+
 # ── 汇总 ────────────────────────────────────────────────────
 def collect(demo=False, force=False) -> dict:
     if demo:
@@ -397,6 +558,8 @@ def collect(demo=False, force=False) -> dict:
         "main_force": fetch_main_force(ak, force),
         "fx_rate": fetch_fx_rate(ak, force),
         "sector_flow": fetch_sector_flow(ak, force),
+        # 向心坍缩全球风险早期预警指标（卢麒元 M3 扩展）
+        "global_collapse_risk": fetch_global_collapse_risk(ak, force),
         # 明确标注已移除/不可用的项
         "north_flow": None,
         "north_flow_note": "北向净流量自2024-08-19起交易所停更，akshare已移除该接口；跨境流向改用外汇储备变动代理。",

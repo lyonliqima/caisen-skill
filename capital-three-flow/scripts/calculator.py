@@ -406,6 +406,89 @@ def build_trading_reference(data, vol, vel, direction, cfg) -> dict:
     }
 
 
+# ── 向心坍缩全球风险早期预警（卢麒元 M3 扩展）────────────────
+def compute_collapse_risk(data, cfg) -> dict:
+    """按 collapse-risk-indicators.md 的简易判定规则，对 global_collapse_risk 指标组做分级与定级。
+    输入：data['global_collapse_risk']（collector 输出，含 indicators 与 qualitative）；
+          cfg['global_collapse_risk']（indicators.yaml 阈值配置）。
+    输出：stage / counts / 每指标分级 / 触发催化项 / 屏障观测。"""
+    grp = (cfg or {}).get("global_collapse_risk") or {}
+    g = (data or {}).get("global_collapse_risk") or {}
+    inds_cfg = grp.get("indicators", {})
+    rule = grp.get("verdict_rule", {})
+    vals = g.get("indicators", {}) or {}
+    qual = g.get("qualitative", {}) or {}
+
+    rows = []
+    n_watch = n_warm = n_critical = n_normal = n_missing = 0
+    for key, ic in inds_cfg.items():
+        if ic.get("kind") == "qualitative":
+            continue  # 定性项单独处理
+        direction = ic.get("direction", "up")
+        raw = vals.get(key, {}).get("value")
+        v = _num(raw)
+        level = "missing"
+        if v is None:
+            n_missing += 1
+        else:
+            wl, wlo, crit = ic.get("watch_low"), ic.get("warm_low"), ic.get("critical")
+            if direction == "up":
+                if v >= (crit if crit is not None else float("inf")):
+                    level = "critical"
+                elif wlo is not None and v >= wlo:
+                    level = "warm"
+                elif wl is not None and v >= wl:
+                    level = "watch"
+                else:
+                    level = "normal"
+        if level == "watch":
+            n_watch += 1
+        elif level == "warm":
+            n_warm += 1
+        elif level == "critical":
+            n_critical += 1
+        elif level == "normal":
+            n_normal += 1
+        rows.append({"key": key, "name": ic.get("name"), "group": ic.get("group"),
+                     "value": v, "unit": ic.get("unit"), "level": level, "note": ic.get("note")})
+
+    # 定性催化项（地缘政治 = 坍缩重大催化项，任一为真直接上调风险等级）
+    geo = qual.get("geopolitical", {}) or {}
+    triggered_catalysts = [name for name, on in geo.items() if on]
+    cftc_unwind = bool(qual.get("cftc_jpy_unwind", False))
+    transmission = qual.get("transmission", {}) or {}
+
+    # ── 简易判定规则 ──
+    if (n_critical >= 4) or triggered_catalysts:
+        stage = "加速坍缩预警（非美资产踩踏高危窗口）"
+        stage_key = "collapse_accel"
+    elif n_warm >= 3:
+        stage = "风险升温"
+        stage_key = "risk_warning"
+        warm_keys = [r["key"] for r in rows if r["level"] == "warm"]
+        core = sum(1 for k in ("usdjpy", "brent", "us10y") if k in warm_keys)
+        if core < 2:
+            stage += "（注：风险升温项未含[日元/原油/美债]其中两项，强度待确认）"
+    elif (n_watch + n_warm) >= 1:
+        stage = "温和压力（常态）"
+        stage_key = "mild_pressure"
+    else:
+        stage = "平稳"
+        stage_key = "normal"
+
+    return {
+        "stage": stage,
+        "stage_key": stage_key,
+        "counts": {"watch": n_watch, "warm": n_warm, "critical": n_critical,
+                   "normal": n_normal, "missing": n_missing},
+        "indicators": rows,
+        "catalysts": triggered_catalysts,
+        "cftc_jpy_unwind": cftc_unwind,
+        "transmission": transmission,
+        "rule": rule,
+    }
+
+
 def run_all(data) -> dict:
     cfg = load_config()
     vol = compute_volume(data, cfg)
@@ -414,6 +497,7 @@ def run_all(data) -> dict:
     indices = compute_indices(data, vol, vel, direction, cfg)
     score = compute_score(data, vol, vel, direction, cfg)
     trading = build_trading_reference(data, vol, vel, direction, cfg)
+    collapse_risk = compute_collapse_risk(data, cfg)
     return {
         "as_of": data.get("as_of"),
         "demo": data.get("demo", False),
@@ -421,6 +505,7 @@ def run_all(data) -> dict:
         "fx_rate": data.get("fx_rate"),
         "volume": vol, "velocity": vel, "direction": direction,
         "indices": indices, "score": score, "trading_reference": trading,
+        "collapse_risk": collapse_risk,
     }
 
 

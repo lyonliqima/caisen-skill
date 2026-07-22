@@ -140,6 +140,18 @@ description: 制度结构分析方法论（非观点，是工具）。核心方�
 - AI防御：加快建立基于AI技术的国家资管体系，打造金融战核心防火墙
 - 个人/机构：不过多持有弱势货币的资产，顺势而为
 
+### 第六步补充：向心坍缩全球风险早期预警（M3 量化补丁）
+
+除上述"强美元 + 资本三流"定性判断外，另有**可每日监控的量化早期预警指标体系**，用于提前捕捉
+"套息交易平仓 → 美元流动性抽干 → 地缘能源冲击 → 非美脆弱性 → 风险情绪踩踏"这一多米诺级联。
+完整清单（五级传导链、三级阈值、逻辑、简易判定规则）见
+`references/collapse-risk-indicators.md`；该清单已工程化落地为 `capital-three-flow` 指标收集阶段的
+`global_collapse_risk` 组（配置 `config/indicators.yaml` → 采集 `collector.fetch_global_collapse_risk`
+→ 判定 `calculator.compute_collapse_risk` → 日报段落）。
+
+**判定纪律**：单一指标越线仅为信号；须多个指标同步突破临界区间，方判定踩踏风险进入加速阶段。
+越靠前的组（日元套息、美元流动性）越具先导性，越靠后的组（非美压力、风险情绪）越偏确认性。
+
 ### 第七步：输出分析报告
 
 ```
@@ -198,6 +210,7 @@ description: 制度结构分析方法论（非观点，是工具）。核心方�
 | 文件 | 内容 |
 |------|------|
 | references/M3-checklist.md | M3 向心坍缩阶段判断清单 + 三色财政模板 + M4-M6 联合模板 + 时间衰减权重 |
+| references/collapse-risk-indicators.md | M3 扩展：向心坍缩**全球风险早期预警指标体系**（套息→美元流动性→地缘能源→非美压力→风险情绪 五级传导链 + 三级阈值 + 简易判定规则），已落地为 capital-three-flow 的 `global_collapse_risk` 采集组 |
 | references/core-themes.md | 卢麒元核心分析主题（23 个主题：新殖民主义、美元霸权、向心坍缩、AI金融战、战略储备等） |
 | references/economic-theories.md | 四大经济理论基础（费雪/卡莱斯基/明斯基） |
 | references/overview.md | 方法论总纲 + 人物背景 + 核心理念 |
