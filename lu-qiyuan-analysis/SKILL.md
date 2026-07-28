@@ -216,3 +216,4 @@ description: 制度结构分析方法论（非观点，是工具）。核心方�
 | references/overview.md | 方法论总纲 + 人物背景 + 核心理念 |
 | references/six-methods.md | 六大核心分析方法（会计恒等式/阶段演进/制度结构/历史对比/多主体行为/因果链条） |
 | references/style-disclaimer.md | 分析风格特点 + 免责声明 |
+| references/centripetal-collapse-logic-chain.md | 向心坍缩逻辑链机制推演（油价→美元荒→非美资产四阶段贬值，含"天问"与沃什桥梁） |

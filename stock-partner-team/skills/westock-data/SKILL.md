@@ -31,6 +31,36 @@ description: 通过 westock-mcp 连接器查询 A股/港股/美股个股/指数/
 3. **概念股两步**：`data_sector` mode=search → `data_sector` mode=constituent
 4. **参数不确定**：先读 Tool schema（`tools/data_*.json`）再调用
 
+## 资讯时效过滤（默认 24h）
+
+> **铁律**：调用以下资讯类接口后，**必须按返回 `time` 字段本地过滤，仅保留 `now − 24h` 内的条目**再展示或进入分析。腾讯接口**不支持时间参数**，此过滤是「取回后」行为，不是传参。
+
+适用接口：`data_news`（type=0公告/1研报/2新闻/3全部）、`data_notice`、`data_report`、`data_dehydrated`。
+
+规范：
+1. 默认 `limit` 取 **30**（覆盖 24h 余量，又不过度拉取）。
+2. 过滤解析：返回 `time` 格式为 `%Y-%m-%d %H:%M:%S`，与当前时间比较，丢弃超过 24h 的条目。
+3. **场景豁免**：深度研究 / 事件复盘 / 成因分析（如蔡森形态、破底翻、资金情绪框架）时，可显式放宽窗口（默认 **7d**，可指定 30d）；此类需求应在调用时说明，不做 24h 强截。
+4. 圆桌类技能（如 `caisen-10-experts-analyst`）调用本类接口时，遵循本规范即可，无需各自重写。
+
+过滤参考实现（Python）：
+```python
+from datetime import datetime, timedelta
+
+def filter_recent(items, hours=24, now=None):
+    now = now or datetime.now()
+    cutoff = now - timedelta(hours=hours)
+    out = []
+    for it in items:
+        try:
+            t = datetime.strptime(it["time"], "%Y-%m-%d %H:%M:%S")
+        except (KeyError, ValueError):
+            continue
+        if t >= cutoff:
+            out.append(it)
+    return out
+```
+
 ---
 
 ## 常用 Tool 速查
@@ -86,6 +116,7 @@ data_notice      mode=list symbol=sh600000
 data_report      mode=list symbol=sh600000 limit=20
 data_dehydrated  mode=list limit=10
 ```
+> ⏱ 上述资讯类接口取回后**必须按 `time` 字段本地过滤 24h**（详见「资讯时效过滤（默认 24h）」章节）；深度研究场景可豁免至 7d。
 
 ### 技术与筹码
 
