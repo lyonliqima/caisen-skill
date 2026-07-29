@@ -17,6 +17,13 @@
 #   bash install.sh --apikey <KEY>  # 直接提供 API Key，跳过交互
 #   bash install.sh --yes           # 全部默认 yes（非交互，CI 友好）
 # ============================================================================
+#
+# 上游 vendored skill 说明（本仓库未内置其引擎）：
+#   - last30days（近30天多平台舆情研究）：上游 https://github.com/mvanhorn/last30days-skill
+#     （author: mvanhorn, MIT）。其引擎 scripts/last30days.py 与 scripts/lib/ 未随本仓库分发，
+#     需另行克隆安装后才能使用；未安装时 caisen-10-experts-analyst 会跳过该舆情通道，
+#     改用 WebSearch + news-aggregator。last30days/SKILL.md 顶部已标注此约束。
+# ============================================================================
 
 set -euo pipefail
 

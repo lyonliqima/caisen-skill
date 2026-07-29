@@ -60,6 +60,11 @@ metadata:
       - clawhub
 ---
 
+> ⚠️ **本 skill 的引擎脚本 `scripts/last30days.py` 未包含在本仓库中。**
+> 未安装上游插件时本 skill 不可用。请勿在缺少引擎的情况下按契约执行 —
+> 正确行为是直接向用户报告「last30days 引擎缺失」并改用 WebSearch + news-aggregator。
+> 上游来源：`https://github.com/mvanhorn/last30days-skill`（author: mvanhorn，MIT）。
+
 # last30days：近30天多平台舆情研究工具
 > **核心定位**：这是一个有严格输出契约的固定研究工具，必须运行 `scripts/last30days.py` 引擎并遵守下方的工作流程与 LAW 契约。详细的步骤、契约与合成模板已拆至 `references/`，本文件只保留流程骨架与索引。
 

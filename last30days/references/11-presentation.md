@@ -223,7 +223,7 @@ Close with `I have all the links to the {N} {source list} I pulled from. Just as
 
 **When triggered, you MUST:**
 
-- Read `references/save-html-brief.md` BEFORE proceeding to WAIT FOR USER'S RESPONSE
+- Read `references/save-html-brief.md` **[MISSING — 该文件未随本仓库分发，见上游 mvanhorn/last30days-skill]** BEFORE proceeding to WAIT FOR USER'S RESPONSE
 - Follow that file's instructions exactly - it is the canonical source for the save flow
 - Append the confirmation line (`📎 Shareable brief saved to <path>`) to your already-emitted chat response
 

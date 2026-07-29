@@ -81,7 +81,7 @@ agent_created: true
 *新闻与舆情*（按需调用，详见各 skill 的 SKILL.md）：
 - 🌐 news-aggregator-skill（44+信源全网新闻扫描）
 - 📰🔮📡 alphaear（news / predictor / signal-tracker 模块：新闻聚合/时序预测/信号追踪，详见 `alphaear/SKILL.md` 与 `alphaear/references/`）
-- 🗓 last30days（近30天多平台舆情研究）
+- 🗓 last30days（近30天多平台舆情研究，**需上游插件 mvanhorn/last30days-skill，未安装时跳过**；引擎 `scripts/last30days.py` 不在本仓库）
 
 *个股深度研究*（来自 Anthropic financial-services，L4级别才全量调用）：
 - 📈 earnings-analysis / 🔎 earnings-preview（财报分析/预估）
@@ -191,7 +191,7 @@ agent_created: true
    - ⚠️ **结果当日缓存**：抓到的舆情按 `stock_code+日期` 落盘`references/_cache/guba_{code}_{YYYYMMDD}.md`，同一自然日内不重复抓取，次日失效。
 6. **了解参考skill**（按需读取）：
    - **alphaear** 技能（news 模块，用 Skill 工具调用该技能）：了解财经新闻聚合方法
-   - **last30days** 技能（用 Skill 工具调用该技能）：了解多平台舆情研究方法
+   - **last30days** 技能（用 Skill 工具调用该技能）：了解多平台舆情研究方法 —— **注意：上游引擎 `scripts/last30days.py` 未随本仓库分发，未安装上游插件时跳过此调用，改用 WebSearch + news-aggregator**
    - alphaear 套件其他模块（search/sentiment/predictor/stock 等）按需参考
 
 7. **背景资料库（用户提供的会议纪要/研报解读/专题整理）**：
