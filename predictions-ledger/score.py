@@ -76,6 +76,30 @@ def _due(recs):
     return out
 
 
+def print_due(recs):
+    """列出所有 expiry <= 今天 且 status=open 的记录（FIX 2）。无到期项时给出最近到期日。"""
+    due = _due(recs)
+    if not due:
+        future = [r for r in recs
+                  if str(r.get("status", "open")) == "open" and _parse_expiry(r.get("expiry"))]
+        future.sort(key=lambda r: _parse_expiry(r.get("expiry")))
+        if future:
+            nxt = future[0]
+            ex = _parse_expiry(nxt.get("expiry"))
+            days = (ex - TODAY).days
+            print("本期无到期预测，最近到期日：%s（还有 %d 天）→ %s %s"
+                  % (nxt.get("expiry"), days, nxt.get("id"), nxt.get("symbol")))
+        else:
+            print("本期无到期预测，且无未来到期日记录。")
+        return
+    print("待结算清单（expiry <= %s 且 status=open）：" % TODAY.isoformat())
+    print("%-16s %-24s %-6s %-4s %-10s %s" % ("id", "标的", "方向", "置信度", "期限", "到期"))
+    for r in due:
+        print("%-16s %-24s %-6s %-4s %-10s %s" % (
+            r.get("id"), r.get("symbol"), r.get("direction"),
+            r.get("confidence"), r.get("time_window"), r.get("expiry")))
+
+
 def _is_judged(r):
     return str(r.get("status", "open")) in ("hit", "miss", "partial") \
         and r.get("actual_return") is not None
@@ -211,17 +235,17 @@ def render(recs, quiet):
 
     lines.append("## 一、到期待复盘（逐条判对错）\n")
     if due:
-    lines.append("| id | 标的 | 方向 | 置信度 | 期限 | 证伪位 | 到期 | 证据快照 |")
-    lines.append("|---|---|---|---|---|---|---|---|")
-    for r in due:
-        lines.append("| %s | %s | %s | %s | %s | %s | %s | %s |" % (
-            r.get("id"), r.get("symbol"), r.get("direction"),
-            r.get("confidence"), r.get("time_window"),
-            r.get("falsification"), r.get("expiry"),
-            r.get("evidence_ref") or "—")))
-        lines.append("\n回填命令示例：")
-        lines.append("`python3 score.py mark %s --status hit --return 8.2`\n"
-                    % (due[0].get("id") if due else "P-YYYYMMDD-001"))
+        lines.append("| id | 标的 | 方向 | 置信度 | 期限 | 证伪位 | 到期 | 证据快照 |")
+        lines.append("|---|---|---|---|---|---|---|---|")
+        for r in due:
+            lines.append("| %s | %s | %s | %s | %s | %s | %s | %s |" % (
+                r.get("id"), r.get("symbol"), r.get("direction"),
+                r.get("confidence"), r.get("time_window"),
+                r.get("falsification"), r.get("expiry"),
+                r.get("evidence_ref") or "—"))
+            lines.append("\n回填命令示例：")
+            lines.append("`python3 score.py mark %s --status hit --return 8.2`\n"
+                        % (due[0].get("id") if due else "P-YYYYMMDD-001"))
     else:
         lines.append("（无到期待复盘记录）\n")
 
@@ -380,7 +404,12 @@ def main():
     ap.add_argument("--return", dest="ret", type=float, help="实际区间收益%")
     ap.add_argument("--benchmark", help='基准 JSON，如 \'{"hold_csi300":2.0}\'')
     ap.add_argument("--quiet", action="store_true", help="只打印不写盘")
+    ap.add_argument("--due", action="store_true", help="只列出到期待结算清单（expiry<=今天 且 status=open）")
     args = ap.parse_args()
+
+    if args.due:
+        print_due(_load())
+        return
 
     if args.cmd == "mark":
         if not args.rec_id:

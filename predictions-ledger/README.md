@@ -76,3 +76,10 @@ python3 predictions-ledger/score.py mark P-20260709-001 --status partial --retur
 ## 迁移说明
 
 旧 `predictions/ledger.csv` + `ledger.schema.json` 为早期桩文件（CSV 为空、无 score.py）。本目录为正式台账，**以 `predictions-ledger/ledger.jsonl` 为准**；旧 `predictions/` 可删除或归档。
+
+## 复盘节奏
+
+- **每周一**：`python3 predictions-ledger/score.py --due` 检查到期待结算记录，逐条判对错并回填（mark 子命令）。
+- **每月**：跑一次 `python3 predictions-ledger/score.py` 全量复盘；当前报告落在 `reports/`（`score-<date>.md` / `review-<date>.md`）。月度归档建议另存至 `predictions-ledger/reviews/<YYYY-MM>.md`（`reviews/` 目录已加入 git，且不会被 `.gitignore` 的 `*.csv` / `*.html` 规则误伤，仅含 `.md`）。
+- 复盘时重点看：校准曲线（标 70 分是否约七成兑现）、Brier、三色独立性（🔵 长期为 0 ＝回声室）、与市场共识分歧预测的命中率（真正 alpha 读数）。
+- 新记录必须通过 `append.py` 的 schema 白名单校验，且宏观 / 事件类必填 `market_prior`（约定4 第10项）；`confidence` 落点须有分布（避免全挤在 55–75 中间值，见约定4 置信度分布约束）。

@@ -110,6 +110,66 @@ def load_input(args):
     sys.exit(2)
 
 
+def _load_schema():
+    p = os.path.join(HERE, "schema.json")
+    if not os.path.exists(p):
+        return None
+    with open(p, encoding="utf-8") as f:
+        try:
+            return json.load(f)
+        except Exception:
+            return None
+
+
+def validate_schema(rec, schema):
+    """未知字段拒绝 + 必填（排除脚本自动填补字段）拒绝。无 schema 时跳过。"""
+    if not schema:
+        return
+    allowed = set(schema.get("properties", {}).keys())
+    unknown = sorted(k for k in rec.keys() if k not in allowed)
+    if unknown:
+        sys.stderr.write("✗ 含 schema 未定义字段: %s\n" % ", ".join(unknown))
+        sys.exit(2)
+    auto = ("id", "date", "data_cutoff", "expiry")
+    req = [k for k in schema.get("required", []) if k not in auto]
+    missing = [k for k in req if k not in rec or rec.get(k) in (None, "")]
+    if missing:
+        sys.stderr.write("✗ 缺失必填字段（schema）: %s\n" % ", ".join(missing))
+        sys.exit(2)
+
+
+def validate_market_prior(rec):
+    """宏观 / 事件类预测必须先取 Polymarket 或同类预测市场赔率（约定4 第10项）。"""
+    if rec.get("asset_class") in ("大宗商品", "宏观指数", "外汇"):
+        mp = rec.get("market_prior")
+        if not isinstance(mp, dict) or mp.get("applicable") is not True \
+           or not str(mp.get("polymarket") or "").strip():
+            sys.stderr.write(
+                "✗ 宏观/事件类预测必须先取 Polymarket 或同类预测市场赔率（约定4 第10项）\n")
+            sys.exit(2)
+
+
+def warn_confidence_distribution(ledger_path):
+    """回读最近 10 条，若全落在 55-75 区间则告警（中间值锚定退化）。"""
+    try:
+        recs = []
+        with open(ledger_path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line:
+                    try:
+                        recs.append(json.loads(line))
+                    except Exception:
+                        pass
+        recent = [r for r in recs[-10:] if isinstance(r.get("confidence"), int)]
+        if len(recent) >= 10 and all(55 <= c <= 75 for c in (r["confidence"] for r in recent)):
+            sys.stderr.write(
+                "⚠️ 最近 10 条置信度全在 55-75，该字段可能已退化为噪音，"
+                "Brier 将失去区分度。请在本周复盘中专项检讨。\n")
+    except Exception:
+        pass
+
+
 def main():
     ap = argparse.ArgumentParser(description="评分卡 → 预测台账 追加器")
     src = ap.add_mutually_exclusive_group(required=False)
@@ -127,6 +187,11 @@ def main():
     if not isinstance(rec, dict):
         sys.stderr.write("✗ 输入必须是 JSON 对象\n")
         sys.exit(2)
+
+    # ── schema 白名单 + market_prior 必填校验（FIX 2）──
+    schema = _load_schema()
+    validate_schema(rec, schema)
+    validate_market_prior(rec)
 
     # ── 证据快照引用 + 数据质量上限（数据层改造 TASK6）──
     if args.evidence_ref is not None:
@@ -152,6 +217,7 @@ def main():
     with open(LEDGER, "a", encoding="utf-8") as f:
         f.write(json.dumps(rec, ensure_ascii=False) + "\n")
     print("✓ 已追加 → %s  (id=%s, expiry=%s)" % (LEDGER, rec["id"], rec.get("expiry")))
+    warn_confidence_distribution(LEDGER)
 
 
 if __name__ == "__main__":
