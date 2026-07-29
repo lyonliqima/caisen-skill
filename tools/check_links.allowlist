@@ -1,0 +1,40 @@
+# tools/check_links.allowlist
+# 已知缺失引用基线。链接检查器按「相对路径:行号」精确跳过这些行；
+# 若文件被编辑导致行号漂移，该行会重新触发断链检查，需同步更新此处。
+# 分类：上游第三方 skill 引擎/文档未随本仓库分发；运行时生成的数据文件；早期已废弃的桩文件路径。
+yang-shiguang-analysis/references/00-overview.md:69  # 上游示例文档未随本仓库分发 -> examples-0608.md
+yang-shiguang-analysis/references/00-overview.md:69  # 上游示例文档未随本仓库分发 -> examples-0609.md
+yang-shiguang-analysis/references/00-overview.md:69  # 上游示例文档未随本仓库分发 -> examples-0618.md
+yang-shiguang-analysis/references/00-overview.md:69  # 上游示例文档未随本仓库分发 -> examples-0623.md
+yang-shiguang-analysis/references/00-overview.md:69  # 上游示例文档未随本仓库分发 -> examples-0623b-旧秩序崩塌.md
+news-aggregator-skill/implementation_plan.md:15  # 上游计划文档引用的脚本未随本仓库分发 -> scripts/daily_scan.sh
+news-aggregator-skill/implementation_plan.md:23  # 上游计划文档引用的脚本未随本仓库分发 -> scripts/generate_basic_report.py
+news-aggregator-skill/implementation_plan.md:30  # 上游计划文档引用的脚本未随本仓库分发 -> scripts/daily_scan.sh
+alphaear/references/alphaear-predictor.md:20  # 上游子技能参考文档(PROMPTS/sources)未随本仓库分发 -> references/PROMPTS.md
+alphaear/references/alphaear-sentiment.md:29  # 上游子技能参考文档(PROMPTS/sources)未随本仓库分发 -> references/PROMPTS.md
+alphaear/references/alphaear-reporter.md:18  # 上游子技能参考文档(PROMPTS/sources)未随本仓库分发 -> references/PROMPTS.md
+alphaear/references/alphaear-news.md:21  # 上游子技能参考文档(PROMPTS/sources)未随本仓库分发 -> references/sources.md
+alphaear/references/alphaear-signal-tracker.md:18  # 上游子技能参考文档(PROMPTS/sources)未随本仓库分发 -> references/PROMPTS.md
+alphaear/references/alphaear-logic-visualizer.md:18  # 上游子技能参考文档(PROMPTS/sources)未随本仓库分发 -> references/PROMPTS.md
+alphaear/references/alphaear-search.md:23  # 上游子技能参考文档(PROMPTS/sources)未随本仓库分发 -> references/PROMPTS.md
+lu-qiyuan-analysis/SKILL.md:149  # 配置/数据文件未随本仓库分发(上游未提供) -> config/indicators.yaml
+lu-qiyuan-analysis/references/collapse-risk-indicators.md:214  # 配置/数据文件未随本仓库分发(上游未提供) -> data/qualitative_state.json
+capital-three-flow/SKILL.md:70  # 运行时数据文件(脚本生成),非文档 -> data/qualitative_state.json
+capital-three-flow/references/data_sources.md:94  # 运行时数据文件(脚本生成),非文档 -> data/qualitative_state.json
+last30days/SKILL.md:63  # 上游引擎 last30days-skill 未随本仓库分发 -> scripts/last30days.py
+last30days/SKILL.md:69  # 上游引擎 last30days-skill 未随本仓库分发 -> scripts/last30days.py
+last30days/SKILL.md:78  # 上游引擎 last30days-skill 未随本仓库分发 -> scripts/last30days.py
+last30days/SKILL.md:85  # 上游引擎 last30days-skill 未随本仓库分发 -> scripts/last30days.py
+last30days/references/12-security.md:26  # 上游引擎 last30days-skill 未随本仓库分发 -> scripts/last30days.py
+last30days/references/00-contract-laws.md:129  # 上游引擎 last30days-skill 未随本仓库分发 -> scripts/last30days.py
+last30days/references/00-contract-laws.md:133  # 上游引擎 last30days-skill 未随本仓库分发 -> scripts/last30days.py
+last30days/references/01-howto-invoke.md:13  # 上游引擎 last30days-skill 未随本仓库分发 -> scripts/last30days.py
+last30days/references/01-howto-invoke.md:22  # 上游引擎 last30days-skill 未随本仓库分发 -> scripts/last30days.py
+last30days/references/01-howto-invoke.md:71  # 上游引擎 last30days-skill 未随本仓库分发 -> skills/last30days/nux-wizard.md
+predictions-ledger/README.md:78  # 早期桩文件路径,已被 ledger.jsonl 取代 -> predictions/ledger.csv
+serenity/serenity-method/references/framework.md:58  # 上游参考文档/报告未随本仓库分发 -> references/03-business-moat.md
+serenity/serenity-method/references/exemplars.md:3  # 上游参考文档/报告未随本仓库分发 -> reports/aleabito-digests/2026-05-28..30.md
+caisen-10-experts-analyst/SKILL.md:84  # 上游引擎 last30days-skill 未随本仓库分发 -> scripts/last30days.py
+caisen-10-experts-analyst/SKILL.md:196  # 上游引擎 last30days-skill 未随本仓库分发 -> scripts/last30days.py
+stock-partner-team/skills/westock-tool/references/ai_usage_guide.md:3  # 上游 workbuddy 版 SKILL 未随本仓库分发 -> ../SKILL_workbuddy.md
+stock-partner-team/skills/westock-tool/references/ai_usage_guide.md:58  # 上游 workbuddy 版 SKILL 未随本仓库分发 -> ../SKILL_workbuddy.md

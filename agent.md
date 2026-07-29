@@ -287,3 +287,10 @@
 ## 约定 10：数据采集规范 v2（数据层默认流程）
 
 所有市场分析的第0步一律走 `caisen-10-experts-analyst/references/00-data-collection-v2.md` 的 D0–D9：D0 数据日历前置、D1 T0 实物层、D2 五面镜子（钱/货/人/单/嘴）、D3 五连想+定向取证（即第0.8步）、D4 反向取证、D5 代理变量有效性检验、D6 取数失败率入账、D7 数据质量分→置信度上限封顶、D8 证据快照绑定台账、D9 一手源扩容。第0.8步五连想为 L2 及以上必做；最终置信度受 D7 数表封顶，评分卡 `append` 时带 `evidence_ref` 和 `data_quality`（见约定4）。
+
+## 约定 11：markdown 断链检查（2026-07-29 建立）
+
+- 全仓 markdown 链接/反引号路径的静态断链检查器：`tools/check_links.py`（stdlib-only，退出码 0=通过 / 1=断链）。
+- 已知缺失引用基线：`tools/check_links.allowlist`（按「相对路径:行号」精确跳过，行号漂移会重新触发检查）。分类：上游第三方 skill 引擎/文档未随本仓库分发、运行时生成的数据文件、早期已废弃的桩文件路径。
+- 跨技能引用优先指向兄弟技能的**权威副本**（如 `$CAISEN_ROOT/lukou-daye/references/...`、`$CAISEN_ROOT/benniao-analysis/references/...`、`$CAISEN_ROOT/serenity/.../references/...`），遵循约定7「副本唯一化」，不在各自 SKILL.md 内重复拷贝参考文档。
+- 提交前钩子已安装（`.git/hooks/pre-commit` → `tools/pre-commit-check-links.sh`）：存在非 allowlist 断链则阻止提交，禁止引入新断链。新克隆需重装钩子：`ln -s ../../tools/pre-commit-check-links.sh .git/hooks/pre-commit`。

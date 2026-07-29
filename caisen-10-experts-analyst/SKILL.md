@@ -380,14 +380,14 @@ python3 mx-data/mx_data.py "沪深300指数最新点位 涨跌幅"
 
 | 问题类型 | 加载的 M-method | 对应 reference 文件 |
 |---------|---------------|-------------------|
-| 黄金/贵金属 | M8（三类危机×三类投资者） | `references/gold-three-crises-analysis.md` |
-| 美债/国债 | M9（三层拆解）+ M18（稳定币接盘） | `references/us-treasury-crisis-analysis.md` + `references/stablecoin-treasury-buyer.md` |
-| 日本/日元 | M10（加息悖论+美元潮汐） | `references/japan-debt-crisis-and-us-scripts.md` |
-| 美元霸权/石油 | M11（五阶段）+ M16（地缘传导链） | `references/dollar-hegemony-five-stages.md` + `references/hormuz-resolution-and-nato-asia.md` |
-| 加息/通胀困境 | M12（沃尔克困境+不均衡收缩） | `references/volcker-dilemma-and-china-advantage.md` |
-| 商品涨价/产业链 | M13（涨价拆解）+ M15（传导链） | `references/price-increase-profit-analysis.md` + `references/commodity-transmission-chain.md` |
-| 科技股抱团/资金流向 | M14（资产赛马+虹吸效应） | `references/horse-race-and-liquidity-siphon.md` |
-| 地缘政治/军事冲突 | M16（地缘传导链）+ M17（双重战略） | `references/hormuz-resolution-and-nato-asia.md` + `references/trump-dual-strategy-and-derisking.md` |
+| 黄金/贵金属 | M8（三类危机×三类投资者） | `$CAISEN_ROOT/benniao-analysis/references/gold-three-crises-analysis.md` |
+| 美债/国债 | M9（三层拆解）+ M18（稳定币接盘） | `$CAISEN_ROOT/benniao-analysis/references/us-treasury-crisis-analysis.md` + `$CAISEN_ROOT/benniao-analysis/references/stablecoin-treasury-buyer.md` |
+| 日本/日元 | M10（加息悖论+美元潮汐） | `$CAISEN_ROOT/benniao-analysis/references/japan-debt-crisis-and-us-scripts.md` |
+| 美元霸权/石油 | M11（五阶段）+ M16（地缘传导链） | `$CAISEN_ROOT/benniao-analysis/references/dollar-hegemony-five-stages.md` + `$CAISEN_ROOT/benniao-analysis/references/hormuz-resolution-and-nato-asia.md` |
+| 加息/通胀困境 | M12（沃尔克困境+不均衡收缩） | `$CAISEN_ROOT/benniao-analysis/references/volcker-dilemma-and-china-advantage.md` |
+| 商品涨价/产业链 | M13（涨价拆解）+ M15（传导链） | `$CAISEN_ROOT/benniao-analysis/references/price-increase-profit-analysis.md` + `$CAISEN_ROOT/benniao-analysis/references/commodity-transmission-chain.md` |
+| 科技股抱团/资金流向 | M14（资产赛马+虹吸效应） | `$CAISEN_ROOT/benniao-analysis/references/horse-race-and-liquidity-siphon.md` |
+| 地缘政治/军事冲突 | M16（地缘传导链）+ M17（双重战略） | `$CAISEN_ROOT/benniao-analysis/references/hormuz-resolution-and-nato-asia.md` + `$CAISEN_ROOT/benniao-analysis/references/trump-dual-strategy-and-derisking.md` |
 | 宏观数据/非农/CPI | M1-M7（基础工具组） | 无需额外reference，SKILL.md已包含 |
 | AI科技革命 | M5（AI传导链） | 无需额外reference，SKILL.md已包含 |
 
@@ -400,11 +400,11 @@ python3 mx-data/mx_data.py "沪深300指数最新点位 涨跌幅"
 
 | 问题类型 | 激活的子模块 | 读取的文件 |
 |---------|------------|----------|
-| 个股深度研究/供应链分析 | serenity-skill（供应链瓶颈猎手） | `serenity/serenity-skill/SKILL.md` + `references/evidence-ladder.md` + `references/market-source-playbook.md` |
-| 用Serenity方法分析任意标的 | serenity-method（五步分析法） | `serenity/serenity-method/SKILL.md` + `references/framework.md` + `references/glossary.md` |
-| 跟踪Serenity关注方向/雷达信号 | serenity-radar（注意力雷达） | `serenity/serenity-radar/SKILL.md` + `references/patterns.md` + `references/signals.md` |
+| 个股深度研究/供应链分析 | serenity-skill（供应链瓶颈猎手） | `serenity/serenity-skill/SKILL.md` + `$CAISEN_ROOT/serenity/serenity-skill/references/evidence-ladder.md` + `$CAISEN_ROOT/serenity/serenity-skill/references/market-source-playbook.md` |
+| 用Serenity方法分析任意标的 | serenity-method（五步分析法） | `serenity/serenity-method/SKILL.md` + `$CAISEN_ROOT/serenity/serenity-method/references/framework.md` + `$CAISEN_ROOT/serenity/serenity-method/references/glossary.md` |
+| 跟踪Serenity关注方向/雷达信号 | serenity-radar（注意力雷达） | `serenity/serenity-radar/SKILL.md` + `$CAISEN_ROOT/serenity/serenity-radar/references/patterns.md` + `$CAISEN_ROOT/serenity/serenity-radar/references/signals.md` |
 | 抓取@aleabitoreddit最新动态 | follow-aleabito（实时跟踪） | `serenity/follow-aleabito/SKILL.md` |
-| 基于推文语料评分股票 | serenity-stock-scorer（0-100评分） | `serenity/serenity-stock-scorer/SKILL.md` + `references/serenity-framework.md` |
+| 基于推文语料评分股票 | serenity-stock-scorer（0-100评分） | `serenity/serenity-stock-scorer/SKILL.md` + `$CAISEN_ROOT/serenity/serenity-stock-scorer/references/serenity-framework.md` |
 
 - **serenity-skill 九步工作流**（主题扫描时完整执行）：设定范围→故事转化为系统变化→映射价值链→找稀缺层→构建公司池(≥20家)→收集评级证据(≥25源)→排优先级→解释反面论证→给出下一步研究动作
 - **serenity-method 五步法**（个股分析时执行）：找关键卡点→第一性原理分解(5杠杆：需求持久性/供给瓶颈/定价权/资本密集度/法治地缘)→Buffett质量门(护城河/赚钱能力/客户替换风险/Buffett式好公司/当前结论，默认unverified)→叙事vs基本面卫生(质疑阶梯/媒体FUD/资金流/历史记录)→分类(研究地图 vs 可投资结论)
@@ -572,7 +572,7 @@ risk-control-expert是第八人，在前七位专家给出结论、推荐标的�
 
 路口大爷是一套**研究方法**（非观点集合），基于「三层四维周期资本流动分析法」（地缘/资本循环/社会分配 × 历史周期/外部红利/货币体系/金融监管）及四大维度（宏观结构与周期 / 地缘与政策 / 资金流与市场微观结构 / 美元体系与货币战略），从 L1-L20 二十个模块独立推导宏观资金流研判。**本视角在分析宏观/资金流/地缘/周期定位/定价权转移/重资产周期/美元体系类问题时自动触发，作为核心领域专家进入分析主流程**（不局限于 L4）；其与杨世光宏观六步法、卢麒元制度结构、笨鸟数据拆解在宏观维度存在互补，定位为「宏观资金流专项深度研判」而非权益视角的重复。
 
-- **读取 `lukou-daye/SKILL.md` 及其 `references/`**（与本技能同处「蔡森 skill」根目录的兄弟文件夹）：`SKILL.md` 学七步分析流程与方法论工具，`references/00-overview.md` 学 L1-L20 框架总纲与三层四维模型，`references/02-l1-l3.md`（产业周期财富传导/融资结构变迁/消费深层归因）、`references/03-l4-l5.md`（地缘能源金融战穿透/政策工具四维拆解）、`references/04-l6-l10.md`（资金双轨/三方博弈/聪明钱/卖水卖铲子/定价权转移）、`references/05-l11-l13.md`（美元信用支柱诊断/结构性需求锁定/政策协同独立性）、`references/06-l14-l16.md`（宽松前置障碍/黄金长周期定价/战略叙事依赖）、`references/07-l17-l20.md`（重资产供给弹性/科技巨头转型/货币前瞻指引/资产泡沫真实性）、`references/08-combos.md`（11 个典型场景配方）；`examples.md` / `examples-0629.md` 学应用步骤**不抄结论**。
+- **读取 `lukou-daye/SKILL.md` 及其 `references/`**（与本技能同处「蔡森 skill」根目录的兄弟文件夹）：`SKILL.md` 学七步分析流程与方法论工具，`$CAISEN_ROOT/lukou-daye/references/00-overview.md` 学 L1-L20 框架总纲与三层四维模型，`$CAISEN_ROOT/lukou-daye/references/02-l1-l3.md`（产业周期财富传导/融资结构变迁/消费深层归因）、`$CAISEN_ROOT/lukou-daye/references/03-l4-l5.md`（地缘能源金融战穿透/政策工具四维拆解）、`$CAISEN_ROOT/lukou-daye/references/04-l6-l10.md`（资金双轨/三方博弈/聪明钱/卖水卖铲子/定价权转移）、`$CAISEN_ROOT/lukou-daye/references/05-l11-l13.md`（美元信用支柱诊断/结构性需求锁定/政策协同独立性）、`$CAISEN_ROOT/lukou-daye/references/06-l14-l16.md`（宽松前置障碍/黄金长周期定价/战略叙事依赖）、`$CAISEN_ROOT/lukou-daye/references/07-l17-l20.md`（重资产供给弹性/科技巨头转型/货币前瞻指引/资产泡沫真实性）、`$CAISEN_ROOT/lukou-daye/references/08-combos.md`（11 个典型场景配方）；`examples.md` / `examples-0629.md` 学应用步骤**不抄结论**。
 - **调度方式（二选一，主 agent 决定）**：
   1. **真并行 spawn**：用 Agent 工具按 L1-L20 模块（或按问题相关子集）并发调用，每个子智能体仅加载 `lukou-daye/references/` 中对应章节，独立推导后由主 agent 汇编五维宏观资金流研判；数据优先走妙想(mx-*)与腾讯自选股(westock-mcp)，禁止用 WebSearch 替代结构化数据
   2. **上下文内推导（降级）**：当前环境无法 spawn 时，主 agent 直接读取相关 L 模块按各自框架独立推导后汇编五维研判，须在报告中标注「路口大爷降级为上下文推导」
