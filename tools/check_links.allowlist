@@ -36,5 +36,6 @@ serenity/serenity-method/references/framework.md:58  # 上游参考文档/报告
 serenity/serenity-method/references/exemplars.md:3  # 上游参考文档/报告未随本仓库分发 -> reports/aleabito-digests/2026-05-28..30.md
 caisen-10-experts-analyst/SKILL.md:84  # 上游引擎 last30days-skill 未随本仓库分发 -> scripts/last30days.py
 caisen-10-experts-analyst/SKILL.md:196  # 上游引擎 last30days-skill 未随本仓库分发 -> scripts/last30days.py
+caisen-10-experts-analyst/SKILL.md:217  # 上游引擎 last30days-skill 未随本仓库分发 -> scripts/last30days.py
 stock-partner-team/skills/westock-tool/references/ai_usage_guide.md:3  # 上游 workbuddy 版 SKILL 未随本仓库分发 -> ../SKILL_workbuddy.md
 stock-partner-team/skills/westock-tool/references/ai_usage_guide.md:58  # 上游 workbuddy 版 SKILL 未随本仓库分发 -> ../SKILL_workbuddy.md
