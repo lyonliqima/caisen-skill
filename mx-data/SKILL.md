@@ -2,7 +2,7 @@
 name: mx-data
 display_name: 妙想金融数据 (MXSKILLS)
 title: 妙想金融数据 skill
-description: 基于东方财富权威数据库的金融数据查询工具，支持行情、财务及关联关系数据。
+description: 基于东方财富权威数据库的金融数据查询工具，支持行情、财务及关联关系数据查询，适用于 A股/港股/美股个股与指数的基础数据获取。
 homepage: https://dl.dfcfs.com/m/itc4
 author: 东方财富妙想团队
 version: 1.0.0
