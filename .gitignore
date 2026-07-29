@@ -2,14 +2,20 @@
 _archive/
 
 # ===== run artifacts (regenerated; never commit) =====
+# 只忽略已知产物的精确路径，不再用全局 *.csv / *.html（防误伤模板与复盘文件）
 output/
 __pycache__/
 .cache/
-破底翻候选_*.csv
-*.csv
+/破底翻候选_*.csv
+/破底翻*_*.csv
+mi-analysis/*.csv
 capital-three-flow/reports/
 kline_*.json
-*.html
+# 显式保护模板/面板等合法 html（即使未来有人再加广规则也不误伤）
+!analysis-report-template/shell.html
+!stock-partner-team/skills/md-to-html/shell.html
+!serenity/serenity-dashboard/dashboard/index.html
+!predictions-ledger/reviews/**
 *transcript*.txt
 *会议纪要*.txt
 caisen-0618-baidu.txt
@@ -29,8 +35,7 @@ venv/
 # ===== workbuddy internal state (memory/identity/secrets; never commit) =====
 .workbuddy/
 
-# ===== 9-experts runtime evidence tables (regenerated per run; never commit) =====
-caisen-9-experts-analyst/_run/
+# （旧 caisen-9-experts-analyst 已整目录归档至 _archive/，其 _run/ 规则随之失效移除）
 
 # ===== alphaear trained weights (>1MB binary; obtain per exports/models/README.md; never commit) =====
 alphaear/scripts/alphaear-predictor/predictor/exports/models/*.pt
