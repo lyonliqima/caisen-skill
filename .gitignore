@@ -31,3 +31,6 @@ venv/
 
 # ===== 9-experts runtime evidence tables (regenerated per run; never commit) =====
 caisen-9-experts-analyst/_run/
+
+# ===== alphaear trained weights (>1MB binary; obtain per exports/models/README.md; never commit) =====
+alphaear/scripts/alphaear-predictor/predictor/exports/models/*.pt

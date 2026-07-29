@@ -98,7 +98,11 @@ class KronosPredictorUtility:
                     logger.error(f"❌ Failed to load trained weights: {e}. Using base model.")
                     self.has_news_model = False
             else:
-                logger.info("ℹ️ No trained news models found. Using base model.")
+                logger.warning(
+                    "⚠️ No trained news weights (kronos_news_*.pt) found in %s. "
+                    "Falling back to base model (no news-aware projection). "
+                    "See exports/models/README.md for how to obtain the weights." % models_dir
+                )
                 self.has_news_model = False
             
             tokenizer = tokenizer.to(device)
