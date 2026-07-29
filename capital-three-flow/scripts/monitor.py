@@ -64,6 +64,10 @@ def render_markdown(r: dict) -> str:
     lines.append(f"\n**观测日期**：{as_of}  \n**底层逻辑**：费雪方程式 M·V=P·Q 三流拆解（流量/流向/流速）\n")
     if r.get("north_flow_note"):
         lines.append(f"> ⚠️ {r['north_flow_note']}\n")
+    # 缺失分项提示（已剔除并重新归一化，缺失为空时不输出该行）
+    missing = idx.get("missing_components") or []
+    if missing:
+        lines.append(f"> **本期缺失分项**：{'、'.join(missing)}（已剔除并重新归一化）\n")
     lines.append("## 一、三维核心指标")
     lines.append("| 维度 | 指标 | 数值 |")
     lines.append("|------|------|------|")

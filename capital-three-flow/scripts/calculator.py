@@ -59,6 +59,18 @@ def _num(x):
         return None
 
 
+def _weighted_index(components: dict, weights: dict):
+    """对分项做加权求和，但**先剔除值为 None 的分项，再对剩余权重重新归一化**。
+    禁止把缺失分项记 0（记 0 是系统性拉低，非中性）。
+    返回 (归一化加权和, 被剔除的分项名列表)。
+    components: {name: value_or_None}；weights: {name: 权重}。"""
+    avail = {k: v for k, v in components.items() if v is not None}
+    missing = [k for k, v in components.items() if v is None]
+    wsum = sum(weights.get(k, 0.0) for k in avail) or 1.0
+    total = sum(avail[k] * weights.get(k, 0.0) for k in avail) / wsum
+    return total, missing
+
+
 # ── 流量 ────────────────────────────────────────────────────
 def compute_volume(data, cfg) -> dict:
     m2 = data.get("m2") or {}
@@ -193,38 +205,44 @@ def compute_direction(data, cfg) -> dict:
 
 # ── 三个合成指数 ────────────────────────────────────────────
 def compute_indices(data, vol, vel, direction, cfg) -> dict:
-    w = cfg.get("cfci_weights", DEFAULT_CONFIG["cfci_weights"])
-    parts = {
-        "main_flow": _num((data.get("main_force") or {}).get("net_inflow")) or 0.0,
-        "margin_flow": _num((data.get("margin") or {}).get("delta")) or 0.0,
-        "fx_flow": direction.get("fx_change") or 0.0,
-    }
-    # 仅对可用分项加权，并重新归一化
-    avail = {k: v for k, v in parts.items() if v is not None}
-    wsum = sum(w.get(k, 0) for k in avail) or 1.0
-    weighted = sum(parts[k] * w.get(k, 0) for k in avail) / wsum
-    cfci = max(-100, min(100, weighted / 3.0))
+    missing_components = []
 
+    # CFCI 流向综合：主力净流入 + 杠杆边际 + 跨境(外储变动)
+    w = cfg.get("cfci_weights", DEFAULT_CONFIG["cfci_weights"])
+    cfci_parts = {
+        "main_flow": _num((data.get("main_force") or {}).get("net_inflow")),
+        "margin_flow": _num((data.get("margin") or {}).get("delta")),
+        "fx_flow": (data.get("forex") or {}).get("change"),
+    }
+    cfci_total, cfci_missing = _weighted_index(cfci_parts, w)
+    missing_components += [f"CFCI:{m}" for m in cfci_missing]
+    cfci = max(-100, min(100, cfci_total / 3.0))
+
+    # CFEI 流转效率：货币乘数 + 宏观流速 + 信贷周转(社融)
+    # 信贷周转分项（社融）长期缺失 → 直接剔除并重新归一化，禁止记 0
     w2 = cfg.get("cfei_weights", DEFAULT_CONFIG["cfei_weights"])
-    V = vel.get("V_macro") or 0.0
-    mm = vel.get("money_multiplier") or 0.0
-    # 信贷周转：社融缺失 → 0（降级），并标注
-    credit_turnover = 0.0
-    cfei = w2.get("money_multiplier", 0.3) * (mm / 8.0) + w2.get("velocity", 0.4) * (V / 0.5) + w2.get("credit_turnover", 0.3) * credit_turnover
+    cfei_parts = {
+        "money_multiplier": (vel.get("money_multiplier") / 8.0) if vel.get("money_multiplier") is not None else None,
+        "velocity": (vel.get("V_macro") / 0.5) if vel.get("V_macro") is not None else None,
+        "credit_turnover": None,  # 社融缺失 → 缺失项，剔除并重归一
+    }
+    cfei_total, cfei_missing = _weighted_index(cfei_parts, w2)
+    missing_components += [f"CFEI:{m}" for m in cfei_missing]
+    cfei = cfei_total  # 各分项已归一化到 ~[0,1]，加权之和即指数
 
     # CRI 走资风险：外汇储备变动(主) + 人民币贬值压力(外部代理)
-    fx_change = direction.get("fx_change") or 0.0
+    fx_change_raw = (data.get("forex") or {}).get("change")
+    fx_change = _num(fx_change_raw)
+    cri_forex_val = max(0, min(100, 50 - fx_change / 5.0)) if fx_change is not None else None
     fx_rate = data.get("fx_rate") or {}
     usdcny_chg = _num(fx_rate.get("change_pct"))
     cri_w = cfg.get("cri_weights", DEFAULT_CONFIG["cri_weights"])
-    cri_forex = max(0, min(100, 50 - fx_change / 5.0))   # 外储降→风险升
+    cri_parts = {"forex_change": cri_forex_val}
     if usdcny_chg is not None:
-        cri_usdcny = max(0, min(100, 50 + usdcny_chg * 12.0))  # 人民币贬值(正)→风险升
-        wf = cri_w.get("forex_change", 0.65)
-        wu = cri_w.get("usdcny", 0.35)
-        cri = wf * cri_forex + wu * cri_usdcny
-    else:
-        cri = cri_forex  # 汇率缺失则仅用外储
+        cri_parts["usdcny"] = max(0, min(100, 50 + usdcny_chg * 12.0))
+    cri_total, cri_missing = _weighted_index(cri_parts, cri_w)
+    missing_components += [f"CRI:{m}" for m in cri_missing]
+    cri = cri_total
 
     return {
         "CFCI": round(cfci, 2),
@@ -232,6 +250,7 @@ def compute_indices(data, vol, vel, direction, cfg) -> dict:
         "CRI": round(cri, 2),
         "cri_usdcny_available": usdcny_chg is not None,
         "cfei_credit_turnover_available": False,
+        "missing_components": missing_components,
     }
 
 
