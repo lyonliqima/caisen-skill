@@ -158,8 +158,9 @@
 **适用范围**：所有蔡森方法论相关的分析产出——十专家整合、破底翻、蔡森画线、资本三流、妙想个股等。
 
 **执行动作**：
-- 工具/模板一律用 `/Users/weihaoli/Desktop/蔡森 skill/` 根目录内的脚本与 `analysis-report-template/`。
-- **HTML 报告存到蔡森 skill 根的 `output/`**（即 `/Users/weihaoli/Desktop/蔡森 skill/output/{主题}-analysis-{日期}.html`）——这是用户指定的"记到"位置。
+- 📌 `$CAISEN_ROOT` = 本仓库根目录（即本 agent.md 所在目录，本机为 `~/Desktop/蔡森 skill`）；脚本内可用同名环境变量覆盖，未设置时默认取脚本所在目录。
+- 工具/模板一律用 `$CAISEN_ROOT/` 根目录内的脚本与 `analysis-report-template/`。
+- **HTML 报告存到蔡森 skill 根的 `output/`**（即 `$CAISEN_ROOT/output/{主题}-analysis-{日期}.html`）——这是用户指定的"记到"位置。
 - **研判评分卡/预测一律 `append.py` 进 `predictions-ledger/ledger.jsonl`**（同根，约定4已写明）。
 - 不要在 WorkBuddy 临时 `output/` 仅留存一份；**必须以蔡森 skill 目录为权威归档副本**。WorkBuddy 副本可保留作预览，但落盘归档归位到蔡森 skill。
 

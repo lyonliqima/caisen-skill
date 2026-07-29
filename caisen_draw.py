@@ -2,10 +2,16 @@
 """蔡森划线法 v4 — 纯倾斜线 + pattern-recognizer风格 + 简洁标注"""
 
 from PIL import Image, ImageDraw, ImageFont
-import os, math
+import os, math, sys
+
+CAISEN_ROOT = os.environ.get('CAISEN_ROOT') or os.path.dirname(os.path.abspath(__file__))
 
 # ─── 加载原图 ───
-src = '/Users/weihaoli/Library/Application Support/Qoder/SharedClientCache/cache/images/task-7cd/截屏2026-06-17 21.35.44-d55c383f.png'
+# 原写死的 Qoder 缓存截图（截屏2026-06-17 21.35.44）已不随仓库分发，改为命令行传入
+if len(sys.argv) > 1:
+    src = sys.argv[1]
+else:
+    sys.exit('用法: caisen_draw.py <源K线截图路径>')
 img = Image.open(src).convert('RGBA')
 ov = Image.new('RGBA', img.size, (0,0,0,0))
 d = ImageDraw.Draw(ov)
@@ -224,7 +230,7 @@ lbl(d,(d2x(5,20), H-24), '蔡森划线法 · 点多的为主 · 教学演示', f
 
 # ─── 合并 & 保存 ───
 result = Image.alpha_composite(img, ov)
-out = '/Users/weihaoli/Desktop/蔡森 skill/junwei-301458-caisen-lines.png'
+out = os.path.join(CAISEN_ROOT, 'junwei-301458-caisen-lines.png')
 result.save(out, quality=95)
 print(f'✅ {out}')
 print(f'下轨: LM2(31.25)→LM4(42), slope={slope_low:.3f}')

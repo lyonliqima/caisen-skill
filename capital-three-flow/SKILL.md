@@ -6,7 +6,7 @@ agent_created: true
 
 # 资本三流每日观测系统（监控版）
 
-> **📌 家目录 / 主副本**：本目录 `/Users/weihaoli/Desktop/蔡森 skill/capital-three-flow/` 是三流 skill 的**主副本（与破底翻同目录）**。触发词「看看三流 / 三流」直接运行本目录 `scripts/monitor.py`。镜像副本在 `~/.workbuddy/skills/capital-three-flow/`（Skill 工具注册用），两处需同步维护。
+> **📌 家目录 / 主副本**：本目录 `$CAISEN_ROOT/capital-three-flow/` 是三流 skill 的**主副本（与破底翻同目录）**。触发词「看看三流 / 三流」直接运行本目录 `scripts/monitor.py`。镜像副本在 `~/.workbuddy/skills/capital-three-flow/`（Skill 工具注册用），两处需同步维护。
 
 > **定位**：把卢麒元"资本三流"方法论（见 `lu-qiyuan-analysis` 的 M2）**工程化成一个能每天跑的监控工具**。
 > 它是 `lu-qiyuan-analysis` 的**操作型补丁**——前者讲框架与观点，本 skill 落地成可量化、可复盘的日报系统。

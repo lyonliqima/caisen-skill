@@ -467,8 +467,9 @@ def main():
     parser.add_argument('--sector', help='板块/名称关键词过滤（如 半导体、军工）')
     parser.add_argument('--no-plot', action='store_true', help='不画图，仅输出扫描结果')
     parser.add_argument('--workers', type=int, default=8, help='并发数（默认8）')
-    parser.add_argument('--outdir', default='/Users/weihaoli/Desktop/蔡森 skill/output',
-                        help='输出目录')
+    parser.add_argument('--outdir',
+                        default=os.path.join(os.environ.get('CAISEN_ROOT') or os.path.dirname(os.path.abspath(__file__)), 'output'),
+                        help='输出目录（默认：$CAISEN_ROOT/output 或脚本所在目录/output）')
     args = parser.parse_args()
 
     os.makedirs(args.outdir, exist_ok=True)

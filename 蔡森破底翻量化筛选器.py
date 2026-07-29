@@ -31,6 +31,7 @@ B. 守住前低（用户口径）：存在前低支撑且盘中曾测试（最�
 
 数据源（按优先级自动降级）：东方财富 push2his > 新浪 > 腾讯财经。
 """
+import os
 import requests
 import json
 import pandas as pd
@@ -423,7 +424,8 @@ def main():
 
     df = pd.DataFrame(results).sort_values('pattern_score', ascending=False)
     today_str = datetime.now().strftime('%Y%m%d')
-    out_csv = f'/Users/weihaoli/Desktop/蔡森 skill/破底翻候选_{today_str}.csv'
+    _root = os.environ.get('CAISEN_ROOT') or os.path.dirname(os.path.abspath(__file__))
+    out_csv = os.path.join(_root, f'破底翻候选_{today_str}.csv')
     df.to_csv(out_csv, index=False, encoding='utf-8-sig')
 
     def pt(sub, title):

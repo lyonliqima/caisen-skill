@@ -143,7 +143,7 @@ agent_created: true
 
 ## 工作流程
 
-> **Bash执行约定**：以下调用各子技能后，脚本可用托管 Python 运行（依赖已装在 `~/.workbuddy/binaries/python/envs/default`），或直接用对应技能内的 scripts/。如不确定当前目录，先执行 `cd "/Users/weihaoli/Desktop/蔡森 skill"`。所有妙想skill脚本路径（`mx-*/mx_*.py`）均为相对于根目录的路径。
+> **Bash执行约定**：以下调用各子技能后，脚本可用托管 Python 运行（依赖已装在 `~/.workbuddy/binaries/python/envs/default`），或直接用对应技能内的 scripts/。`$CAISEN_ROOT` 指本仓库根目录（未设置同名环境变量时，即本 SKILL.md 所在目录的上级目录）。如不确定当前目录，先执行 `cd "$CAISEN_ROOT"`。所有妙想skill脚本路径（`mx-*/mx_*.py`）均为相对于根目录的路径。
 
 ### 第0步：背景了解与新闻搜索（发散阶段）
 
@@ -319,7 +319,7 @@ python3 mx-data/mx_data.py "沪深300指数最新点位 涨跌幅"
 
 ### 🚀 并行执行机制（最高优先级·默认开启）
 
-**第一梯队·核心定性六位（🔵杨世光 / 🟣卢麒元 / 🟠蔡森 / 🟢笨鸟 / ⚪serenity / 🔴Mi姐）与 🤝 腾讯自选股圆桌（圆汇众主编 + 6 位成员）必须在同一条消息里并发启动**——六位专家各用 1 个 `Agent` 调用，圆桌由主 agent 读取 `/Users/weihaoli/Desktop/蔡森 skill/stock-partner-team/agents/stock-partner-lead.md` 后按其协议 spawn 6 位成员（或在当前上下文内按各成员方法论独立推导后由圆汇众汇编），而非主 agent 顺序执行。**📡 期货团（第11位）** 在用户问题涉及期货/期权/大宗商品合约时，同样在该条消息内与六位核心专家并发启动——由主 agent 读取 `/Users/weihaoli/Desktop/蔡森 skill/caisen-futures-team/agents/futures-team-lead.md` 后按其协议 spawn 13 位大师（或上下文内独立推导后由期海众汇编），作为期货专项核心领域专家，不进权益向的圆桌通道。**🧭 路口大爷（第12位）** 在用户问题涉及宏观/资金流/地缘/周期定位/定价权转移/重资产周期/美元体系时，同样在该条消息内与六位核心专家并发启动——由主 agent 读取 `/Users/weihaoli/Desktop/蔡森 skill/lukou-daye/SKILL.md` 及其 `references/` 后，按 L1-L20 三层四维周期资本流动框架独立推导（或上下文内按各 L 模块推导后汇编五维宏观资金流研判），作为宏观资金流专项核心领域专家，不进权益向的圆桌通道。机制要点：
+**第一梯队·核心定性六位（🔵杨世光 / 🟣卢麒元 / 🟠蔡森 / 🟢笨鸟 / ⚪serenity / 🔴Mi姐）与 🤝 腾讯自选股圆桌（圆汇众主编 + 6 位成员）必须在同一条消息里并发启动**——六位专家各用 1 个 `Agent` 调用，圆桌由主 agent 读取 `$CAISEN_ROOT/stock-partner-team/agents/stock-partner-lead.md` 后按其协议 spawn 6 位成员（或在当前上下文内按各成员方法论独立推导后由圆汇众汇编），而非主 agent 顺序执行。**📡 期货团（第11位）** 在用户问题涉及期货/期权/大宗商品合约时，同样在该条消息内与六位核心专家并发启动——由主 agent 读取 `$CAISEN_ROOT/caisen-futures-team/agents/futures-team-lead.md` 后按其协议 spawn 13 位大师（或上下文内独立推导后由期海众汇编），作为期货专项核心领域专家，不进权益向的圆桌通道。**🧭 路口大爷（第12位）** 在用户问题涉及宏观/资金流/地缘/周期定位/定价权转移/重资产周期/美元体系时，同样在该条消息内与六位核心专家并发启动——由主 agent 读取 `$CAISEN_ROOT/lukou-daye/SKILL.md` 及其 `references/` 后，按 L1-L20 三层四维周期资本流动框架独立推导（或上下文内按各 L 模块推导后汇编五维宏观资金流研判），作为宏观资金流专项核心领域专家，不进权益向的圆桌通道。机制要点：
 
 1. **并发启动**：在第0-1步完成数据/新闻收集后，**一次性发出 6 个 Agent 工具调用**（同一 message，多个 tool_use block），让 6 位专家的子智能体同时工作。
 2. **子智能体隔离**：每个子智能体只加载自己对应的 skill（杨→`yang-shiguang-analysis`、卢→`lu-qiyuan-analysis`、蔡→`caisen-technical-analysis`、笨鸟→`benniao-analysis`、白毛→对应 `serenity-*`、Mi姐→`mi-analysis`、路口大爷→`lukou-daye`），**不共享彼此草稿**，避免群体思维/观点回声室；腾讯自选股圆桌 6 位成员同理只在圆桌内部共享、不与前六位的子智能体互通；期货团 13 位大师、路口大爷 L1-L20 框架各自独立推导后由主 agent 汇编，不与前六位子智能体互通。

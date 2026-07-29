@@ -454,7 +454,7 @@ d.text((IMG_W - MARGIN_R - 250, IMG_H - 15), '蔡森划线法 · 点多的为主
 # ═══════════════════════════════════════════
 # 保存
 # ═══════════════════════════════════════════
-out = '/Users/weihaoli/Desktop/蔡森 skill/junwei-301458-caisen-full.png'
+out = os.path.join(os.environ.get('CAISEN_ROOT') or os.path.dirname(os.path.abspath(__file__)), 'junwei-301458-caisen-full.png')
 img.save(out, quality=95)
 print(f'\n✅ 已保存: {out}')
 print(f'图片尺寸: {IMG_W}x{IMG_H}')

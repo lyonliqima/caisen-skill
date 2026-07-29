@@ -122,7 +122,7 @@ agent_created: true
 
 ## 工作流程
 
-> **Bash执行约定**：以下调用各子技能后，脚本可用托管 Python 运行（依赖已装在 `~/.workbuddy/binaries/python/envs/default`），或直接用对应技能内的 scripts/。如不确定当前目录，先执行 `cd "/Users/weihaoli/Desktop/蔡森 skill"`。所有妙想skill脚本路径（`mx-*/mx_*.py`）均为相对于根目录的路径。
+> **Bash执行约定**：以下调用各子技能后，脚本可用托管 Python 运行（依赖已装在 `~/.workbuddy/binaries/python/envs/default`），或直接用对应技能内的 scripts/。如不确定当前目录，先执行 `cd "$CAISEN_ROOT"`。所有妙想skill脚本路径（`mx-*/mx_*.py`）均为相对于根目录的路径。
 
 ### 第0步：背景了解与新闻搜索（发散阶段 · 产出证据表）
 
@@ -243,7 +243,7 @@ python3 mx-data/mx_data.py "沪深300指数最新点位 涨跌幅"
 
 ### 🚀 并行执行机制（最高优先级·默认开启）
 
-**第一梯队·核心定性五位（🔵杨世光 / 🟣卢麒元 / 🟠蔡森 / 🟢笨鸟 / ⚪serenity）与 🤝 腾讯自选股圆桌（圆汇众主编 + 6 位成员）必须在同一条消息里并发启动**——五位专家各用 1 个 `Agent` 调用，圆桌由主 agent 读取 `/Users/weihaoli/Desktop/蔡森 skill/stock-partner-team/agents/stock-partner-lead.md` 后按其协议 spawn 6 位成员（或在当前上下文内按各成员方法论独立推导后由圆汇众汇编），而非主 agent 顺序执行。机制要点：
+**第一梯队·核心定性五位（🔵杨世光 / 🟣卢麒元 / 🟠蔡森 / 🟢笨鸟 / ⚪serenity）与 🤝 腾讯自选股圆桌（圆汇众主编 + 6 位成员）必须在同一条消息里并发启动**——五位专家各用 1 个 `Agent` 调用，圆桌由主 agent 读取 `$CAISEN_ROOT/stock-partner-team/agents/stock-partner-lead.md` 后按其协议 spawn 6 位成员（或在当前上下文内按各成员方法论独立推导后由圆汇众汇编），而非主 agent 顺序执行。机制要点：
 
 1. **并发启动**：在第0-1步完成数据/新闻收集后，**一次性发出 5 个 Agent 工具调用**（同一 message，多个 tool_use block），让 5 位专家的子智能体同时工作。
 2. **子智能体隔离**：每个子智能体只加载自己对应的 skill（杨→`yang-shiguang-analysis`、卢→`lu-qiyuan-analysis`、蔡→`caisen-technical-analysis`、笨鸟→`benniao-analysis`、白毛→对应 `serenity-*`），**不共享彼此草稿**，避免群体思维/观点回声室；腾讯自选股圆桌 6 位成员同理只在圆桌内部共享、不与前五位的子智能体互通。
@@ -524,7 +524,7 @@ risk-control-expert是第八人，在前七位专家给出结论、推荐标的�
 
 ### 第6步：生成HTML报告
 
-将分析结果生成为HTML文件，保存到**蔡森 skill 根目录的 `output/`**（即 `/Users/weihaoli/Desktop/蔡森 skill/output/{主题}-analysis-{日期}.html`）——这是用户指定的"记到"位置，与 `predictions-ledger/` 同根。WorkBuddy 会话内的临时 `output/` 仅作预览，归档以蔡森 skill 目录为权威副本。
+将分析结果生成为HTML文件，保存到**蔡森 skill 根目录的 `output/`**（即 `$CAISEN_ROOT/output/{主题}-analysis-{日期}.html`）——这是用户指定的"记到"位置，与 `predictions-ledger/` 同根。WorkBuddy 会话内的临时 `output/` 仅作预览，归档以蔡森 skill 目录为权威副本。
 
 **HTML技术要求**：
 - 使用 Chart.js CDN：`<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>`

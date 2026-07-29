@@ -25,7 +25,7 @@ description: Mi姐「趋势·筹码·情绪」三维股票分析框架（可运�
 
 ## 运行（用托管 venv）
 ```
-PY=/Users/weihaoli/.workbuddy/binaries/python/envs/default/bin/python3
+PY="${CAISEN_PY:-$HOME/.workbuddy/binaries/python/envs/default/bin/python3}"
 $PY scan.py                              # 内置观察池扫描
 $PY scan.py --codes sh600519,sz300750   # 指定标的
 $PY scan.py --csv watch.csv --out r.csv # CSV 观察池 + 导出

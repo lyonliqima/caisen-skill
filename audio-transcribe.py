@@ -16,8 +16,9 @@ MODEL_PATH = os.path.expanduser('~/.cache/whisper/ggml-small.bin')
 
 
 def main():
-    audio_file = '/Users/weihaoli/Desktop/蔡森 skill/金錢爆0608.wav'
-    output_base = '/Users/weihaoli/Desktop/蔡森 skill/money-burst-0608-transcript'
+    _root = os.environ.get('CAISEN_ROOT') or os.path.dirname(os.path.abspath(__file__))
+    audio_file = os.path.join(_root, '金錢爆0608.wav')
+    output_base = os.path.join(_root, 'money-burst-0608-transcript')
     output_file = output_base + '.txt'
 
     if not os.path.exists(audio_file):

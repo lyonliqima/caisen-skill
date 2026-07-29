@@ -69,7 +69,8 @@ ask() { # ask "提示" -> 返回 0=yes
 # ---------------------- 定位工作区根目录 ----------------------
 SCRIPT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKDIR="$(cd "$SCRIPT" && pwd)"
-OLD_PATH="/Users/weihaoli/Desktop/蔡森 skill"   # 原始硬编码路径（源机器）
+# 原始硬编码路径（源机器默认为 /Users/weihaoli/Desktop/蔡森 skill），可用环境变量 CAISEN_OLD_PATH 覆盖
+OLD_PATH="${CAISEN_OLD_PATH:-$HOME/Desktop/蔡森 skill}"
 DEFAULT_KEY=""   # 内置默认 API Key（为空：需通过 --apikey 传入或从 .env 读取）
 
 step "环境检测"
