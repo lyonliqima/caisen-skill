@@ -9,7 +9,7 @@ predictions-ledger/ledger.jsonl（JSONL，逐行一个 JSON，便于追加与复
 用法
 ----
   # 传 JSON 字符串
-  python3 append.py --json '{"source_skill":"caisen-9-experts-analyst","methodology":"九专家综合","asset_class":"A股个股","symbol":"600519 贵州茅台","direction":"多","target_range":"+5%~+15%","time_window":"60D","confidence":70,"falsification":"跌破1400","scenarios":{"bull_prob":50,"base_prob":30,"bear_prob":20,"bull_trigger":"Q3财报超预期","bear_trigger":"消费数据继续走弱"},"position":"轻仓","consensus_part":"复苏预期","variant_part":"高端批价实际动销","evidence_votes":{"价量":"多","资金流":"中性","基本面":"多","政策":"中性","情绪":"多"},"independence_color":"🟢"}'
+  python3 append.py --json '{"source_skill":"caisen-10-experts-analyst","methodology":"十二专家综合","asset_class":"A股个股","symbol":"600519 贵州茅台","direction":"多","target_range":"+5%~+15%","time_window":"60D","confidence":70,"falsification":"跌破1400","scenarios":{"bull_prob":50,"base_prob":30,"bear_prob":20,"bull_trigger":"Q3财报超预期","bear_trigger":"消费数据继续走弱"},"position":"轻仓","consensus_part":"复苏预期","variant_part":"高端批价实际动销","evidence_votes":{"价量":"多","资金流":"中性","基本面":"多","政策":"中性","情绪":"多"},"independence_color":"🟢"}'
 
   # 传 JSON 文件
   python3 append.py --file rec.json

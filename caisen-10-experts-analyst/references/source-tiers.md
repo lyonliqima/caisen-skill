@@ -1,8 +1,8 @@
 # 信源分层表（Source Tiers）
 
-> **本文件为 caisen-10-experts-analyst 的证据底座，与 caisen-9-experts-analyst 版本同源，两处需同步维护。**
+> **本文件为 caisen-10-experts-analyst 的证据底座唯一权威副本**（旧 caisen-9 版本已随其目录归档至 `_archive/`，不再同步维护）。
 > **纯规则文件 · 证据卡的 `tier` 字段取此表。** 配套 `evidence-protocol.md`（证据卡字段 / 去重 / 时间戳）。
-> 九专家体系所有结论的置信度与证据等级，最终都映射到这张表。
+> 十二专家体系所有结论的置信度与证据等级，最终都映射到这张表。
 
 ---
 

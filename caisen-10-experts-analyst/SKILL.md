@@ -12,7 +12,7 @@ agent_created: true
 > mx-data / mx-search / mx-xuangu / mx-zixuan / mx-moni / mx-poster（妙想数据层）、
 > yang-shiguang-analysis、lu-qiyuan-analysis、benniao-analysis、
 > serenity 系列（serenity-method / serenity-skill 等）、empirical-causal-analysis、news-aggregator-skill 等。
-> 本技能目录内已附带 `base-logic/`（底层逻辑知识库）、`references/`（会议纪要 / 研报）知识库。
+> 底层逻辑知识库为仓库根的 `$CAISEN_ROOT/base-logic/`（唯一权威副本，7 个模块）；本技能目录内附带 `references/`（会议纪要 / 研报）知识库。
 
 # 十二专家整合市场分析师（编排逻辑）
 
@@ -586,7 +586,7 @@ risk-control-expert是第八人，在前七位专家给出结论、推荐标的�
 
 ### 第3步：调用base-logic模块（作为待验证假说）
 
-- 读取 `base-logic/` 文件夹下所有 `.md` 文件
+- 读取仓库根 `$CAISEN_ROOT/base-logic/` 文件夹下所有 `.md` 文件（唯一权威副本，勿用技能目录内旧副本）
 - ⚠️ **独立性警告**：这些文件的标题和内容带有方向性预设（如"人为压制与均值回归"、"向心坍缩"等）
 - 将每个base-logic模块视为「一个值得检验的假说」，而非已证实的结论
 - 用当前数据独立判断：该假说在当前环境下是否成立？支持/不支持的证据各是什么？

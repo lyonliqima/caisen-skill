@@ -32,7 +32,7 @@ python3 market-data-cache/latest.py --path          # 只打印路径
 
 ## 接入的 skill
 - `integrated-market-analysis` —— 分析前先 `latest.py` 读缓存当背景，仅目标股实时拉
-- `caisen-9-experts-analyst` —— 同上
+- `caisen-10-experts-analyst` —— 同上
 
 ## ⚠️ 运行环境
 WorkBuddy 沙箱对行情 API 有硬性 ~4% 通过率上限（与并发无关），东财在沙箱被网络层掐断。

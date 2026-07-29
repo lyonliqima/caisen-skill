@@ -1,6 +1,6 @@
 # Evidence Ladder（已归位）
 
-> **信源分级的权威定义已统一到九专家体系**：`caisen-9-experts-analyst/references/source-tiers.md`（T1–T4 四层 + 三条使用规则 + 公告专门规则）。
+> **信源分级的权威定义已统一到十二专家体系**：`caisen-10-experts-analyst/references/source-tiers.md`（T1–T4 四层 + 三条使用规则 + 公告专门规则）。
 > 本文件不再重复定义，仅保留映射与补充，避免两处不同步。
 
 **四层映射（T1–T4 ↔ Strong/Medium/Weak）**

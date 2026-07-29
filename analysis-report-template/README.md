@@ -20,6 +20,6 @@ body 片段写法见 `components.md`。
 
 ## 接入的 skill
 - `integrated-market-analysis` —— L2/L3 报告套用本模板
-- `caisen-9-experts-analyst` —— L3/L4 报告套用本模板
+- `caisen-10-experts-analyst` —— L3/L4 报告套用本模板
 
 > 圆桌报告（腾讯自选股投研专家团）仍用 `stock-partner-team/skills/md-to-html`，结构不同，不复用本模板。

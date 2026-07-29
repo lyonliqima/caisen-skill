@@ -115,9 +115,9 @@ For every top candidate in a current stock ranking, aim for:
 
 For current market claims, never rely only on memory.
 
-- **公告类信息：优先巨潮 / 披露易原文，东财转载仅作发现渠道**。涉及公司公告、财报、交易所问询函、招股书等，一律先抓巨潮资讯（A股）/ 披露易（港股）原文；东方财富资讯 / 股吧上的公告转载、快讯只用于「发现哪有公告」，回溯与引用必须跳到一手原文（东财转载实际是 T3，不得当作 T1）。详见 `caisen-9-experts-analyst/references/source-tiers.md`「公告类专门规则」。
+- **公告类信息：优先巨潮 / 披露易原文，东财转载仅作发现渠道**。涉及公司公告、财报、交易所问询函、招股书等，一律先抓巨潮资讯（A股）/ 披露易（港股）原文；东方财富资讯 / 股吧上的公告转载、快讯只用于「发现哪有公告」，回溯与引用必须跳到一手原文（东财转载实际是 T3，不得当作 T1）。详见 `caisen-10-experts-analyst/references/source-tiers.md`「公告类专门规则」。
 
-Read `caisen-9-experts-analyst/references/source-tiers.md` for source grading (T1–T4, the canonical table; this skill's old `references/evidence-ladder.md` now just redirects there). Read `references/market-source-playbook.md` for US/HK/A-share/Taiwan/Japan/Korea/Europe source paths.
+Read `caisen-10-experts-analyst/references/source-tiers.md` for source grading (T1–T4, the canonical table; this skill's old `references/evidence-ladder.md` now just redirects there). Read `references/market-source-playbook.md` for US/HK/A-share/Taiwan/Japan/Korea/Europe source paths.
 
 ## Communication style
 
@@ -221,7 +221,7 @@ Read `references/risk-and-compliance.md` for high-risk situations.
 Load only what is needed:
 
 - `references/deep-research-workflow.md` — detailed workflow for source-backed theme scans.
-- `caisen-9-experts-analyst/references/source-tiers.md` — source grading and evidence standards (canonical T1–T4 table; this skill's `references/evidence-ladder.md` now redirects there).
+- `caisen-10-experts-analyst/references/source-tiers.md` — source grading and evidence standards (canonical T1–T4 table; this skill's `references/evidence-ladder.md` now redirects there).
 - `references/market-source-playbook.md` — source paths by market.
 - `references/serenity-dialogue-protocol.md` — research partner and learning-mode behavior.
 - `references/output-style-and-language.md` — plain-language output contract.

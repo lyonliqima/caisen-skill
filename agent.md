@@ -190,9 +190,10 @@
 **原则：桌面 `蔡森 skill/` 目录永远是最新、权威的主副本（master）；`~/.workbuddy/skills/` 仅为镜像（mirror，供 Skill 工具注册调用）。两处必须保持同步，桌面优先。**
 
 **执行动作**：
-- 任何对 `mi-analysis`、`caisen-10-experts-analyst`、`caisen-technical-analysis`、`capital-three-flow`、`caisen-9-experts-analyst`（保留备查）等技能的逻辑修改，**先在桌面主副本改，再镜像同步到 `~/.workbuddy/skills/`**，不得只改镜像让桌面落后。
+- 任何对 `mi-analysis`、`caisen-10-experts-analyst`、`caisen-technical-analysis`、`capital-three-flow` 等技能的逻辑修改，**先在桌面主副本改，再镜像同步到 `~/.workbuddy/skills/`**，不得只改镜像让桌面落后。（旧 `caisen-9-experts-analyst` 已归档至 `_archive/`，不再维护。）
 - 新建技能同样：桌面建主副本 → 复制一份到 `~/.workbuddy/skills/` 注册。
 - 若发现镜像与桌面不一致，**以桌面为准**回写镜像。
+- **⚠️ 副本唯一化**：同一份知识库/规则文件在仓库内只允许存在**一个权威副本**（如底层逻辑知识库唯一权威副本为根目录 `base-logic/`）。禁止在技能目录内再复制一份「内嵌副本」；历史重复副本一律 `git mv` 进 `_archive/` 留档，引用统一改指权威副本。跨技能共用的文件（如 `source-tiers.md`）指定唯一维护处，其余位置只写引用不落拷贝。
 
 ## 约定 8：Mi姐「趋势·筹码·情绪」交易战术框架（第十专家）
 
@@ -209,7 +210,7 @@
      - `scan.py --codes sh600519,sz300750` 每日扫描；带 7 天本地缓存。
    - ⚠️ 回测铁律：纯均线回踩(基线ABC)跑输基准；真正贡献 alpha 的是 **D/E 资金情绪门控** + **避冰点高潮**。框架禁止退化为纯均线买卖。
 2. **`caisen-10-experts-analyst`（十位圆桌）**：Mi姐 为**第一梯队核心定性第六位**（与杨/卢/蔡/笨鸟/白毛并发调度），角色「扣扳机+压注」；妙想→第七、实证→第八、风控→第九、腾讯圆桌→第十。
-   - **触发市场类分析时调用 `caisen-10-experts-analyst`，不要再调用旧的 `caisen-9-experts-analyst`**（旧版保留备查，不再主动使用）。
+   - **触发市场类分析时调用 `caisen-10-experts-analyst`，不要再调用旧的 `caisen-9-experts-analyst`**（旧版已归档至 `_archive/caisen-9-experts-analyst/`，仅备查，不再主动使用）。
 
 **与既有体系互补**（详见 `Mi姐框架_交叉验证.md`）：资本三流定风向 → 蔡森定靶心(形态满足位) → Mi姐定扣扳机+压注。三者不重叠、天然互补。
 

@@ -22,7 +22,7 @@
 
 ```bash
 python3 predictions-ledger/append.py --json '{
-  "source_skill":"caisen-9-experts-analyst",
+  "source_skill":"caisen-10-experts-analyst",
   "methodology":"九专家综合",
   "asset_class":"A股个股","symbol":"600519 贵州茅台",
   "direction":"多","target_range":"+5%~+15%","time_window":"60D","confidence":70,
@@ -71,7 +71,7 @@ python3 predictions-ledger/score.py mark P-20260709-001 --status partial --retur
 
 ## 与 mx-moni 对账
 
-`caisen-9-experts-analyst` 的「模拟组合验证」把评分卡建议转成模拟盘成交。模拟盘的实际收益 / 回撤即台账 `actual_return` 的天然来源——**把模拟盘成交当作预测的自动对账机制**，闭环即成。模拟盘须计入 A 股现实约束（T+1、涨跌停、滑点），否则验证结果虚高。
+`caisen-10-experts-analyst` 的「模拟组合验证」把评分卡建议转成模拟盘成交。模拟盘的实际收益 / 回撤即台账 `actual_return` 的天然来源——**把模拟盘成交当作预测的自动对账机制**，闭环即成。模拟盘须计入 A 股现实约束（T+1、涨跌停、滑点），否则验证结果虚高。
 
 ## 迁移说明
 
