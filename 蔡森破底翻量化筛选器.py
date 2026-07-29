@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """
+# ⚠️ pattern_score 是形态强度分（52-80），**不是**研判置信度。
+# 禁止把本字段直接填入 predictions-ledger 的 confidence，也禁止用它映射仓位。
 蔡森破底翻量化筛选器 v8 — 收盘价口径 · 全市场宽口径
 
 ============================================================
@@ -331,7 +333,7 @@ def detect_podifan(kdata, code, name, change_pct):
                 '距60日高跌幅%': round(dh, 1), '距年高跌幅%': round(drop_from_year_high, 1),
                 '历史分位%': round(percentile, 1),
                 '量比vs5日均': round(vr, 2),
-                'MA5': round(ma5, 2), 'MA20': round(ma20, 2), 'confidence': conf,
+                'MA5': round(ma5, 2), 'MA20': round(ma20, 2), 'pattern_score': conf,
             }
     return best
 
@@ -419,7 +421,7 @@ def main():
     if not results:
         print('  ❌ 无候选'); return
 
-    df = pd.DataFrame(results).sort_values('confidence', ascending=False)
+    df = pd.DataFrame(results).sort_values('pattern_score', ascending=False)
     today_str = datetime.now().strftime('%Y%m%d')
     out_csv = f'/Users/weihaoli/Desktop/蔡森 skill/破底翻候选_{today_str}.csv'
     df.to_csv(out_csv, index=False, encoding='utf-8-sig')
@@ -437,15 +439,15 @@ def main():
                       yhd=_fmt(r['距年高跌幅%'], 'f'), pct=_fmt(r['历史分位%'], 'f'),
                       sup=_fmt(r['前低支撑']), hold=_fmt(r['站稳天数'], 'd'),
                       bd=_fmt(r['破底深度%'], 'f'), rc=_fmt(r['收回幅度%'], 'p'),
-                      vr=_fmt(r['量比vs5日均'], 'x'), cf=int(r['confidence'])))
+                      vr=_fmt(r['量比vs5日均'], 'x'), cf=int(r['pattern_score'])))
 
     print(f"\n{'='*108}")
     print(f"  📊 破底翻候选 ({len(results)}只 / {len(stocks)}只, 成功率{len(results)/(len(stocks)-fails)*100:.1f}%)")
     print(f"{'='*108}")
-    pt(df[df['confidence'] >= 70], '⭐⭐⭐ 极高(≥70)')
-    pt(df[(df['confidence'] >= 67) & (df['confidence'] < 70)], '⭐⭐ 高(67-69)')
-    pt(df[(df['confidence'] >= 63) & (df['confidence'] < 67)], '⭐ 中(63-66)')
-    pt(df[df['confidence'] < 63], '○ 低(60-62)')
+    pt(df[df['pattern_score'] >= 70], '⭐⭐⭐ 极高(≥70)')
+    pt(df[(df['pattern_score'] >= 67) & (df['pattern_score'] < 70)], '⭐⭐ 高(67-69)')
+    pt(df[(df['pattern_score'] >= 63) & (df['pattern_score'] < 67)], '⭐ 中(63-66)')
+    pt(df[df['pattern_score'] < 63], '○ 低(<63)')
 
     # 按类型拆分统计
     n_podi = (df['类型'] == '破底翻').sum()

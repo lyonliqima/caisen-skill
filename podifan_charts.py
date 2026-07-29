@@ -153,11 +153,11 @@ def detect_podifan_levels(candles, window=60):
             }
     # 计算信心度
     if best is not None:
-        best['confidence'] = calc_confidence(best, seg, vol)
+        best['pattern_score'] = calc_pattern_score(best, seg, vol)
     return best, start, seg
 
 
-def calc_confidence(best, seg, vol):
+def calc_pattern_score(best, seg, vol):
     """破底翻信心度计算（参考 pattern-algorithms.md：基础60，3日站稳75，最高85）
 
     加分项：
@@ -217,8 +217,8 @@ def calc_confidence(best, seg, vol):
 # ============ 绘图 ============
 
 def draw_podifan(code, name, candles, best, start, seg, outdir):
-    """绘制破底翻K线图（信心度从 best['confidence'] 读取）"""
-    conf = best.get('confidence', 60)
+    """绘制破底翻K线图（形态强度分从 best['pattern_score'] 读取）"""
+    conf = best.get('pattern_score', 60)
     sn = len(seg)
     plot_n = min(60, sn)
     plot = seg[-plot_n:]
@@ -356,7 +356,7 @@ def scan_one(code, name, window, outdir, no_plot):
             return None
         result = {
             'code': code, 'name': name,
-            'confidence': best['confidence'],
+            'pattern_score': best['pattern_score'],
             'sprice': best['sprice'], 'bl': best['bl'],
             'bd': best['bd'], 'rc': best['rc'],
             'sdate': best['sdate'], 'bdate': best['bdate'],
@@ -384,14 +384,14 @@ def scan_stocks(stocks, window, outdir, top_n, no_plot, max_workers=8):
             r = fut.result()
             if r and 'error' not in r:
                 results.append(r)
-                print(f'  [{done}/{total}] ✅ {r["name"]}({r["code"]}) 信心度{r["confidence"]} '
+                print(f'  [{done}/{total}] ✅ {r["name"]}({r["code"]}) 形态强度{r["pattern_score"]} '
                       f'破底{r["bd"]:.1f}% 收回+{r["rc"]:.1f}%')
             elif r and 'error' in r:
                 print(f'  [{done}/{total}] ❌ {r["name"]}({r["code"]}) {r["error"]}')
             if done % 100 == 0:
                 print(f'  进度 {done}/{total}，已发现 {len(results)} 个破底翻')
 
-    results.sort(key=lambda x: x['confidence'], reverse=True)
+    results.sort(key=lambda x: x['pattern_score'], reverse=True)
     if top_n:
         results = results[:top_n]
     return results
@@ -410,13 +410,13 @@ def save_summary(results, outdir):
                 f'{"深度%":<7}{"收回%":<7}{"现价":<8}{"目标":<8}{"止损":<8}\n')
         f.write('-' * 80 + '\n')
         for i, r in enumerate(results, 1):
-            f.write(f'{i:<4}{r["code"]:<8}{r["name"]:<10}{r["confidence"]:<6}'
+            f.write(f'{i:<4}{r["code"]:<8}{r["name"]:<10}{r["pattern_score"]:<6}'
                     f'{r["sprice"]:<8.2f}{r["bl"]:<8.2f}{r["bd"]:<7.1f}{r["rc"]:<7.1f}'
                     f'{r["close"]:<8.2f}{r["target"]:<8.2f}{r["stop_loss"]:<8.2f}\n')
     with open(csv_path, 'w', encoding='utf-8-sig') as f:
         f.write('排名,代码,名称,信心度,支撑位,破底价,破底深度%,收回幅度%,现价,目标价,止损价,支撑日期,破底日期\n')
         for i, r in enumerate(results, 1):
-            f.write(f'{i},{r["code"]},{r["name"]},{r["confidence"]},'
+            f.write(f'{i},{r["code"]},{r["name"]},{r["pattern_score"]},'
                     f'{r["sprice"]:.2f},{r["bl"]:.2f},{r["bd"]:.1f},{r["rc"]:.1f},'
                     f'{r["close"]:.2f},{r["target"]:.2f},{r["stop_loss"]:.2f},'
                     f'{r["sdate"]},{r["bdate"]}\n')
@@ -494,7 +494,7 @@ def main():
           f'{"深度%":<7}{"收回%":<7}{"现价":<8}{"目标":<8}{"止损":<8}')
     print('-' * 80)
     for i, r in enumerate(results, 1):
-        print(f'{i:<4}{r["code"]:<8}{r["name"]:<10}{r["confidence"]:<6}'
+        print(f'{i:<4}{r["code"]:<8}{r["name"]:<10}{r["pattern_score"]:<6}'
               f'{r["sprice"]:<8.2f}{r["bl"]:<8.2f}{r["bd"]:<7.1f}{r["rc"]:<7.1f}'
               f'{r["close"]:<8.2f}{r["target"]:<8.2f}{r["stop_loss"]:<8.2f}')
 
