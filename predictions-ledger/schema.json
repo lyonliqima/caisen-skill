@@ -70,6 +70,9 @@
         "ma_rule":     {"type": ["number","null"], "description": "同期简单均线规则收益%"}
       }
     },
-    "note":          {"type": "string", "description": "自由备注（如 walk-forward 分段、样本外纪律标注）"}
+    "note":          {"type": "string", "description": "自由备注（如 walk-forward 分段、样本外纪律标注）"},
+
+    "evidence_ref":  {"type": ["string","null"], "description": "本次分析的证据卡快照路径，如 _run/evidence-20260729-原油.md；无快照填 null（新记录必填）"},
+    "data_quality":  {"type": ["integer","null"], "minimum": 0, "maximum": 100, "description": "第0步 D7 数表算出的数据质量上限分；置信度不得超过此值（新记录必填）"}
   }
 }

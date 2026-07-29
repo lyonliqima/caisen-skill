@@ -131,6 +131,21 @@ def stats(recs):
         else:
             by_conf[">80"].append(r)
 
+    # 数据质量分 × 命中率（复盘归因三类错误：判断错/数据错/数据缺）
+    dq = {"未记录": [], "0-60": [], "60-70": [], "70-85": [], "85-100": []}
+    for r in jud:
+        q = r.get("data_quality")
+        if not isinstance(q, int):
+            dq["未记录"].append(r)
+        elif q < 60:
+            dq["0-60"].append(r)
+        elif q < 70:
+            dq["60-70"].append(r)
+        elif q < 85:
+            dq["70-85"].append(r)
+        else:
+            dq["85-100"].append(r)
+
     # 校准曲线
     cal = {lab: [] for lab in CONF_LABEL.values()}
     for r in jud:
@@ -177,7 +192,7 @@ def stats(recs):
               beat=_hit_rate(beat))
 
     return dict(n=n, overall=overall, by_skill=by_skill, by_asset=by_asset,
-               by_conf=by_conf, cal=cal, brier=brier, colors=colors,
+               by_conf=by_conf, dq=dq, cal=cal, brier=brier, colors=colors,
                bench_filled=bench_filled, wf=wf, mp=mp)
 
 
@@ -196,13 +211,14 @@ def render(recs, quiet):
 
     lines.append("## 一、到期待复盘（逐条判对错）\n")
     if due:
-        lines.append("| id | 标的 | 方向 | 置信度 | 期限 | 证伪位 | 到期 |")
-        lines.append("|---|---|---|---|---|---|---|")
-        for r in due:
-            lines.append("| %s | %s | %s | %s | %s | %s | %s |" % (
-                r.get("id"), r.get("symbol"), r.get("direction"),
-                r.get("confidence"), r.get("time_window"),
-                r.get("falsification"), r.get("expiry")))
+    lines.append("| id | 标的 | 方向 | 置信度 | 期限 | 证伪位 | 到期 | 证据快照 |")
+    lines.append("|---|---|---|---|---|---|---|---|")
+    for r in due:
+        lines.append("| %s | %s | %s | %s | %s | %s | %s | %s |" % (
+            r.get("id"), r.get("symbol"), r.get("direction"),
+            r.get("confidence"), r.get("time_window"),
+            r.get("falsification"), r.get("expiry"),
+            r.get("evidence_ref") or "—")))
         lines.append("\n回填命令示例：")
         lines.append("`python3 score.py mark %s --status hit --return 8.2`\n"
                     % (due[0].get("id") if due else "P-YYYYMMDD-001"))
@@ -281,6 +297,13 @@ def render(recs, quiet):
         lines.append("- 解读：体系的 alpha 不在「跟市场一致时对」，而在「跟市场分歧且对」。分歧预测命中率长期 > 整体命中率 = 你有信息优势；反之 = 在瞎抬杠。")
     else:
         lines.append("- 暂无含 `market_prior` 的判定记录（宏观/事件类评分卡未填 Polymarket 先验）。")
+
+    lines.append("\n## 九、数据质量分 × 命中率（复盘归因三类错误）\n")
+    lines.append("| 数据质量分 | 命中率 |")
+    lines.append("|---|---|")
+    for k in ("0-60", "60-70", "70-85", "85-100", "未记录"):
+        lines.append("| %s | %s |" % (k, fmt_rate(_hit_rate(st["dq"][k]))))
+    lines.append("\n- 若高质量分区的命中率并不更高，说明瓶颈在推理层而非数据层，应改方法论而不是加信源。")
 
     lines.append("\n---\n*本文件由 predictions-ledger/score.py 自动生成，判定数据由人工 / mx-moni 回填。*")
     text = "\n".join(lines) + "\n"

@@ -117,12 +117,31 @@ def main():
     src.add_argument("--file", help="传 JSON 文件路径")
     ap.add_argument("--dry-run", action="store_true", help="不写盘，仅打印")
     ap.add_argument("--lenient", action="store_true", help="必填缺失也放行（仍写盘）")
+    ap.add_argument("--evidence-ref", default=None,
+                    help="证据卡快照路径（_run/evidence-*.md）；无则留空或传空字符串")
+    ap.add_argument("--data-quality", type=int, default=None,
+                    help="D7 数表算出的数据质量上限分 0-100；若置信度超过则自动下调")
     args = ap.parse_args()
 
     rec = load_input(args)
     if not isinstance(rec, dict):
         sys.stderr.write("✗ 输入必须是 JSON 对象\n")
         sys.exit(2)
+
+    # ── 证据快照引用 + 数据质量上限（数据层改造 TASK6）──
+    if args.evidence_ref is not None:
+        rec["evidence_ref"] = args.evidence_ref or None
+        if args.evidence_ref and not os.path.exists(args.evidence_ref):
+            sys.stderr.write("⚠️ evidence_ref 指向文件不存在：%s（仍写入，不阻断）\n" % args.evidence_ref)
+    if args.data_quality is not None:
+        if not (0 <= args.data_quality <= 100):
+            sys.stderr.write("✗ data_quality 超出 [0,100]：%s\n" % args.data_quality)
+            sys.exit(2)
+        rec["data_quality"] = args.data_quality
+        c = rec.get("confidence")
+        if isinstance(c, int) and c > args.data_quality:
+            sys.stderr.write("⚠️ 置信度 %d 超过数据质量上限 %d，已下调\n" % (c, args.data_quality))
+            rec["confidence"] = args.data_quality
 
     rec = build(rec, LEDGER, args.lenient)
 
