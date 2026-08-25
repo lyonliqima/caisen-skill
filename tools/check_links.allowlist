@@ -39,3 +39,6 @@ caisen-10-experts-analyst/SKILL.md:196  # 上游引擎 last30days-skill 未随�
 caisen-10-experts-analyst/SKILL.md:217  # 上游引擎 last30days-skill 未随本仓库分发 -> scripts/last30days.py
 stock-partner-team/skills/westock-tool/references/ai_usage_guide.md:3  # 上游 workbuddy 版 SKILL 未随本仓库分发 -> ../SKILL_workbuddy.md
 stock-partner-team/skills/westock-tool/references/ai_usage_guide.md:58  # 上游 workbuddy 版 SKILL 未随本仓库分发 -> ../SKILL_workbuddy.md
+predictions-ledger/README.md:88  # 早期桩文件路径,已被 ledger.jsonl 取代(行号自78漂移) -> predictions/ledger.csv
+base-logic/日元干预·日本财政·台湾流动性枯竭-十二专家核验观点.md:89  # 运行时生成的分析 HTML 未随本仓库分发 -> output/meeting-argument-analysis-20260805.html
+base-logic/美日联合干预日元-Agent独立评估.md:94  # 运行时生成的分析 HTML 未随本仓库分发 -> output/美股走势研判-2026-08-04.html
