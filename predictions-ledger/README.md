@@ -16,6 +16,16 @@
 
 ## 工作流
 
+### 0. 先判市（环境过滤器 · 必做）
+给任何方向之前，先按 `DISCIPLINE.md` 判市并写入 `market_regime`（趋势市/震荡市/弱势市）：
+- **弱势市**：默认不给单边多/空，改"区间+方向待确认"；只有放量突破关键位+均线转多才给。
+- **震荡市**：给方向必须带条件触发（"若放量站上 X 则多"）。
+- **趋势市**：可给方向；置信度 >70 需 `trend_confirmed=true`。
+- 加速品种（黄金/股指）不封顶，写"当前区间 A–B；站上 B 看 C"。
+- 弱势品种不给涨幅目标，只给"反弹位+止损"。
+- 方向前按资产过关：股指/美股→路口大爷（资本流向+美元周期）；商品/避险→资本三流（流向）；弱势股偏多→Mi姐 D/E 门控。
+- `append.py` 已把上述纪律做成**写盘闸门**：弱势市方向性置信度自动压到 60；趋势市 >70 无 `trend_confirmed` 自动封 70；弱势/震荡市无条件单边方向会警告。
+
 ### 1. 分析时：评分卡 → 追加
 
 每次「股票 / 期货」方向性分析，在产出评分卡后调用：
@@ -26,7 +36,7 @@ python3 predictions-ledger/append.py --json '{
   "methodology":"九专家综合",
   "asset_class":"A股个股","symbol":"600519 贵州茅台",
   "direction":"多","target_range":"+5%~+15%","time_window":"60D","confidence":70,
-  "falsification":"跌破1400","position":"轻仓",
+  "falsification":"跌破1400","position":"轻仓","market_regime":"趋势市","trend_confirmed":true,
   "scenarios":{"bull_prob":50,"base_prob":30,"bear_prob":20,
     "bull_trigger":"Q3财报超预期","bear_trigger":"消费数据继续走弱"},
   "consensus_part":"复苏预期已部分定价","variant_part":"高端批价实际动销超预期",

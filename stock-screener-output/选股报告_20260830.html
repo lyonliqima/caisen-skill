@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A股统一选股报告 · 2026-08-30</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:32px 20px 60px;background:#f7f8fa;color:#1a202c;
+     font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+     line-height:1.65}
+.wrap{max-width:1180px;margin:0 auto}
+h1{font-size:26px;margin:0 0 6px;font-weight:700}
+.sub{color:#718096;font-size:13px;margin-bottom:26px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:22px 24px;
+      margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+h2{font-size:17px;margin:0 0 14px;padding-left:10px;border-left:4px solid #2b6cb0}
+.alert{background:#fffaf0;border:1px solid #f6ad55;border-left:4px solid #dd6b20;
+       border-radius:8px;padding:14px 18px;margin-bottom:20px;font-size:14px}
+.alert b{color:#dd6b20}
+.alert.ok{background:#f0fff4;border-color:#9ae6b4;border-left-color:#0f9960}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:900px){.grid2{grid-template-columns:1fr}}
+table.tbl{width:100%;border-collapse:collapse;font-size:13px}
+table.tbl th{background:#edf2f7;padding:9px 8px;text-align:right;font-weight:600;
+             border-bottom:2px solid #cbd5e0;white-space:nowrap}
+table.tbl th:first-child,table.tbl th:nth-child(2){text-align:left}
+table.tbl td{padding:8px;border-bottom:1px solid #edf2f7;text-align:right;
+             font-variant-numeric:tabular-nums}
+table.tbl td.code{text-align:left;font-family:ui-monospace,Menlo,monospace;color:#718096}
+table.tbl td.nm{text-align:left;font-weight:600}
+table.tbl tbody tr:hover{background:#f7fafc}
+.empty{color:#718096;font-size:14px;padding:8px 0}
+.note{font-size:12.5px;color:#718096;margin-top:10px;line-height:1.7}
+.note ul{margin:8px 0 0;padding-left:20px}
+.note li{margin-bottom:5px}
+ul{margin:8px 0 0;padding-left:20px}
+li{margin-bottom:5px}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+@media(max-width:900px){.kpi{grid-template-columns:repeat(2,1fr)}}
+.kpi div{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:16px;text-align:center}
+.kpi .v{font-size:26px;font-weight:700;line-height:1.2}
+.kpi .l{font-size:12px;color:#718096;margin-top:4px}
+</style></head><body><div class="wrap">
+
+<h1>A股统一选股报告</h1>
+<div class="sub">数据截至 2026-08-30 收盘 · 三策略交叉验证 · 破底翻（左侧）× 碗口反弹（右侧）× Mi姐三维（确认）</div>
+
+<div class="kpi">
+  <div><div class="v">4919</div><div class="l">扫描股票</div></div>
+  <div><div class="v" style="color:#d92b2b">559</div><div class="l">破底翻命中</div></div>
+  <div><div class="v" style="color:#2b6cb0">69</div><div class="l">碗口反弹命中</div></div>
+  <div><div class="v" style="color:#0f9960">5</div><div class="l">交叉命中（最强）</div></div>
+</div>
+
+<div class="alert">
+  <b>⚠️ 市场状态警示：Mi姐三维策略全市场 0 命中。</b><br>
+  Mi姐要求完美多头排列 —— 收盘价 &gt; 年线(MA250)，且 MA5&gt;MA10&gt;MA20&gt;MA60&gt;MA250，
+  且站上周线60周线。<b>全市场 4583 只股票没有一只满足</b>。这不是程序故障，
+  而是市场处于<b>普跌、无主线</b>状态的硬证据。
+  <ul>
+    <li><b>右侧追高（碗口反弹类）胜率显著下降</b> —— 缺乏趋势支撑，反弹往往短命，仓位应下调</li>
+    <li><b>左侧抄底（破底翻类）假信号率上升</b> —— 破底翻命中 559 只
+        （占 12.2%），说明大量个股深度下跌，
+        但"跌得多"不等于"跌到位"，止损纪律必须严格执行</li>
+    <li>交叉命中的 5 只相对最扎实：既完成了底部结构，又已转出多头趋势</li>
+  </ul>
+</div>
+
+<div class="grid2">
+  <div class="card"><h2>选股漏斗</h2><canvas id="funnel" height="260"></canvas></div>
+  <div class="card"><h2>各策略命中率对比</h2><canvas id="rate" height="260"></canvas></div>
+</div>
+
+<div class="card">
+  <h2>综合排名 Top 15（交叉加权后）</h2>
+  <table class='tbl'><thead><tr><th>代码</th><th>名称</th><th>命中策略</th><th>score</th><th>最新价</th><th>止损位</th><th>目标位</th><th>盈亏比</th></tr></thead><tbody><tr><td class='code'>688520</td><td class='nm'>神州细胞</td><td>破底翻/碗口反弹</td><td>84.00</td><td>36.43</td><td>34.30</td><td>43.55</td><td>3.34</td></tr><tr><td class='code'>301047</td><td class='nm'>义翘神州</td><td>碗口反弹</td><td>84.00</td><td>101.91</td><td>91.50</td><td>139.49</td><td>3.61</td></tr><tr><td class='code'>688505</td><td class='nm'>复旦张江</td><td>碗口反弹</td><td>83.70</td><td>8.19</td><td>7.77</td><td>9.10</td><td>2.17</td></tr><tr><td class='code'>002346</td><td class='nm'>柘中股份</td><td>碗口反弹</td><td>82.30</td><td>20.65</td><td>19.29</td><td>27.48</td><td>5.02</td></tr><tr><td class='code'>601199</td><td class='nm'>江南水务</td><td>碗口反弹</td><td>81.90</td><td>6.17</td><td>5.89</td><td>6.78</td><td>2.18</td></tr><tr><td class='code'>688238</td><td class='nm'>和元生物</td><td>碗口反弹</td><td>81.50</td><td>6.86</td><td>6.36</td><td>8.10</td><td>2.48</td></tr><tr><td class='code'>300725</td><td class='nm'>药石科技</td><td>碗口反弹</td><td>81.00</td><td>45.50</td><td>42.27</td><td>57.35</td><td>3.67</td></tr><tr><td class='code'>300363</td><td class='nm'>博腾股份</td><td>碗口反弹</td><td>81.00</td><td>19.75</td><td>18.32</td><td>24.48</td><td>3.31</td></tr><tr><td class='code'>688265</td><td class='nm'>南模生物</td><td>碗口反弹</td><td>80.60</td><td>40.20</td><td>36.79</td><td>52.42</td><td>3.58</td></tr><tr><td class='code'>002590</td><td class='nm'>万安科技</td><td>破底翻</td><td>80.00</td><td>9.77</td><td>9.05</td><td>12.70</td><td>4.07</td></tr><tr><td class='code'>002762</td><td class='nm'>金发拉比</td><td>碗口反弹</td><td>80.00</td><td>9.45</td><td>8.90</td><td>11.34</td><td>3.44</td></tr><tr><td class='code'>688651</td><td class='nm'>盛邦安全</td><td>破底翻</td><td>80.00</td><td>23.19</td><td>20.22</td><td>36.03</td><td>4.32</td></tr><tr><td class='code'>300978</td><td class='nm'>东箭科技</td><td>破底翻</td><td>80.00</td><td>8.89</td><td>8.14</td><td>10.75</td><td>2.48</td></tr><tr><td class='code'>603262</td><td class='nm'>技源集团</td><td>破底翻</td><td>80.00</td><td>18.83</td><td>18.05</td><td>31.65</td><td>16.44</td></tr><tr><td class='code'>603190</td><td class='nm'>亚通精工</td><td>破底翻</td><td>80.00</td><td>16.11</td><td>15.50</td><td>26.99</td><td>17.84</td></tr></tbody></table>
+  <div class="note">综合分 = 最强策略分 + (命中策略数-1) × 12；盈亏比 &lt; 2:1 的自动打八折。</div>
+</div>
+
+
+<div class="card">
+  <h2>⭐ 交叉命中（多策略共振，最值得看）</h2>
+  <table class='tbl'><thead><tr><th>代码</th><th>名称</th><th>命中策略</th><th>score</th><th>最新价</th><th>止损位</th><th>目标位</th><th>盈亏比</th><th>J值</th><th>类型</th><th>分类</th></tr></thead><tbody><tr><td class='code'>688520</td><td class='nm'>神州细胞</td><td>破底翻/碗口反弹</td><td>84.00</td><td>36.43</td><td>34.30</td><td>43.55</td><td>3.34</td><td>-0.80</td><td>破底翻</td><td>靠近多空线</td></tr><tr><td class='code'>603882</td><td class='nm'>金域医学</td><td>破底翻/碗口反弹</td><td>71.70</td><td>27.42</td><td>22.85</td><td>32.32</td><td>1.07</td><td>-13.00</td><td>破底翻</td><td>靠近多空线</td></tr><tr><td class='code'>300795</td><td class='nm'>米奥会展</td><td>破底翻/碗口反弹</td><td>69.60</td><td>13.31</td><td>8.50</td><td>18.88</td><td>1.16</td><td>14.80</td><td>破底翻</td><td>回落碗中</td></tr><tr><td class='code'>301602</td><td class='nm'>超研股份</td><td>破底翻/碗口反弹</td><td>67.20</td><td>16.44</td><td>13.95</td><td>21.28</td><td>1.94</td><td>5.90</td><td>破底翻</td><td>靠近多空线</td></tr><tr><td class='code'>301089</td><td class='nm'>拓新药业</td><td>破底翻/碗口反弹</td><td>66.40</td><td>23.60</td><td>20.07</td><td>27.88</td><td>1.21</td><td>15.50</td><td>破底翻</td><td>靠近多空线</td></tr></tbody></table>
+  <div class="note">同时被破底翻（底部结构成立）与碗口反弹（趋势已转多）命中，
+  是本引擎认为信号强度最高的一类。</div>
+</div>
+
+<div class="grid2">
+  <div class="card"><h2>破底翻 Top 15（左侧·底部反转）</h2>
+    <table class='tbl'><thead><tr><th>代码</th><th>名称</th><th>类型</th><th>score</th><th>最新价</th><th>前低支撑</th><th>站稳天数</th><th>距年高跌幅%</th><th>历史分位%</th><th>止损位</th><th>盈亏比</th></tr></thead><tbody><tr><td class='code'>300978</td><td class='nm'>东箭科技</td><td>破底翻</td><td>80.00</td><td>8.89</td><td>8.39</td><td>24.00</td><td>41.30</td><td>8.70</td><td>8.14</td><td>2.48</td></tr><tr><td class='code'>600586</td><td class='nm'>金晶科技</td><td>破底翻</td><td>80.00</td><td>4.33</td><td>4.16</td><td>25.00</td><td>45.70</td><td>6.90</td><td>4.04</td><td>3.21</td></tr><tr><td class='code'>603863</td><td class='nm'>松炀资源</td><td>破底翻</td><td>80.00</td><td>12.98</td><td>12.16</td><td>25.00</td><td>72.10</td><td>8.90</td><td>11.80</td><td>2.65</td></tr><tr><td class='code'>688225</td><td class='nm'>亚信安全</td><td>破底翻</td><td>80.00</td><td>12.68</td><td>12.01</td><td>21.00</td><td>57.70</td><td>17.10</td><td>11.65</td><td>2.71</td></tr><tr><td class='code'>603409</td><td class='nm'>汇通控股</td><td>破底翻</td><td>80.00</td><td>18.33</td><td>17.61</td><td>20.00</td><td>76.40</td><td>10.40</td><td>17.08</td><td>18.15</td></tr><tr><td class='code'>002771</td><td class='nm'>真视通</td><td>破底翻</td><td>80.00</td><td>13.20</td><td>12.00</td><td>21.00</td><td>49.20</td><td>6.50</td><td>11.64</td><td>2.45</td></tr><tr><td class='code'>688244</td><td class='nm'>永信至诚</td><td>破底翻</td><td>80.00</td><td>15.09</td><td>13.96</td><td>24.00</td><td>76.40</td><td>5.00</td><td>13.54</td><td>1.74</td></tr><tr><td class='code'>688157</td><td class='nm'>松井股份</td><td>破底翻</td><td>80.00</td><td>19.50</td><td>18.90</td><td>19.00</td><td>63.10</td><td>5.20</td><td>18.33</td><td>8.43</td></tr><tr><td class='code'>301278</td><td class='nm'>快可电子</td><td>破底翻</td><td>80.00</td><td>28.62</td><td>27.28</td><td>20.00</td><td>44.30</td><td>7.30</td><td>26.46</td><td>3.12</td></tr><tr><td class='code'>300188</td><td class='nm'>国投智能</td><td>破底翻</td><td>80.00</td><td>10.49</td><td>9.79</td><td>38.00</td><td>47.40</td><td>8.50</td><td>9.50</td><td>2.03</td></tr><tr><td class='code'>603190</td><td class='nm'>亚通精工</td><td>破底翻</td><td>80.00</td><td>16.11</td><td>16.42</td><td>20.00</td><td>52.60</td><td>1.80</td><td>15.50</td><td>17.84</td></tr><tr><td class='code'>300492</td><td class='nm'>华图山鼎</td><td>破底翻</td><td>80.00</td><td>24.13</td><td>22.45</td><td>24.00</td><td>78.90</td><td>3.20</td><td>21.78</td><td>7.16</td></tr><tr><td class='code'>603262</td><td class='nm'>技源集团</td><td>破底翻</td><td>80.00</td><td>18.83</td><td>18.78</td><td>5.00</td><td>63.60</td><td>4.10</td><td>18.05</td><td>16.44</td></tr><tr><td class='code'>002590</td><td class='nm'>万安科技</td><td>破底翻</td><td>80.00</td><td>9.77</td><td>9.33</td><td>23.00</td><td>49.20</td><td>5.60</td><td>9.05</td><td>4.07</td></tr><tr><td class='code'>688651</td><td class='nm'>盛邦安全</td><td>破底翻</td><td>80.00</td><td>23.19</td><td>20.85</td><td>25.00</td><td>61.60</td><td>4.50</td><td>20.22</td><td>4.32</td></tr></tbody></table>
+    <div class="note">左侧抄底：创新低后翻回前低，或守住前低站稳 N 天。
+    含 A 类「破底翻」与 B 类「守住前低」。</div>
+  </div>
+  <div class="card"><h2>碗口反弹 Top 15（右侧·趋势回踩）</h2>
+    <table class='tbl'><thead><tr><th>代码</th><th>名称</th><th>分类</th><th>score</th><th>最新价</th><th>J值</th><th>放量倍数</th><th>趋势强度%</th><th>止损位</th><th>目标位</th><th>盈亏比</th></tr></thead><tbody><tr><td class='code'>600663</td><td class='nm'>陆家嘴</td><td>回落碗中</td><td>84.00</td><td>8.98</td><td>-5.00</td><td>3.13</td><td>9.88</td><td>8.18</td><td>9.75</td><td>0.96</td></tr><tr><td class='code'>301047</td><td class='nm'>义翘神州</td><td>回落碗中</td><td>84.00</td><td>101.91</td><td>-16.10</td><td>4.45</td><td>18.62</td><td>91.50</td><td>139.49</td><td>3.61</td></tr><tr><td class='code'>688505</td><td class='nm'>复旦张江</td><td>回落碗中</td><td>83.70</td><td>8.19</td><td>-10.80</td><td>4.55</td><td>4.50</td><td>7.77</td><td>9.10</td><td>2.17</td></tr><tr><td class='code'>002346</td><td class='nm'>柘中股份</td><td>回落碗中</td><td>82.30</td><td>20.65</td><td>-10.10</td><td>3.90</td><td>6.21</td><td>19.29</td><td>27.48</td><td>5.02</td></tr><tr><td class='code'>601199</td><td class='nm'>江南水务</td><td>回落碗中</td><td>81.90</td><td>6.17</td><td>-1.20</td><td>5.46</td><td>3.24</td><td>5.89</td><td>6.78</td><td>2.18</td></tr><tr><td class='code'>688238</td><td class='nm'>和元生物</td><td>回落碗中</td><td>81.50</td><td>6.86</td><td>10.50</td><td>4.45</td><td>6.32</td><td>6.36</td><td>8.10</td><td>2.48</td></tr><tr><td class='code'>300725</td><td class='nm'>药石科技</td><td>回落碗中</td><td>81.00</td><td>45.50</td><td>-16.80</td><td>3.51</td><td>11.09</td><td>42.27</td><td>57.35</td><td>3.67</td></tr><tr><td class='code'>300363</td><td class='nm'>博腾股份</td><td>回落碗中</td><td>81.00</td><td>19.75</td><td>-18.00</td><td>3.19</td><td>7.74</td><td>18.32</td><td>24.48</td><td>3.31</td></tr><tr><td class='code'>688265</td><td class='nm'>南模生物</td><td>回落碗中</td><td>80.60</td><td>40.20</td><td>7.70</td><td>6.00</td><td>6.37</td><td>36.79</td><td>52.42</td><td>3.58</td></tr><tr><td class='code'>002762</td><td class='nm'>金发拉比</td><td>回落碗中</td><td>80.00</td><td>9.45</td><td>-4.30</td><td>2.19</td><td>7.05</td><td>8.90</td><td>11.34</td><td>3.44</td></tr><tr><td class='code'>603882</td><td class='nm'>金域医学</td><td>靠近多空线</td><td>77.60</td><td>27.42</td><td>-13.00</td><td>2.71</td><td>5.05</td><td>26.07</td><td>32.32</td><td>3.63</td></tr><tr><td class='code'>688046</td><td class='nm'>药康生物</td><td>回落碗中</td><td>77.00</td><td>32.50</td><td>-6.00</td><td>2.23</td><td>17.08</td><td>29.04</td><td>43.47</td><td>3.17</td></tr><tr><td class='code'>300759</td><td class='nm'>康龙化成</td><td>回落碗中</td><td>77.00</td><td>43.78</td><td>-8.90</td><td>2.60</td><td>15.69</td><td>39.02</td><td>53.57</td><td>2.06</td></tr><tr><td class='code'>300404</td><td class='nm'>博济医药</td><td>回落碗中</td><td>77.00</td><td>13.24</td><td>-17.40</td><td>2.62</td><td>14.96</td><td>11.70</td><td>17.99</td><td>3.08</td></tr><tr><td class='code'>301080</td><td class='nm'>百普赛斯</td><td>回落碗中</td><td>77.00</td><td>82.50</td><td>-11.90</td><td>2.42</td><td>22.74</td><td>66.45</td><td>102.79</td><td>1.26</td></tr></tbody></table>
+    <div class="note">右侧回调：上升趋势中回踩支撑 + KDJ 的 J 值超卖 + 近期有放量阳线。
+    「回落碗中」= 价格夹在多空线与短期趋势线之间，是最强分类。</div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>方法与局限</h2>
+  <div class="note" style="font-size:13px">
+  <ul>
+    <li><b>三策略为什么不能合并成一套</b>：破底翻在单边下跌市假信号极多；碗口反弹在底部区域
+        几乎筛不出票（它要求短期趋势线在多空线上方）；Mi姐最严但常日可能 0 命中。
+        三者互为补集，交叉命中才是强信号。</li>
+    <li><b>本引擎只看技术面与量能</b>，不含基本面、财报质量、行业景气度。
+        入选不等于可以买，需过风控排雷与基本面复核。</li>
+    <li><b>止损位是纪律不是建议</b>。破底翻止损锚定前低下方（跌回前低即证伪）；
+        碗口反弹锚定多空线下方或 1×ATR。</li>
+    <li><b>数据源</b>：新浪免费接口，偶有缺失。本次 4919 只中 4583 只取到完整日K
+        （93%），未取到的多为停牌或长期停牌股。</li>
+    <li>本报告为量化筛选结果，不构成投资建议。</li>
+  </ul>
+  </div>
+</div>
+
+<script>
+const gridC='#e2e8f0', tickC='#4a5568';
+new Chart(document.getElementById('funnel'), {
+  type:'bar',
+  data:{labels:['扫描股票','取到完整日K','破底翻命中','碗口反弹命中','Mi姐命中','交叉命中'],
+    datasets:[{label:'股票数',
+      data:[4919,4583,559,69,0,5],
+      backgroundColor:['#cbd5e0','#a0aec0','#d92b2b','#2b6cb0','#9ae6b4','#f6ad55'],
+      borderRadius:4}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},title:{display:true,text:'从全市场到最终名单'}},
+    scales:{x:{grid:{color:gridC},ticks:{color:tickC}},
+            y:{grid:{display:false},ticks:{color:tickC}}}}
+});
+new Chart(document.getElementById('rate'), {
+  type:'bar',
+  data:{labels:['破底翻','碗口反弹','Mi姐三维','交叉命中'],
+    datasets:[{label:'占有效样本比例 (%)',
+      data:[12.20,1.51,0.00,0.11],
+      backgroundColor:['#d92b2b','#2b6cb0','#9ae6b4','#f6ad55'],borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},title:{display:true,text:'命中率（占 4583 只有效样本）'}},
+    scales:{y:{grid:{color:gridC},ticks:{color:tickC,callback:function(v){return v+'%';}}},
+            x:{grid:{display:false},ticks:{color:tickC}}}}
+});
+</script>
+</div></body></html>

@@ -1,0 +1,48 @@
+{
+  "source_skill": "caisen-10-experts-analyst",
+  "methodology": "十二专家综合(期货团+路口大爷触发)",
+  "asset_class": "大宗商品期货",
+  "symbol": "M2701 豆粕2027年1月合约(主推远月)",
+  "direction": "多",
+  "target_range": "区间[2900,3200]，第一目标3150-3200",
+  "time_window": "60D",
+  "confidence": 70,
+  "predictability": "中",
+  "falsification": "M2701有效跌破2900(成本地板破位) 或 8/12 USDA单产上调+美豆回1150下方",
+  "position": "轻仓(远月M2701分批≤15%保证金)，不追高(3079-3136已偏高)",
+  "scenarios": {
+    "bull_prob": 45,
+    "base_prob": 35,
+    "bear_prob": 20,
+    "bull_trigger": "8月西部/北部平原持续干旱→单产下调→8/12 USDA报告利多→上看3200+",
+    "base_trigger": "天气拉锯宽幅震荡2900-3150，资金向远月移仓",
+    "bear_trigger": "8月有效降雨覆盖+USDA报告中性偏空→回2900甚至下探"
+  },
+  "consensus_part": "全球大豆宽松+国内高库存累库已充分定价(共识)；成本托底2900部分定价",
+  "variant_part": "美豆优良率63%三年最低+干旱区26%+厄尔尼诺+中国大单采购，是否在8/12前被天气验证为实质减产(分歧核心)",
+  "evidence_votes": {"价量": "中性", "资金流": "多", "基本面": "多", "政策": "中性", "情绪": "中性偏多"},
+  "independence_color": "🟢",
+  "expert_views": [
+    {"expert": "期货团(傅海棠/克罗/琼斯等)", "direction": "多", "confidence": 68, "color": "🟢"},
+    {"expert": "路口大爷(宏观资金流)", "direction": "中性偏多", "confidence": 65, "color": "🟡"},
+    {"expert": "蔡森(技术形态)", "direction": "中性", "confidence": 60, "color": "🟡"},
+    {"expert": "笨鸟(数据拆解)", "direction": "多", "confidence": 70, "color": "🟢"},
+    {"expert": "Mi姐(交易战术)", "direction": "多", "confidence": 66, "color": "🟢"},
+    {"expert": "杨世光(宏观六步法)", "direction": "中性偏多", "confidence": 62, "color": "🟡"},
+    {"expert": "卢麒元(制度结构)", "direction": "中性", "confidence": 60, "color": "🟡"},
+    {"expert": "serenity(供应链瓶颈)", "direction": "多", "confidence": 67, "color": "🟢"},
+    {"expert": "risk-control(排雷)", "direction": "中性", "confidence": 60, "color": "🟡"},
+    {"expert": "腾讯圆桌(七人)", "direction": "多", "confidence": 65, "color": "🟢"}
+  ],
+  "update_rule": {
+    "next_check_date": "2026-08-12",
+    "next_check_event": "USDA 8月供需报告(本年度首份含农户调查单产/产量预估)",
+    "branches": [
+      {"condition": "单产<52.5蒲(下调确认)", "new_confidence": 78, "action": "偏多强化，上看3200+，加仓远月"},
+      {"condition": "单产维持53或上调", "new_confidence": 58, "action": "回2900-3050震荡，偏多打折，减仓"},
+      {"condition": "M2701有效跌破2900", "new_confidence": 40, "action": "直接认错平仓"}
+    ]
+  },
+  "evidence_ref": "/Users/weihaoli/Desktop/蔡森 skill/caisen-10-experts-analyst/_run/evidence-20260804-豆粕.md",
+  "data_quality": 90
+}

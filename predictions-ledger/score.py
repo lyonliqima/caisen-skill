@@ -32,7 +32,8 @@ LEDGER = os.path.join(HERE, "ledger.jsonl")
 REPORTS = os.path.join(HERE, "reports")
 TODAY = date.today()
 
-DIR_PROB = {"多": "bull_prob", "空": "bear_prob", "中性": "base_prob"}
+DIR_PROB = {"多": "bull_prob", "空": "bear_prob", "中性": "base_prob",
+           "中性偏多": "bull_prob", "中性偏空": "bear_prob", "中性震荡": "base_prob"}
 CONF_BUCKETS = [(0, 10), (10, 20), (20, 30), (30, 40), (40, 50),
                 (50, 60), (60, 70), (70, 80), (80, 90), (90, 101)]
 CONF_LABEL = {b: "%02d-%02d" % (b[0], min(b[1], 100)) for b in CONF_BUCKETS}
@@ -239,11 +240,33 @@ def stats(recs):
               divergent_n=len(div), divergent=_hit_rate(div),
               beat_n=len(beat), beat=_hit_rate(beat))
 
+    # 错因分布（约定13 · 盲区复盘）：miss 记录按 miss_type 归类
+    MISS_LABEL = {"direction_wrong": "方向错(换方法)",
+                  "timing_wrong": "时序错(改节奏不改方向)",
+                  "magnitude_wrong": "幅度错(改目标区间)"}
+    miss_by_type = {}
+    miss_untyped = 0
+    for r in jud_valid:
+        if str(r.get("status")) != "miss":
+            continue
+        mt = r.get("miss_type")
+        if mt in MISS_LABEL:
+            miss_by_type[mt] = miss_by_type.get(mt, 0) + 1
+        else:
+            miss_untyped += 1
+
+    # 纪律违规统计（约定13 · --force 放行标记）
+    discipline_violations = [r for r in recs
+                             if isinstance(r.get("discipline_violation"), list)
+                             and r["discipline_violation"]]
+
     return dict(n=n, overall=overall, by_skill=by_skill, by_asset=by_asset,
                 by_conf=by_conf, dq=dq, cal=cal, brier=brier, colors=colors,
                 my_rate=my_rate, bench_avg=bench_avg, excess=excess,
                 by_pred=by_pred, by_cell=by_cell, crps_list=crps_list,
-                design_defect=design_defect, mp=mp)
+                design_defect=design_defect, mp=mp,
+                miss_by_type=miss_by_type, miss_untyped=miss_untyped,
+                discipline_violations=discipline_violations)
 
 
 def fmt_rate(t):
@@ -395,6 +418,36 @@ def render(recs, quiet):
     lines.append("|---|---|")
     for k in ("0-60", "60-70", "70-85", "85-100", "未记录"):
         lines.append("| %s | %s |" % (k, fmt_rate(_hit_rate(st["dq"][k]))))
+
+    lines.append("\n## 十二、miss 错因分布（约定13 · 盲区复盘）\n")
+    mb = st["miss_by_type"]
+    if mb or st["miss_untyped"]:
+        lines.append("| 错因 | 条数 | 处方 |")
+        lines.append("|---|---|---|")
+        RX = {"direction_wrong": "诊断：方向判断体系错了 → 换方法/降权，勿在错方法上加码",
+              "timing_wrong": "诊断：方向对但太早 → 改节奏不改方向，加仓延后/拉长期限",
+              "magnitude_wrong": "诊断：方向对幅度错 → 改目标区间，逻辑未错不必否定"}
+        for mt, lab in (("direction_wrong", "方向错(换方法)"),
+                        ("timing_wrong", "时序错(改节奏不改方向)"),
+                        ("magnitude_wrong", "幅度错(改目标区间)")):
+            if mt in mb:
+                lines.append("| %s | %d | %s |" % (lab, mb[mt], RX[mt]))
+        if st["miss_untyped"]:
+            lines.append("| 未分类 miss | %d | ⚠️ 复盘时务必回填 miss_type，否则错因不可诊断 |"
+                         % st["miss_untyped"])
+    else:
+        lines.append("（暂无比对 miss_type 的 miss 记录）")
+
+    lines.append("\n## 十三、约定13 纪律违规统计（--force 放行）\n")
+    dv = st["discipline_violations"]
+    if dv:
+        lines.append("- 共 **%d** 条通过 `--force` 跳过多样性硬校验写入：" % len(dv))
+        for r in dv:
+            lines.append("  - %s %s：%s" % (r.get("id"), r.get("symbol"),
+                                           "；".join(r.get("discipline_violation", []))))
+        lines.append("\n⚠️ --force 是逃生门不是常态。若频繁触发，说明整体预测节奏仍偏 60D / 中间值锚定。")
+    else:
+        lines.append("（无 --force 放行记录，纪律校验均自然通过）")
 
     lines.append("\n---\n*本文件由 predictions-ledger/score.py 自动生成，判定数据由人工 / mx-moni 回填。*")
     text = "\n".join(lines) + "\n"
@@ -592,7 +645,7 @@ def cmd_update_quality(recs):
         print("（无含 update_rule 的记录，或均已按规则更新）")
 
 
-def mark(rec_id, status, ret, bench_json):
+def mark(rec_id, status, ret, bench_json, exit_price=None, miss_type=None):
     recs = _load()
     target = None
     for r in recs:
@@ -602,6 +655,25 @@ def mark(rec_id, status, ret, bench_json):
     if not target:
         sys.stderr.write("✗ 未找到 id=%s\n" % rec_id)
         sys.exit(2)
+    # 约定13：miss 必须回填错因分类，否则复盘不可诊断
+    if status == "miss":
+        if miss_type not in ("direction_wrong", "timing_wrong", "magnitude_wrong"):
+            sys.stderr.write("✗ miss 状态必须带 --miss-type "
+                             "(direction_wrong/timing_wrong/magnitude_wrong)\n")
+            sys.exit(2)
+        target["miss_type"] = miss_type
+    # 平仓价自动结算（P0-① 闭环）：给了 --exit-price 且记录有 entry_price
+    # → actual_return = (exit/entry - 1) * 100，免手工算收益
+    if ret is None and exit_price is not None:
+        ep = target.get("entry_price")
+        if isinstance(ep, (int, float)) and ep > 0 and exit_price > 0:
+            ret = round((exit_price / ep - 1.0) * 100.0, 2)
+            print("ℹ️ 自动结算：entry=%s × exit=%s → actual_return=%s%%"
+                  % (ep, exit_price, ret))
+        else:
+            sys.stderr.write("✗ --exit-price 结算需要记录含 entry_price（该条为 null，"
+                             "旧记录无快照，请手工 --return）\n")
+            sys.exit(2)
     if status:
         target["status"] = status
     if ret is not None:
@@ -634,7 +706,12 @@ def main():
     ap.add_argument("rec_id", nargs="?", help="mark 模式的记录 id")
     ap.add_argument("--status", help="hit / miss / partial")
     ap.add_argument("--return", dest="ret", type=float, help="实际区间收益%%")
+    ap.add_argument("--exit-price", dest="exit_price", type=float,
+                    help="到期平仓价：与 entry_price 自动算 actual_return（免手工 --return）")
     ap.add_argument("--benchmark", help='基准 JSON，如 \'{"hold_csi300":2.0}\'')
+    ap.add_argument("--miss-type", dest="miss_type",
+                    choices=["direction_wrong", "timing_wrong", "magnitude_wrong"],
+                    default=None, help="miss 状态的错因分类（约定13，必填）")
     ap.add_argument("--quiet", action="store_true", help="只打印不写盘")
     ap.add_argument("--due", action="store_true", help="只列到期待结算清单")
     ap.add_argument("--calibration", action="store_true", help="校准系数表 + Brier 分解（PRED 9）")
@@ -656,7 +733,7 @@ def main():
         if not args.rec_id:
             sys.stderr.write("✗ mark 需要 rec_id\n")
             sys.exit(2)
-        mark(args.rec_id, args.status, args.ret, args.benchmark)
+        mark(args.rec_id, args.status, args.ret, args.benchmark, args.exit_price, args.miss_type)
     else:
         render(recs, args.quiet)
         # 同时跑更新质量检查（轻量）

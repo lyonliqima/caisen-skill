@@ -6,7 +6,8 @@
   "required": [
     "id", "date", "data_cutoff", "source_skill", "methodology",
     "asset_class", "symbol", "direction", "target_range",
-    "time_window", "confidence", "falsification", "predictability"
+    "time_window", "confidence", "falsification", "predictability",
+    "market_regime", "factor_exposure"
   ],
   "properties": {
     "id":            {"type": "string", "description": "唯一ID，格式 P-YYYYMMDD-NNN（由 append.py 自动递增）"},
@@ -15,9 +16,11 @@
     "expiry":        {"type": ["string","null"], "description": "预测到期日 YYYY-MM-DD（append.py 由 date+time_window 自动推算；自由文本窗口留 null）"},
     "source_skill":  {"type": "string", "description": "产出技能 / 专家，如 caisen-10-experts-analyst / 蔡森技术形态师 / 腾讯圆桌"},
     "methodology":   {"type": "string", "description": "所用方法论，如 蔡森形态学 / 宏观六步法 / 资本三流 / 十二专家综合"},
-    "asset_class":   {"type": "string", "enum": ["A股个股","港股","美股","大宗商品","宏观指数","外汇","其他"], "description": "资产类别"},
-    "symbol":        {"type": "string", "description": "标的代码或名称，如 600519 贵州茅台 / 9988.HK 阿里巴巴"},
-    "direction":     {"type": "string", "enum": ["多","空","中性"], "description": "方向判断（对应评分卡「方向」）；历史记录可能含自由文本方向，新记录须取三者之一"},
+    "asset_class":   {"type": "string", "enum": ["A股个股","A股指数","港股","美股","美股个股","商品期货","股指期货","国债期货","外汇","宏观指数","组合","其他"], "description": "资产类别（append.py 自动归一化：大宗商品期货/商品期货/commodity_future/贵金属/能源→商品期货；A股个股(科创板)→A股个股 等）"},
+    "symbol":        {"type": "string", "description": "标的代码或名称，如 600519 贵州茅台 / 9988.HK 阿里巴巴；首词须为代码（600519 / M2609），用于定位 K线缓存"},
+    "direction":     {"type": "string", "enum": ["多","空","中性偏多","中性偏空","中性震荡"], "description": "方向判断（append.py 自动归一化 15 种历史写法到本五值枚举）；条件触发词（若/站上/跌破/放量/转多/转空/待确认）写进 falsification 与 target_range，不写进 direction"},
+    "market_regime": {"type": "string", "enum": ["趋势市","震荡市","弱势市"], "description": "环境过滤器（DISCIPLINE.md 第0步）：给方向前必须先判市。弱势市默认不给单边方向，改'区间+方向待确认'；趋势市才可给方向且>70需 trend_confirmed"},
+    "trend_confirmed": {"type": ["boolean","null"], "description": "趋势确认标志：趋势市下置信度>70 必须=true（放量突破+均线排列），否则 append.py 将置信度封顶70；弱势市方向性判断置 true 可豁免60上限（谨慎使用）"},
     "target_range":  {"type": "string", "description": "幅度区间，如 +5%~+15% / 跌破140 / 区间[28,34]"},
     "time_window":   {"type": "string", "description": "时间窗口，如 5D / 20D / 60D / 2026-Q4（对应评分卡「期限」）"},
     "confidence":    {"type": "integer", "minimum": 0, "maximum": 100, "description": "置信度百分比（整数，对应评分卡「置信度」原始值）"},
@@ -25,7 +28,11 @@
     "falsification":{"type": "string", "description": "证伪条件：什么信号出现说明看错了 / 止损位（对应评分卡「证伪位」）"},
     "position":      {"type": "string", "description": "建议仓位区间（进步建议5）：不动 / 轻仓 / 标准仓 / 重仓；或比例如 0%~30%。<60分不动、60-70轻仓、>75标准仓、上限封顶"},
 
-    "predictability": {"type": "string", "enum": ["高","中","低","接近随机"], "description": "可预测性评级（PRED 3），决定置信度硬上限：高85/中75/低65/接近随机55"},
+    "predictability": {"type": "string", "enum": ["高","中","低","接近随机"], "description": "可预测性评级（PRED 3），决定置信度硬上限：高85/中75/低65/接近随机55（append.py 机器强制，超限自动下调；括号装饰自动剥除）"},
+
+    "entry_price":   {"type": ["number","null"], "description": "价格快照（P0-① 强制）：预测当日标的收盘/最新价，append 时由 --entry-price 或 market-data-cache 固化；到期计算 actual_return 的基准。缺失则复盘闭环断掉"},
+    "entry_ma20":    {"type": ["number","null"], "description": "预测当日 MA20 快照（append.py 从 market-data-cache 自动计算，≥20 根才有）；复盘时单条 ma_rule 对照：entry_price>entry_ma20 判多/否则判空"},
+    "entry_price_src": {"type": "string", "description": "快照来源审计：cli（显式传参）/ cli:no-cache / cache:<date>（回落缓存及所用日期）"},
 
     "scenarios":     {"type": "object", "description": "三情景离散概率分布（PRED 11）：每情景带收益区间，构成离散分布",
       "properties": {
@@ -113,6 +120,13 @@
     "status":        {"type": "string", "enum": ["open","hit","miss","partial"], "description": "复盘状态，由 score.py / 人工回填"},
     "actual_return":{"type": ["number","null"], "description": "实际区间收益%（扣除交易成本前），到期由 score.py 或 mx-moni 回填"},
     "review_date":   {"type": ["string","null"], "description": "复盘日期 YYYY-MM-DD，回填时写入"},
+
+    "miss_type":     {"type": ["string","null"], "enum": ["direction_wrong","timing_wrong","magnitude_wrong",null],
+                      "description": "错因分类（约定13 · 盲区复盘）：方向错 direction_wrong(换方法) / 时序错 timing_wrong(方向对但太早,改节奏不改方向) / 幅度错 magnitude_wrong(改目标区间)。仅 miss 记录回填，用于 score.py 错因分布诊断"},
+    "factor_exposure": {"type": ["array","null"], "items": {"type": "string"},
+                      "description": "该预测暴露的共享宏观因子标签（组合层风控 portfolio.py 归类用），如 '中国内需/地产链' / '美元信用' / '供给端天气' / '地缘原油'。多因子可填多个"},
+    "discipline_violation": {"type": ["array","null"], "items": {"type": "string"},
+                      "description": "约定13 纪律校验 --force 放行标记：本条写入时违反的多样性约束清单（窗口退化/置信度锚定），score.py 复盘专项统计"},
     "brier":         {"type": ["number","null"], "description": "该条 Brier 贡献（主情景概率 vs 实际0/1），由 score.py 计算"},
     "crps":          {"type": ["number","null"], "description": "连续概率评分 CRPS（PRED 11）：能量分数形式，越小越好"},
 

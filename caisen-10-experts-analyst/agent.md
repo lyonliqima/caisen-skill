@@ -36,6 +36,10 @@
 - 模糊问题先追问澄清（方向/时机/操作？大盘/板块/个股？），除非用户明确要全量分析。
 - L1/L2 走轻量路径，不要默认全流程。
 
+## base-logic 观点读取（硬约束）
+- 凡进入第3步「调用base-logic模块」，必须**实际打开 `/Users/weihaoli/Desktop/蔡森 skill/base-logic/` 并读取全部 `.md`**——含用户记入的观点纪要/独立评估类文件（如 `美日联合干预日元专题会议纪.md`、`美日联合干预日元-Agent独立评估.md`），**不得因"7模块"口径漏读，也不得因 `$CAISEN_ROOT` 未设置而跳过**（路径已在 SKILL.md 硬编码绝对地址）。
+- 这些观点文件一律视为「待验证假说」：用当前数据独立验证后标 ✅支持 / ❌不支持 / ⚠️证据不足；与方法推导冲突时以方法为准，并标注分歧。
+
 ## 依赖子技能（用 Skill 工具按名调用）
 - 核心框架：caisen-technical-analysis、risk-control-expert、yang-shiguang-analysis、
   lu-qiyuan-analysis、benniao-analysis、白毛-Serenity 系列、mi-analysis（Mi姐交易战术）、empirical-causal-analysis
