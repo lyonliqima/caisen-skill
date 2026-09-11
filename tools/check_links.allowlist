@@ -18,7 +18,7 @@ alphaear/references/alphaear-signal-tracker.md:18  # 上游子技能参考文档
 alphaear/references/alphaear-logic-visualizer.md:18  # 上游子技能参考文档(PROMPTS/sources)未随本仓库分发 -> references/PROMPTS.md
 alphaear/references/alphaear-search.md:23  # 上游子技能参考文档(PROMPTS/sources)未随本仓库分发 -> references/PROMPTS.md
 lu-qiyuan-analysis/SKILL.md:149  # 配置/数据文件未随本仓库分发(上游未提供) -> config/indicators.yaml
-lu-qiyuan-analysis/references/collapse-risk-indicators.md:214  # 配置/数据文件未随本仓库分发(上游未提供) -> data/qualitative_state.json
+lu-qiyuan-analysis/references/collapse-risk-indicators.md:269  # 配置/数据文件未随本仓库分发(上游未提供) -> data/qualitative_state.json（行号随 2026-09-11 文档修订由 214 漂移至 269）
 capital-three-flow/SKILL.md:70  # 运行时数据文件(脚本生成),非文档 -> data/qualitative_state.json
 capital-three-flow/references/data_sources.md:94  # 运行时数据文件(脚本生成),非文档 -> data/qualitative_state.json
 last30days/SKILL.md:63  # 上游引擎 last30days-skill 未随本仓库分发 -> scripts/last30days.py
