@@ -2,11 +2,11 @@
 # 已知缺失引用基线。链接检查器按「相对路径:行号」精确跳过这些行；
 # 若文件被编辑导致行号漂移，该行会重新触发断链检查，需同步更新此处。
 # 分类：上游第三方 skill 引擎/文档未随本仓库分发；运行时生成的数据文件；早期已废弃的桩文件路径。
-yang-shiguang-analysis/references/00-overview.md:69  # 上游示例文档未随本仓库分发 -> examples-0608.md
-yang-shiguang-analysis/references/00-overview.md:69  # 上游示例文档未随本仓库分发 -> examples-0609.md
-yang-shiguang-analysis/references/00-overview.md:69  # 上游示例文档未随本仓库分发 -> examples-0618.md
-yang-shiguang-analysis/references/00-overview.md:69  # 上游示例文档未随本仓库分发 -> examples-0623.md
-yang-shiguang-analysis/references/00-overview.md:69  # 上游示例文档未随本仓库分发 -> examples-0623b-旧秩序崩塌.md
+yang-shiguang-analysis/references/00-overview.md:79  # 上游示例文档未随本仓库分发（行号随 2026-09-12 文档修订由 69 漂移至 79） -> examples-0608.md
+yang-shiguang-analysis/references/00-overview.md:79  # 上游示例文档未随本仓库分发（行号随 2026-09-12 文档修订由 69 漂移至 79） -> examples-0609.md
+yang-shiguang-analysis/references/00-overview.md:79  # 上游示例文档未随本仓库分发（行号随 2026-09-12 文档修订由 69 漂移至 79） -> examples-0618.md
+yang-shiguang-analysis/references/00-overview.md:79  # 上游示例文档未随本仓库分发（行号随 2026-09-12 文档修订由 69 漂移至 79） -> examples-0623.md
+yang-shiguang-analysis/references/00-overview.md:79  # 上游示例文档未随本仓库分发（行号随 2026-09-12 文档修订由 69 漂移至 79） -> examples-0623b-旧秩序崩塌.md
 news-aggregator-skill/implementation_plan.md:15  # 上游计划文档引用的脚本未随本仓库分发 -> scripts/daily_scan.sh
 news-aggregator-skill/implementation_plan.md:23  # 上游计划文档引用的脚本未随本仓库分发 -> scripts/generate_basic_report.py
 news-aggregator-skill/implementation_plan.md:30  # 上游计划文档引用的脚本未随本仓库分发 -> scripts/daily_scan.sh
