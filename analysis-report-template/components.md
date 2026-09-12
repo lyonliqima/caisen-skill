@@ -45,8 +45,27 @@
 <script>drawRadar('c1', ['宏观','制度','技术','数据','因果','风控'], [80,65,70,75,60,85], {color:'#4a9eff'});</script>
 ```
 可用 helper：`drawLine(id,labels,datasets)` / `drawBar(id,labels,datasets)` / `drawRadar(id,axes,values)` / `drawDoughnut(id,labels,values)`。
-- `datasets` 支持两种写法：`[{label,data,color}]` 或 `[[...],[...]]`。
-- `color` 用 `--up/--down/--gold/--accent/--warn/--purple` 对应色值或十六进制。
+
+`datasets` 支持 **三种写法**（2026-09-11 修正：旧版 helper 会把嵌套/扁平数组错塞进 `data` 标量，导致图表全白，已修复）：
+
+| 写法 | 示例 | 说明 |
+|---|---|---|
+| 扁平数组 | `[1,2,3]` | 单系列 |
+| 嵌套数组 | `[[1,2],[3,4]]` | 多系列；配 `opts.names:['甲','乙']` 给图例命名 |
+| 标准对象 | `[{label:'甲',data:[1,2],color:'#f00'}]` | 完全控制，`color` 优先级最高 |
+
+```html
+<!-- 多系列柱状图，带图例 -->
+<canvas id="c9"></canvas>
+<script>drawBar('c9', ['1月','2月','3月'], [[1.2,2.0,1.8],[0.9,1.5,2.2]],
+  {colors:['#ff9f43','#4a9eff'], names:['生猪','红枣']});</script>
+```
+
+- `opts.colors[i]` 与第 i 个系列一一对应；`opts.names[i]` 是第 i 个系列的图例名。
+- `opts.fill:true` 给折线图加面积填充。
+- **颜色用十六进制**（`--up/--down/--gold/--accent/--warn/--purple` 的色值或自定义），不要写 `var(--x)`，Chart.js 画布不认 CSS 变量。
+- 雷达图：`drawRadar(id,axes,values,{color:'#4a9eff',label:'评分（1–5）'})`。
+- **离线可用**：合图后如需脱离网络打开，把 `<script src=".../chart.js"></script>` 换成内联的 chart.umd.js 全文即可（约 205KB，一次 curl 下载）。
 
 ### 交叉验证表
 ```html
@@ -75,4 +94,10 @@
 - body 片段**不含** `<!DOCTYPE>`/`<html>`/`<head>`/`<style>`/`<body>`/`<footer>` 标签。
 - body 以 `<section>` 或 `<div class="verdict">` 开头。
 - 所有图表用 `drawXxx` helper，不写原生 Chart.js `new Chart(...)` 配置。
+- **每个 `<canvas id="cN">` 必须有且仅有一条对应的 `drawXxx('cN', ...)` 调用。**
+- 渲染完成后**必须**跑一次图表结构校验（Chart.js 对坏数据只白屏、不报错）：
+  ```bash
+  node analysis-report-template/verify_charts.js <输出.html>
+  ```
+  输出 `PASS 全部 N 张图表结构合法` 才算过关。
 - 不满足任一条 = body 不合规，render 仍能合成但视觉会跑偏。

@@ -6,27 +6,46 @@
 <title>{{TITLE}}</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-/* 图表helper：模型只需写 <canvas id="x"></canvas> 后调用 drawXxx(id, ...) 即可，无需完整 Chart.js 配置 */
+/* 图表helper：模型只需写 <canvas id="x"></canvas> 后调用 drawXxx(id, ...) 即可，无需完整 Chart.js 配置
+   用法（三选一，均可）：
+     drawBar('c1', ['A','B'], [1,2])                                  // 扁平数组 => 单系列
+     drawBar('c1', ['A','B'], [[1,2],[3,4]], {names:['甲','乙']})       // 嵌套数组 => 多系列，names 给图例
+     drawBar('c1', ['A','B'], [{label:'甲',data:[1,2],color:'#f00'}])   // 标准对象 => 完全控制
+   ⚠️ 旧版 _norm 会把嵌套数组/扁平数组错误地塞进 data 标量，导致图表空白——已修正。 */
 function _base(type, id, data, opts){
   opts = opts || {};
   const ctx = document.getElementById(id);
   if(!ctx) return;
   const colors = {up:'#ff4d4f', down:'#1ec77a', gold:'#ffd166', accent:'#4a9eff', warn:'#ff9f43', purple:'#c084fc', muted:'#8b98a5'};
-  const ds = (Array.isArray(data.datasets)?data.datasets:[data]).map((d,i)=>({
-    label:d.label||'', data:d.data,
-    borderColor:d.color||opts.colors&&opts.colors[i]||colors.accent,
-    backgroundColor:(d.color||colors.accent)+(opts.fill?'33':'')||'rgba(74,158,255,.15)',
-    fill: !!opts.fill, tension:.25, pointRadius:2, borderWidth:2
-  }));
-  new Chart(ctx,{type:type,data:{labels:data.labels,datasets:ds},
-    options:{responsive:true,plugins:{legend:{labels:{color:'#e6edf3'}}},
-      scales:type==='radar'?{}:{x:{ticks:{color:'#8b98a5'},grid:{color:'#2a3441'}},y:{ticks:{color:'#8b98a5'},grid:{color:'#2a3441'}}}}}});
+  const list = Array.isArray(data.datasets)?data.datasets:[data];
+  const isDC = (type==='doughnut');
+  const ds = list.map(function(d,i){
+    const c = d.color || (opts.colors && opts.colors[i]) || colors.accent;
+    return {label:d.label||('系列'+(i+1)), data:d.data,
+      borderColor:Array.isArray(c)?c:c,
+      backgroundColor:Array.isArray(c)?c:(isDC?c:(opts.fill? c+'33' : c+'cc')),
+      fill: !!opts.fill, tension:.25, pointRadius:2, borderWidth:2};
+  });
+  const chartOpts = {responsive:true,plugins:{legend:{labels:{color:'#e6edf3'}}}};
+  if(type!=='radar'&&type!=='doughnut'){
+    chartOpts.scales = {
+      x:{ticks:{color:'#8b98a5'},grid:{color:'#2a3441'}},
+      y:{ticks:{color:'#8b98a5'},grid:{color:'#2a3441'}}
+    };
+  }
+  new Chart(ctx,{type:type,data:{labels:data.labels,datasets:ds},options:chartOpts});
 }
-function drawLine(id,labels,datasets,opts){_base('line',id,{labels,datasets:_norm(datasets)},opts);}
-function drawBar(id,labels,datasets,opts){_base('bar',id,{labels,datasets:_norm(datasets)},opts);}
-function drawDoughnut(id,labels,values,opts){_base('doughnut',id,{labels,datasets:[{data:values,color:opts&&opts.colors}]},opts);}
-function drawRadar(id,axes,values,opts){_base('radar',id,{labels:axes,datasets:[{data:values,color:opts&&opts.color}]},{colors:[opts&&opts.color]});}
-function _norm(d){return (typeof d[0]==='object')?d:d.map((v,i)=>({label:'系列'+(i+1),data:v}));}
+function _norm(d,names){
+  if(!d||!d.length) return [];
+  function set(v,i){return {label:(names&&names[i])||('系列'+(i+1)),data:v};}
+  if(typeof d[0]==='object'&&!Array.isArray(d[0])) return d;   // 已是 [{label,data}]
+  if(Array.isArray(d[0])) return d.map(set);                   // [[..],[..]] 多系列
+  return [set(d,0)];                                           // 扁平数组 => 单系列
+}
+function drawLine(id,labels,datasets,opts){_base('line',id,{labels:labels,datasets:_norm(datasets,opts&&opts.names)},opts);}
+function drawBar(id,labels,datasets,opts){_base('bar',id,{labels:labels,datasets:_norm(datasets,opts&&opts.names)},opts);}
+function drawDoughnut(id,labels,values,opts){_base('doughnut',id,{labels:labels,datasets:[{label:(opts&&opts.label)||'占比',data:values,color:opts&&opts.colors}]},opts);}
+function drawRadar(id,axes,values,opts){_base('radar',id,{labels:axes,datasets:[{label:(opts&&opts.label)||'评分',data:values,color:opts&&opts.color}]},{colors:[opts&&opts.color]});}
 </script>
 
 <style>
