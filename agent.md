@@ -359,3 +359,13 @@
 **与约定4关系**：约定4管单笔评分卡，本约定管"单笔加起来"的组合与资金纪律——两者互补，不重叠。
 
 **统一规范（已同步）**：用户级长期记忆 `~/.workbuddy/MEMORY.md`「分析方法论 · 组合层/加仓数学/错因分类」段。
+
+## 约定 14：提交与推送纪律（2026-09-12 建立）
+
+**背景**：本仓库位于 macOS `~/Desktop`（受 TCC 保护），`.git/*.lock` 偶发无法 unlink；且分析会话常有并发进程写台账。两者都会让 git 的输出产生误导。
+
+**执行动作**：
+1. **推送结果一律用 `git ls-remote origin main` 对照 `git rev-parse HEAD` 验证，不要信 `git push` 的输出。** 已知假象：push 可能报 `update_ref failed for ref 'refs/remotes/origin/main'` 或 `Everything up-to-date`，但**远端其实已收到对象并更新**——失败的只是本地 remote-tracking ref（被残留 `origin/main.lock` 挡住）。只看 push 输出会误判成"没推上去"而重复操作。
+2. **写 `.git/index.lock` / `refs/remotes/origin/*.lock` 报 `Operation not permitted` 属已知噪音**：不阻塞 add/commit/push。必要时用 `dangerouslyDisableSandbox` 的 `rm` 清一次；**即便清不掉也不要反复重试**，继续操作即可。
+3. **提交 `predictions-ledger/ledger.jsonl` 前，先隔几秒 `wc -l` 对两次**，确认无并发会话正在写入，避免提交到半行 JSON。本仓库存在多会话/自动化并发追加台账的情况。
+4. 提交前固定三件事：`rm -f .git/index.lock`（清残留）→ 跑 `tools/check_links.py`（或直接依赖 pre-commit 钩子）→ 提交后再跑一次镜像 `md5` 校验（约定7）。
