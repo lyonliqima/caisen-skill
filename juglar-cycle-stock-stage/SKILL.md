@@ -185,6 +185,16 @@ Stage 5 出清期：xx%
 适合策略：左侧买入 / 右侧持有 / 趋势加仓 / 逢高减仓 / 等待出清 / 只观察
 ```
 
+## 上游：先定宏观与中观
+
+本技能判定**个股**处于朱格拉五阶段的哪一段，属于自上而下的最后一层。在给个股定阶段之前，应先确定宏观库存周期与中观行业出清位置——用 `dual-cycle-timing`（产业周期×库存周期双周期嵌套）：
+
+- 库存周期四阶段（主动去库/被动去库/主动补库/被动补库）决定**建仓节奏**
+- **需求拉动型 vs 成本推升型**判定决定中下游制造的阶段判定是否被证伪
+- 行业去产能必须用**相对口径**（行业 capex 增速 − 制造业整体 capex 增速），否则会把全行业 β 误读成个股 α
+
+若任务是"现在该不该买 / 买哪个行业"，先跑 `dual-cycle-timing`，再回到本技能定个股阶段。
+
 ## Detailed Reference
 
 Read `references/original-framework.md` when a task needs the full Chinese source framework, exact stage definitions, complete scoring tables, or the original prompt wording.
