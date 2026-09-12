@@ -296,6 +296,11 @@
 - 跨技能引用优先指向兄弟技能的**权威副本**（如 `$CAISEN_ROOT/lukou-daye/references/...`、`$CAISEN_ROOT/benniao-analysis/references/...`、`$CAISEN_ROOT/serenity/.../references/...`），遵循约定7「副本唯一化」，不在各自 SKILL.md 内重复拷贝参考文档。
 - 提交前钩子已安装（`.git/hooks/pre-commit` → `tools/pre-commit-check-links.sh`）：存在非 allowlist 断链则阻止提交，禁止引入新断链。新克隆需重装钩子：`ln -s ../../tools/pre-commit-check-links.sh .git/hooks/pre-commit`。
 
+**⚠️ 残留检查纪律（2026-09-12 补充 · 已两次踩坑）**：
+1. **编辑被 allowlist 覆盖的文件后，必须重跑 `tools/check_links.py` 并同步行号**。allowlist 按「相对路径:行号」精确匹配，被覆盖文件的行号一旦漂移，豁免立即失效 → 钩子会误报断链阻止提交。做法：按 allowlist 注释里记录的漂移轨迹同步行号，并在注释中留痕。**跑检查一律从仓库根目录执行**（`cd "/Users/weihaoli/Desktop/蔡森 skill" && python3 tools/check_links.py`）；在子技能目录下跑会 `No such file or directory`。
+2. **macOS 自带 BSD grep 的 `\|` 交替语法是静默假阴性**（`grep "a\|b"` 会漏匹配而非报错）。做「关键词/旧表述是否清干净」的残留检查时，**禁用 BSD 的 `\|`**：改用 `grep -E "a|b"`，或用 Python 子串校验（`python3 -c "..."`）。历史教训：一次「无残留」的结论靠 BSD grep 得出，改用 Python 复核后发现 4 处真残留（行 469/514/657/745）。
+3. 破坏性清理一律先**备份到 `_archive/`**（`cp -R`）再 `/usr/bin/trash` 非破坏删除；`_archive/` 已被 `.gitignore` 排除，不入版本控制。删除后做一次**镜像同步 + md5 校验**（约定7）。
+
 ## 约定 12：结论输出四段式——理论→数据→前提→结论（2026-08-25 用户要求）
 
 **触发条件**：所有给出方向性/宏观判断的分析回复（十专家整合、路口大爷、资本三流、宏观/商品/股票研判等），在约定4评分卡与约定6因果链之外，**结论部分必须按四段式结构呈现**。
