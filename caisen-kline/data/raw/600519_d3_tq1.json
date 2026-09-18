@@ -1,0 +1,62 @@
+{
+ "Setcode": 1,
+ "Code": "600519",
+ "Period": 4,
+ "AttachInfo": {
+  "Name": "贵州茅台",
+  "HqDate": "20260803",
+  "HqTime": "153050",
+  "Unit": 100,
+  "Now": 1358.98
+ },
+ "Rows": [
+  {
+   "Data": "20260730",
+   "Open": 1323.0,
+   "High": 1362.0,
+   "Low": 1322.0,
+   "Close": 1361.76001,
+   "Volume": 71872.61,
+   "RawVolume": 7187261,
+   "RawAmount": 9712135168,
+   "Unit": 100,
+   "Second": "0",
+   "Amount": 9712135168,
+   "VolInStock": "9712135168",
+   "Settle": "0"
+  },
+  {
+   "Data": "20260731",
+   "Open": 1330.030029,
+   "High": 1355.719971,
+   "Low": 1325.77002,
+   "Close": 1350.599976,
+   "Volume": 55127.52,
+   "RawVolume": 5512752,
+   "RawAmount": 7373462528,
+   "Unit": 100,
+   "Second": "0",
+   "Amount": 7373462528,
+   "VolInStock": "7373462528",
+   "Settle": "0"
+  },
+  {
+   "Data": "20260803",
+   "Open": 1350.599976,
+   "High": 1363.349976,
+   "Low": 1346.0,
+   "Close": 1358.97998,
+   "Volume": 36146.86,
+   "RawVolume": 3614686,
+   "RawAmount": 4898665472,
+   "Unit": 100,
+   "Second": "0",
+   "Amount": 4898665472,
+   "VolInStock": "4898665472",
+   "Settle": "0"
+  }
+ ],
+ "Stats": {
+  "RangeBarCount": 3
+ }
+}

@@ -1,0 +1,62 @@
+{
+ "Setcode": 31,
+ "Code": "00700",
+ "Period": 4,
+ "AttachInfo": {
+  "Name": "腾讯控股",
+  "HqDate": "20260803",
+  "HqTime": "160815",
+  "Unit": 0.01,
+  "Now": 490.400024
+ },
+ "Rows": [
+  {
+   "Data": "20260730",
+   "Open": 466.400024,
+   "High": 475.000031,
+   "Low": 462.800018,
+   "Close": 471.800018,
+   "Volume": 31792000,
+   "RawVolume": 317920,
+   "RawAmount": 14947726336,
+   "Unit": 0.01,
+   "Second": "0",
+   "Amount": 14947726336,
+   "VolInStock": "14947726336",
+   "Settle": "0"
+  },
+  {
+   "Data": "20260731",
+   "Open": 470.000031,
+   "High": 479.800018,
+   "Low": 462.000031,
+   "Close": 475.200012,
+   "Volume": 31100200,
+   "RawVolume": 311002,
+   "RawAmount": 14692435968,
+   "Unit": 0.01,
+   "Second": "0",
+   "Amount": 14692435968,
+   "VolInStock": "14692435968",
+   "Settle": "0"
+  },
+  {
+   "Data": "20260803",
+   "Open": 482.000031,
+   "High": 491.000031,
+   "Low": 480.600037,
+   "Close": 490.400024,
+   "Volume": 38649900,
+   "RawVolume": 386499,
+   "RawAmount": 18865174528,
+   "Unit": 0.01,
+   "Second": "0",
+   "Amount": 18865174528,
+   "VolInStock": "18865174528",
+   "Settle": "0"
+  }
+ ],
+ "Stats": {
+  "RangeBarCount": 3
+ }
+}

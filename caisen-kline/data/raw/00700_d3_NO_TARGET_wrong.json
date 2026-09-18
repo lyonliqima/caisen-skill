@@ -1,0 +1,62 @@
+{
+ "Setcode": 31,
+ "Code": "00700",
+ "Period": 4,
+ "AttachInfo": {
+  "Name": "模塑科技",
+  "HqDate": "20260803",
+  "HqTime": "153301",
+  "Unit": 100,
+  "Now": 10.69
+ },
+ "Rows": [
+  {
+   "Data": "20260730",
+   "Open": 10.2,
+   "High": 10.23,
+   "Low": 9.4,
+   "Close": 9.49,
+   "Volume": 562286.68,
+   "RawVolume": 56228668,
+   "RawAmount": 548856640,
+   "Unit": 100,
+   "Second": "0",
+   "Amount": 548856640,
+   "VolInStock": "548856640",
+   "Settle": "0"
+  },
+  {
+   "Data": "20260731",
+   "Open": 9.85,
+   "High": 10.44,
+   "Low": 9.83,
+   "Close": 10.18,
+   "Volume": 713883.28,
+   "RawVolume": 71388328,
+   "RawAmount": 732090624,
+   "Unit": 100,
+   "Second": "0",
+   "Amount": 732090624,
+   "VolInStock": "732090624",
+   "Settle": "0"
+  },
+  {
+   "Data": "20260803",
+   "Open": 10.38,
+   "High": 10.91,
+   "Low": 10.2,
+   "Close": 10.69,
+   "Volume": 626436.64,
+   "RawVolume": 62643664,
+   "RawAmount": 668317120,
+   "Unit": 100,
+   "Second": "0",
+   "Amount": 668317120,
+   "VolInStock": "668317120",
+   "Settle": "0"
+  }
+ ],
+ "Stats": {
+  "RangeBarCount": 3
+ }
+}
