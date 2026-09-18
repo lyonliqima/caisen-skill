@@ -6,6 +6,12 @@ _archive/
 output/
 __pycache__/
 .cache/
+# ===== 行情数据缓存（tdx/mootdx 拉的原始 K 线，随时可再生；2026-09-18 补） =====
+market-data-cache/
+# ===== 数据/台账备份文件（勿入库；2026-09-18 补） =====
+predictions-ledger/*.bak*
+*.bak
+*.bak-*
 /破底翻候选_*.csv
 /破底翻*_*.csv
 mi-analysis/*.csv

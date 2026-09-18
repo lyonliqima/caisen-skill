@@ -50,8 +50,12 @@ def _load_prices(symbol, asof):
     asof_d = datetime.strptime(asof, "%Y-%m-%d")
     rows = []
 
-    # 1) 本地缓存：market-data-cache/<symbol>.csv|json，列 date,close
-    for ext in (".csv", ".json"):
+    # 1) 本地缓存：market-data-cache/<symbol>.csv|json|txt，列 date,close
+    #    ⚠️ 2026-09-18 新增 .txt：国内商品期货的日K缓存在 <合约>.txt，内容是新浪期货的
+    #    JSON 数组（键 d/o/h/l/c/v/p/s）。此前只读 csv/json → 期货预测的 benchmark /
+    #    ma_rule / random_dir 三字段恒为 error「可用=0 根」，复盘时算不出「超额命中率
+    #    = 命中率 − max(random_dir, ma_rule)」这个核心指标，期货整类品种的反馈闭环断掉。
+    for ext in (".csv", ".json", ".txt"):
         p = os.path.join(CACHE_DIR, symbol + ext)
         if os.path.exists(p):
             try:
@@ -61,6 +65,15 @@ def _load_prices(symbol, asof):
                         for r in csv.DictReader(f):
                             d = str(r.get("date", "")).strip()
                             c = r.get("close")
+                            if d and c not in (None, ""):
+                                rows.append((d, float(c)))
+                elif ext == ".txt":
+                    raw = open(p, encoding="utf-8").read()
+                    i, j = raw.find("["), raw.rfind("]")
+                    if i >= 0 and j > i:
+                        for r in json.loads(raw[i:j + 1]):
+                            d = str(r.get("d", "")).strip()
+                            c = r.get("c")
                             if d and c not in (None, ""):
                                 rows.append((d, float(c)))
                 else:

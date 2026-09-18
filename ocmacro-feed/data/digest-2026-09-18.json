@@ -1,0 +1,488 @@
+{
+ "fetchedAt": "2026-09-18T13:55:48+08:00",
+ "source": "https://ocmacro.com",
+ "taco": {
+  "asOfDate": "2026-09-17",
+  "value": 7.6,
+  "valueLabel": "+7.6%",
+  "status": {
+   "key": "pressure",
+   "label": "中压",
+   "description": "综合压力升温，处在中压区"
+  },
+  "change20d": 3.2,
+  "change20dLabel": "较20个交易日前 +3.2%",
+  "percentile": 88.6,
+  "range": [
+   -5.4,
+   16.4
+  ],
+  "peak": {
+   "value": 16.4,
+   "date": "2026-03-27"
+  },
+  "trough": {
+   "value": -5.4,
+   "date": "2025-05-20"
+  },
+  "sampleDays": 370,
+  "windowStart": "2025-03-26",
+  "factors": [
+   {
+    "key": "approval",
+    "label": "净支持率",
+    "weightLabel": "20%",
+    "valueLabel": "-0.5pp",
+    "currentValueLabel": "-20.4%",
+    "pressureLabel": "+9.3%"
+   },
+   {
+    "key": "dgs10",
+    "label": "10Y UST",
+    "weightLabel": "25%",
+    "valueLabel": "+5.5%",
+    "currentValueLabel": "4.94%",
+    "pressureLabel": "+18.2%"
+   },
+   {
+    "key": "move",
+    "label": "MOVE",
+    "weightLabel": "5%",
+    "valueLabel": "+5.5%",
+    "currentValueLabel": "76.22",
+    "pressureLabel": "+2.3%"
+   },
+   {
+    "key": "sp500",
+    "label": "S&P 500",
+    "weightLabel": "22.5%",
+    "valueLabel": "-0.9%",
+    "currentValueLabel": "7637.76",
+    "pressureLabel": "+2.8%"
+   },
+   {
+    "key": "vix",
+    "label": "VIX",
+    "weightLabel": "5%",
+    "valueLabel": "+1.7%",
+    "currentValueLabel": "15.44",
+    "pressureLabel": "-1.3%"
+   },
+   {
+    "key": "bkevenpy02",
+    "label": "CPI Nowcast",
+    "weightLabel": "22.5%",
+    "valueLabel": "-2bp",
+    "currentValueLabel": "+17bp",
+    "pressureLabel": "+2.4%"
+   }
+  ],
+  "contributions": {
+   "approval": 1.87,
+   "dgs10": 4.54,
+   "move": 0.12,
+   "sp500": 0.64,
+   "vix": -0.07,
+   "bkevenpy02": 0.54
+  },
+  "changeContributions": {
+   "approval": 0.33,
+   "dgs10": 3.27,
+   "move": 0.13,
+   "sp500": 0.34,
+   "vix": 0.02,
+   "bkevenpy02": -0.12
+  },
+  "dominantDriver": "dgs10",
+  "dominantDriverLabel": "10Y UST",
+  "dominantShare": 80.0,
+  "conditional": {
+   "buckets": [
+    {
+     "label": "< +2",
+     "n": 203,
+     "p": {
+      "5": 16.3,
+      "10": 34.5,
+      "20": 56.7
+     }
+    },
+    {
+     "label": "+2~+5",
+     "n": 80,
+     "p": {
+      "5": 28.7,
+      "10": 46.2,
+      "20": 55.0
+     }
+    },
+    {
+     "label": "+5~+8",
+     "n": 34,
+     "p": {
+      "5": 35.3,
+      "10": 52.9,
+      "20": 79.4
+     }
+    },
+    {
+     "label": ">= +8",
+     "n": 33,
+     "p": {
+      "5": 42.4,
+      "10": 63.6,
+      "20": 100.0
+     }
+    }
+   ],
+   "base": {
+    "5": 22.5,
+    "10": 40.6,
+    "20": 62.6
+   },
+   "eventDays": 19,
+   "tradingDays": 370
+  },
+  "events": [
+   {
+    "rollbackDate": "2026-08-18",
+    "threatDate": "2026-07-20",
+    "strength": "强",
+    "topic": "加拿大关税/贸易谈判",
+    "rollback": "8月18日晚、距离生效不到两小时，特朗普宣布把50%关税暂停三天，称美加已经达成一项仍待文件定稿的协议，为继续谈判留出时间。",
+    "implication": "短期避免北美贸易冲突立即升级，缓释加拿大出口商、美国进口商和通胀预期压力；但三天窗口很短，若协议未落地，关税与报复措施风险会迅速回归。"
+   },
+   {
+    "rollbackDate": "2026-08-17",
+    "threatDate": "2026-06-17",
+    "strength": "中",
+    "topic": "伊朗战争/和平协议期限",
+    "rollback": "60天期限届满且双方分歧仍在扩大时，特朗普称该期限“无关紧要”、谈判没有时间表；美方同时仍保留与伊朗的后门沟通渠道。",
+    "implication": "降低期限届满即自动升级的即时风险，却延长了战争、核谈判与霍尔木兹航运的不确定期；市场面对的是尾部风险后移，而非持久和平。"
+   },
+   {
+    "rollbackDate": "2026-08-09",
+    "threatDate": "2026-08-01",
+    "strength": "强",
+    "topic": "伊朗战争/军事升级",
+    "rollback": "8月2日，特朗普取消拟议攻击并为谈判留出空间；8月9日又称美国正对伊朗“低调处理”，转而依靠有限外交、制裁和经济压力，而非立即恢复大规模作战。",
+    "implication": "短期降低美伊全面战争及能源设施遇袭的尾部风险，但霍尔木兹航运、油价和制裁风险仍高，市场应把它视为战术性降级而非持久停火。"
+   },
+   {
+    "rollbackDate": "2026-07-14",
+    "threatDate": "2026-07-13",
+    "strength": "强",
+    "topic": "霍尔木兹海峡航运收费",
+    "rollback": "7月14日，特朗普撤回20%收费方案，称在与中东领导人沟通后，将改由海湾国家对美贸易和投资安排取代该费用，并表示不应有人对海峡通行收费。",
+    "implication": "直接缓解了全球航运、油气与保险成本再叠加20%费用的风险，油价在消息后回吐部分涨幅；但海峡交火和封锁仍使能源供应风险溢价维持高位。"
+   },
+   {
+    "rollbackDate": "2026-06-11",
+    "threatDate": "2026-06-11",
+    "strength": "强",
+    "topic": "伊朗战争/停火谈判",
+    "rollback": "数小时后，特朗普又称因与伊朗高层接触取得进展，已叫停新一轮对伊打击，并宣称延长停火、推进协议的安排接近达成；但伊朗方面随后表示谈判虽有进展，仍无最终决定。",
+    "implication": "短线缓解油价与全球风险资产对霍尔木兹供给中断的恐慌定价，但也强化了市场对特朗普在伊朗议题上“极限施压后快速降温”的交易预期，意味着地缘风险溢价未来仍可能高频来回摆动。"
+   },
+   {
+    "rollbackDate": "2026-05-27",
+    "threatDate": "2026-05-23",
+    "strength": "中",
+    "topic": "伊朗战争/停火谈判",
+    "rollback": "5月27日，特朗普在内阁会议上称伊朗“很想达成协议”，但美国“还不满意”，并淡化短期内达成最终协议的预期。",
+    "implication": "能源与航运风险溢价短期更难彻底出清；市场对“先放话、后降温”的伊朗议题TACO定价可能强化。"
+   },
+   {
+    "rollbackDate": "2026-05-23",
+    "threatDate": "2026-05-23",
+    "strength": "中",
+    "topic": "伊朗战争/停火谈判",
+    "rollback": "随后特朗普称已要求谈判代表“不要急于达成协议”，并表示美国封锁/施压措施仍维持，给“即将突破”的叙事降温。",
+    "implication": "缓和了对即时停火的确定性押注；油价与航运供给的尾部风险被延后而非消除。"
+   },
+   {
+    "rollbackDate": "2026-05-22",
+    "threatDate": "2026-05-22",
+    "strength": "中",
+    "topic": "半导体关税/产业政策",
+    "rollback": "美国贸易代表Jamieson Greer表示没有“立即”的芯片关税，并强调若采取保护措施也要把握“时点和幅度”。",
+    "implication": "短期缓释科技硬件与半导体供应链的关税冲击预期，但保留后续加税的政策选项与不确定性。"
+   },
+   {
+    "rollbackDate": "2026-05-21",
+    "threatDate": "2026-05-21",
+    "strength": "中",
+    "topic": "AI监管/网络安全行政令",
+    "rollback": "签署仪式被推迟/取消，特朗普称他不喜欢部分内容，担心影响美国在AI竞争中的优势。",
+    "implication": "减轻了短期AI合规与监管不确定性，但也意味着政策可能以更不透明方式改写、增加后续突发性风险。"
+   },
+   {
+    "rollbackDate": "2026-05-18",
+    "threatDate": "2026-05-18",
+    "strength": "强",
+    "topic": "美伊军事打击",
+    "rollback": "伊朗经巴基斯坦提交新和平方案后，特朗普暂停原定袭击，并称有机会达成限制伊核协议。",
+    "implication": "油价因袭击暂停而回落；但特朗普保留随时重启大规模攻击的威胁。"
+   },
+   {
+    "rollbackDate": "2026-05-14",
+    "threatDate": "2026-05-14",
+    "strength": "中",
+    "topic": "中美北京峰会",
+    "rollback": "访华后，中方称关税、农业、飞机协议仍是初步成果，双方将设贸易和投资机制谈产品级关税削减。",
+    "implication": "中美关系进入篮子式成果清单阶段，但细节、规模、时间表仍不确定。"
+   },
+   {
+    "rollbackDate": "2026-05-07",
+    "threatDate": "2026-05-07",
+    "strength": "中强",
+    "topic": "欧盟汽车与贸易协议执行",
+    "rollback": "随后给欧盟至7月4日履约期限，而非立即执行更高关税。",
+    "implication": "延续对欧TACO模式：用加税威胁换取执行谈判。"
+   },
+   {
+    "rollbackDate": "2026-05-07",
+    "threatDate": "2026-05-07",
+    "strength": "强",
+    "topic": "美伊停火压力测试",
+    "rollback": "特朗普仍称停火有效，美国也称不寻求升级。",
+    "implication": "市场需要继续给油价和通胀风险定价，但白宫暂时不愿重启全面战争。"
+   },
+   {
+    "rollbackDate": "2026-04-08",
+    "threatDate": "2026-04-08",
+    "strength": "中强",
+    "topic": "美伊停火后谈判",
+    "rollback": "两周停火下开启谈判，但双方对停火范围和核安排解释不同。",
+    "implication": "风险从立即战争转为脆弱停火和谈判破裂风险。"
+   },
+   {
+    "rollbackDate": "2026-04-07",
+    "threatDate": "2026-04-07",
+    "strength": "最强",
+    "topic": "美伊战争 / 霍尔木兹海峡",
+    "rollback": "在最后期限前不到两小时，特朗普宣布由巴基斯坦斡旋的两周停火。",
+    "implication": "地缘版TACO：油价从战争溢价中回落，但伊朗仍掌握霍尔木兹杠杆。"
+   },
+   {
+    "rollbackDate": "2026-01-21",
+    "threatDate": "2026-01-17",
+    "strength": "强",
+    "topic": "格陵兰 / 北约盟友关税",
+    "rollback": "随后在达沃斯期间撤回关税威胁，称不会在下月征收相关关税，并称已有框架。",
+    "implication": "对北约盟友的极限施压最终被降级，避免欧美贸易和安全关系同步恶化。"
+   },
+   {
+    "rollbackDate": "2025-08-12",
+    "threatDate": "2025-08-12",
+    "strength": "强",
+    "topic": "中美关税休战续期",
+    "rollback": "双方再延长90天，维持美国对中国30%、中国对美国10%。",
+    "implication": "中美临时休战制度化，市场把高关税尾部风险继续后移。"
+   },
+   {
+    "rollbackDate": "2025-07-30",
+    "threatDate": "2025-07-30",
+    "strength": "中",
+    "topic": "韩国贸易协议",
+    "rollback": "美韩协议将韩国进口税率降至15%，韩国承诺投资和能源采购。",
+    "implication": "亚洲盟友普遍进入15%协议税率框架。"
+   },
+   {
+    "rollbackDate": "2025-07-27",
+    "threatDate": "2025-07-27",
+    "strength": "中强",
+    "topic": "欧盟贸易协议",
+    "rollback": "美欧达成15%关税协议，虽然钢铝铜等仍维持50%。",
+    "implication": "不是取消关税，而是移除最极端尾部风险。"
+   },
+   {
+    "rollbackDate": "2025-07-22",
+    "threatDate": "2025-07-22",
+    "strength": "中强",
+    "topic": "日本贸易协议",
+    "rollback": "美日协议把日本汽车关税从27.5%降至15%，其他部分商品也从25%降至15%。",
+    "implication": "日本成为15%协议税率模板之一。"
+   },
+   {
+    "rollbackDate": "2025-07-15",
+    "threatDate": "2025-07-15",
+    "strength": "中",
+    "topic": "印度尼西亚贸易协议",
+    "rollback": "美国将印尼税率降至19%，印尼承诺削减对美关税和非关税壁垒。",
+    "implication": "以采购、市场准入、非关税壁垒换取较低美国税率。"
+   },
+   {
+    "rollbackDate": "2025-07-06",
+    "threatDate": "2025-07-06",
+    "strength": "中强",
+    "topic": "全球对等关税期限",
+    "rollback": "白宫把更高关税生效日推迟到8月1日，并称部分协议接近完成。",
+    "implication": "不是完全撤销，而是把立即冲击变成谈判筹码。"
+   },
+   {
+    "rollbackDate": "2025-07-02",
+    "threatDate": "2025-07-02",
+    "strength": "中强",
+    "topic": "越南贸易协议",
+    "rollback": "美越协议将多数越南出口税率降至20%，转运商品40%。",
+    "implication": "显示极端税率主要是谈判锚，最终落点明显降低。"
+   },
+   {
+    "rollbackDate": "2025-05-25",
+    "threatDate": "2025-05-25",
+    "strength": "强",
+    "topic": "欧盟关税",
+    "rollback": "随后把期限恢复到7月9日，给美欧谈判时间；欧洲资产反弹。",
+    "implication": "市场进一步形成特朗普威胁可交易、可谈判的预期。"
+   },
+   {
+    "rollbackDate": "2025-05-12",
+    "threatDate": "2025-05-12",
+    "strength": "最强",
+    "topic": "中美关税战",
+    "rollback": "中美达成90天临时休战，美国对中国额外关税降至30%，中国对美国降至10%。",
+    "implication": "TACO概念广泛传播的关键节点；全球股市因贸易战缓和反弹。"
+   },
+   {
+    "rollbackDate": "2025-04-22",
+    "threatDate": "2025-04-22",
+    "strength": "强",
+    "topic": "美联储独立性 / Powell",
+    "rollback": "特朗普称无意解雇鲍威尔，市场随即反弹。",
+    "implication": "美债、美元、美股压力形成约束，避免关税危机演化为制度危机。"
+   },
+   {
+    "rollbackDate": "2025-04-12",
+    "threatDate": "2025-04-12",
+    "strength": "强",
+    "topic": "中国电子产品、科技供应链",
+    "rollback": "智能手机、电脑和部分电子产品获得关税排除，给苹果等科技链条缓冲。",
+    "implication": "行业游说和消费品通胀压力迫使白宫给科技品豁免。"
+   },
+   {
+    "rollbackDate": "2025-04-09",
+    "threatDate": "2025-04-09",
+    "strength": "最强",
+    "topic": "解放日全球对等关税",
+    "rollback": "4月9日突然把多数国家关税降回10%，并暂停90天；但对中国进一步升至125%。",
+    "implication": "奠定TACO交易基础：先卖风险资产，等政策回撤后买反弹。"
+   },
+   {
+    "rollbackDate": "2025-03-06",
+    "threatDate": "2025-03-05",
+    "strength": "强",
+    "topic": "北美汽车、USMCA商品",
+    "rollback": "先豁免符合USMCA规则的汽车一个月，随后扩大到多数USMCA合规商品，豁免至4月2日。",
+    "implication": "供应链现实约束压倒关税强硬姿态，市场被on-off tariff反复扰动。"
+   },
+   {
+    "rollbackDate": "2025-02-03",
+    "threatDate": "2025-02-03",
+    "strength": "强",
+    "topic": "加拿大、墨西哥关税",
+    "rollback": "对加拿大、墨西哥关税暂停30天，换取边境与犯罪执法让步；中国关税仍继续。",
+    "implication": "第一轮典型TACO，显示北美供应链和边境谈判可迫使关税延期。"
+   }
+  ]
+ },
+ "approval": {
+  "date": "2026-09-17",
+  "net": -20.39787,
+  "netLo": -30.084360000000004,
+  "netHi": -10.711390000000002,
+  "termMin": -20.61722,
+  "termMax": 11.65692,
+  "n": 605,
+  "atTermLow": false
+ },
+ "housing": {
+  "period": "2026-07",
+  "momPeriod": "2026-07",
+  "secondHandYoy": {
+   "全国": -5.4,
+   "一线城市": -3.7,
+   "二线城市": -5.1,
+   "三线城市": -5.8
+  },
+  "newHouseYoy": {
+   "全国": -3.4,
+   "一线城市": -1.1,
+   "二线城市": -2.8,
+   "三线城市": -4.2
+  },
+  "secondHandMom": {
+   "全国": -0.3,
+   "一线城市": 0.2,
+   "二线城市": -0.3,
+   "三线城市": -0.4
+  },
+  "newHouseMom": {
+   "全国": -0.2,
+   "一线城市": 0.0,
+   "二线城市": -0.1,
+   "三线城市": -0.3
+  },
+  "citiesUp": 0,
+  "citiesDown": 70,
+  "momPositiveStreak": {
+   "全国": 0,
+   "一线城市": 5,
+   "二线城市": 0,
+   "三线城市": 0
+  },
+  "bisChina": {
+   "entity": "中国",
+   "latestPeriod": "2026-Q1",
+   "peakPeriod": "2021-Q3",
+   "drawdownPct": -24.65,
+   "quartersFromPeak": 18,
+   "class": "小型泡沫",
+   "oneYearPct": -7.07,
+   "peerN": 46,
+   "peerDrawdownMedian": -28.645,
+   "peerDownQuartersMedian": 21.5,
+   "peerRecoveryQuartersMedian": 54.5
+  },
+  "highFreq": [
+   {
+    "scope": "30城",
+    "latestDate": "2026-09-06",
+    "latest": 142.2162,
+    "avg4w": 142.7,
+    "yoyPct": -5.2,
+    "baseDate": "2025-09-07",
+    "baseLagDays": 0
+   },
+   {
+    "scope": "一线城市",
+    "latestDate": "2026-09-06",
+    "latest": 51.9821,
+    "avg4w": 47.7,
+    "yoyPct": 16.0,
+    "baseDate": "2025-09-07",
+    "baseLagDays": 0
+   },
+   {
+    "scope": "二线城市",
+    "latestDate": "2026-09-06",
+    "latest": 53.8949,
+    "avg4w": 66.5,
+    "yoyPct": -11.7,
+    "baseDate": "2025-09-07",
+    "baseLagDays": 0
+   },
+   {
+    "scope": "三线城市",
+    "latestDate": "2026-09-06",
+    "latest": 36.3391,
+    "avg4w": 28.6,
+    "yoyPct": -16.3,
+    "baseDate": "2025-09-07",
+    "baseLagDays": 0
+   }
+  ],
+  "_snapshot": "2026-09-12/housing.json"
+ },
+ "housingSnapshot": "/Users/weihaoli/Desktop/蔡森 skill/ocmacro-feed/data/2026-09-12/housing.json"
+}

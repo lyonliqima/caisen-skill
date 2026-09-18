@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="eGNDiki4UyBFV4G2poB0PW"><head data-page-node-id="kHEubsNlXkN96TpjHxJ4z6"><meta charset="utf-8" data-page-node-id="E1JhAp1HtoZ0hv8WTv9lzo">
+<meta name="viewport" content="width=device-width,initial-scale=1" data-page-node-id="CaLmmBWMjxRl3WE6KGE0cm">
+<title>ocmacro.com 数据源研究 · TACO 压力指数与地产拆解</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#f7f6f3;--card:#fff;--ink:#15181d;--mute:#6b7280;--line:#e3e1db;
+      --red:#c0392b;--blue:#1f4e79;--teal:#0e7c86;--amber:#b8860b;--purple:#7b3fa0;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+     font:15px/1.75 -apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;}
+.wrap{max-width:1080px;margin:0 auto;padding:48px 28px 80px}
+h1{font-size:30px;margin:0 0 6px;letter-spacing:-.4px}
+h2{font-size:20px;margin:52px 0 6px;padding-top:22px;border-top:1px solid var(--line)}
+h3{font-size:16px;margin:26px 0 8px;color:var(--blue)}
+.sub{color:var(--mute);font-size:13.5px;margin:0 0 4px}
+.tag{display:inline-block;background:#eef2f7;color:var(--blue);border-radius:20px;
+     padding:2px 11px;font-size:12px;margin-right:6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+      padding:20px 22px;margin:16px 0}
+.grid{display:grid;gap:14px}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:760px){.g4,.g3,.g2{grid-template-columns:1fr}}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.kpi .l{font-size:12.5px;color:var(--mute);letter-spacing:.3px}
+.kpi .v{font-size:26px;font-weight:650;margin:4px 0 2px;letter-spacing:-.5px}
+.kpi .d{font-size:12.5px;color:var(--mute)}
+.hot .v{color:var(--red)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+th{color:var(--mute);font-weight:600;font-size:12.5px;letter-spacing:.3px}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:none}
+.callout{background:#fdf6f4;border-left:3px solid var(--red);border-radius:0 8px 8px 0;
+         padding:14px 18px;margin:16px 0}
+.callout.good{background:#f2f8f7;border-left-color:var(--teal)}
+.callout.note{background:#f6f5f1;border-left-color:var(--amber)}
+.callout p{margin:6px 0}
+.chart{position:relative;height:340px;margin:8px 0}
+.chart.tall{height:440px}
+.chart.short{height:250px}
+.warn{font-size:12.5px;color:var(--mute);margin-top:8px;line-height:1.7}
+code{background:#efeee9;padding:1px 6px;border-radius:4px;font-size:12.5px}
+.foot{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);
+      color:var(--mute);font-size:12.5px}
+</style></head><body data-page-node-id="leCZkKvjFnEttzrMWHYkAe"><div class="wrap" data-page-node-id="TKjCEKCmzlfOXT3ARQWfBe">
+
+<p class="sub" data-page-node-id="BzV17sMLAmWPuQUiYFJNt0">数据源研究 · 2026-09-12</p>
+<h1 data-page-node-id="QVK40U4lCfrN8clYUbVQ2d">ocmacro.com：TACO 压力指数与地产拆解</h1>
+<p class="sub" data-page-node-id="UCT8CH0SvWrmIxzGSTdZp1">MacroMargin（宏观边际）两个公开栏目的数据可用性、方法论逆向与实证检验</p>
+<p style="margin:12px 0 0" data-page-node-id="0dLwohtTdryGZlrFd5cqWc">
+<span class="tag" data-page-node-id="F0mJ1HJF7z23LqKNHYBGAh">TACO 指数</span><span class="tag" data-page-node-id="GutxxpPkyIJiSjK9k72142">70城房价 253期</span>
+<span class="tag" data-page-node-id="Gd4JHJPUVG5dUujum9TzO8">BIS 58国 / 143周期</span><span class="tag" data-page-node-id="Y4ATHWF8jGgQG6Nzfc1D03">30城高频</span>
+<span class="tag" data-page-node-id="5vWWDzUpiuQ9jC7Bz1l6Au">方法版本 <span id="ver" data-page-node-id="CJxercGdAQehHmrQXiQrAi"></span></span></p>
+
+<h2 data-page-node-id="3YghGBhXpcrSKiWv4c6xKd">一、TACO 压力指数当前读数</h2>
+<div class="grid g4" style="margin-top:14px" data-page-node-id="iBWgVgAYGlENSFVTu5uALA">
+  <div class="kpi hot" data-page-node-id="V3cLXjbjIV9qETf5BwYSBR"><div class="l" data-page-node-id="4NVnuYGuYINxiuoLDKaNFS">TACO 压力指数</div><div class="v" id="kVal" data-page-node-id="074EhLwl6WKF3H1ec0duGo"></div>
+    <div class="d" id="kSt" data-page-node-id="NVTPihecmC8CLUiMDzCkNi"></div></div>
+  <div class="kpi" data-page-node-id="bneZ8N4ybqDRqFgWDDqFcB"><div class="l" data-page-node-id="1AEFV4mVlNawMXRhep26yX">较 20 交易日前</div><div class="v" id="kChg" data-page-node-id="P97NeNJp12Lo2DUhspD0ky"></div>
+    <div class="d" data-page-node-id="vqRvS0M8t8GYxOeD9Wpmnh">正值 = 压力仍在升温</div></div>
+  <div class="kpi" data-page-node-id="fTvFQGsLEXkiBEiPIr3IKu"><div class="l" data-page-node-id="4HlHQI0H2waRbCsg7Sk4My">历史分位</div><div class="v" id="kPct" data-page-node-id="9K3pjc0rbroG9Lzlqz2FMh"></div>
+    <div class="d" id="kPeak" data-page-node-id="xnoqwCvM5dzem641tyqnlC"></div></div>
+  <div class="kpi" data-page-node-id="QmnW5I0frQ9unmPGmsVFHe"><div class="l" data-page-node-id="qYaR57XaKdrwvOx5s9EuX9">主导分项</div><div class="v" id="kDom" data-page-node-id="MEEzML9AdpvuLFDY3C4lFd"></div>
+    <div class="d" data-page-node-id="p1WjkvPGFAQrXcwHjmTGfj">占总指数 58%</div></div>
+</div>
+
+<div class="card" style="margin-top:16px" data-page-node-id="BZTe4iSkDiMFTrxR3KTnvQ">
+<h3 style="margin-top:4px" data-page-node-id="J6oReqk7n5kMsPjlCmu3yN">六因子拆解（固定权重）</h3>
+<table data-page-node-id="7QIbvvWxdADEy6ESAKX1He"><thead data-page-node-id="WtA6GFHECuQPRuVGbRJEhu"><tr data-page-node-id="CxwEyuiiaw18AFNZ3Vz4ic"><th data-page-node-id="byMpJoVQK607R2hhh0fZvt">因子</th><th class="n" data-page-node-id="54FC7tFDbXE15d8gYRsKML">权重</th><th class="n" data-page-node-id="mB49gwGtuYzM33KmJVbDG9">当日读数</th>
+<th class="n" data-page-node-id="59Qa6M5gwxeGlNydlXb4ig">压力贡献</th><th class="n" data-page-node-id="sQo0YdC4RkJ2i04p8MDspq">对指数贡献</th></tr></thead>
+<tbody id="facT" data-page-node-id="9H881k8cXaIuQtbYnyBaZB"></tbody></table>
+<p class="warn" data-page-node-id="vpFEGhNLYE1j6A7DSLkypk">10 年美债贡献最高，本轮压力是<strong data-page-node-id="OBYjSxmNm4klBBEpR2miDL">利率驱动</strong>，不是政治驱动。
+净支持率 <strong id="apNow" data-page-node-id="cXzKAwWt6h1CiGMmMfC8Fj"></strong>（<span id="apTxt" data-page-node-id="GaE0JjfSJTLGwgwCiRjbEJ"></span>，任期区间 <span id="apRange" data-page-node-id="V16Y0ZBLREvNRmwHn9GPZb"></span>）
+——已在低位区，边际增量衰减，<strong data-page-node-id="1KTmgdWxgGeWhIjvaeTAFu">指数下一轮见顶回落大概率由 10Y 见顶驱动，不会由支持率反弹驱动</strong>。</p>
+</div>
+
+<h2 data-page-node-id="sj7vp4yFNYXqIAYhXJksAo">二、指数全历史与政策回撤事件</h2>
+<p class="sub" data-page-node-id="bPmXIFguInAGOj8ewEuOEi">366 个交易日（2025-03-26 起，预热期不伪造数据点）；圆点为「强/最强/中强」级 TACO 事件</p>
+<div class="card" data-page-node-id="JUwELfQzFi4kacOdaDPC3h"><div class="chart tall" data-page-node-id="bu1WkyZQRttlAeRJQQuavR"><canvas id="cMain" data-page-node-id="yfbTASpdJrrekEcjhNHVcB"></canvas></div></div>
+
+<h2 data-page-node-id="ZeivokTbo0wC5TrO1gDoJT">三、六因子贡献分解（近 90 个交易日）</h2>
+<p class="sub" data-page-node-id="9bBBz2RBf3yxLD0f8lvrfG">黑色实线为六项净和，即当期指数走势</p>
+<div class="card" data-page-node-id="vDMwztwUw3NQNeB8A4FzwV"><div class="chart" data-page-node-id="HIHGMYD4dt3gMQJSiADvE6"><canvas id="cFactor" data-page-node-id="adk8ta4OkdRBCIRF7WCW45"></canvas></div></div>
+
+<h2 data-page-node-id="OteS2l1VUOhEI0dPDad79O">四、实证检验：这个指数怎么用</h2>
+<div class="callout" data-page-node-id="COgeAHSTVKDUpXLlU02uM2">
+<p data-page-node-id="fQ6rPbnwBpCNAtb6TgfguR"><strong data-page-node-id="QU4OESvcfv64b9iMm13tZ9">核心发现：TACO <span id="cpLab" data-page-node-id="1Dtq88gPO9OOUMTx4KotO7"></span> 时，未来 20 个交易日内出现重大政策回撤的概率为 <span id="cpP" data-page-node-id="YQWnrE9YFJZLIlfpdRVXRw"></span>%（无条件基准 <span id="cpB" data-page-node-id="5LHxjTDOHqqaxBP3RQUpyi"></span>%）。</strong></p>
+<p data-page-node-id="jk2OoeaestCJMEOspTBXAo"><span id="cpTxt" data-page-node-id="tJ2CmXCbZaGSUluHXKeTEx"></span>样本仅 <span id="cpN" data-page-node-id="aEAgmU6Jn7FprYcQr3ZUxr"></span> 个交易日且事件高度时间聚集，当参考、不当铁律。</p>
+</div>
+<div class="card" data-page-node-id="h424QHHKaEd7Zf1JKeW9S0"><div class="chart short" data-page-node-id="df61Oc2OCDnvUQDkMEBej0"><canvas id="cProb" data-page-node-id="s52wCD20jeCBjC5VfkFFKX"></canvas></div>
+<p class="warn" data-page-node-id="EjGFHfq1H3pDljOlZTl0QB">
+<strong data-page-node-id="8JWGjBLK4EzE9TtAtCqw2Q">它不是领先指标。</strong>「强」级事件发生前，指数分位中位数只有 36（低于中位）——不能用「指数还没涨起来」推断「暂时不会有事」。<br data-page-node-id="Xx36PUSIhshZ6GiD83E69A">
+<strong data-page-node-id="ZumquRbMW5GoSg5xQaRzR0">回撤即释放。</strong> 重大事件后 20 交易日指数平均 <strong data-page-node-id="gmEk7CQlj2pVEryfql5mWi">−1.70</strong>，而全样本基准仅 −0.08。事件是压力的释放阀，不是压力的起点。<br data-page-node-id="zb7XHmnNByoX8jPd8LCVni">
+<strong data-page-node-id="QPvz0VtpCzYXkUQMYl1ql8">回撤 ≠ 风险消除。</strong> 30 条复盘里绝大多数是「暂停/延期/口径降档」，明确写着「并非永久撤销」「尾部风险后移」。
+</p></div>
+
+<h2 data-page-node-id="j5BEAZBsHqIV7kDB4YGGAK">五、70 城房价：能级分化出现拐点</h2>
+<p class="sub" data-page-node-id="lXTqcGFLpFt01HMRAFl6nq">二手房环比（%），近 24 个月 —— 一线已连续 5 个月转正，三线仍在匀速阴跌</p>
+<div class="card" data-page-node-id="idOVr8J4eH8HPLg2dKXZdE"><div class="chart" data-page-node-id="9LOLvoJkxyxLVRYF8Omp75"><canvas id="cTier" data-page-node-id="PIo62msnB33s0JEf5Swaes"></canvas></div>
+<div class="callout note" style="margin-top:14px" data-page-node-id="hDAwEZE8i0q7Och8B93PuL">
+<p data-page-node-id="SI01pDxHjfRwBAuvc3o6ll"><strong data-page-node-id="tLip3IoWmaZYAAdQ0N58GE">价量分化：一线价量同向，二三线仍在缩量。</strong>
+一线二手房环比连续 5 个月为正（+0.40/+0.40/+0.40/+0.30/+0.20），
+且高频成交显示一线成交量同比 <strong id="hfy" data-page-node-id="ZIJXpAESAUV51WEV5dcoFs"></strong>（<span id="hfBase" data-page-node-id="hDzostLWmnzoqQEIaL8zXt"></span>）——<strong data-page-node-id="PPbxpkOWLFawMktB8weCiV">价与量同向回升</strong>；
+但二线 <span id="hf2" data-page-node-id="7SPtTonzEu9rVY9hXUmL90"></span>、三线 <span id="hf3" data-page-node-id="TGkKuH8OneJruWDLWVcxiH"></span>、30 城合计 <span id="hf30" data-page-node-id="AxaMfnRKZKOyAtZEmrDucJ"></span>，量能仍为负。</p>
+<p data-page-node-id="oNGpmm8T4FOKlnHEh2rBOn">按蔡森形态学口径：<strong data-page-node-id="8SDXrZJ5kBywLKwtn3k4Ji">一线「价稳 + 量增」两要素齐备，支持转多；但广度只有 5/70 城环比上涨、二三线双位数缩量，
+属结构性分化行情而非全面反转，仓位仍须按「分化市」而非「牛市」配置。</strong></p>
+</div>
+</div>
+
+<h3 data-page-node-id="S7aGHOgqzXhCjnaEEdXcXs">70 城读数（<span id="tierP" data-page-node-id="WtfQHKlTagXEKyJ9gWfFCP"></span>）：二手房同比全部下跌，0 城上涨</h3>
+<div class="card" data-page-node-id="Juz4MGIYuHEHU6xQTli7Ii"><table data-page-node-id="mgP4pMDZFYezY5Zv1dnDCC"><thead data-page-node-id="JoGbVl9TnF8jlJkqfgZoze"><tr data-page-node-id="py27oDwYph6xwseg05F2JK"><th data-page-node-id="yAunFbvpQFyWXzIqetYWRg">口径</th><th class="n" data-page-node-id="M0aEHhdpPsfovTMLj3E3lZ">全国</th><th class="n" data-page-node-id="iIyC6yWaFSKZ5HAY9Uc68T">一线</th>
+<th class="n" data-page-node-id="zfOMxM2imqEyQ1CHClL9kH">二线</th><th class="n" data-page-node-id="qCYvbSy0adbvK9SaQBSHB2">三线</th></tr></thead><tbody id="tierT" data-page-node-id="apaGjCPP5nPd4yF2yQwE9B"></tbody></table>
+<p class="warn" data-page-node-id="GuBnAmVEZguHC9oyQFjjUg">环比上涨仅 <strong data-page-node-id="o2b14sRiOHJg055I34EAzU">5/70</strong> 城：广州 +0.40、上海 +0.30、深圳 +0.20、徐州 +0.20、沈阳 +0.10 —— 全部集中于一二线。</p>
+</div>
+
+<h2 data-page-node-id="ZybXa974BXRA5IDqwlsdE5">六、用 BIS 143 个历史周期给中国定位</h2>
+<div class="grid g3" style="margin:14px 0" data-page-node-id="mojHI14hougz8AXRcWmEdZ">
+  <div class="kpi" data-page-node-id="L5nCkuxEkuFwgID3vYEPrM"><div class="l" data-page-node-id="ZhIHHukyYZz4KwTHGQ9Ftm">中国当前回撤</div><div class="v" style="color:var(--red)" data-page-node-id="rB19YmkzaRYTABVBw0s0vx">−24.6%</div>
+    <div class="d" data-page-node-id="CmmnxX04gOTBuJtBtIi5HA">实际房价，峰值 2021-Q3，距峰 18 季</div></div>
+  <div class="kpi" data-page-node-id="fODuYvVdTm248suX86CHLn"><div class="l" data-page-node-id="LW5EGO6KXA4DX3AuFCdOs1">同类周期中位跌幅</div><div class="v" data-page-node-id="5Ttw2TzJ8QGiaLMkHYzBOR">−28.6%</div>
+    <div class="d" data-page-node-id="vOXXkZCmxJSLttasDRBwrX">小型泡沫（20%~35%），n=46</div></div>
+  <div class="kpi" data-page-node-id="tVdaZPtgQVdo6qNPbAzVfP"><div class="l" data-page-node-id="m51kOLRkbrhK8Iz2hoYkVL">同类周期收复用时中位</div><div class="v" style="color:var(--amber)" data-page-node-id="OqRC0Iab0mhFR8twZWQa4v">52 季</div>
+    <div class="d" data-page-node-id="A9EzjuhAgu2Fl7bxM7mCEP">= 13 年。这是时间价值的判决</div></div>
+</div>
+<div class="card" data-page-node-id="FeoqxwV0EEHBSPQBbZk2Pv"><h3 style="margin-top:4px" data-page-node-id="va5NmBIcpgoIWD6ErQIqfD">主要经济体高点回撤（BIS 实际房价，最新 <span id="bisL" data-page-node-id="noSXbD8zmVMSGVPYApUHau"></span>）</h3>
+<div class="chart tall" data-page-node-id="HgG7P8RbgPeTcg5rZgkqSy"><canvas id="cBis" data-page-node-id="j26RwiBTQaFCD3WPFjTAfm"></canvas></div>
+<h3 data-page-node-id="xbjVABH8x2RmT7Rs07WJw0">历史周期规律</h3>
+<table data-page-node-id="2mTj3M0jXmacCkpfvyYdGL"><thead data-page-node-id="LJsziEqgIzFGWcuWiGUFUO"><tr data-page-node-id="6iNhzNc6MSsCw047mSsLqS"><th data-page-node-id="uptx4w0iZsb4GWm8T8KgQa">分类</th><th class="n" data-page-node-id="4NdISUp14FeOE8Ialgqu0L">周期数</th><th class="n" data-page-node-id="x3p2o240OWf0MbEE5o5IAx">跌幅中位</th>
+<th class="n" data-page-node-id="VAJuqGFv2LAV2hqm9kPPjJ">下跌季数中位</th><th class="n" data-page-node-id="FHVsKtPFrcCxFUi1dEmAAk">已收复</th><th class="n" data-page-node-id="7wmNouiC0AOYJCmwsOXNMU">收复用时中位</th></tr></thead>
+<tbody id="regT" data-page-node-id="FjcsqF92rTK3Uz1XGjGU2Y"></tbody></table>
+<p class="warn" data-page-node-id="WEbTmy8ZPo5MAeTbPdqPbf">分档口径：常规周期 &lt;20%、小型泡沫 20%~35%、大型泡沫 ≥35%（参考长江证券《房价何处寻底？195 个房价周期的大数规律》）。</p>
+</div>
+
+<div class="callout" data-page-node-id="sAXUQpVCyyOTrgBTqKREn1">
+<p data-page-node-id="2khHixrUq9nUGtuUZxTe0z"><strong data-page-node-id="uwfujS5PlmOunGxxEomy2U">三条硬结论：</strong></p>
+<p data-page-node-id="9vnRw1REENjimjkw9053Dc">1. <strong data-page-node-id="HOuVUIpgud2DFU8rNhsOC0">深度上</strong>，中国已跌到同类周期的 25 分位附近（实际 ≈75.4 vs p25 = 75.2），比典型「小型泡沫」更深，但未达「大型泡沫」门槛。</p>
+<p data-page-node-id="4vQt07GsVrEvoZJN0NImEX">2. <strong data-page-node-id="qwoO2NSR9e5mFPQN3e10HM">时间上</strong>，18 个季度 vs 中位 21.5 季 —— 价格主跌段按历史规律已接近尾声，但 p25 仍在下探。</p>
+<p data-page-node-id="gDQpC1h0txyZNYyVhoAeUo">3. <strong data-page-node-id="A8G8hyvl9UZKcIVNEZmvA7">收复上</strong>，小型泡沫收复用时中位 52 季（13 年）。即使此刻就是底，名义回到 2021 年高点也要等到 2034 年前后。
+<strong data-page-node-id="0WH42sPmx0AbIDrRk0kdai">这是时间价值的判决，不是价格方向的判决。</strong></p>
+</div>
+
+<h2 data-page-node-id="FHK7lardrnSVyyrD3z7LUF">七、高频数据：量能验证（与月度数据的分歧）</h2>
+<p class="sub" data-page-node-id="zGoZ5jQJB4cFDPJ6lsWAYB">30 大中城市成交面积（Wind 周频，商品房口径，4 周均 vs 52 周前同期 4 周均），最新 <span id="hfL" data-page-node-id="6yLylRPNymGaFCiLvigJQu"></span></p>
+<div class="card" data-page-node-id="qAJl7CDFwFvjU9PKlCtCCd"><div class="chart short" data-page-node-id="JZGbsjinB3uhWHYAnpvZU1"><canvas id="cHf" data-page-node-id="rOCPx1MrSCWymTLFH35QTQ"></canvas></div>
+<p class="warn" data-page-node-id="IMuaobNCfpOet8uVPxhAJC">70 城官方数据止于 2026-07，高频数据更新到 <span id="hfL2" data-page-node-id="DKvK4jRAsTb3CgS74HuWkQ"></span>，比官方快两个月。
+<span id="hfSum" data-page-node-id="W25xFfziQgnyYYUkxXLQCI"></span></p></div>
+
+<h2 data-page-node-id="R3zNDBtdxwGSfhImGe1XVO">八、数据可信度与局限</h2>
+<div class="card" data-page-node-id="oVJ1Ox6lbElnz6qGjcseY6">
+<h3 style="margin-top:4px" data-page-node-id="swaQoxerKcyGBb4eX0VCqn">可信的部分</h3>
+<p data-page-node-id="bAFTT2ybkDRVzaQwAdgpSG">TACO 方法论参数是<strong data-page-node-id="MCCi8lXQUP1d7SHCZMUj20">原始 JSON 字段</strong>（<code data-page-node-id="C8B6DDodhajNCOOO8cBa06">normalization.scales</code>、<code data-page-node-id="GXHUqjw1s8AHPsHLJDW7yT">changeBaseline.lags</code>、
+<code data-page-node-id="bmmq77wwZ8criNAYKoGqtW">stateDependentRules</code> 均带具体数值），不是从文字里猜的。地产面板是 Wind / BIS / 中原的原始结构化数据。</p>
+<h3 data-page-node-id="LQ0WTLpXWDhaXy8HvlO3cZ">必须打折的部分</h3>
+<p data-page-node-id="Q1gGxEIXGauD5fOJ8AjWBq">① 条件概率的极端档（<span id="cpLab2" data-page-node-id="40t8settMS9eceROfHqyDJ"></span> → <span id="cpP2" data-page-node-id="5DTivoRxGitU9JHNvinLgo"></span>%）基于 <strong data-page-node-id="ftTVQdzKiREulUFL2x8kid"><span id="cpN2" data-page-node-id="7d4kQUu6bJ6ueKDDiJfpQF"></span> 个样本日</strong>，2026 年事件高度聚集 → 当参考不当铁律。<strong data-page-node-id="nky5iX38jgZX7HtunPrLRQ">必须与基准率 <span id="cpB2" data-page-node-id="YThgOTpHvOQWCHGXSQC6Gv"></span>% 一起读</strong>。<br data-page-node-id="wNk2J1MPNIlwtbmXOXkFiS">
+② 压力区间阈值站方未公开数值（只给「中压」标签），分档边界无法复现。<br data-page-node-id="8fFxJaUbpTiAlT4XiW14jH">
+③ <code data-page-node-id="EXSV48nTUSOR3dN7udnosm">@MacroMargin</code> 战绩为自述，未经独立验证。<br data-page-node-id="Dl16HgSXtJMK5S4RggO8U8">
+④ 70 城为国家统计局口径，存在结构性平滑；与 Wind 30 城周频不可直接换算。<br data-page-node-id="HR6S3LtbOCmZTjidGuiifS">
+⑤ <strong data-page-node-id="mmbqC0IZ1eqTK3QUoF8jDD">BIS 为季度、全国口径，掩盖中国内部能级分化</strong> —— 一线与三四线的差异被平均掉，做决策必须拆回 70 城。<br data-page-node-id="LRt36HOcbvB89tnx1R6ADH">
+⑥ 本站为付费平台，公开栏目随时可能收紧。工具遇权限变化会明确报错，不做绕过。</p>
+</div>
+
+<div class="foot" data-page-node-id="JZprzFNoalqYgKiW8lCYqS">
+数据源：ocmacro.com（robots.txt 允许的两个公开栏目）。抓取工具：<code data-page-node-id="yDz45muBwU3LGZGtTW14vL">ocmacro-feed/ocmacro_feed.py</code>，
+快照日期 <span id="day" data-page-node-id="u5CXMvzVSDAv9moQUhU99B"></span>。本报告所有图表均由该快照实时渲染，可复现。
+</div>
+</div>
+
+<script>
+const D = {"day": "2026-09-12", "asOf": "2026年9月11日", "value": 8.3, "valueLabel": "+8.3%", "status": "中压", "statusDesc": "综合压力升温，处在中压区", "chg20": "较20个交易日前 +4.1%", "ver": "new4-flat-baseline-fast-stress-v3", "dates": ["2025-03-26", "2025-03-27", "2025-03-28", "2025-03-31", "2025-04-01", "2025-04-02", "2025-04-03", "2025-04-04", "2025-04-07", "2025-04-08", "2025-04-09", "2025-04-10", "2025-04-11", "2025-04-14", "2025-04-15", "2025-04-16", "2025-04-17", "2025-04-21", "2025-04-22", "2025-04-23", "2025-04-24", "2025-04-25", "2025-04-28", "2025-04-29", "2025-04-30", "2025-05-01", "2025-05-02", "2025-05-05", "2025-05-06", "2025-05-07", "2025-05-08", "2025-05-09", "2025-05-12", "2025-05-13", "2025-05-14", "2025-05-15", "2025-05-16", "2025-05-19", "2025-05-20", "2025-05-21", "2025-05-22", "2025-05-23", "2025-05-27", "2025-05-28", "2025-05-29", "2025-05-30", "2025-06-02", "2025-06-03", "2025-06-04", "2025-06-05", "2025-06-06", "2025-06-09", "2025-06-10", "2025-06-11", "2025-06-12", "2025-06-13", "2025-06-16", "2025-06-17", "2025-06-18", "2025-06-20", "2025-06-23", "2025-06-24", "2025-06-25", "2025-06-26", "2025-06-27", "2025-06-30", "2025-07-01", "2025-07-02", "2025-07-03", "2025-07-07", "2025-07-08", "2025-07-09", "2025-07-10", "2025-07-11", "2025-07-14", "2025-07-15", "2025-07-16", "2025-07-17", "2025-07-18", "2025-07-21", "2025-07-22", "2025-07-23", "2025-07-24", "2025-07-25", "2025-07-28", "2025-07-29", "2025-07-30", "2025-07-31", "2025-08-01", "2025-08-04", "2025-08-05", "2025-08-06", "2025-08-07", "2025-08-08", "2025-08-11", "2025-08-12", "2025-08-13", "2025-08-14", "2025-08-15", "2025-08-18", "2025-08-19", "2025-08-20", "2025-08-21", "2025-08-22", "2025-08-25", "2025-08-26", "2025-08-27", "2025-08-28", "2025-08-29", "2025-09-02", "2025-09-03", "2025-09-04", "2025-09-05", "2025-09-08", "2025-09-09", "2025-09-10", "2025-09-11", "2025-09-12", "2025-09-15", "2025-09-16", "2025-09-17", "2025-09-18", "2025-09-19", "2025-09-22", "2025-09-23", "2025-09-24", "2025-09-25", "2025-09-26", "2025-09-29", "2025-09-30", "2025-10-01", "2025-10-02", "2025-10-03", "2025-10-06", "2025-10-07", "2025-10-08", "2025-10-09", "2025-10-10", "2025-10-14", "2025-10-15", "2025-10-16", "2025-10-17", "2025-10-20", "2025-10-21", "2025-10-22", "2025-10-23", "2025-10-24", "2025-10-27", "2025-10-28", "2025-10-29", "2025-10-30", "2025-10-31", "2025-11-03", "2025-11-04", "2025-11-05", "2025-11-06", "2025-11-07", "2025-11-10", "2025-11-12", "2025-11-13", "2025-11-14", "2025-11-17", "2025-11-18", "2025-11-19", "2025-11-20", "2025-11-21", "2025-11-24", "2025-11-25", "2025-11-26", "2025-11-28", "2025-12-01", "2025-12-02", "2025-12-03", "2025-12-04", "2025-12-05", "2025-12-08", "2025-12-09", "2025-12-10", "2025-12-11", "2025-12-12", "2025-12-15", "2025-12-16", "2025-12-17", "2025-12-18", "2025-12-19", "2025-12-22", "2025-12-23", "2025-12-24", "2025-12-26", "2025-12-29", "2025-12-30", "2025-12-31", "2026-01-02", "2026-01-05", "2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09", "2026-01-12", "2026-01-13", "2026-01-14", "2026-01-15", "2026-01-16", "2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20", "2026-02-23", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-06", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-13", "2026-04-14", "2026-04-15", "2026-04-16", "2026-04-17", "2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30", "2026-05-01", "2026-05-04", "2026-05-05", "2026-05-06", "2026-05-07", "2026-05-08", "2026-05-11", "2026-05-12", "2026-05-13", "2026-05-14", "2026-05-15", "2026-05-18", "2026-05-19", "2026-05-20", "2026-05-21", "2026-05-22", "2026-05-26", "2026-05-27", "2026-05-28", "2026-05-29", "2026-06-01", "2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-22", "2026-06-23", "2026-06-24", "2026-06-25", "2026-06-26", "2026-06-29", "2026-06-30", "2026-07-01", "2026-07-02", "2026-07-06", "2026-07-07", "2026-07-08", "2026-07-09", "2026-07-10", "2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-17", "2026-07-20", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24", "2026-07-27", "2026-07-28", "2026-07-29", "2026-07-30", "2026-07-31", "2026-08-03", "2026-08-04", "2026-08-05", "2026-08-06", "2026-08-07", "2026-08-10", "2026-08-11", "2026-08-12", "2026-08-13", "2026-08-14", "2026-08-17", "2026-08-18", "2026-08-19", "2026-08-20", "2026-08-21", "2026-08-24", "2026-08-25", "2026-08-26", "2026-08-27", "2026-08-28", "2026-08-31", "2026-09-01", "2026-09-02", "2026-09-03", "2026-09-04", "2026-09-08", "2026-09-09", "2026-09-10", "2026-09-11"], "vals": [2.1, 4.1, 2.2, 1.5, 0.0, 0.5, 3.1, 3.1, 5.0, 7.3, 10.2, 13.5, 14.0, 12.0, 10.1, 9.6, 10.5, 12.3, 11.7, 11.4, 9.3, 7.6, 5.8, 4.2, 3.0, 2.9, 2.1, 3.5, 2.3, 1.1, 3.2, 3.6, 3.3, 1.7, 0.6, -1.7, -3.3, -4.2, -5.4, -2.8, -2.7, -2.2, -4.9, -3.5, -3.7, -3.4, -3.3, -3.3, -4.9, -3.8, -2.0, -2.8, -3.8, -4.1, -3.8, -2.8, -0.6, -0.2, -1.9, -2.6, -3.4, -3.6, -3.4, -3.5, -3.4, -4.2, -3.3, -2.2, -1.5, -0.3, 0.0, -1.0, -0.6, 1.3, 2.0, 3.2, 2.3, 2.5, 2.1, 1.8, 1.8, 2.1, 2.6, 1.3, 1.2, 0.4, 1.0, 1.3, 0.2, -1.3, -1.1, -1.7, -1.7, -0.9, -0.3, 0.1, -0.7, 0.9, 1.7, 0.8, 0.8, 0.6, 2.0, 0.0, 0.3, 0.4, 0.2, 0.2, 0.4, 1.9, 1.1, -0.5, -0.9, -1.2, -1.5, -2.0, -2.4, -2.1, -2.6, -2.2, -2.2, -2.2, -2.0, -1.1, -0.2, 0.4, 0.8, 0.7, -0.1, 0.4, -0.9, -1.1, -1.1, -1.1, -0.4, -0.9, -0.4, 1.6, -1.0, -1.5, -1.5, -2.2, -3.5, -2.5, -1.9, -2.2, -3.3, -4.2, -3.6, -2.2, -1.4, -1.5, -0.6, 0.2, 1.3, 1.1, 1.1, 1.0, 0.9, 2.5, 3.7, 5.0, 5.6, 5.8, 6.3, 5.3, 3.8, 2.8, 2.0, 1.5, 2.3, 2.3, 1.1, 1.6, 1.8, 1.8, 1.4, -0.9, -1.4, -0.3, -0.3, -1.0, -0.4, -1.6, -1.4, -2.2, -2.7, -3.4, -3.2, -2.9, -2.7, -1.7, -1.3, -1.9, -2.2, -1.9, -1.2, -2.0, -1.5, -1.0, 0.8, 0.9, 2.6, 6.4, 4.3, 3.6, 3.4, 2.8, 2.6, 3.0, 3.3, 4.0, 3.5, 3.7, 4.4, 4.7, 3.0, 2.4, 2.2, 2.6, 3.9, 4.0, 3.9, 3.4, 3.1, 1.7, 2.3, 1.4, 0.4, 0.4, 0.7, 1.4, 2.9, 2.0, 3.3, 4.9, 4.1, 4.3, 7.0, 9.7, 10.6, 8.4, 7.8, 10.5, 10.6, 14.0, 12.7, 14.1, 12.6, 15.1, 16.4, 14.9, 12.2, 12.0, 10.5, 9.2, 8.5, 6.3, 5.3, 5.1, 3.7, 1.4, 0.2, -0.1, -2.0, -2.0, -0.7, -1.4, -0.6, -2.1, -1.8, -0.7, 0.8, -1.0, -0.6, 1.0, 0.1, -0.6, 1.1, 0.6, 3.1, 4.4, 4.3, 4.1, 7.9, 8.4, 9.2, 6.7, 6.4, 5.5, 3.6, 2.9, 2.2, 2.0, 2.2, 1.7, 3.3, 2.1, 5.7, 5.1, 4.8, 5.9, 2.2, 0.4, -1.3, -2.2, -1.0, -2.2, -1.2, -0.4, -0.9, -1.5, -1.7, -2.7, -2.4, -1.8, -2.0, -2.8, -0.2, -0.1, -1.6, -1.8, 0.6, -0.7, -1.2, 0.4, 1.9, 3.2, 3.5, 5.0, 8.7, 7.8, 7.2, 6.0, 8.7, 7.5, 8.1, 5.6, 3.4, 3.9, 5.2, 4.4, 6.1, 6.6, 5.5, 4.2, 4.8, 5.5, 6.1, 4.4, 5.4, 5.5, 5.3, 4.0, 4.2, 3.8, 5.0, 5.2, 7.7, 6.7, 5.4, 5.2, 6.6, 7.4, 9.4, 8.3], "marks": [{"x": "2026-08-18", "topic": "加拿大关税/贸易谈判", "s": "强"}, {"x": "2026-08-07", "topic": "伊朗战争/军事升级", "s": "强"}, {"x": "2026-07-14", "topic": "霍尔木兹海峡航运收费", "s": "强"}, {"x": "2026-06-11", "topic": "伊朗战争/停火谈判", "s": "强"}, {"x": "2026-05-18", "topic": "美伊军事打击", "s": "强"}, {"x": "2026-05-07", "topic": "欧盟汽车与贸易协议执行", "s": "中强"}, {"x": "2026-05-07", "topic": "美伊停火压力测试", "s": "强"}, {"x": "2026-04-08", "topic": "美伊停火后谈判", "s": "中强"}, {"x": "2026-04-07", "topic": "美伊战争 / 霍尔木兹海峡", "s": "最强"}, {"x": "2026-01-21", "topic": "格陵兰 / 北约盟友关税", "s": "强"}, {"x": "2025-08-12", "topic": "中美关税休战续期", "s": "强"}, {"x": "2025-07-25", "topic": "欧盟贸易协议", "s": "中强"}, {"x": "2025-07-22", "topic": "日本贸易协议", "s": "中强"}, {"x": "2025-07-03", "topic": "全球对等关税期限", "s": "中强"}, {"x": "2025-07-02", "topic": "越南贸易协议", "s": "中强"}, {"x": "2025-05-23", "topic": "欧盟关税", "s": "强"}, {"x": "2025-05-12", "topic": "中美关税战", "s": "最强"}, {"x": "2025-04-22", "topic": "美联储独立性 / Powell", "s": "强"}, {"x": "2025-04-11", "topic": "中国电子产品、科技供应链", "s": "强"}, {"x": "2025-04-09", "topic": "解放日全球对等关税", "s": "最强"}], "winDates": ["2026-05-05", "2026-05-06", "2026-05-07", "2026-05-08", "2026-05-11", "2026-05-12", "2026-05-13", "2026-05-14", "2026-05-15", "2026-05-18", "2026-05-19", "2026-05-20", "2026-05-21", "2026-05-22", "2026-05-26", "2026-05-27", "2026-05-28", "2026-05-29", "2026-06-01", "2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-22", "2026-06-23", "2026-06-24", "2026-06-25", "2026-06-26", "2026-06-29", "2026-06-30", "2026-07-01", "2026-07-02", "2026-07-06", "2026-07-07", "2026-07-08", "2026-07-09", "2026-07-10", "2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-17", "2026-07-20", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24", "2026-07-27", "2026-07-28", "2026-07-29", "2026-07-30", "2026-07-31", "2026-08-03", "2026-08-04", "2026-08-05", "2026-08-06", "2026-08-07", "2026-08-10", "2026-08-11", "2026-08-12", "2026-08-13", "2026-08-14", "2026-08-17", "2026-08-18", "2026-08-19", "2026-08-20", "2026-08-21", "2026-08-24", "2026-08-25", "2026-08-26", "2026-08-27", "2026-08-28", "2026-08-31", "2026-09-01", "2026-09-02", "2026-09-03", "2026-09-04", "2026-09-08", "2026-09-09", "2026-09-10", "2026-09-11"], "contrib": {"approval": [1.9, 1.97, 1.97, 2.12, 2.16, 2.28, 2.2, 2.16, 2.2, 2.27, 2.27, 2.13, 2.23, 1.86, 1.76, 1.79, 1.74, 1.74, 1.6, 1.55, 1.58, 1.33, 1.19, 1.5, 1.65, 1.34, 1.18, 1.29, 1.41, 1.19, 1.12, 1.36, 1.42, 1.32, 1.3, 0.82, 0.75, 0.82, 0.82, 0.89, 0.84, 0.64, 0.74, 0.65, 0.47, 0.37, 0.31, 0.18, 0.43, 0.59, 0.74, 0.73, 1.05, 1.19, 2.39, 1.81, 1.73, 1.79, 2.25, 2.35, 2.35, 2.08, 2.3, 2.32, 2.22, 2.1, 2.07, 2.3, 2.26, 2.22, 2.02, 1.86, 1.97, 1.66, 1.64, 1.62, 1.36, 1.46, 1.5, 1.54, 1.21, 1.1, 1.35, 1.33, 0.87, 0.66, 1.09, 1.21, 1.25, 1.41], "dgs10": [2.36, 1.23, 2.01, 1.55, 2.31, 3.06, 3.08, 3.22, 4.99, 5.11, 5.62, 4.24, 4.12, 3.86, 2.86, 2.38, 1.81, 1.7, 2.0, 1.71, 2.05, 1.65, 2.89, 2.7, 2.26, 2.16, 0.61, 0.84, 0.61, 0.01, 0.71, 0.34, 0.93, 0.83, -0.21, -0.25, -0.36, -0.35, 0.45, 0.99, 1.06, 0.96, 3.11, 2.96, 2.28, 2.3, 3.25, 2.2, 1.81, 2.29, 2.11, 3.03, 3.49, 4.03, 4.49, 4.15, 3.63, 3.01, 3.73, 3.83, 4.53, 3.65, 2.51, 2.34, 2.98, 2.36, 3.18, 2.74, 2.33, 1.54, 2.02, 2.46, 2.35, 1.44, 1.84, 2.32, 2.12, 0.87, 1.06, 1.13, 2.36, 2.25, 3.59, 2.67, 2.92, 2.57, 2.89, 3.27, 4.79, 4.84], "move": [-0.12, -0.2, -0.13, -0.2, -0.1, -0.07, -0.08, -0.08, 0.37, 0.67, 0.65, 0.44, 0.35, 0.28, 0.11, -0.07, -0.09, -0.08, 0.02, 0.01, 0.05, -0.08, 0.09, 0.12, 0.16, -0.05, -0.15, -0.17, -0.17, -0.23, -0.15, -0.27, -0.17, -0.2, -0.19, -0.22, -0.21, -0.17, -0.07, -0.15, -0.23, -0.22, -0.1, -0.05, -0.13, -0.11, 0.27, 0.21, -0.11, -0.11, 0.01, 0.1, 0.19, 0.25, 0.42, 0.28, 0.31, 0.25, 0.16, 0.28, 0.54, 0.39, 0.23, 0.07, 0.18, 0.01, 0.12, 0.2, -0.05, -0.13, -0.13, 0.02, 0.05, -0.1, -0.07, -0.08, -0.08, -0.13, -0.19, -0.18, -0.14, -0.04, 0.21, 0.35, -0.04, -0.07, 0.04, 0.08, 0.34, 0.35], "sp500": [-3.71, -3.71, -3.21, -3.7, -3.49, -2.86, -3.12, -3.22, -1.63, -1.42, -0.89, -1.5, -1.59, -1.86, -2.52, -2.46, -2.49, -2.45, -2.41, -2.33, -1.25, -1.53, 0.31, 0.23, 0.43, 2.53, 1.57, 0.25, -0.73, -0.26, 0.46, -0.04, 0.19, 1.1, 1.64, 1.62, 1.57, 0.63, 0.21, 0.29, 0.2, -0.3, -0.06, 0.11, -0.49, -0.96, -0.32, -0.64, -0.99, -0.53, 0.1, 0.23, -0.3, -0.14, 1.16, 1.19, 1.04, 0.53, 1.58, 0.4, 0.07, -1.16, -1.97, -1.55, -1.34, -2.03, -1.77, -1.46, -1.74, -2.31, -1.96, -1.48, -0.93, -1.22, -0.67, -0.97, -0.72, -0.81, -0.7, -1.16, -0.84, -0.41, 0.21, 0.06, -0.63, -0.1, 0.47, 0.84, 1.22, 0.61], "vix": [-0.15, -0.13, -0.14, -0.11, -0.02, -0.04, -0.03, -0.06, 0.03, -0.03, 0.0, -0.05, -0.09, -0.1, -0.07, -0.13, -0.16, -0.18, -0.13, -0.15, -0.13, -0.17, 0.64, 0.34, 0.5, 0.66, 0.37, 0.0, -0.12, -0.1, 0.11, -0.09, 0.0, 0.27, 0.27, 0.27, 0.21, 0.07, -0.07, -0.07, -0.12, -0.17, -0.14, -0.07, -0.16, -0.22, -0.07, -0.12, -0.18, -0.1, 0.33, 0.27, -0.05, -0.08, 0.23, 0.23, 0.21, 0.09, 0.4, -0.02, -0.11, -0.11, -0.04, -0.1, -0.15, -0.17, -0.14, -0.16, -0.21, -0.21, -0.24, -0.19, -0.15, -0.23, -0.15, -0.22, -0.15, -0.18, -0.19, -0.23, -0.23, -0.18, -0.06, -0.14, -0.18, -0.16, 0.01, 0.16, 0.35, 0.0], "bkevenpy02": [-0.19, 0.2, 0.59, 0.91, 2.28, 2.02, 2.23, 2.09, 1.89, 1.78, 1.51, 1.43, 1.39, 1.49, 1.46, 1.41, 1.37, 1.31, 1.15, 0.95, 1.01, 0.86, 0.57, 0.24, -0.17, -0.74, -1.38, -1.84, -2.34, -2.85, -3.2, -3.52, -3.61, -3.68, -3.71, -3.71, -3.7, -3.69, -3.7, -3.71, -3.72, -3.75, -3.76, -3.69, -3.61, -3.22, -2.82, -2.52, -2.12, -1.76, -1.43, -1.14, -0.93, -0.24, 0.0, 0.15, 0.29, 0.34, 0.59, 0.7, 0.77, 0.79, 0.34, 0.85, 1.35, 2.1, 2.63, 2.99, 2.89, 3.12, 3.08, 2.86, 2.83, 2.83, 2.85, 2.82, 2.78, 2.76, 2.73, 2.66, 2.59, 2.52, 2.39, 2.43, 2.43, 2.33, 2.08, 1.83, 1.45, 1.14]}, "fname": {"approval": "净支持率", "dgs10": "10Y UST", "move": "MOVE", "sp500": "S&P 500", "vix": "VIX", "bkevenpy02": "CPI Nowcast"}, "fcolors": {"approval": "#c0392b", "dgs10": "#1f4e79", "move": "#b8860b", "sp500": "#0e7c86", "vix": "#7b3fa0", "bkevenpy02": "#d97706"}, "cp": [{"label": "< +2", "p": 56.7, "n": 203}, {"label": "+2 ~ +5", "p": 55.1, "n": 78}, {"label": "+5 ~ +8", "p": 81.2, "n": 32}, {"label": "≥ +8", "p": 100.0, "n": 33}], "base": 62.7, "factorTable": [{"n": "净支持率", "w": "20%", "v": "+0.1pp", "p": "+7.0%", "c": 1.4, "key": "approval"}, {"n": "10Y UST", "w": "25%", "v": "+5.9%", "p": "+19.4%", "c": 4.8, "key": "dgs10"}, {"n": "MOVE", "w": "5%", "v": "+12.0%", "p": "+7.0%", "c": 0.4, "key": "move"}, {"n": "S&P 500", "w": "22.5%", "v": "-1.0%", "p": "+2.7%", "c": 0.6, "key": "sp500"}, {"n": "VIX", "w": "5%", "v": "+4.9%", "p": "-0.1%", "c": 0, "key": "vix"}, {"n": "CPI Nowcast", "w": "22.5%", "v": "+7bp", "p": "+5.0%", "c": 1.1, "key": "bkevenpy02"}], "peak": {"v": 16.4, "d": "2026-03-27"}, "pctile": 91, "months": ["2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07"], "mon": {"一线城市": [-0.9, -1.2, 0.4, 0.4, 0.3, 0.1, -0.1, 0.2, -0.2, -0.7, -0.7, -1.0, -1.0, -1.0, -0.9, -1.1, -0.9, -0.5, -0.1, 0.4, 0.4, 0.4, 0.3, 0.2], "二线城市": [-1.0, -0.9, -0.4, -0.2, -0.3, -0.3, -0.4, -0.2, -0.4, -0.5, -0.6, -0.5, -0.6, -0.7, -0.6, -0.6, -0.7, -0.5, -0.4, -0.2, -0.2, -0.2, -0.3, -0.3], "三线城市": [-0.9, -0.9, -0.6, -0.5, -0.4, -0.4, -0.4, -0.3, -0.4, -0.5, -0.6, -0.5, -0.5, -0.6, -0.7, -0.6, -0.7, -0.6, -0.5, -0.4, -0.3, -0.4, -0.4, -0.4]}, "tierTbl": [{"lab": "二手房同比", "v": [-5.4, -3.7, -5.1, -5.8]}, {"lab": "新房同比", "v": [-3.4, -1.1, -2.8, -4.2]}, {"lab": "二手房环比", "v": [-0.3, 0.2, -0.3, -0.4]}, {"lab": "新房环比", "v": [-0.2, 0.0, -0.1, -0.3]}], "tierPeriod": "2026-07", "bisRows": [{"n": "日本", "dd": -35.9, "q": 139, "cls": "大型泡沫", "y1": 2.3, "pk": "1991-Q1"}, {"n": "中国香港", "dd": -31.0, "q": 30, "cls": "大型泡沫", "y1": 6.2, "pk": "2018-Q3"}, {"n": "韩国", "dd": -30.2, "q": 139, "cls": "大型泡沫", "y1": -0.3, "pk": "1991-Q2"}, {"n": "加拿大", "dd": -29.3, "q": 16, "cls": "小型泡沫", "y1": -6.8, "pk": "2022-Q1"}, {"n": "意大利", "dd": -27.8, "q": 73, "cls": "小型泡沫", "y1": 2.9, "pk": "2007-Q3"}, {"n": "中国", "dd": -24.6, "q": 18, "cls": "小型泡沫", "y1": -7.1, "pk": "2021-Q3"}, {"n": "瑞典", "dd": -20.1, "q": 15, "cls": "小型泡沫", "y1": 0.7, "pk": "2022-Q1"}, {"n": "德国", "dd": -19.6, "q": 16, "cls": "小型泡沫", "y1": 0.8, "pk": "2021-Q4"}, {"n": "西班牙", "dd": -13.9, "q": 73, "cls": "大型泡沫", "y1": 9.6, "pk": "2007-Q3"}, {"n": "法国", "dd": -12.2, "q": 14, "cls": "常规周期", "y1": -0.8, "pk": "2022-Q3"}, {"n": "英国", "dd": -11.0, "q": 14, "cls": "常规周期", "y1": -2.2, "pk": "2022-Q3"}, {"n": "美国", "dd": -2.9, "q": 5, "cls": "常规周期", "y1": -2.1, "pk": "2024-Q4"}, {"n": "澳大利亚", "dd": -0.0, "q": 16, "cls": "常规周期", "y1": 5.7, "pk": "2022-Q1"}, {"n": "荷兰", "dd": 0.0, "q": 0, "cls": "常规周期", "y1": 3.1, "pk": "2025-Q4"}], "bisReg": [{"cls": "常规周期", "n": 67, "dd": -11.5, "q": 9, "rec": "55/67", "rq": 19}, {"cls": "小型泡沫", "n": 46, "dd": -28.6, "q": 21.5, "rec": "32/46", "rq": 52}, {"cls": "大型泡沫", "n": 30, "dd": -44.3, "q": 25.0, "rec": "19/30", "rq": 72}], "bisCounts": {"常规周期": 67, "小型泡沫": 46, "大型泡沫": 30}, "bisLatest": "2026-Q1", "bisMeta": [{"label": "常规周期", "range": "最深跌幅 <20%"}, {"label": "小型泡沫", "range": "最深跌幅 20%-35%"}, {"label": "大型泡沫", "range": "最深跌幅 ≥35%"}], "hf": [{"n": "30城", "wk": "2026-09-06", "v": 142.2, "m4": 142.7, "yoy": -5.2, "base": "2025-09-07"}, {"n": "一线城市", "wk": "2026-09-06", "v": 52.0, "m4": 47.7, "yoy": 16.0, "base": "2025-09-07"}, {"n": "二线城市", "wk": "2026-09-06", "v": 53.9, "m4": 66.5, "yoy": -11.7, "base": "2025-09-07"}, {"n": "三线城市", "wk": "2026-09-06", "v": 36.3, "m4": 28.6, "yoy": -16.3, "base": "2025-09-07"}], "hfLatest": "2026-09-06", "ap": {"n": 599, "last": -19.90173, "min": -20.61722, "max": 11.65692, "dateMin": "2026-07-30", "atLow": false, "gap": 0.72}, "cpMax": 100.0, "cpMaxLab": "≥ +8", "cpMaxN": 33, "hf30": -5.2, "hfTier": {"30城": -5.2, "一线城市": 16.0, "二线城市": -11.7, "三线城市": -16.3}};
+Chart.defaults.font.family = '-apple-system,"PingFang SC","Microsoft YaHei",sans-serif';
+Chart.defaults.font.size = 11.5;
+Chart.defaults.color = '#6b7280';
+const grid = {color:'#eceae4'};
+const CK = Object.assign({}, D.contrib);
+const palette = D.fcolors;
+
+document.getElementById('ver').textContent = D.ver;
+document.getElementById('day').textContent = D.day;
+document.getElementById('kVal').textContent = D.valueLabel;
+document.getElementById('kSt').textContent = D.status + ' · ' + D.statusDesc;
+document.getElementById('kChg').textContent = D.chg20.replace('较20个交易日前 ','');
+document.getElementById('kPct').textContent = D.pctile + ' 分位';
+document.getElementById('kPeak').textContent = '峰值 ' + D.peak.v + '（' + D.peak.d + '）';
+
+const dom = D.factorTable.reduce((a,b)=> b.c>a.c ? b : a);
+document.getElementById('kDom').textContent = dom.n;
+
+// 支持率（不许凭印象说「已是任期最低」）
+if(D.ap && D.ap.last!=null){
+  document.getElementById('apNow').textContent = D.ap.last+'%';
+  document.getElementById('apTxt').textContent =
+    D.ap.atLow ? '任期最低' : ('距任期最低 '+D.ap.gap+'pp，最低点 '+D.ap.dateMin);
+  document.getElementById('apRange').textContent = D.ap.min+'% ~ '+D.ap.max+'%';
+}
+// 条件概率头条（全部从数据取，禁止硬编码）
+document.getElementById('cpLab').textContent = D.cpMaxLab;
+document.getElementById('cpP').textContent = D.cpMax;
+document.getElementById('cpB').textContent = D.base;
+document.getElementById('cpN').textContent = D.cpMaxN;
+document.getElementById('cpLab2').textContent = D.cpMaxLab;
+document.getElementById('cpP2').textContent = D.cpMax;
+document.getElementById('cpN2').textContent = D.cpMaxN;
+document.getElementById('cpB2').textContent = D.base;
+const lowBuckets = D.cp.filter(x=>x.n>=20 && x.p < D.base + 8).map(x=>x.label);
+document.getElementById('cpTxt').innerHTML =
+  (D.cpMaxLab==='≥ +8' ? '≥ +5 起已出现区分度，' : '')
+  +'注意 '+lowBuckets.join(' / ')+' 档与无条件基准（'+D.base+'%）无显著差异，'
+  +'<strong>不得据此判断「压力不大所以安全」</strong>。';
+
+document.getElementById('facT').innerHTML = D.factorTable.map(f=>{
+  const strong = f.key==='dgs10' ? ' style="font-weight:650;color:#1f4e79"' : '';
+  return `<tr${strong}><td>${f.n}</td><td class="n">${f.w}</td><td class="n">${f.v}</td>
+          <td class="n">${f.p}</td><td class="n">${f.c>0?'+':''}${f.c.toFixed(2)}</td></tr>`;
+}).join('');
+
+// 1. 主图
+new Chart(document.getElementById('cMain'),{type:'line',
+ data:{labels:D.dates,datasets:[
+  {label:'TACO 压力指数',data:D.vals,borderColor:'#1f4e79',borderWidth:1.6,
+   pointRadius:0,tension:.15,fill:{target:{value:0},
+   above:'rgba(192,57,43,.10)',below:'rgba(14,124,134,.10)'}},
+  {label:'强/最强/中强 事件',type:'scatter',
+   data:D.marks.map(m=>({x:m.x,y:D.vals[D.dates.indexOf(m.x)]})),
+   backgroundColor:'#c0392b',borderColor:'#fff',borderWidth:1,pointRadius:4.5,
+   pointHoverRadius:7}]},
+ options:{maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+  plugins:{legend:{position:'top',labels:{boxWidth:12,usePointStyle:true}},
+   tooltip:{callbacks:{afterBody:(it)=>{
+     const m=D.marks.find(x=>D.dates[it[0].dataIndex]===x.x);
+     return m? ['▶ '+m.s+' · '+m.topic] : [];}}}},
+  scales:{x:{grid:grid,ticks:{maxTicksLimit:14}},
+   y:{grid:grid,title:{display:true,text:'压力指数'}}}}});
+
+// 2. 分项堆叠
+const fs = Object.keys(D.contrib);
+new Chart(document.getElementById('cFactor'),{type:'bar',
+ data:{labels:D.winDates,datasets:[
+  ...fs.map(k=>({label:D.fname[k],data:D.contrib[k],backgroundColor:palette[k],
+    stack:'c',borderWidth:0})),
+  {label:'六项净和（=指数）',type:'line',data:D.winDates.map((d,i)=>
+     fs.reduce((s,k)=>s+D.contrib[k][i],0)),
+   borderColor:'#15181d',borderWidth:1.8,pointRadius:0,tension:.15,stack:'x'}]},
+ options:{maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+  plugins:{legend:{position:'top',labels:{boxWidth:12}},
+   tooltip:{filter:i=>i.dataset.type==='line'||Math.abs(i.parsed.y)>0.005}},
+  scales:{x:{stacked:true,grid:{display:false},ticks:{maxTicksLimit:12}},
+   y:{stacked:true,grid:grid,title:{display:true,text:'对指数贡献（点）'}}}}});
+
+// 3. 条件概率（基准线插件须在创建图表前注册）
+Chart.register({id:'baseLine',afterDatasetsDraw(c){
+  const y=c.scales.y.getPixelForValue(D.base), a=c.chartArea;
+  const x=c.ctx; x.save(); x.setLineDash([5,4]); x.strokeStyle='#b8860b'; x.lineWidth=1.4;
+  x.beginPath(); x.moveTo(a.left,y); x.lineTo(a.right,y); x.stroke();
+  x.fillStyle='#b8860b'; x.font='11px sans-serif';
+  x.fillText('无条件基准 '+D.base+'%',a.left+6,y-5); x.restore();}});
+new Chart(document.getElementById('cProb'),{type:'bar',
+ data:{labels:D.cp.map(x=>x.label),datasets:[
+  {label:'20 交易日内出现重大政策回撤的概率',data:D.cp.map(x=>x.p),
+   backgroundColor:D.cp.map(x=>x.p>80?'#c0392b':'#9fb3c8'),borderRadius:5}]},
+ options:{maintainAspectRatio:false,
+  plugins:{legend:{display:false},
+   tooltip:{callbacks:{afterLabel:i=>'样本 '+D.cp[i.dataIndex].n+' 个交易日'}}},
+  scales:{y:{grid:grid,beginAtZero:true,max:100,ticks:{callback:v=>v+'%'}},
+   x:{grid:{display:false},title:{display:true,text:'当日 TACO 水平区间'}}}}});
+
+// 4. 能级环比
+const tierColors={'一线城市':'#c0392b','二线城市':'#1f4e79','三线城市':'#0e7c86'};
+new Chart(document.getElementById('cTier'),{type:'line',
+ data:{labels:D.months,datasets:Object.keys(D.mon).map(k=>({
+   label:k+' 二手房环比',data:D.mon[k],borderColor:tierColors[k],
+   backgroundColor:tierColors[k],borderWidth:2,pointRadius:2.5,tension:.2}))},
+ options:{maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+  plugins:{legend:{position:'top',labels:{boxWidth:12,usePointStyle:true}}},
+  scales:{y:{grid:grid,title:{display:true,text:'环比 %'}},
+   x:{grid:{display:false},ticks:{maxTicksLimit:12}}}}});
+
+// 5. 70城能级读数表（由快照实时计算）
+const col = v => v===null||v===undefined ? '<td class="n">—</td>'
+  : `<td class="n"${v>0?' style="color:#c0392b;font-weight:650"':''}>`
+    +(v>0?'+':'')+v.toFixed(2)+'%</td>';
+document.getElementById('tierP').textContent = D.tierPeriod;
+document.getElementById('tierT').innerHTML = D.tierTbl.map(r=>
+  '<tr><td>'+r.lab+'</td>'+r.v.map(col).join('')+'</tr>').join('');
+
+// 6. BIS
+document.getElementById('bisL').textContent = D.bisLatest;
+const bc={'大型泡沫':'#c0392b','小型泡沫':'#b8860b','常规周期':'#7f8c8d'};
+new Chart(document.getElementById('cBis'),{type:'bar',
+ data:{labels:D.bisRows.map(x=>x.n),datasets:[
+  {label:'高点回撤 %',data:D.bisRows.map(x=>x.dd),
+   backgroundColor:D.bisRows.map(x=>bc[x.cls]),borderRadius:4}]},
+ options:{indexAxis:'y',maintainAspectRatio:false,
+  plugins:{legend:{display:false},
+   tooltip:{callbacks:{afterLabel:i=>{const r=D.bisRows[i.dataIndex];
+     return ['峰值 '+r.pk,'距峰 '+r.q+' 季','近1年 '+(r.y1>0?'+':'')+r.y1+'%','分类：'+r.cls];}}}},
+  scales:{x:{grid:grid,title:{display:true,text:'距高点回撤 %'}},
+   y:{grid:{display:false}}}}});
+
+document.getElementById('regT').innerHTML = D.bisReg.map(r=>
+ `<tr><td>${r.cls}</td><td class="n">${r.n}</td><td class="n">${r.dd}%</td>
+  <td class="n">${r.q} 季（${(r.q/4).toFixed(1)} 年）</td><td class="n">${r.rec}</td>
+  <td class="n">${r.rq?r.rq+' 季':'-'}</td></tr>`).join('');
+
+// 7. 高频
+document.getElementById('hfL').textContent = D.hfLatest;
+document.getElementById('hfL2').textContent = D.hfLatest;
+const pct = v => (v==null? 'n/a' : (v>0?'+':'')+v+'%');
+const h1 = D.hf.find(x=>x.n==='一线城市');
+if(h1) document.getElementById('hfy').textContent = pct(h1.yoy);
+document.getElementById('hfBase').textContent = '基准 '+(h1?h1.base:'');
+document.getElementById('hf2').textContent = pct(D.hfTier['二线城市']);
+document.getElementById('hf3').textContent = pct(D.hfTier['三线城市']);
+document.getElementById('hf30').textContent = pct(D.hfTier['30城']);
+document.getElementById('hfSum').innerHTML =
+  '一线 <strong style="color:var(--red)">'+pct(D.hfTier['一线城市'])+'</strong>、'
+  +'二线 '+pct(D.hfTier['二线城市'])+'、三线 '+pct(D.hfTier['三线城市'])
+  +'、30 城合计 '+pct(D.hfTier['30城'])
+  +' —— <strong>只有一线在放量，二三线量能仍为负</strong>，属结构性分化而非全面反转。';
+new Chart(document.getElementById('cHf'),{type:'bar',
+ data:{labels:D.hf.map(x=>x.n),datasets:[
+  {label:'最新周成交面积（万㎡）',data:D.hf.map(x=>x.v),backgroundColor:'#9fb3c8',borderRadius:4,yAxisID:'y'},
+  {label:'同比 %',data:D.hf.map(x=>x.yoy),backgroundColor:'#c0392b',borderRadius:4,
+   type:'line',yAxisID:'y1',borderColor:'#c0392b',borderWidth:2,pointRadius:5,
+   pointBackgroundColor:'#c0392b'}]},
+ options:{maintainAspectRatio:false,
+  plugins:{legend:{position:'top',labels:{boxWidth:12,usePointStyle:true}},
+   tooltip:{callbacks:{afterLabel:i=>'4周均值 '+D.hf[i.dataIndex].m4+' 万㎡'}}},
+  scales:{y:{grid:grid,title:{display:true,text:'万㎡'}},
+   y1:{position:'right',grid:{display:false},ticks:{callback:v=>v+'%'},
+       title:{display:true,text:'同比 %'}},
+   x:{grid:{display:false}}}}});
+</script></body></html>

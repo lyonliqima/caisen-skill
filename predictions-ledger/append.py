@@ -184,23 +184,45 @@ def enforce_predictability_cap(rec):
 
 # ─────────────────── 价格快照（P0-① 闭环加固）───────────────────
 def _read_kline_cache(symbol_code):
-    """读 market-data-cache/<code>.csv → 按日期升序的 [(date, close)]；无则 []。"""
-    for ext in (".csv",):
+    """读 market-data-cache/<code>.csv 或 <code>.txt → 按日期升序的 [(date, close)]；无则 []。
+
+    2026-09-18 新增 .txt 支持（黑金/生猪实战实锤）：国内商品期货的日K缓存在
+    market-data-cache/<合约>.txt，内容是新浪期货返回的 JSON 数组（键 d/o/h/l/c/v/p/s）。
+    此前只读 .csv → 所有期货预测的 entry_ma20/基准三字段恒为 error「可用=0 根」，
+    且 **量纲闸门（R1≥1σ / R2≥1.5σ）被静默跳过**——期货预测反而比个股少了那道
+    最关键的纪律闸门（该闸门正是 2026-09-16 富满微 / 东华科技两次实锤的价值所在）。
+    """
+    for ext in (".csv", ".txt"):
         p = os.path.join(KLINE_CACHE_DIR, symbol_code + ext)
         if not os.path.exists(p):
             continue
         rows = []
         try:
-            import csv as _csv
-            with open(p, encoding="utf-8") as f:
-                for r in _csv.DictReader(f):
-                    d = str(r.get("date", "")).strip()[:10]
+            if ext == ".txt":
+                # 新浪期货日K：整文件是一个 JSON 数组（可能带前后杂质），取首个 [ 到末个 ]
+                raw = open(p, encoding="utf-8").read()
+                i, j = raw.find("["), raw.rfind("]")
+                if i < 0 or j <= i:
+                    continue
+                for r in json.loads(raw[i:j + 1]):
+                    d = str(r.get("d", "")).strip()[:10]
                     try:
-                        c = float(r.get("close"))
+                        c = float(r.get("c"))
                     except (TypeError, ValueError):
                         continue
                     if d and c > 0:
                         rows.append((d, c))
+            else:
+                import csv as _csv
+                with open(p, encoding="utf-8") as f:
+                    for r in _csv.DictReader(f):
+                        d = str(r.get("date", "")).strip()[:10]
+                        try:
+                            c = float(r.get("close"))
+                        except (TypeError, ValueError):
+                            continue
+                        if d and c > 0:
+                            rows.append((d, c))
         except Exception:
             return []
         rows.sort(key=lambda x: x[0])

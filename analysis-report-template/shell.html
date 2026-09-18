@@ -24,7 +24,9 @@ function _base(type, id, data, opts){
     return {label:d.label||('系列'+(i+1)), data:d.data,
       borderColor:Array.isArray(c)?c:c,
       backgroundColor:Array.isArray(c)?c:(isDC?c:(opts.fill? c+'33' : c+'cc')),
-      fill: !!opts.fill, tension:.25, pointRadius:2, borderWidth:2};
+      borderDash: d.borderDash || (opts.dash? [6,4] : undefined),
+      pointStyle: d.pointStyle || (d.borderDash? 'rectRot' : 'circle'),
+      fill: !!opts.fill, tension:.25, pointRadius:d.borderDash?3:2, borderWidth:2};
   });
   const chartOpts = {responsive:true,plugins:{legend:{labels:{color:'#e6edf3'}}}};
   if(type!=='radar'&&type!=='doughnut'){
