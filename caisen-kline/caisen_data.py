@@ -111,9 +111,16 @@ MARKETS = {
                       note="股票型 ETF 为 T+1；跨境(QDII)/债券/商品 ETF 多为 T+0，须按品种确认；"
                            "setcode 0=深市股票ETF(Unit=100)，setcode 33=基金段QDII ETF(Unit=1)，二者均放行"),
 
+    # ---- 广期所：2026-09-20 实测通过，已放行 ----
+    "FUT_GFEX":  Market("FUT_GFEX", "广期所", (66,), "手", 1500, 0, "有停板幅度",
+                        "可双向开仓（保证金交易）", supported=True,
+                        note="工业硅 SI / 碳酸锂 LC / 多晶硅 PS；2026-09-20 实测 "
+                             "tdx_kline(setcode=66, period=4) 返回完整日K（SI2610 30 根，"
+                             "20260810–20260918），已解除 v1.0.2 的硬拒绝"),
+
     # ---- 以下实测不可用，保留条目以便 **显式报错**，禁止静默返空 ----
-    # D3：以下三家交易所本项目未实测通过 tdx 取数。登记成条目是为了让
-    #     IF2512 / SC2601 / SI2601 这类代码 **报"暂不支持"** 而不是"无法推断市场"，
+    # D3：以下两家交易所本项目未实测通过 tdx 取数。登记成条目是为了让
+    #     IF2512 / SC2601 这类代码 **报"暂不支持"** 而不是"无法推断市场"，
     #     避免用户误以为补个 market 参数就能跑。
     "FUT_CFFEX": Market("FUT_CFFEX", "中金所", tuple(), "手", 1515, 0, "有停板幅度+熔断",
                         "可双向开仓（保证金交易）", supported=False,
@@ -121,9 +128,6 @@ MARKETS = {
     "FUT_INE":   Market("FUT_INE", "上期能源", tuple(), "手", 1500, 0, "有停板幅度",
                         "可双向开仓（保证金交易）", supported=False,
                         note="原油 SC / 低硫燃油 LU / 20号胶 NR / 国际铜 BC，tdx-connector 未实测覆盖"),
-    "FUT_GFEX":  Market("FUT_GFEX", "广期所", tuple(), "手", 1500, 0, "有停板幅度",
-                        "可双向开仓（保证金交易）", supported=False,
-                        note="工业硅 SI / 碳酸锂 LC / 多晶硅 PS，tdx-connector 未实测覆盖"),
     "US":      Market("US", "美股", (74,), "股", 1600, 0, "无涨跌停（有熔断）",
                       "可做空", supported=False,
                       note="实测 tdx_kline(setcode=74) 返回空 Rows；lookup 能查到代码但取不到 K 线"),
@@ -150,10 +154,11 @@ _FUT_EXCHANGE = {
     **{k: "FUT_CZCE" for k in (
         "SR", "CF", "CY", "TA", "MA", "FG", "SA", "RM", "OI", "RS", "ZC", "SF",
         "SM", "UR", "PF", "PK", "AP", "CJ", "SH", "PX", "WH", "PM", "RI", "LR", "JR")},
-    # 以下三家未实测覆盖 —— 登记后可给出"暂不支持"的准话（见 MARKETS 注释）
+    # 广期所已实测覆盖（setcode=66，2026-09-20 验证通过）
+    **{k: "FUT_GFEX" for k in ("SI", "LC", "PS")},
+    # 以下两家未实测覆盖 —— 登记后可给出"暂不支持"的准话（见 MARKETS 注释）
     **{k: "FUT_CFFEX" for k in ("IF", "IH", "IC", "IM", "T", "TF", "TS", "TL")},
     **{k: "FUT_INE" for k in ("SC", "LU", "NR", "BC", "EC")},
-    **{k: "FUT_GFEX" for k in ("SI", "LC", "PS")},
 }
 
 # setcode → 市场 反查表。**跳过 ambiguous 市场**：它们与 A 股共用 setcode，

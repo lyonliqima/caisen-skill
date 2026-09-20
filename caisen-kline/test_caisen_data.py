@@ -294,14 +294,37 @@ def _g(c):
 for _code, _want in [("510300", "ETF_SH"), ("588000", "ETF_SH"), ("159915", "ETF_SZ"),
                      ("399001", "INDEX_CN"), ("RB2610", "FUT_SHFE"), ("m2509", "FUT_DCE"),
                      ("MA2601", "FUT_CZCE"), ("600718", "CN_SH"), ("000001", "CN_SZ"),
-                     ("300750", "CN_SZ"), ("00700", "HK")]:
+                     ("300750", "CN_SZ"), ("00700", "HK"),
+                     # 广期所 2026-09-20 实测通过，setcode=66，从"拒绝"移入"正常推断"
+                     ("SI2610", "FUT_GFEX"), ("lc2609", "FUT_GFEX"), ("PS2701", "FUT_GFEX")]:
     _got = _g(_code)
     check(f"D3 {_code} → {_want}", _got == _want, "" if _got == _want else f"实得 {_got}")
 expect_raise("D3 未登记的期货品种 → 报错，不乱猜交易所",
              cd.UnsupportedMarketError, cd._guess_market, "ZZ2601", None)
-for _code, _ex in [("IF2512", "中金所"), ("SC2601", "上期能源"), ("SI2601", "广期所")]:
+for _code, _ex in [("IF2512", "中金所"), ("SC2601", "上期能源")]:
     expect_raise(f"D3 {_code}（{_ex}）未覆盖 → 构造请求阶段即拒（不误导'补个 market 就行'）",
                  cd.UnsupportedMarketError, cd.build_request, _code, expect_name="x")
+
+# D3b：广期所已放行 —— 必须能正常构造请求且 setcode=66
+_gf_req = cd.build_request("SI2610", "FUT_GFEX", expect_name="工业硅2610")
+check("D3b 广期所 setcode=66", str(_gf_req["tool_args"]["setcode"]) == "66",
+      str(_gf_req["tool_args"]["setcode"]))
+check("D3b 广期所 market 识别", _gf_req["expect"]["market"] == "FUT_GFEX",
+      str(_gf_req["expect"].get("market")))
+check("D3b 广期所 target=1（非沪深京）", _gf_req["tool_args"]["target"] == "1",
+      str(_gf_req["tool_args"]["target"]))
+check("D3b 广期所 tool 指向 tdx_kline", _gf_req["tool"].endswith("tdx_kline"),
+      _gf_req["tool"])
+_gf_mk = cd.MARKETS["FUT_GFEX"]
+check("D3b 广期所 supported=True", _gf_mk.supported is True, str(_gf_mk.supported))
+check("D3b setcode 反查表 66 → 广期所",
+      cd.SETCODE2MARKET.get(66) is _gf_mk, str(cd.SETCODE2MARKET.get(66)))
+# 不带 market 也应能从代码自动推断到广期所
+_gf_auto = cd.build_request("SI2610", expect_name="工业硅2610")
+check("D3b 广期所 免传 market 自动推断", _gf_auto["expect"]["market"] == "FUT_GFEX",
+      str(_gf_auto["expect"].get("market")))
+check("D3b 广期所 自动推断 setcode 仍为 66",
+      str(_gf_auto["tool_args"]["setcode"]) == "66", str(_gf_auto["tool_args"]["setcode"]))
 
 _etf = mutate(lambda d: (d.__setitem__("Code", "510300"),
                          d["AttachInfo"].__setitem__("Name", "沪深300ETF华泰柏瑞")))

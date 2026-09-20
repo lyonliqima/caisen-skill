@@ -477,7 +477,7 @@ $VP run_from_tdx.py <tdx结果文件> <代码> "<准确名称>" "$CAISEN_ROOT/ou
 - ⚠️ `tdx_kline` 的 `target` 参数已被连接器移除（2026-09-08 实测），带上会报 `additionalProperties` 错；
 - 统一输出目录 `$CAISEN_ROOT/output/caisen-kline/`（该目录已在 `.gitignore` 中，图不入库）。
 
-**支持范围（2026-09-18 实机复核）**：✅ A股（沪深创）/ 港股 / 中证指数 / 沪深 ETF（含跨境 QDII）/ 商品期货（上期所·大商所·郑商所）；❌ **硬拒绝、绝不静默出图**：美股 / 外汇 / 中金所 / 上期能源 / 广期所 / 北交所 / 债券（含可转债）。
+**支持范围（2026-09-20 实机复核）**：✅ A股（沪深创）/ 港股 / 中证指数 / 沪深 ETF（含跨境 QDII）/ 商品期货（上期所·大商所·郑商所·**广期所 SI·LC·PS，setcode=66**）；❌ **硬拒绝、绝不静默出图**：美股 / 外汇 / 中金所 / 上期能源 / 北交所 / 债券（含可转债）。
 
 **四条使用纪律**：① 引擎给几何、专家给解读，**禁止把引擎目标位直接写成操作建议**；② 形态识别错会连锁错（颈线错→H 错→目标错），复杂/长期整理结构须人工复核颈线触点是否同一水平带；③ **S14 未实现**——形态进行中、已达目标①未破位时不会提示「分批止盈/止损移至成本」，实盘须自行补上；④ 无回测、无胜率，**禁止引用为「胜率 XX%」**（与诚实度协议一致）。
 
@@ -518,7 +518,7 @@ $VP run_from_tdx.py <tdx结果文件> <代码> "<准确名称>" "$CAISEN_ROOT/ou
 **⚠️ 展示层纪律（硬约束）**：四色/量价**只作展示与一致性交叉校验**，**绝不参与 A/B/K 招判定**
 （颈线、等幅满足、失败识别仍为纯形态几何）。它只提示「四色与形态方向背离」，**不自动改判方向**。
 
-**回归**：`caisen-kline/test_caisen_trend.py` 45 项 + 原有 14 套回归全绿；`verify_events_layout.py` 几何自检
+**回归**：`caisen-kline/test_caisen_trend.py` 47 项 + 原有 14 套回归全绿（共 **15 套**）；`verify_events_layout.py` 几何自检
 （要点框重叠 0 / 压 K 线 0 / 价位标签重叠 0）不受影响。
 
 **成品样例（2026-09-20 实机）**：白糖2701（SR2701·郑商所·165 根不复权）→
@@ -526,6 +526,9 @@ $VP run_from_tdx.py <tdx结果文件> <代码> "<准确名称>" "$CAISEN_ROOT/ou
 同名 `.md`；识别为**假突破（翻空）**，颈线 5382.00，形态顶 5405.00，H=23，目标① 5359.00／目标② 5336.00，
 现价 5335 已跌破颈线 −0.9%。
 
-**待办（未实测）**：`tdx_lookup_stock(range="QH")` 现已能返回 **工业硅 SI / 多晶硅 PS（setcode=66，广期所）**，
-而 `caisen_data.MARKETS["FUT_GFEX"]` 仍登记为 `supported=False`（未实测取数）。若后续实测 `tdx_kline(code="SI2609",
-setcode="66")` 能返回非空 Rows，应把 GFEX 从「硬拒绝」改为「可用」并同步 SKILL.md / 本约定的支持范围。
+**广期所已实测放行（2026-09-20）**：`tdx_lookup_stock(range="QH")` 返回 **工业硅 SI / 多晶硅 PS / 碳酸锂 LC
+（setcode=66，广期所）**；`tdx_kline(code="SI2610", setcode="66", period="4", tqFlag="0")` 实测返回完整
+**30 根日 K（20260810–20260918，现价 8380）**，`AttachInfo.Name` = 「工业硅2610」，量价字段正常。
+→ `caisen_data.MARKETS["FUT_GFEX"]` 已由 `supported=False` 改为 `True`、setcodes `tuple()→(66,)`；
+`test_caisen_data.py` 新增 10 项（自动推断 3 + D3b 放行 7），该套 101→**111 项**，15 套回归全绿。
+SKILL.md / README.md / DATA_SOP.md / manifest.yaml 已同步。**广期所不再属于硬拒绝范围。**
