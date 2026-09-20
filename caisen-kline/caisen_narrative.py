@@ -327,22 +327,30 @@ def build_text_blocks(sig, meta, df=None, adjust=None) -> tuple[str, str]:
         risk_extra = ""
 
     # ====== 左栏 ======
+    # 方向感知措辞（2026-09-20 修）：原实现把「形态底 / 颈线＋H」写死成多头口径，
+    # 遇到翻空/M 头（direction=down）时会出现「形态底 5405 ＞ 颈线 5382」这种自相矛盾的
+    # 文字（数字由引擎算对，只有标签与加减号错）。此处按方向切换标签与运算符。
+    _up = (sig.direction == "up")
+    _ext_lbl = "形态底" if _up else "形态顶"
+    _h_expr = (f"颈线 {px(sig.neckline)} 减 形态底 {px(sig.extreme['price'])}" if _up
+               else f"形态顶 {px(sig.extreme['price'])} 减 颈线 {px(sig.neckline)}")
+    _op = "＋" if _up else "−"
     left = (
         "【一、结构判定】蔡森 A 招（颈线识别）+ B 招（等幅满足）\n"
         f"· 形态：{sig.pattern}。{sig.pattern_basis}\n"
         f"· 颈线（A 招）＝ {px(sig.neckline)}：由 {touch_desc} 连成的水平密集带。"
         "作用＝多空分界 + 进场基准 + 停损基准。\n"
-        f"· 形态高度 H ＝ 颈线 {px(sig.neckline)} 减 形态底 {px(sig.extreme['price'])} "
+        f"· 形态高度 H ＝ {_h_expr} "
         f"＝ {_amt(sig.height, sig.last_close)} 元。\n"
-        f"· 等幅满足（B 招）：目标① ＝ 颈线＋H ＝ {px(sig.target1)}（一波满足）；"
-        f"目标② ＝ 颈线＋2H ＝ {px(sig.target2)}（两波满足）。\n"
+        f"· 等幅满足（B 招）：目标① ＝ 颈线{_op}H ＝ {px(sig.target1)}（一波满足）；"
+        f"目标② ＝ 颈线{_op}2H ＝ {px(sig.target2)}（两波满足）。\n"
         f"· 方向：{dlabel}；突破日 {bo.get('date','')}；量能确认："
         f"{'是' if (bo or {}).get('vol_confirm') else '否'}；置信度：{sig.confidence}。\n"
         f"· 大周期（S12）：{_tf_line(sig)}\n"
         "\n"
         "【二、关键价位一览】\n"
         f"  颈线（进场基准）＝ {px(sig.neckline)}\n"
-        f"  形态底（量高度）＝ {px(sig.extreme['price'])}　·　停损（{sig.stop_pct*100:.1f}%）＝ {px(sig.stop)}\n"
+        f"  {_ext_lbl}（量高度）＝ {px(sig.extreme['price'])}　·　停损（{sig.stop_pct*100:.1f}%）＝ {px(sig.stop)}\n"
         f"  现价（收）＝ {px(sig.last_close)}\n"
         f"  目标①（1H）＝ {px(sig.target1)}　·　目标②（2H）＝ {px(sig.target2)}\n"
         "\n"
