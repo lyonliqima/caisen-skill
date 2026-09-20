@@ -1,7 +1,7 @@
 ---
 name: caisen-kline
 slug: caisen-kline
-version: 1.0.2
+version: 1.0.3
 displayName: 蔡森K线分析
 description: 蔡森《多空轉折一手抓》K 线形态分析（已实测支持 A股/港股/商品期货/中证指数/沪深ETF，含跨境QDII；债券、美股、外汇暂不支持）。用户给出带 K 线的标的代码或名称，自动取数→颈线识别(A招)+等幅满足(B招)+失败识别(K招)→出 K 线标注图 + 中文文字分析，含 C1-C4 风险约束，不构成投资建议。当用户给出股票/指数/期货/ETF 代码并希望做形态分析、找买卖点、识别假突破/破底翻、判断多空转折时使用。
 ---
@@ -15,7 +15,7 @@ description: 蔡森《多空轉折一手抓》K 线形态分析（已实测支�
 - **归属**：本引擎已作为 **`caisen-10-experts-analyst`（蔡森十二专家）中 🟠 蔡森席位的技术形态出图执行器**接入，调用协议见该技能 SKILL.md 的「📉 caisen-kline 技术形态出图引擎」专章。
 - **主副本**：`/Users/weihaoli/Desktop/蔡森 skill/caisen-kline`（即 `$CAISEN_ROOT/caisen-kline`）；镜像 `~/.workbuddy/skills/caisen-kline/`。
 - **本机 Python（已验证可用，勿另建 venv）**：`/Users/weihaoli/.workbuddy/binaries/python/envs/default/bin/python` —— 内含 pandas 3.0.3 / matplotlib 3.11.0 / mplfinance 0.12.10b0。
-- **自检结果（2026-09-18 实机）**：`selfcheck.py` **5/5 全通过**（Python 3.13.12 / 三依赖齐 / 包完整 / CJK 字体探测到 Hiragino Sans GB, STHeiti, PingFang SC, Arial Unicode MS / 离线端到端出图成功）；**14 套回归测试 14/14 全绿**。
+- **自检结果（2026-09-18 实机）**：`selfcheck.py` **5/5 全通过**（Python 3.13.12 / 三依赖齐 / 包完整 / CJK 字体探测到 Hiragino Sans GB, STHeiti, PingFang SC, Arial Unicode MS / 离线端到端出图成功）；**回归测试 15 套全绿**（2026-09-20 新增 `test_caisen_trend.py` 45 项后复跑）。
 - **统一输出目录**：`$CAISEN_ROOT/output/caisen-kline/`（与 HTML 报告同根，便于报告内嵌引用）。
 - **硬前置**：`tdx-connector`（通达信）已连接。
 
@@ -78,8 +78,12 @@ description: 蔡森《多空轉折一手抓》K 线形态分析（已实测支�
 2. **取数（S1 + S6 守卫）**：调 `mcp__tdx-connector__tdx_kline(code, setcode, period="4", wantNum="300", tqFlag="1")`。
    - ⚠ **不要再传 `target` 参数**：2026-09-08 实测连接器 schema **已移除**该字段，传了直接报 `additionalProperties` 错。旧版「setcode∈{0,1,2}→target=0」铁律**已作废**，照旧文档写必挂。
    - 落盘文件含文本前缀（如「【士兰微】600460 | 现价...」）与尾部函数清单，**须用 `json.JSONDecoder().raw_decode` 从首个 `{` 截取 JSON**，直接 `json.loads` 会报 Extra data。
-   - 日线 wantNum 建议 ≥250（窗口边界效应，P1-9）。
+   - 日线 wantNum 建议 ≥250（窗口边界效应，P1-9）；**四色层开启后建议 300~400**（EMA50 暖机需 116 根，
+     前 116 根颜色低置信并会淡化标注；合约上市不足 116 根时图例会出红字【警讯】要求加大取数）。
+     新上市合约（如 SR2701 天然只有 165 根）取不到更多时**如实保留淡化 + 警讯，不要为了好看把暖机标注去掉**。
    - 取到的 JSON 交 `caisen_data.parse_kline_json` 校验：标的名 / Unit / 复权 / 未收盘；不支持市场或空数据直接抛错，禁止静默返空。
+   - 💡 tdx 大结果超出 token 上限时**会自动落盘**（`~/.workbuddy/projects/<项目>/<会话>/tool-results/*.txt`），
+     直接把该文件喂给 `run()` 即可，**无需手工转写 JSON**（2026-09-20 实测白糖 165 根走此路）。
 3. **分析（S2 + S5）**：`caisen_ab.analyze(df)` 已内嵌失败识别（假突破翻空 / 假跌破破底翻翻多 / 量价背离 / 异常量 / 逃命线）。
 4. **出图 + 文字（S3）**：`caisen_narrative.render_signal(sig, df, meta, out)` 出 K 线标注图；`build_report(sig, meta)` 出五块文字分析。
 5. **呈现**：用 present_files 把 png 与文字报告交给用户。
@@ -133,6 +137,88 @@ res = run(raw, query="600718", expect_name="东软集团", market_hint="CN_SH", 
 ```
 命令行：`python run_from_tdx.py`（默认读脚本同级 `outputs/`，见脚本内 `HERE`/`main`）。
 
+## 🎨 四色K线趋势层 + 量价层（2026-09-20 作者定稿 · **默认开启**）
+
+> 作者原话：「蔡森每次画图，用这个 <Pine v5 四色K线指标>，要看量价」。
+> 落地模块：**`caisen_trend.py`**（计算 + 文字块）＋ **`caisen_chart.py` 的四色渲染层**（mplfinance
+> 不支持逐根任意配色，故 K 线/量柱改为自绘）。
+
+### 四色语义（**严格照抄 Pine 脚本，不改语义**）
+
+```
+fast = ema(close,12)   slow = ema(close,50)
+红 R = close>=fast and close>=slow   → 多头强势区（连续红）
+黄 Y = close< fast and close>=slow   → 多头回调
+蓝 B = close>=fast and close< slow   → 空头反弹
+绿 G = close< fast and close< slow   → 空头弱势区（连续绿）
+```
+
+- **色号微调（语义不变、只为白底可读）**：Pine 的 `yellow #FFFF00` / `green #00FF00` 在白底几乎看不见 →
+  改 `黄 #e8a33d` / `绿 #12a13f`；红 `#d81e06`、蓝 `#1565c0`。
+- **EMA50 线用紫色 `#7b1fa2`**（Pine 原为 blue）—— 避免与「空头反弹蓝」同色混淆；EMA12 橙 `#ff9800`。
+- **实体填充 = 涨跌维度**：**实心 = 收阴，空心（白底+同色描边）= 收阳**。四色管「阵营」，涨跌管「方向」，
+  两个维度不互相吞掉。想退回全实心：`render(..., hollow_up=False)`。
+
+### 量价层（「要看量价」的落地）
+
+- **量柱与 K 线同色**（同一套四色语言，一眼看出「黄/蓝过渡区的量能怎么变」）。
+- **量 MA5（灰虚线）** = 放量/缩量的当期基准；**区间均量（灰点线）** = 全窗口基准。两条都在图上。
+- 文字副图新增 **【六、四色K线节奏】** 块（挂右栏）：现状（含该色/该阵营已延续几根）＋最近侧切换（含上一次）
+  ＋量价读数（`最新量 x.xx×量MA5`、近 5 根量能 ±%、价格 ±% → 量价配合四象限结论）。
+
+### 暖机区（EMA 无真值，如实标注，不装可信）
+
+- EMA 靠递推衰减，种子影响衰减到 **1%** 需要：**EMA50 → 116 根**、EMA12 → 28 根（`warmup_bars()`）。
+- 前 116 根 **轻淡化 alpha=0.72** + 虚线分隔 + 图例说明「颜色仅供参考」；
+  **数据根数 <116 根时全图重淡化 0.45 + 图例红字【警讯】要求加大取数**。
+  → **取数建议 `wantNum ≥ 240`**（116 暖机 + 120 可读），实务用 300~400。日线仍建议 ≥250。
+- 想彻底避开暖机：先用更长历史算 EMA，再 `render(trend=...)` 传入（接口已留）。
+
+### 侧切换三角（多空阵营翻转）
+
+- 阵营：**R/Y = 多头侧**（收盘在 EMA50 上）、**B/G = 空头侧**。
+- 翻转需 **连续 ≥3 根确认**才标记（滤掉 1~2 根的假穿）；▲ 画在下方留白带、▼ 画在上方留白带，
+  **绝不压 K 线**。
+
+### ⚠️ 展示层纪律（硬约束，不得违背）
+
+1. **四色与量价读数不参与 A/B/K 招判定** —— 颈线识别 / 等幅满足 / 失败识别仍是纯形态几何，
+   掺进均线交叉会污染方法论（属 C3「方法论内部矛盾」范畴）。
+2. 它只做**一致性交叉校验**：四色在空头侧而形态偏多 → 提示「量价未转强前视为反弹，突破需量能确认」；
+   四色在多头侧而形态偏空 → 提示「下方仍有承接，缩量破位易假摔」。**只提示，不自动改判方向**。
+
+### 接口与兼容
+
+```python
+render(df, meta, levels, events, text_left, text_right, out,
+       four_color=True,     # False → 退回原 mplfinance 红绿路径（旧图/回归测试用）
+       ema_fast=12, ema_slow=50,
+       hollow_up=True,      # False → K 线实体全实心（Pine 原样）
+       vol_ma=5,            # 量能均线周期；0/None 关闭
+       trend_flips=True,    # 侧切换三角
+       trend=None)          # 可传 caisen_trend.compute() 结果（更长历史算的 EMA）
+```
+
+- `caisen_trend.py` 导出：`compute()` / `summary_text()` / `consistency_note()` / `warmup_bars()` /
+  `classify()` / `side_flips()` / `vol_price_read()` / `state_span()`。
+- 依赖缺失或传入异源 trend（长度不匹配）→ **自动退回老路径，不崩**。
+
+### 版式微调（同一改动引入，已换算校验）
+
+`figsize 15.5 → 16.2`、`panel_ratios (6.4,1.5,6.0) → (6.3,1.5,6.5)`：
+换算后 **主图绝对高度不变**（6.4/13.9×15.5 ≈ 6.3/14.3×16.2 = 6.67in），只是文字副图加高 10%、
+画布加高 4.5% —— 为了装下【六】量价块而不压缩主图。**「标注绝不覆盖 K 线」的约定不受影响**
+（`verify_events_layout.py` 复核：要点框重叠 0 / 压 K 线 0 / 价位标签重叠 0）。
+
+### 回归测试
+
+`test_caisen_trend.py`（**45 项，全绿**）：Pine 语义逐根比对、EMA 逐根手算比对、暖机根数、
+噪声过滤、量价四象限、阳线空心/阴线实心、暖机淡化档位、图例不重叠、三角数=侧切换数、
+`four_color=False` 兼容、异源 trend 退回、数据不足报警。
+
+> ⚠️ **别给 `savefig` 加 `pil_kwargs={'compress_level':9}`**：实测 PNG 从 1.59MB 抬到 1.81MB
+> （matplotlib 自带 `_png` 压缩滤镜更适配这种大量色块的图）。
+
 ## 标注铁律（出图合规，不得擅自改）
 - 标注绝不覆盖 K 线：水平线标签放右侧空白区，K线关键点文字放图内空白区，箭头可斜穿 K 线（作者 2026-08-04 定稿）。
 - 每个标注说清：哪个点 / 哪个价位 / 什么线 / 什么作用。
@@ -140,10 +226,13 @@ res = run(raw, query="600718", expect_name="东软集团", market_hint="CN_SH", 
 
 ## 出图格式与清晰度
 - **格式 = PNG**（无损、跨平台）：macOS / Android / Windows / 网页原生都能直接打开，不依赖任何苹果专属格式（HEIC/TIFF 等）。
-- **高分辨率**：`render` 默认 `dpi=250`，出图约 **4273×3915 px（4K 级）**。字体由 matplotlib 矢量渲染，无论放大多少倍都不糊。
+- **高分辨率**：`render` 默认 `dpi=250`，出图约 **4274×4082 px（4K 级）**。字体由 matplotlib 矢量渲染，无论放大多少倍都不糊。
 - **缩放清晰度看「像素」不是「文件大小」**：dpi=250 已能 10 倍放大清楚观看（在手机/电脑视口里放大 10 倍仍锐利）。
-- **实测文件大小**：图表多为白底+线+文字，PNG 压缩极好，dpi=250 仅约 **0.4 MB**；dpi=300≈0.5MB、dpi=350≈0.6MB，**都远低于 2MB 上限**。2MB 是安全上限而非目标，越小越方便微信/手机发送。
-- 想更大头：调 `run(..., dpi=300)` 即可（~5100px，仍 <1MB）。
+- **实测文件大小（2026-09-20 加入四色层后重测，白糖2701·165根）**：
+  dpi=250 → **4274×4082 px / 1.59 MB**；dpi=220 → 3727×3592 / 1.31 MB；dpi=180 → 3086×2938 / 1.05 MB。
+  四色层把 artist 数翻倍（逐根 K 线实体 + 逐根量柱），比旧红绿版（0.4MB）大 —— **dpi=250 仍 <2MB 上限**；
+  若要微信/手机友好（<1MB）用 `dpi=180`。
+- 想更大头：调 `run(..., dpi=300)` 即可（5125×4898，约 2.1MB，**已超 2MB 上限，慎用**）。
 
 ## 强制约束 C1-C4（每次输出必带）
 - **C1 幸存者偏差 / 无回测**：等幅满足是几何外推，非保证。

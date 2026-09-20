@@ -22,6 +22,7 @@ import pandas as pd
 import mplfinance as mpf
 import matplotlib.pyplot as plt
 from matplotlib import font_manager
+from matplotlib.patches import Rectangle
 
 
 def _resolve_cn_fonts():
@@ -85,9 +86,10 @@ def _place_levels(ls_, lo, hi, min_gap, pad_y):
         lv['ly'] = y
 
 
-def _protect_text_overflow(fig, ax, artists, max_iter=3):
+def _protect_text_overflow(fig, ax, artists, max_iter=4):
     """文字副图溢出保护（P2-6）：测量左右两栏文本包围盒，若超出面板（底/右界）
-    则缩小字号并重绘，最多 max_iter 次；极端长文本兜底截断到 6pt 仍放不下时省略号。"""
+    则缩小字号并重绘，最多 max_iter 次；极端长文本兜底**按整行**截断（不再从
+    897 字符中间硬切，避免把一整句结论切掉半句 —— 2026-09-20 修正）。"""
     for _ in range(max_iter):
         fig.canvas.draw()
         renderer = fig.canvas.get_renderer()
@@ -101,17 +103,140 @@ def _protect_text_overflow(fig, ax, artists, max_iter=3):
             return
         for t in artists:
             t.set_fontsize(max(6.0, t.get_fontsize() * 0.92))
-    # 仍溢出：极端长文本兜底，避免静默裁掉整段（截断右栏最后一行）
+    # 仍溢出：按整行兜底截断（保留完整句子 + 明确指向 .md 报告）
     for t in artists:
         s = t.get_text()
         if len(s) > 900:
-            t.set_text(s[:897] + "\n…（详见文字报告）")
+            keep, acc = [], 0
+            for ln in s.split("\n"):
+                if keep and acc + len(ln) + 1 > 880:
+                    break
+                keep.append(ln)
+                acc += len(ln) + 1
+            t.set_text("\n".join(keep) + "\n…（本栏过长，完整文字见同名 .md 报告）")
+
+
+# ===================================================================
+# 四色K线渲染层（作者 2026-09-20 定稿：蔡森出图固定配色）
+#   颜色 = EMA12/EMA50 四色状态（红=多头强势/黄=多头回调/蓝=空头反弹/绿=空头弱势）
+#   实心 = 收阴，空心 = 收阳（保留「涨跌」维度，颜色专管「阵营」维度）
+#   mplfinance 不支持逐根任意配色 → 自绘 K 线与量柱
+# ===================================================================
+
+def _four_color_plan(df, trend):
+    """把趋势状态转成逐根 (颜色, 透明度) 列表；暖机区降透明度如实标注。
+
+    两档淡化：暖机区（前 116 根）轻淡化 0.72 —— 标出低置信但颜色仍清楚；
+    数据根数 < 暖机根数时（全图无一根可信）重淡化 0.45 + 图例红字警讯。
+    不淡化到 0.42 那种程度：作者要的是「每次画图都用这个配色」，图不能整体发白。
+    """
+    import caisen_trend as T
+    n = len(df)
+    st = list(trend['state'].values)
+    wu = int(trend['warmup'])
+    short = bool(trend.get('data_short'))
+    cols, alphas = [], []
+    for i in range(n):
+        cols.append(T.STATE_COLOR.get(st[i], '#9e9e9e'))
+        if short:
+            alphas.append(T.DATA_SHORT_ALPHA)
+        else:
+            alphas.append(T.WARMUP_ALPHA if i < wu else 1.0)
+    return cols, alphas
+
+
+def _draw_candles_manual(ax, df, cols, alphas, hollow_up=True):
+    n = len(df)
+    o = df['open'].astype(float).values
+    h = df['high'].astype(float).values
+    l = df['low'].astype(float).values
+    c = df['close'].astype(float).values
+    for i in range(n):
+        col, a = cols[i], alphas[i]
+        ax.plot([i, i], [l[i], h[i]], color=col, lw=0.9, alpha=a, zorder=3,
+                solid_capstyle='round')
+        oi, ci = o[i], c[i]
+        bot, top = (oi, ci) if ci >= oi else (ci, oi)   # bot ≤ top（2026-09-20 修正取反 bug）
+        if top - bot <= 1e-12:                      # 一字/平盘：画细横线
+            ax.plot([i - 0.30, i + 0.30], [ci, ci], color=col, lw=1.2,
+                    alpha=a, zorder=3)
+            continue
+        face = 'white' if (hollow_up and ci >= oi) else col
+        ax.add_patch(Rectangle((i - 0.32, bot), 0.64, top - bot, facecolor=face,
+                               edgecolor=col, lw=1.0, alpha=a, zorder=4))
+
+
+def _draw_volume_manual(ax, df, cols, alphas, vol_ma=5):
+    """量柱与 K 线同色（量价同语言），叠加量能均线（放量/缩量的判定基准）。"""
+    v = df['volume'].astype(float)
+    for i, x in enumerate(v.values):
+        ax.bar(i, float(x), width=0.64, color=cols[i], alpha=alphas[i], lw=0, zorder=3)
+    if vol_ma and vol_ma > 1:
+        ma = v.rolling(int(vol_ma), min_periods=1).mean()
+        ax.plot(range(len(df)), ma.values, color='#546e7a', lw=1.2, ls='--',
+                zorder=5, label=f'量MA{int(vol_ma)}')
+    return float(v.max())
+
+
+def _draw_trend_overlay(fig, ax1, ax2, df, trend, flips=True, hollow_up=True,
+                        vol_ma=5, data_short=False):
+    """EMA 双线 + 暖机区分隔 + 侧切换标记 + 图例（放在主图与量图之间的空白带）。"""
+    import caisen_trend as T
+    n = len(df)
+    ax1.plot(range(n), trend['ema_fast'].values, color=T.EMA_FAST_COLOR,
+             lw=1.4, zorder=6)
+    # EMA50 用紫色：避免与「空头反弹蓝」同色混淆（原 Pine 脚本 slow 为 blue）
+    ax1.plot(range(n), trend['ema_slow'].values, color=T.EMA_SLOW_COLOR,
+             lw=1.6, zorder=6)
+
+    wu = int(trend['warmup'])
+    if 0 < wu < n:
+        for ax in (ax1, ax2):
+            ax.axvline(wu - 0.5, color='#9e9e9e', ls='--', lw=1.0, alpha=0.75, zorder=1)
+
+    # 侧切换（多空阵营翻转，已过滤噪声）→ 分别在下方/上方空白带画三角，不压K线
+    kl = float(df['low'].min()); kh = float(df['high'].max()); kr = max(kh - kl, 1e-9)
+    if flips:
+        for fp in trend['flips']:
+            i = int(fp['i'])
+            if i < 0 or i >= n:
+                continue
+            if fp['to'] == 'bull':
+                ax1.scatter([i], [kl - kr * 0.085], marker='^', s=52,
+                            facecolor=T.STATE_COLOR['R'], edgecolor='white',
+                            lw=0.7, zorder=7)
+            else:
+                ax1.scatter([i], [kh + kr * 0.085], marker='v', s=52,
+                            facecolor=T.STATE_COLOR['G'], edgecolor='white',
+                            lw=0.7, zorder=7)
+
+    # 图例带：主图与量图之间的空白（不压K线、不与其他标注争位）
+    # 位置按真实版面算（fig 坐标），不靠拍脑袋的 axes 偏移，避免两行叠在一起
+    p1, p2 = ax1.get_position(), ax2.get_position()
+    gap_lo, gap_hi = p2.y1, p1.y0
+    y1_ = gap_lo + (gap_hi - gap_lo) * 0.42
+    y2_ = gap_lo + (gap_hi - gap_lo) * 0.02
+    l1 = T.LEGEND_LINE.replace('─ EMA12  ─ EMA50', '─EMA12(橙) ─EMA50(紫)')
+    fig.text(p1.x0 + 0.002, y1_, l1, fontsize=8.6, color='#37474f',
+             va='bottom', ha='left')
+    vm_ratio = f'｜量MA{int(vol_ma)}（灰虚线）为放量/缩量基准' if vol_ma and vol_ma > 1 else ''
+    if data_short:
+        l2 = (f'【警讯】数据仅 {n} 根 < EMA50 暖机需 {wu} 根：全线颜色仅示意，'
+              f'建议取数 ≥ {wu + 120} 根{vm_ratio}')
+        c2 = '#c62828'
+    else:
+        l2 = (f'│ 虚线以左 {wu} 根为 EMA50 暖机区（半透明，颜色仅供参考）'
+              f'｜三角 = 多空阵营侧切换（已过滤 <3 根噪声）{vm_ratio}')
+        c2 = '#78909c'
+    fig.text(p1.x0 + 0.002, y2_, l2, fontsize=8.0, color=c2, va='bottom', ha='left')
+
 
 
 def render(df, meta, levels, events, text_left, text_right, out,
-           pad=40, ylim=None, figsize=(17, 15.5), panel_ratios=(6.4, 1.5, 6.0),
+           pad=40, ylim=None, figsize=(17, 16.2), panel_ratios=(6.3, 1.5, 6.5),
            vol_events=None, footer=None, dpi=250, measures=None, plain_arrows=None,
-           return_fig=False):
+           return_fig=False, four_color=True, ema_fast=12, ema_slow=50,
+           hollow_up=True, vol_ma=5, trend_flips=True, trend=None):
     """
     df          : DataFrame，index=DatetimeIndex，列 open/high/low/close/volume
     meta        : dict(title=..., ylabel='价格', vlabel='成交量（手）')
@@ -126,6 +251,21 @@ def render(df, meta, levels, events, text_left, text_right, out,
     measures    : [dict(x=索引, y0=, y1=, label='H=114', c=颜色)] 垂直双箭头量距标尺（可选）
     plain_arrows: [dict(xy=(x,y), xytext=(x,y), c=, rad=)] 无文字辅助箭头（可选）
     footer      : 图底部一行来源/免责（str）
+
+    四色层（作者 2026-09-20 定稿，默认开启，见 caisen_trend）：
+    four_color  : True → 自绘 K 线/量柱并按 EMA12/EMA50 四色着色（默认）
+                  False → 退回原 mplfinance 红绿路径（兼容旧图与回归测试）
+    ema_fast/slow : 四色判定的两条 EMA 周期（默认与 Pine 脚本一致：12 / 50）
+    hollow_up   : True → 阳线空心（白底描边）、阴线实心，保留「涨跌」维度
+    vol_ma      : 量能均线周期（放量/缩量判定基准），0/None 关闭
+    trend_flips : True → 在下方/上方空白带标注「多空阵营侧切换」三角（已过滤噪声）
+    trend       : 可直接传入 caisen_trend.compute() 结果（如用更长历史算出的 EMA，
+                  避免暖机失真）；None 则在 df 上现算
+
+    ⚠ 版式微调（2026-09-20，为四色/量价节奏块腾行）：figsize 15.5→16.2、
+    panel_ratios (6.4,1.5,6.0)→(6.3,1.5,6.5)。换算后**主图绝对高度不变**
+    （6.4/13.9*15.5 ≈ 6.3/14.3*16.2 = 6.67in），只是文字副图加高 10%、画布加高 4.5%。
+    这样不破坏「主图尺寸/标注避让」的既有约定，又装得下新增量价行。
     """
     n = len(df)
     pad = max(pad, max(40, int(0.25 * (n + 1)) + 1))   # P2-4：真实右侧留白占比≥20%（pad/(n+1+pad)），标签不压 K 线
@@ -135,13 +275,40 @@ def render(df, meta, levels, events, text_left, text_right, out,
     ax1, ax2, ax3 = fig.add_subplot(gs[0]), None, fig.add_subplot(gs[2])
     ax2 = fig.add_subplot(gs[1], sharex=ax1)
 
-    mc = mpf.make_marketcolors(up='#e2231a', down='#12a13f', edge='inherit', wick='inherit',
-                               volume={'up': '#e2231a', 'down': '#12a13f'})
-    style = mpf.make_mpf_style(marketcolors=mc, gridstyle=':', gridcolor='#e0e0e0',
-                               facecolor='white', figcolor='white',
-                               rc={'font.sans-serif': CN_FONTS})
-    mpf.plot(df, type='candle', ax=ax1, volume=ax2, style=style,
-             datetime_format='%m/%d', xrotation=0, warn_too_much_data=10 ** 6)
+    # ---- 四色趋势层：能算则用，算不出（依赖缺失/数据异常）自动退回原路径 ----
+    _trend = None
+    if four_color:
+        try:
+            import caisen_trend as _ct
+            _trend = trend if trend is not None else _ct.compute(
+                df, fast=int(ema_fast), slow=int(ema_slow))
+            if len(_trend['state']) != n:
+                _trend = None                     # 长度不匹配（如传入异源 trend）→ 退回
+        except Exception:
+            _trend = None
+
+    if _trend is None:
+        mc = mpf.make_marketcolors(up='#e2231a', down='#12a13f', edge='inherit', wick='inherit',
+                                   volume={'up': '#e2231a', 'down': '#12a13f'})
+        style = mpf.make_mpf_style(marketcolors=mc, gridstyle=':', gridcolor='#e0e0e0',
+                                   facecolor='white', figcolor='white',
+                                   rc={'font.sans-serif': CN_FONTS})
+        mpf.plot(df, type='candle', ax=ax1, volume=ax2, style=style,
+                 datetime_format='%m/%d', xrotation=0, warn_too_much_data=10 ** 6)
+    else:
+        import caisen_trend as _ct
+        cols, alphas = _four_color_plan(df, _trend)
+        vmax = _draw_volume_manual(ax2, df, cols, alphas, vol_ma=vol_ma)
+        _draw_candles_manual(ax1, df, cols, alphas, hollow_up=hollow_up)
+        for ax in (ax1, ax2):
+            ax.grid(True, ls=':', color='#e0e0e0', lw=0.6)
+            ax.set_axisbelow(True)
+        ax2.set_ylim(0, vmax * 1.18)
+        step = max(1, n // 8)
+        _tk = list(range(0, n, step))
+        ax2.set_xticks(_tk)
+        ax2.set_xticklabels([pd.Timestamp(df.index[i]).strftime('%y/%m/%d')
+                             for i in _tk], fontsize=9)
 
     ax1.set_xlim(-2, n - 1 + pad)
     ax2.set_xlim(-2, n - 1 + pad)
@@ -155,6 +322,12 @@ def render(df, meta, levels, events, text_left, text_right, out,
     ax2.set_ylabel(meta.get('vlabel', '成交量'), fontsize=11)
     ax1.set_title(meta['title'], fontsize=15, fontweight='bold', pad=12)
     ax1.tick_params(labelbottom=False)
+
+    # ---- 四色趋势覆盖层（EMA双线/暖机区/侧切换/图例），须在 ylim 定妥后画 ----
+    if _trend is not None:
+        _draw_trend_overlay(fig, ax1, ax2, df, _trend, flips=trend_flips,
+                            hollow_up=hollow_up, vol_ma=vol_ma,
+                            data_short=bool(_trend.get('data_short')))
 
     line_end, lbl_x = n - 0.5, n + 1.5
 
@@ -174,7 +347,7 @@ def render(df, meta, levels, events, text_left, text_right, out,
                         alpha=0.10, zorder=0, lw=0)
         x0 = lv.get('x0', -2)   # S4(P1-2)：颈线只从首触点画起，不延伸到无关左段
         ax1.plot([x0, line_end], [lv['y']] * 2, color=lv['c'],
-                 ls=lv.get('ls', '--'), lw=lv.get('lw', 1.4), zorder=1)
+                 ls=lv.get('ls', '--'), lw=lv.get('lw', 1.4), zorder=5)
         # 标签与线同高时用直线连接，避免 angle 连接样式退化告警
         cs = 'arc3,rad=0' if abs(lv['ly'] - lv['y']) < 1e-6 else 'angle,angleA=0,angleB=90,rad=4'
         ax1.annotate(lv['txt'], xy=(line_end, lv['y']), xytext=(lbl_x, lv['ly']),
@@ -232,6 +405,8 @@ def render(df, meta, levels, events, text_left, text_right, out,
 
     if return_fig:
         return fig
+    # ⚠ 别加 pil_kwargs={'compress_level':...}：实测会把 PNG 从 1.59MB 抬到 1.81MB
+    #   （matplotlib 自带 _png 压缩滤镜比 PIL 更适配这类大量色块的图，2026-09-20 实测）
     fig.savefig(out, dpi=dpi, bbox_inches='tight', facecolor='white')
     plt.close(fig)
     return out

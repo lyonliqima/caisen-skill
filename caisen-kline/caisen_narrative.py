@@ -583,8 +583,16 @@ def render_signal(sig, df, meta, out, adjust=None, dpi=250, **kw):
         left = (
             "【一、结构判定】蔡森 A 招（颈线识别）+ B 招（等幅满足）\n"
             f"· 未识别到可交易形态。\n· 原因：{getattr(sig, 'reason', '无有效形态')}\n"
-            "· 按方法论纪律：无信号即无信号，不强行套用形态，宁可观望。"
+            "· 按方法论纪律：无信号即无信号，不强行套用形态，宁可观望。\n"
         )
+        try:
+            import caisen_trend as _ct
+            _tr = _ct.compute(df)
+            left = (left.rstrip("\n") + "\n\n"
+                    + _ct.summary_text(df, _tr, meta=meta,
+                                       px=lambda v: _px(v, adjust)).rstrip("\n") + "\n")
+        except Exception:
+            pass
         right = (
             "【强制约束 C1–C4（每次输出必带）】\n"
             + c1_text() + "\n"
@@ -598,6 +606,17 @@ def render_signal(sig, df, meta, out, adjust=None, dpi=250, **kw):
                       dpi=dpi, **kw)
 
     left, right = build_text_blocks(sig, meta, df=df, adjust=adjust)
+    # 四色K线节奏块（EMA12/50 展示层 + 量价读数 + 与形态方向的一致性交叉校验）
+    # 挂右栏：左栏（一二三＋失败识别）已 30 行接近满，右栏（四＋五C1-C4）仅 22 行有富余
+    try:
+        import caisen_trend as _ct
+        _tr = _ct.compute(df)
+        right = (right.rstrip("\n") + "\n\n"
+                 + _ct.summary_text(df, _tr, meta=meta,
+                                    px=lambda v: _px(v, adjust),
+                                    direction=sig.direction).rstrip("\n") + "\n")
+    except Exception:
+        pass
     levels = build_levels(sig, meta, adjust=adjust)
     events = build_events(sig, df, meta, adjust=adjust)
     measures = kw.pop("measures", None)
