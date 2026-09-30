@@ -68,6 +68,26 @@ def main():
     args = ap.parse_args()
 
     rows = _load_samples(args.data)
+
+    # ⚠️ 2026-09-20 新增闸门：缺列时此前会「静默返回一份看起来成功的空结果」——
+    #    桶 n 有数、胜率全 null、monotonic=None、退出码 0。实测喂入仅有 pattern_score
+    #    而无 forward_* 的候选表（破底翻候选_*.csv）即如此。缺列必须响亮失败。
+    _cols = set()
+    for _r in rows:
+        _cols |= set(_r.keys())
+    if "pattern_score" not in _cols:
+        print(json.dumps({"error": "数据文件缺少 pattern_score 列，无法分桶",
+                          "file": args.data, "columns": sorted(_cols)}, ensure_ascii=False))
+        sys.exit(2)
+    if not ({"forward_5", "forward_20", "forward_60"} & _cols):
+        print(json.dumps({
+            "error": "数据文件缺少 forward_5/forward_20/forward_60 前视收益列，无法计算预测力"
+                     "（禁止用当前价冒充当未来价）",
+            "file": args.data, "columns": sorted(_cols),
+            "hint": "先导出含前视收益的回测样本；若只是要「条件 vs 无条件」的胜负基准，"
+                    "改用 tools/base_rate.py（无需前视列）"}, ensure_ascii=False))
+        sys.exit(2)
+
     # 分桶
     table = {name: {"n": 0, "w5": 0, "w20": 0, "w60": 0,
                     "5": [], "20": [], "60": []} for name, _ in BUCKETS}

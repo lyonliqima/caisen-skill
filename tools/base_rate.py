@@ -62,7 +62,18 @@ def _safe_eval(expr, ns):
                 raise NameError("未知变量（不在作用域）: %s" % n.id)
             return ns[n.id]
         if isinstance(n, ast.UnaryOp):
-            return _ev(n.op) * _ev(n.operand) if isinstance(n.op, (ast.USub, ast.UAdd)) else _ev(n.operand)
+            # ⚠️ 2026-09-20 修：原实现为 `_ev(n.op) * _ev(n.operand) if USub/UAdd else _ev(n.operand)`，
+            #    ① USub 时去求值「运算符节点」→ 必然抛 ValueError（负数字面量全崩，本文件 docstring
+            #       的示例 `--event 'fwd_return <= -0.05'` 就跑不通）；
+            #    ② 非 USub/UAdd 时直接返回 operand → `not X` 被当成 `X`，**静默算错不报错**。
+            v = _ev(n.operand)
+            if isinstance(n.op, ast.USub):
+                return -v
+            if isinstance(n.op, ast.UAdd):
+                return +v
+            if isinstance(n.op, ast.Not):
+                return not v
+            raise ValueError("不支持的一元运算符: %s" % type(n.op).__name__)
         if isinstance(n, ast.BinOp):
             a, b = _ev(n.left), _ev(n.right)
             return {ast.Add: a + b, ast.Sub: a - b, ast.Mult: a * b,
@@ -71,8 +82,7 @@ def _safe_eval(expr, ns):
             if isinstance(n.op, ast.And):
                 return all(_ev(v) for v in n.values)
             return any(_ev(v) for v in n.values)
-        if isinstance(n, ast.UnaryOp) and isinstance(n.op, ast.Not):
-            return not _ev(n.operand)
+        # （ast.Not 已在上面 ast.UnaryOp 分支正确处理；此处原为永不可达的死代码，2026-09-20 删除）
         if isinstance(n, ast.Compare):
             left = _ev(n.left)
             for op, comp in zip(n.ops, n.comparators):
@@ -101,7 +111,11 @@ def wilson(p, n, z=1.96):
 def _load_prices(symbol, asof):
     asof_d = datetime.strptime(asof, "%Y-%m-%d")
     rows = []
-    for ext in (".csv", ".json"):
+    # ⚠️ 2026-09-20 新增 .txt：国内商品期货的日K缓存在 <合约>.txt（新浪期货 JSON 数组，键 d/o/h/l/c/v/p/s）。
+    #    此前只读 csv/json → 期货整类品种取数失败（error「历史数据不足或取数失败」），
+    #    导致「优先调用、禁止手工重算」在本技能最常用的期货场景下不可执行。
+    #    同一血统的 baseline.py 与 sanity_check_card.py 已于 2026-09-18 补上，本文件是漏网的那个。
+    for ext in (".csv", ".json", ".txt"):
         p = os.path.join(CACHE_DIR, symbol + ext)
         if os.path.exists(p):
             try:
@@ -112,6 +126,14 @@ def _load_prices(symbol, asof):
                             d, c, v = r.get("date"), r.get("close"), r.get("volume")
                             if d and c not in (None, ""):
                                 rows.append((d[:10], float(c), float(v) if v not in (None, "") else 0.0))
+                elif ext == ".txt":
+                    raw = open(p, encoding="utf-8").read()
+                    i, j = raw.find("["), raw.rfind("]")   # 兼容 jsonp 包装（红枣缓存带 /*<script>…*/ var _CJ0=）
+                    if i >= 0 and j > i:
+                        for r in json.loads(raw[i:j + 1]):
+                            d, c, v = str(r.get("d", ""))[:10], r.get("c"), r.get("v", 0.0)
+                            if d and c not in (None, ""):
+                                rows.append((d, float(c), float(v) if v not in (None, "") else 0.0))
                 else:
                     with open(p, encoding="utf-8") as f:
                         for r in json.load(f):
@@ -119,6 +141,12 @@ def _load_prices(symbol, asof):
                                          float(r.get("volume", 0.0))))
             except Exception:
                 rows = []
+    if rows:  # 同日去重（防止同名 .csv/.txt 并存时重复计数）
+        _dd, _seen = [], set()
+        for r in rows:
+            if r[0] not in _seen:
+                _seen.add(r[0]); _dd.append(r)
+        rows = _dd
     if rows:
         out = [(d, c, v) for d, c, v in rows
                if datetime.strptime(d, "%Y-%m-%d") < asof_d]
@@ -202,10 +230,19 @@ def _selftest():
     # 正常 condition 应可求值
     ctx = _context_at(prices, len(prices) - 1, 60)
     assert _safe_eval("close > ma60", ctx) in (True, False)
+    # ── 一元运算回归（2026-09-20 补：此前负数直接崩、not 被静默忽略）──
+    assert _safe_eval("-0.05 < 0", {}) is True                       # 负数字面量
+    assert _safe_eval("fwd_return <= -0.02", {"fwd_return": -0.03}) is True
+    assert _safe_eval("fwd_return <= -0.02", {"fwd_return": 0.01}) is False
+    assert _safe_eval("not (close > 1000)", {"close": 1200.0}) is False   # not 必须真取反
+    assert _safe_eval("not (close > 1000)", {"close": 900.0}) is True
+    assert _safe_eval("close > 1000 and not (vol > 0)",
+                      {"close": 1200.0, "vol": 0.0}) is True
     # 正向逻辑：event 在未来收益上求值，condition 在 t 上求值，结果合理
     out = base_rate(prices, 1, "close > open", "fwd_return > 0")
     assert out["conditional"]["n"] >= 1
     print("✓ 防前视偏差自测通过（condition 命名空间与 event 命名空间物理隔离）")
+    print("✓ 一元运算自测通过（负数 / not / 复合）")
     sys.exit(0)
 
 
@@ -235,7 +272,11 @@ def main():
     try:
         out = base_rate(prices, args.window, args.condition, args.event)
     except (NameError, ValueError) as e:
-        print(json.dumps({"error": "表达式解析失败: %s" % e}, ensure_ascii=False))
+        print(json.dumps({
+            "error": "表达式求值失败: %s" % e,
+            "hint": "condition 可用变量：close/open/high/low/ma20/ma60/vol/vol_percentile/n；"
+                    "event 可用变量：fwd_return/fwd_close。支持 + - * / % 比较 and/or/not。",
+            "condition": args.condition, "event": args.event}, ensure_ascii=False))
         sys.exit(1)
     out["symbol"] = args.symbol
     out["asof"] = args.asof

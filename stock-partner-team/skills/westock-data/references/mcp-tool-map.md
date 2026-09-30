@@ -49,7 +49,7 @@
 | 产业链 | `data_industry_chain` | `code`, `mode`, `theme`, `category` |
 | 北向持仓 | `data_north_holding` | `code`/`codes`, `date` |
 | 南下持仓 | `data_south_holding` | `code`/`codes`, `date` |
-| 期货 | `data_futures` | `mode`, `query`, `code` |
+| 期货 | `data_futures` | `mode`, `query`, `code`（⚠️ **仅境外**：`list` 的 55 个合约全为 COMEX / CBOT / CME / NYMEX / LME / 美债 / 恒指系等；**内盘商品期货 0 覆盖**，`search` 对「红枣/螺纹/锰硅/工业硅」返回空数组。境外可用：`quote` 含 `openInterest`/`dailyOIChange`/`vwap`（**延迟行情**）、`detail` 给合约规格+官方链接；日K 走 `data_kline`（返回含 `oi` 持仓量） |
 | 外汇 | `data_forex` | `mode`, `query` |
 | 债券 | `data_bond` | `code`/`codes` |
 

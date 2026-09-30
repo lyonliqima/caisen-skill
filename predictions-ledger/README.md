@@ -46,6 +46,11 @@ python3 predictions-ledger/append.py --json '{
 
 `id / date / data_cutoff / expiry` 自动补；`expiry` 由 `time_window`（如 `60D`）推算。必填缺失会报错（除非 `--lenient`）。
 
+> ⚠️ **单位口径（2026-09-30 实锤）**：`time_window` 的 `D` 是**日历日**，不是交易日 —— `append.py::_infer_expiry` 走的是 `date + timedelta(days=N)`。
+> 所以 `60D` ≈ 41 个交易日。写记录前先想清楚「实际想在哪一天到期」，再倒推天数：
+> 例如「持有到 12 月底」约 92 个日历日 → 应写 `90D`（expiry 12-29），写 `60D` 会提前到 11-29。
+> 期货合约尤其容易踩：**窗口终点应尽量对齐该合约的自然人最后平仓日**。
+
 ### 2. 每周：复盘
 
 ```bash

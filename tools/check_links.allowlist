@@ -43,3 +43,6 @@ predictions-ledger/README.md:88  # 早期桩文件路径,已被 ledger.jsonl 取
 base-logic/日元干预·日本财政·台湾流动性枯竭-十二专家核验观点.md:89  # 运行时生成的分析 HTML 未随本仓库分发 -> output/meeting-argument-analysis-20260805.html
 base-logic/美日联合干预日元-Agent独立评估.md:94  # 运行时生成的分析 HTML 未随本仓库分发 -> output/美股走势研判-2026-08-04.html
 capital-three-flow/SKILL.md:91  # 运行时生成的定性/地缘置位文件，未随本仓库分发（行号随 2026-09-13 文档增补由 70 漂移至 91） -> data/qualitative_state.json
+caisen-10-experts-analyst/references/期货席位基差与期限结构数据层-20260930.md:375  # 专家包内接口契约路径（pandaai-futures-deepview 专家包），未随本仓库分发；第 6.1 节保真原文不改（行号随 2026-09-30 15:0x 接口替代映射扩写由 339 漂移至 375） -> references/pandadata-interface-contracts.md
+caisen-10-experts-analyst/references/期货席位基差与期限结构数据层-20260930.md:864  # 同上（第 6.3 节保真原文内的第二条引用；行号由 828 漂移至 864） -> references/pandadata-interface-contracts.md
+predictions-ledger/README.md:93  # 早期桩文件路径,已被 ledger.jsonl 取代（第 3 处出现，行号随文档增补漂移） -> predictions/ledger.csv

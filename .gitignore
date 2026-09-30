@@ -45,3 +45,8 @@ venv/
 
 # ===== alphaear trained weights (>1MB binary; obtain per exports/models/README.md; never commit) =====
 alphaear/scripts/alphaear-predictor/predictor/exports/models/*.pt
+
+# ===== ocmacro 数据缓存（可再生的抓取数据；2026-09-30 补） =====
+ocmacro-feed/data/
+# ===== 根目录十二专家分析报告产物（不入库） =====
+/*十二专家分析_*.html
