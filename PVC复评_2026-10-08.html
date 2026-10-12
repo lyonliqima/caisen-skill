@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PVC 复评报告（对阵上一版结论）</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+/* 图表helper：模型只需写 <canvas id="x"></canvas> 后调用 drawXxx(id, ...) 即可，无需完整 Chart.js 配置
+   用法（三选一，均可）：
+     drawBar('c1', ['A','B'], [1,2])                                  // 扁平数组 => 单系列
+     drawBar('c1', ['A','B'], [[1,2],[3,4]], {names:['甲','乙']})       // 嵌套数组 => 多系列，names 给图例
+     drawBar('c1', ['A','B'], [{label:'甲',data:[1,2],color:'#f00'}])   // 标准对象 => 完全控制
+   ⚠️ 旧版 _norm 会把嵌套数组/扁平数组错误地塞进 data 标量，导致图表空白——已修正。 */
+function _base(type, id, data, opts){
+  opts = opts || {};
+  const ctx = document.getElementById(id);
+  if(!ctx) return;
+  const colors = {up:'#ff4d4f', down:'#1ec77a', gold:'#ffd166', accent:'#4a9eff', warn:'#ff9f43', purple:'#c084fc', muted:'#8b98a5'};
+  const list = Array.isArray(data.datasets)?data.datasets:[data];
+  const isDC = (type==='doughnut');
+  const ds = list.map(function(d,i){
+    const c = d.color || (opts.colors && opts.colors[i]) || colors.accent;
+    return {label:d.label||('系列'+(i+1)), data:d.data,
+      borderColor:Array.isArray(c)?c:c,
+      backgroundColor:Array.isArray(c)?c:(isDC?c:(opts.fill? c+'33' : c+'cc')),
+      borderDash: d.borderDash || (opts.dash? [6,4] : undefined),
+      pointStyle: d.pointStyle || (d.borderDash? 'rectRot' : 'circle'),
+      fill: !!opts.fill, tension:.25, pointRadius:d.borderDash?3:2, borderWidth:2};
+  });
+  const chartOpts = {responsive:true,plugins:{legend:{labels:{color:'#e6edf3'}}}};
+  if(type!=='radar'&&type!=='doughnut'){
+    chartOpts.scales = {
+      x:{ticks:{color:'#8b98a5'},grid:{color:'#2a3441'}},
+      y:{ticks:{color:'#8b98a5'},grid:{color:'#2a3441'}}
+    };
+  }
+  new Chart(ctx,{type:type,data:{labels:data.labels,datasets:ds},options:chartOpts});
+}
+function _norm(d,names){
+  if(!d||!d.length) return [];
+  function set(v,i){return {label:(names&&names[i])||('系列'+(i+1)),data:v};}
+  if(typeof d[0]==='object'&&!Array.isArray(d[0])) return d;   // 已是 [{label,data}]
+  if(Array.isArray(d[0])) return d.map(set);                   // [[..],[..]] 多系列
+  return [set(d,0)];                                           // 扁平数组 => 单系列
+}
+function drawLine(id,labels,datasets,opts){_base('line',id,{labels:labels,datasets:_norm(datasets,opts&&opts.names)},opts);}
+function drawBar(id,labels,datasets,opts){_base('bar',id,{labels:labels,datasets:_norm(datasets,opts&&opts.names)},opts);}
+function drawDoughnut(id,labels,values,opts){_base('doughnut',id,{labels:labels,datasets:[{label:(opts&&opts.label)||'占比',data:values,color:opts&&opts.colors}]},opts);}
+function drawRadar(id,axes,values,opts){_base('radar',id,{labels:axes,datasets:[{label:(opts&&opts.label)||'评分',data:values,color:opts&&opts.color}]},{colors:[opts&&opts.color]});}
+</script>
+
+<style>
+:root{
+  --bg:#0f1419; --panel:#161b22; --panel2:#1c232c; --border:#2a3441;
+  --text:#e6edf3; --muted:#8b98a5; --up:#ff4d4f; --down:#1ec77a;
+  --gold:#ffd166; --accent:#4a9eff; --warn:#ff9f43; --purple:#c084fc;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Noto Sans SC",-apple-system,system-ui,sans-serif;line-height:1.65;padding:24px;}
+.report{max-width:960px;margin:0 auto;}
+header.hero{border-bottom:1px solid var(--border);padding-bottom:18px;margin-bottom:24px;}
+header.hero h1{font-size:1.9rem;font-weight:700;letter-spacing:.02em;}
+header.hero .meta{color:var(--muted);font-size:.85rem;margin-top:6px;}
+.kicker{color:var(--accent);font-size:.8rem;letter-spacing:.15em;font-weight:600;margin-bottom:10px;text-transform:uppercase;}
+section.block{margin:28px 0;}
+section.block > h2{font-size:1.3rem;font-weight:700;margin-bottom:14px;padding-left:10px;border-left:4px solid var(--accent);}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:14px 0;}
+.card h3{font-size:1.05rem;font-weight:600;margin-bottom:8px;}
+.muted{color:var(--muted);font-size:.9rem;}
+.up{color:var(--up);font-weight:600;}
+.down{color:var(--down);font-weight:600;}
+.gold{color:var(--gold);font-weight:600;}
+.warn{color:var(--warn);font-weight:600;}
+.purple{color:var(--purple);font-weight:600;}
+/* 评分卡 */
+.verdict{background:linear-gradient(135deg,#161b22,#1c232c);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin:18px 0;}
+.verdict .dir{font-size:1.4rem;font-weight:800;}
+.verdict .conf{float:right;font-size:1.1rem;color:var(--gold);font-weight:700;}
+.verdict ul{margin:10px 0 0 18px;font-size:.95rem;}
+.verdict li{margin:4px 0;}
+/* 图表 */
+.chart-box{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:16px 0;}
+.chart-box .cap{color:var(--muted);font-size:.8rem;margin-top:8px;text-align:center;}
+canvas{max-width:100%;}
+/* 表格 */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.9rem;}
+th,td{border:1px solid var(--border);padding:8px 11px;text-align:left;}
+th{background:var(--panel2);font-weight:600;}
+td.cons{color:var(--down);} td.div{color:var(--warn);}
+/* 兵棋推演树 */
+.scenario{border-left:3px solid var(--accent);padding-left:14px;margin:12px 0;}
+.scenario .cond{font-weight:600;color:var(--text);}
+.scenario .arrow{color:var(--muted);margin:0 6px;}
+.scenario .res{font-weight:600;}
+.scenario .child{margin-left:18px;border-left:2px dashed var(--border);padding-left:12px;margin-top:8px;}
+.tag{display:inline-block;font-size:.72rem;padding:1px 8px;border-radius:999px;margin-right:6px;vertical-align:middle;}
+.tag.up{background:rgba(255,77,79,.15);} .tag.down{background:rgba(30,199,122,.15);}
+.tag.gold{background:rgba(255,209,102,.15);} .tag.neutral{background:rgba(139,152,165,.18);color:var(--muted);}
+/* 证据/证伪 */
+.evidence{border-left:3px solid var(--accent);background:var(--panel);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.92rem;}
+.falsify{border-left:3px solid var(--warn);background:rgba(255,159,67,.08);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.92rem;}
+.falsify b{color:var(--warn);}
+/* 免责 */
+footer.disclaimer{margin-top:36px;padding-top:16px;border-top:1px solid var(--border);color:var(--muted);font-size:.78rem;line-height:1.5;}
+footer.disclaimer b{color:var(--text);}
+</style>
+</head>
+<body>
+<div class="report">
+<header class="hero">
+  <div class="kicker">整合市场分析 · 方法论推导</div>
+  <h1>PVC 复评报告（对阵上一版结论）</h1>
+  <div class="meta">2026-10-08</div>
+</header>
+<div class="verdict">
+  <span class="conf">复评后置信度 62（维持）</span>
+  <div class="dir down">中性偏空 ▼（方向维持，依据重排）</div>
+  <ul>
+    <li>最强的看空证据被独立复现：反弹后 20 日下跌概率 59% vs 基准 52%（lift +7pp）</li>
+    <li>但"Q4–Q1 淡季"被季节性数据推翻一半：12 月胜率 12/16 = 75%，是全年最强月之一</li>
+    <li>期限必须写死：该 edge 仅存在于 ≤60 日，250 日方向反转（51% vs 基准 61%）</li>
+  </ul>
+</div>
+
+<section class="block">
+<h2>为什么做这次复评 · 复评的方法</h2>
+<p>上一版报告（2026-10-08 22:07 定稿）给出<b>中性偏空、置信度 62、60 日窗口</b>。本次复评不是"再看一眼"，而是把上一版结论当作<b>待证伪对象</b>，走三步：</p>
+<ul>
+  <li><b>第一步 · 核数据</b>：把报告里每一个数字拿原始行情重算一遍，看有没有算错、口径有没有错标；</li>
+  <li><b>第二步 · 攻逻辑</b>：逐条检验看空论据是否自洽，找出"报告自己否定了、却还在当论据用"的条目；</li>
+  <li><b>第三步 · 补盲区</b>：做报告没做的独立检验（持有期限研究、"便宜就买"检验、季节性拆解），看有没有结构性遗漏。</li>
+</ul>
+<div class="evidence">复评结论：<b>方向维持"中性偏空"，置信度维持 62</b>，但<b>论据结构必须重排</b>——原来排在第 1、2 位的"位置不在左侧 + 成本底下移 + 淡季"这三条，撑不住；真正撑得住的是"反弹后短周期负漂移 + 展期硬成本 + 仓单无强制注销"。</div>
+</section>
+
+<section class="block">
+<h2>第一步 · 数据复核：4 处订正</h2>
+<p>用新浪期货日 K 原始序列重算，发现<b>三处数字口径有误、一处关键窗口被漏报</b>。</p>
+<table>
+  <tr><th>项目</th><th>原报告</th><th>复算</th><th>性质</th><th>是否影响方向</th></tr>
+  <tr><td>近 60 日涨幅</td><td class="div">+10.72%</td><td class="cons">+8.96%</td><td><b>口径错标</b>：+10.72% 实为回看 <b>62</b> 个交易日（2026-07-07 起算）</td><td>否（方向不变，幅度略降）</td></tr>
+  <tr><td>σ60日</td><td class="div">14.49%</td><td class="cons">14.26%</td><td>标准差口径差异（样本 / 总体）</td><td>否</td></tr>
+  <tr><td>V2701→V2705 年化 carry</td><td class="div">14.91%</td><td class="cons">14.42%</td><td>依赖合约到期日假设（差 4 天）</td><td>否（同落 M-H19 的 10–18% 档）</td></tr>
+  <tr><td>价格分位</td><td class="div">只报 3 个短窗口</td><td class="cons">补报 17 年窗口 = 7.0%</td><td><b>结构性遗漏</b>：最长窗口读数与短窗口方向相反</td><td>否，但必须补（见下节）</td></tr>
+</table>
+<div class="chart-box"><canvas id="c1"></canvas><div class="cap">图1：原报告数字 vs 原始行情复算（同一口径下对比）</div></div>
+<script>drawBar('c1', ['近60日涨幅 %', 'σ60日 %', '年化carry %'],
+  [[10.72, 14.49, 14.91], [8.96, 14.26, 14.42]],
+  {colors: ['#e8b84b', '#4a9eff'], names: ['原报告', '复算']});</script>
+<div class="falsify"><b>订正结论</b>：三处数字误差都在"口径"层面，不改变任何方向性判断；但<b>报告正文里"+10.72%"这个数字以"近 60 个交易日"的名义出现，属于口径错标</b>，引用时必须改口为"近 62 个交易日 +10.72%"或"近 60 个交易日 +8.96%"。</div>
+</section>
+
+<section class="block">
+<h2>第二步 · 逻辑攻防：一条自相矛盾的论据</h2>
+<p>上一版报告做了一件对的事——它主动剔除了"电石跌 → PVC 跌"的因果链，因为实证检验显示 9 月下旬电石 <b>−9%</b> 期间 PVC 期货反而 <b>+10.7%</b>，方向相反。</p>
+<p>但问题在这里：<b>同一份报告的第 2 条看空论据是"成本底自身在下移"</b>，用的还是电石 −250 元、块煤 −77.04 元这套成本数据。</p>
+<div class="falsify"><b>自相矛盾之处</b>：如果"成本不驱动价格"（+10.7% vs −9% 已证），那么"成本底下移"就不能推理出"价格要跌"；它只能用来<b>削弱多头的"跌到成本就安全"论</b>，不能当作独立的看空论据。报告把它列进评分卡"看空 ②"，属于<b>论据错位</b>。</div>
+<p>纪律上说，这正是"把别人的叙事当结论用"的一个变体——<b>拿成本数据去印证一个价格方向的直觉</b>，而数据自己早已否定这两者的短期关联。</p>
+</section>
+
+<section class="block">
+<h2>第三步 · 补盲区 ①：价格分位全窗口谱（报告只报了对看空有利的三个窗口）</h2>
+<p>原报告列出三个分位读数：V0 近 60 日 <b>85.0%</b>、V0 近 250 日 <b>64.8%</b>、V2701 全历史 <b>43.0%</b>。三个窗口的结论一致——"不便宜"。</p>
+<p>但把窗口拉到最长（V0 主力连续全历史，4,212 个交易日、覆盖 2009–2026 共 17 年），读数是 <b>7.0%</b>：</p>
+<div class="chart-box"><canvas id="c2"></canvas><div class="cap">图2：同一价格在四个不同长度窗口下的分位读数（差异 78 个百分点）</div></div>
+<script>drawBar('c2', ['V0·近60日', 'V0·近250日', 'V2701·全历史', 'V0·全历史 17年'],
+  [{label: '收盘价分位（%）', data: [85.0, 64.8, 43.0, 7.0],
+    color: ['#ff4d4f', '#ff9f43', '#4a9eff', '#1ec77a']}]);</script>
+<div class="evidence">4915 元/吨在 17 年历史里，只有 <b>296 / 4212</b> 个交易日比它更低。2025 年末 4805、2024 年末 5290、2015 年末 4850——<b>绝对水平上，PVC 处在历史低位区</b>。</div>
+<p>这是不是意味着"越跌越买"成立？<b>我专门去检验了，答案是：不成立</b>——见下一节的检验 B。这条遗漏不改方向，但必须补进报告，否则"它不是便宜、是反弹到半山腰"这句结论会被 17 年视角直接质疑。</p>
+</section>
+
+<section class="block">
+<h2>补盲区 ②：持有期限研究（报告完全没做，但它是本次最关键的一张图）</h2>
+<p>原报告的核心量化论据是"条件基准率"：<b>收盘 &gt; MA60 时，未来 60 日下跌概率 59.46% vs 无条件基准 54.97%（lift +4.5pp，n=1845）</b>。我用 <b>tools/base_rate.py</b> 重跑，<b>结果一字不差复现</b>——这条论据是真的。</p>
+<p>但报告只测了 60 日一个期限。我把条件换成"近 60 日涨幅 ≥ +9%"（即"已经反弹过一段"），把期限拉成 20 / 60 / 120 / 250 日四档：</p>
+<div class="chart-box"><canvas id="c3"></canvas><div class="cap">图3：反弹后各期限的下跌概率——条件 vs 无条件基准（lift 随期限衰减并反转）</div></div>
+<script>drawBar('c3', ['未来20日', '未来60日', '未来120日', '未来250日'],
+  [[59, 58, 56, 51], [52, 55, 56, 61]],
+  {colors: ['#4a9eff', '#e8b84b'], names: ['反弹后条件（n=573）', '无条件基准']});</script>
+<div class="chart-box"><canvas id="c4"></canvas><div class="cap">图4：反弹后各期限的平均收益——同样在 250 日反转</div></div>
+<script>drawBar('c4', ['未来20日', '未来60日', '未来120日', '未来250日'],
+  [[-1.67, -2.15, -1.45, -0.06], [0.03, -0.12, -0.35, -0.94]],
+  {colors: ['#4a9eff', '#e8b84b'], names: ['反弹后条件', '无条件基准']});</script>
+<div class="falsify"><b>这张图定了两条纪律</b>：<br>
+① 看空 edge <b>随期限衰减</b>：20 日 lift <b>+7pp</b>（最强）→ 60 日 +3pp → 120 日 0pp → 250 日 <b>−10pp（条件反而比基准更偏多）</b>。<br>
+② 因此"中性偏空"<b>只能用于 ≤60 日</b>，写报告时必须把期限锁死，<b>禁止外推为年度判断</b>。上一版报告写了 60 日，这一点是对的，但它没有说明"超出这个窗口就失效"。</div>
+</section>
+
+<section class="block">
+<h2>补盲区 ③：检验"便宜就该买"——17 年低位不产生正期望</h2>
+<p>上一节补上了"V0 全历史 7.0% 分位"这个遗漏。直觉会说：历史上最便宜的 7% 区域，买了应该赚。实测结果不是。</p>
+<p>条件：收盘价处于<b>上市以来历史分位 ≤10%</b>（即最便宜的一成时间），看未来各期限收益：</p>
+<div class="chart-box"><canvas id="c5"></canvas><div class="cap">图5：处于历史最低 10% 分位时，未来各期限的收益（平均 vs 中位）</div></div>
+<script>drawBar('c5', ['未来20日', '未来60日', '未来120日', '未来250日'],
+  [[0.16, 0.03, -0.18, 0.32], [-0.33, -1.07, -2.45, -4.09]],
+  {colors: ['#e8b84b', '#a855f7'], names: ['平均值', '中位数']});</script>
+<div class="falsify"><b>关键读数</b>：未来 250 日 <b>平均 +0.32%、中位 −4.09%、下跌概率 64%</b>。平均与中位背离 4.4 个百分点、且中位为负——这是典型的<b>右偏分布</b>：靠少数极端大赢家把平均值拉起来，<b>超过一半的情形是亏的</b>。<br>这正是"越跌越买"策略最危险的画像——它的正期望只存在于回测的平均值里，不在中位数的真实体验里。</div>
+<div class="evidence">检验结论：<b>"价格便宜"在 PVC 上不构成买入理由</b>。60 日尺度上它甚至略微偏空（平均 +0.03%、中位 −1.07%）。原报告"位置不是买点"的结论方向正确，但理由是"短窗口 85 分位"，<b>更硬的理由是"历史低位没有统计上的多头 edge"</b>——建议把这条补进去替换原表述。</div>
+</section>
+
+<section class="block">
+<h2>补盲区 ④：季节性拆解——"Q4–Q1 淡季"这条论据站不住</h2>
+<p>原报告第 3 条看空逻辑写的是"需求进入 Q4–Q1 季节性淡季"。我把 16 年样本按月拆开，结果显示这个说法<b>对了一半、错了一半</b>：</p>
+<div class="chart-box"><canvas id="c6"></canvas><div class="cap">图6：10 月 / 11 月 / 12 月及整个预测窗口的上涨胜率（16 年样本）</div></div>
+<script>drawBar('c6', ['10月', '11月', '12月', '全窗口 10/08→01/08'],
+  [{label: '上涨胜率（%）', data: [31.3, 43.8, 75.0, 50.0],
+    color: ['#1ec77a', '#1ec77a', '#ff4d4f', '#4a9eff']}]);</script>
+<div class="chart-box"><canvas id="c7"></canvas><div class="cap">图7：同上窗口的中位收益——10、11 月为负，12 月翻正</div></div>
+<script>drawBar('c7', ['10月', '11月', '12月', '全窗口 10/08→01/08'],
+  [{label: '中位收益（%）', data: [-1.57, -0.44, 1.48, 0.36],
+    color: ['#1ec77a', '#1ec77a', '#ff4d4f', '#ff4d4f']}]);</script>
+<div class="falsify"><b>数据实况</b>：<br>
+· 10 月 <b>确实弱</b>：中位 −1.57%、胜率 5/16（31%）——这部分报告说对了；<br>
+· 11 月 <b>基本持平</b>：中位 −0.44%、胜率 7/16；<br>
+· 12 月 <b>全年最强之一</b>：中位 <b>+1.48%</b>、胜率 <b>12/16 = 75%</b>——报告完全没提，而它落在预测窗口内；<br>
+· 整个 10/08 → 次年 01/08 窗口：中位 <b>+0.36%</b>、胜率 8/16 = <b>50%</b>——<b>净季节性约为零</b>。<br>
+（另注：该窗口均值 −2.62% 完全由 2021 年 −30.3%、2022 年 −11.4% 两个极端值拉动，剔除后均值仅 −0.84%。）</div>
+<div class="evidence"><b>处分</b>："Q4–Q1 淡季"<b>降级</b>为"仅 10 月单月偏弱（中位约 −1.6%），11 月持平、12 月转强"。它不足以支撑一个 60 日的方向判断。</div>
+</section>
+
+<section class="block">
+<h2>制度结构补充：仓单在窗口内<b>不会</b>被强制注销（这条反而加强看空）</h2>
+<p>原报告把"注册仓单约 12 万手（约 60 万吨）处历史高位"列为看空论据。我查了大商所规则做交叉验证：</p>
+<div class="card"><h3>大商所《聚氯乙烯期货业务细则》第三十一条</h3><p>「聚氯乙烯标准仓单在<b>每年的 3 月份最后 1 个交易日</b>之前应当进行标准仓单注销。」</p></div>
+<p>另据《标准仓单管理办法》，PVC 仓单<b>申请注册日期距商品生产日期不得超过 180 个自然日</b>，注销后未出库且生产日期在 180 天内可重新注册。</p>
+<div class="evidence"><b>含义</b>：下一次强制注销在 <b>2027 年 3 月末</b>，<b>完全落在预测窗口（10-08 → 2027-01-08）之外</b>。所以在整个 60 日窗口内，这 12 万手仓单<b>没有"到期被迫离场"的机制</b>，会持续作为盘面压力存在。原报告"仓单是最直接的盘面压力"这一定性，<b>经制度核实为真，且强度比报告写的更高</b>。</div>
+<div class="falsify"><b>反面提醒</b>：这也意味着窗口内<b>不存在</b>"仓单集中注销冲击现货"这一类事件风险——看空方不要指望仓单会在 11–12 月自己消失。</div>
+</section>
+
+<section class="block">
+<h2>论据处分总表：7 条留几条、降几条</h2>
+<table>
+  <tr><th>原报告论据</th><th>处分</th><th>复评依据</th></tr>
+  <tr><td>① 位置在近 60 日 85 分位，不是买点</td><td class="div">保留·须补全</td><td>补报 17 年 7.0% 分位；改用更硬的"历史低位无多头 edge"替换</td></tr>
+  <tr><td>② 成本底自身在下移</td><td class="div">降级</td><td>与报告自认"成本不驱动价格"矛盾；只能削弱多头论，不能作答看空论</td></tr>
+  <tr><td>③ 亏损不带来减产（氯碱一体化利润转正）</td><td class="cons">保留</td><td>开工率同比 −15.28pct 与氯碱综合利润转正并存，逻辑自洽</td></tr>
+  <tr><td>④ 去库疑为"搬家"，仓单 12 万手高位</td><td class="cons">保留·加强</td><td>DCE 规则核实：窗口内无强制注销，压力持续有效</td></tr>
+  <tr><td>⑤ 期限结构年化 carry 14.9%，多头等不起</td><td class="cons">保留</td><td>复算 14.42%，同落 M-H19 的 10–18% 档，硬事实</td></tr>
+  <tr><td>⑥ 该窗口方向 edge 本身薄</td><td class="div">保留·须补全</td><td>补上期限维度：edge 仅到 60 日，250 日反转</td></tr>
+  <tr><td>⑦ 需求进入 Q4–Q1 季节性淡季</td><td class="div">降级</td><td>12 月胜率 12/16、中位 +1.48%；整窗口净季节性 ≈ 0</td></tr>
+</table>
+<div class="chart-box"><canvas id="c8"></canvas><div class="cap">图8：7 条论据的处分分布（保留并加强 1 / 保留 2 / 保留但须补全 2 / 降级 2）</div></div>
+<script>drawDoughnut('c8', ['保留并加强', '保留', '保留但须补全', '降级'], [1, 2, 2, 2]);</script>
+</section>
+
+<section class="block">
+<h2>复评后的研判评分卡</h2>
+<table>
+  <tr><th>字段</th><th>内容</th><th>相对上一版</th></tr>
+  <tr><td>① 方向判断</td><td class="down">中性偏空 ▼</td><td class="cons">维持</td></tr>
+  <tr><td>② 置信度</td><td>62</td><td class="cons">维持（最强的看空 edge 被独立复现，抵消了两条论据被削弱）</td></tr>
+  <tr><td>③ 期限</td><td>60 个交易日（至 2027-01-08）<b>，且必须声明"不得外推"</b></td><td class="div">新增硬约束</td></tr>
+  <tr><td>④ 幅度区间</td><td>[4350, 5080]，−11.5% ~ +3.4%；中枢 4600–4700</td><td class="cons">维持</td></tr>
+  <tr><td>⑤ 证伪位</td><td>分析层 收盘站上 5980（1.5σ60）；交易层 收盘站上 5020 且连续 3 日不回落</td><td class="cons">维持</td></tr>
+  <tr><td>⑥ 核心论据（重排后）</td><td><b>a</b> 反弹后短周期负漂移（20 日 lift +7pp，n=573）<br><b>b</b> 期限结构年化展期成本 14.42%<br><b>c</b> 仓单 12 万手 + 窗口内无强制注销<br><b>d</b> 亏损不带来减产，出清被拖住</td><td class="div">重排：删掉"成本底"与"淡季"作为主论据</td></tr>
+  <tr><td>⑦ 建议仓位</td><td>共识矩阵落格「分歧-已定价」→ 默认<b>不动·仅记录</b>；若要参与，反弹至 5000–5020 试空（止损 5050），仓位 ≤10% 名义，单笔风险 ≤1%</td><td class="cons">维持</td></tr>
+  <tr><td>⑧ 三情景</td><td>基准 62% / 乐观 20% / 悲观 18%（触发路标同上一版）</td><td class="cons">维持</td></tr>
+</table>
+</section>
+
+<section class="block">
+<h2>对"越跌越买"的修正结论</h2>
+<div class="card"><h3>策略层面的净增量：不是"不能做"，是"不能在现在这个位置做"</h3>
+<p>上一版报告的结论是"PVC 上不建议现在建仓"。复评后这条结论<b>更硬了</b>，但换了理由：</p>
+<ul>
+  <li><b>原来的理由</b>：位置在近 60 日 85 分位（短窗口证据，可被质疑）；</li>
+  <li><b>复评后的理由</b>：① 处于历史最低 10% 分位时，未来 60 日平均仅 +0.03%、中位 −1.07%，<b>17 年样本不给多头 edge</b>；② 当前是"反弹 9% 之后"的状态，未来 20 日下跌概率 59% vs 基准 52%；③ 年化展期成本 14.42%，持有本身是负 carry。</li>
+</ul>
+</div>
+<div class="scenario">
+  <span class="tag down">左侧抄底</span><span class="cond">不在当前 4915 附近建仓</span><span class="arrow">→</span><span class="res">等价格真回到低位区（&lt;4500）再谈左侧</span>
+  <div class="child"><span class="cond">且持有周期须放到 1 年以上</span><span class="arrow">→</span><span class="res">250 日样本：反弹条件 51% vs 基准 61%，时间越长多头才占优</span></div>
+</div>
+<p class="warn">一句话：<b>在 PVC 上"越跌越买"不是错在策略，是错在时点——它的正期望只在"跌得足够深 + 拿得足够久"同时满足时才出现，而当前 4915 两个条件都不满足。</b></p>
+</section>
+
+<section class="block">
+<h2>时效与证伪位（截至 2026-10-08 夜盘 22:17）</h2>
+<p>复评过程中 PVC 夜盘正在交易，最新报价如下，<b>期限结构形态与日盘一致，未出现结构性变化</b>：</p>
+<table>
+  <tr><th>合约</th><th>10-08 日盘收盘</th><th>夜盘最新（22:17）</th><th>变化</th></tr>
+  <tr><td>V2611</td><td>4838</td><td class="up">4865</td><td class="up">+0.56%</td></tr>
+  <tr><td>V2701（主力）</td><td>4915</td><td class="up">4940</td><td class="up">+0.51%</td></tr>
+  <tr><td>V2705</td><td>5148</td><td class="up">5172</td><td class="up">+0.47%</td></tr>
+  <tr><td>V2709</td><td>—</td><td>5265</td><td>—</td></tr>
+</table>
+<div class="evidence">夜盘小幅上行 <b>+0.5%</b>，仍在噪声区间内（σ日 1.86%），<b>不构成对"中性偏空"的挑战</b>。全程 contango 不变：V2611 4865 → V2701 4940 → V2705 5172 → V2709 5265。</div>
+<div class="falsify"><b>证伪位不变</b>：交易层——<b>收盘站上 5020 并连续 3 日不回落</b>，本判断认错；分析层——收盘站上 5980（1.5σ60）方向失效。<br><b>新增的期限证伪</b>：本判断只在 <b>2027-01-08 之前</b>有效；超过该日窗口后，历史条件分布转为偏多，须重新取数重判，<b>不得顺延</b>。</div>
+</section>
+
+<section class="block">
+<h2>复评的局限（诚实度声明）</h2>
+<ul>
+  <li><b>库存与开工数据不可独立复核</b>：报告引用的"产业库存同比 −3.8% / 社库 +8.65% / 开工同比 −15.28pct"来自第三方渠道，本轮<b>未找到可免费核验的原始口径</b>，只能沿用。这几条直接支撑论据 ③④，如后续发现口径有误，论据需重估。</li>
+  <li><b>V0 主力连续序列含换月拼接</b>：17 年分位 7.0% 这个读数受拼接影响（抽查近 250 日 10 次 ≥3.5% 波动中，2025-12-16 与 2026-08-18 经单合约对照确认为真跳空，其余 8 次为真实行情，含 2026 年 3 月的政策脉冲）。但即便剔除跳空，历史低位这个相对定位不变。</li>
+  <li><b>季节性样本仅 16 年</b>：且含 2021（能耗双控）与 2022 两个极端年份，均值不可靠，<b>本次只用中位数与胜率</b>。</li>
+  <li><b>复评未改变置信度</b>：一方面最强的看空 edge（反弹后负漂移）被独立复现、且短端 lift 比原报告更强；另一方面两条论据被降级。两者相抵，维持 62。<b>这不是"想维持而维持"，是两组证据方向相反、量级接近。</b></li>
+</ul>
+</section>
+
+<footer class="disclaimer">
+  <b>风险提示与免责声明</b>：本报告所有结论均由方法论工具独立推导，非对任何机构或个人的投资建议。市场有风险，决策须自行承担后果。专家观点仅作待验证假说，已用当前数据独立检验。
+</footer>
+</div>
+
+</body>
+</html>
