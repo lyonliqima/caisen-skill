@@ -98,3 +98,20 @@ python3 predictions-ledger/score.py mark P-20260709-001 --status partial --retur
 - **每月**：跑一次 `python3 predictions-ledger/score.py` 全量复盘；当前报告落在 `reports/`（`score-<date>.md` / `review-<date>.md`）。月度归档建议另存至 `predictions-ledger/reviews/<YYYY-MM>.md`（`reviews/` 目录已加入 git，且不会被 `.gitignore` 的 `*.csv` / `*.html` 规则误伤，仅含 `.md`）。
 - 复盘时重点看：校准曲线（标 70 分是否约七成兑现）、Brier、三色独立性（🔵 长期为 0 ＝回声室）、与市场共识分歧预测的命中率（真正 alpha 读数）。
 - 新记录必须通过 `append.py` 的 schema 白名单校验，且宏观 / 事件类必填 `market_prior`（约定4 第10项）；`confidence` 落点须有分布（避免全挤在 55–75 中间值，见约定4 置信度分布约束）。
+
+## ⚠️ 复盘前置闸门：数据新鲜度必须先校验（2026-10-15 实锤，强制）
+
+**复盘打分之前，必须先把 `market-data-cache/` 刷到最新交易日，核对每条记录对应缓存文件的「最后 bar 日期」= 复盘日；不一致的标的禁止打分。**
+
+- **实锤证据（2026-10-15 周度复盘）**：直接拿旧缓存打分，会得出**错误的命中结论**——
+  - `sh000001.txt` 停在 **2026-09-29**（落后 10 个交易日），上证被判成"偏空兑现"；
+  - 鸡蛋 `JD2702/JD2703` 停在 10-12，缓存口径算出"中性兑现（+0.2%）"，刷新后实际 **-4.57% / -3.85%**，结论翻转为"中性被单边打脸"；
+  - 尿素 `UR2701` 停在 10-12，旧数据算出"偏空落空（+2.76%）"，刷新后 -0.54%，改判"未分"。
+  - 当周约 1/3 缓存文件停在 10-12 / 10-13 / 10-14（甲醇、PP、塑料、焦煤、PTA、棉花、玉米、热卷、棕榈油、工业硅等）。
+- **刷新方式**：国内期货用新浪日K——
+  `https://stock2.finance.sina.com.cn/futures/api/jsonp.php/var%20_<合约>=/InnerFuturesNewService.getDailyKLine?symbol=<合约>`
+  港股/指数用腾讯——`https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=<code>,day,<起>,<止>,<条数>,qfq`
+  实时快照用 `https://qt.gtimg.cn/q=<code>`（GBK）/ `https://hq.sinajs.cn/list=<code>`（需 Referer）。
+- **价格双源核验**：复盘所引用的关键价位，至少用两个独立数据源交叉确认（如新浪 + 腾讯自选股），并在报告"数据核查"节留痕。
+- **entry_price 口径**：追加记录时若取自缓存，必须同时写入 `data_cutoff`（数据截止日）；复盘时发现 `entry_price` 与"预测当日实际收盘"不符（如用前一日收盘价入场），须标注并同时给出两个基准的收益，不得默认取其一。
+- **去重口径**：统计命中率时，**同标的 + 同方向族只计首条**（否则一天给同一品种开 3–4 条会虚增样本）；清单照登，统计去重。

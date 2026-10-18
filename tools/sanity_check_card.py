@@ -74,6 +74,31 @@ EWMA_SEED = 60
 REGIME_LO, REGIME_HI = 0.67, 1.50
 
 
+def _row_dc(r):
+    """兼容缓存行的两种历史格式（2026-10-15 修复）：
+    ① dict：键 d/c（新浪期货）或 date/close；
+    ② 扁平数组：[date, open, high, low, close, ...]（取数脚本写出的 <合约>.txt）。
+    返回 (date_str, close_float) 或 (None, None)。此前三个读取器都只认 dict，
+    导致磁盘上全部 <合约>.txt（扁平数组）被整体丢弃 → 期货的 σ / 量纲闸门(R1/R2) /
+    benchmark 三字段恒为「可用=0 根」，量纲闸门对期货整类品种静默失效。
+    """
+    if isinstance(r, dict):
+        d = r.get("d") or r.get("date") or ""
+        c = r.get("c", r.get("close"))
+    elif isinstance(r, (list, tuple)) and len(r) >= 5:
+        d, c = r[0], r[4]
+    else:
+        return None, None
+    try:
+        d = str(d).strip()[:10]
+        c = float(c)
+    except (TypeError, ValueError):
+        return None, None
+    if not d or c <= 0:
+        return None, None
+    return d, c
+
+
 def _load_closes(symbol, asof=None):
     rows = []
     for ext in (".csv", ".json", ".txt"):
@@ -88,20 +113,19 @@ def _load_closes(symbol, asof=None):
                             if c not in (None, ""):
                                 rows.append(float(c))
                 elif ext == ".txt":
-                    # 新浪期货日K（2026-09-18 新增）：整文件是一个 JSON 数组，
-                    # 键为 d/o/h/l/c/v/p/s —— 不解析它，国内商品期货的 σ 恒算不出，
-                    # 量纲闸门（R1≥1σ / R2≥1.5σ）对期货整类品种静默失效。
                     raw = open(p, encoding="utf-8").read()
                     i, j = raw.find("["), raw.rfind("]")
                     if i >= 0 and j > i:
                         for r in json.loads(raw[i:j + 1]):
-                            c = r.get("c")
-                            if c not in (None, ""):
-                                rows.append(float(c))
+                            _, c = _row_dc(r)
+                            if c is not None:
+                                rows.append(c)
                 else:
                     with open(p, encoding="utf-8") as f:
                         for r in json.load(f):
-                            rows.append(float(r["close"]))
+                            _, c = _row_dc(r)
+                            if c is not None:
+                                rows.append(c)
             except Exception:
                 rows = []
     if rows:
@@ -219,7 +243,10 @@ def check_card(symbol, period_days, current, target_low, target_high, falsificat
         return False, report
 
     sigma_p = sigma_d * math.sqrt(period_days)
-    r1 = (target_high - target_low) / sigma_p
+    # ⚠️ 2026-10-15 修：sigma_p 是分数（小数），R1 的分子必须以现价归一，否则量纲不一致
+    #    （旧写法 (high-low)/sigma_p = 点数/小数，会把 R1 放大数百倍，导致「区间过宽」误报）
+    #    对照：R2 原本就做了 /current 归一，故一直正确。
+    r1 = (target_high - target_low) / current / sigma_p
     r2 = abs(current - falsification) / current / sigma_p
     r2_low = None
     if falsification_low is not None:

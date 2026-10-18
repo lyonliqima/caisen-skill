@@ -183,6 +183,31 @@ def enforce_predictability_cap(rec):
 
 
 # ─────────────────── 价格快照（P0-① 闭环加固）───────────────────
+def _row_dc(r):
+    """兼容缓存行的两种历史格式（2026-10-15 修复）：
+    ① dict：键 d/c（新浪期货）或 date/close；
+    ② 扁平数组：[date, open, high, low, close, ...]（取数脚本写出的 <合约>.txt）。
+    返回 (date_str, close_float) 或 (None, None)。此前三个读取器都只认 dict，
+    导致磁盘上全部 <合约>.txt（扁平数组）被整体丢弃 → 期货的 σ / 量纲闸门(R1/R2) /
+    benchmark 三字段恒为「可用=0 根」，量纲闸门对期货整类品种静默失效。
+    """
+    if isinstance(r, dict):
+        d = r.get("d") or r.get("date") or ""
+        c = r.get("c", r.get("close"))
+    elif isinstance(r, (list, tuple)) and len(r) >= 5:
+        d, c = r[0], r[4]
+    else:
+        return None, None
+    try:
+        d = str(d).strip()[:10]
+        c = float(c)
+    except (TypeError, ValueError):
+        return None, None
+    if not d or c <= 0:
+        return None, None
+    return d, c
+
+
 def _read_kline_cache(symbol_code):
     """读 market-data-cache/<code>.csv 或 <code>.txt → 按日期升序的 [(date, close)]；无则 []。
 
@@ -205,12 +230,8 @@ def _read_kline_cache(symbol_code):
                 if i < 0 or j <= i:
                     continue
                 for r in json.loads(raw[i:j + 1]):
-                    d = str(r.get("d", "")).strip()[:10]
-                    try:
-                        c = float(r.get("c"))
-                    except (TypeError, ValueError):
-                        continue
-                    if d and c > 0:
+                    d, c = _row_dc(r)
+                    if d is not None:
                         rows.append((d, c))
             else:
                 import csv as _csv

@@ -131,7 +131,14 @@ def _load_prices(symbol, asof):
                     i, j = raw.find("["), raw.rfind("]")   # 兼容 jsonp 包装（红枣缓存带 /*<script>…*/ var _CJ0=）
                     if i >= 0 and j > i:
                         for r in json.loads(raw[i:j + 1]):
-                            d, c, v = str(r.get("d", ""))[:10], r.get("c"), r.get("v", 0.0)
+                            # 2026-10-17 补扁平数组行兼容（与 append.py _row_dc 对齐）：
+                            # ① dict：键 d/c/v（新浪期货）；② 扁平数组 [d,o,h,l,c,v,p,s]，close 取索引 4。
+                            if isinstance(r, dict):
+                                d, c, v = str(r.get("d", ""))[:10], r.get("c"), r.get("v", 0.0)
+                            elif isinstance(r, (list, tuple)) and len(r) >= 5:
+                                d, c, v = str(r[0])[:10], r[4], r[5] if len(r) > 5 else 0.0
+                            else:
+                                continue
                             if d and c not in (None, ""):
                                 rows.append((d, float(c), float(v) if v not in (None, "") else 0.0))
                 else:

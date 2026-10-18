@@ -7,6 +7,9 @@
 
 解析规则：
 - 相对路径同时尝试「相对本 md 文件所在目录」与「相对仓库根」两种解析，任一存在即通过。
+- 跨技能引用：`references/<x>.md` 若**唯一**存在于某个一级子目录下则放行（如
+  caisen-10-experts-analyst 的 SKILL.md 引用 yang-shiguang-analysis 的 references/）。
+  多命中或零命中仍报断链。2026-10-15 追加。
 - `$CAISEN_ROOT/xxx` 一律按仓库根解析。
 - 跳过：http(s)/mailto 链接、纯锚点(#...)、含通配/占位符的路径（* { < > YYYY 日期模板等）、
   同一行已标注 [MISSING 的引用（人工确认过的缺失）、_archive/ 与 .workbuddy/ 内的文件。
@@ -74,6 +77,21 @@ def is_checkable(path: str) -> bool:
 # alphaear/references/alphaear-<X>.md 中的相对引用基准为 alphaear/scripts/alphaear-<X>/
 ALPHAEAR_DOC = re.compile(r'alphaear/references/(alphaear-[a-z0-9-]+)\.md$')
 
+_SUBDIR_CACHE = None
+
+
+def _root_subdirs(root: str):
+    """仓库一级子目录名（带缓存，供跨技能引用解析用）。"""
+    global _SUBDIR_CACHE
+    if _SUBDIR_CACHE is None:
+        try:
+            _SUBDIR_CACHE = sorted(
+                n for n in os.listdir(root) if os.path.isdir(os.path.join(root, n))
+            )
+        except OSError:
+            _SUBDIR_CACHE = []
+    return _SUBDIR_CACHE
+
 
 def resolve(p: str, md_path: str, root: str) -> bool:
     p = p.split('#')[0]
@@ -100,6 +118,18 @@ def resolve(p: str, md_path: str, root: str) -> bool:
         if os.path.exists(os.path.normpath(os.path.join(sub, cand_p))):
             return True
         if os.path.exists(os.path.normpath(os.path.join(sub, 'utils', cand_p))):
+            return True
+    # 跨技能引用特例（2026-10-15 追加）：技能 A 的 SKILL.md 里写 `references/<x>.md` 时，
+    # 该路径的基准可能是「A 自己的 references/」，也可能是文档中正在介绍的那个技能（B）的。
+    # 实例：caisen-10-experts-analyst/SKILL.md 在「杨世光视角」节写
+    # `references/13-m68-m74.md`，实际文件位于 yang-shiguang-analysis/references/，
+    # 由此产生 7 处稳定误报（每次改 SKILL.md 都会淹没真断链）。
+    # 保守规则：仅当**有且仅有一个**一级子目录下存在该文件时才放行；
+    # 多命中（无法确定基准）或零命中仍报断链——宁可报出来让人核。
+    if p.startswith('references/'):
+        hits = [n for n in _root_subdirs(root)
+                if os.path.isfile(os.path.join(root, n, p))]
+        if len(hits) == 1:
             return True
     return False
 
