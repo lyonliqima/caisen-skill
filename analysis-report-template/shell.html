@@ -35,7 +35,8 @@ function _base(type, id, data, opts){
       y:{ticks:{color:'#8b98a5'},grid:{color:'#2a3441'}}
     };
   }
-  new Chart(ctx,{type:type,data:{labels:data.labels,datasets:ds},options:chartOpts});
+  // opts.plugins：透传 Chart.js 插件（如价格主图挂 magic13Plugin）；不传则为空数组
+  new Chart(ctx,{type:type,data:{labels:data.labels,datasets:ds},options:chartOpts,plugins:(opts&&opts.plugins)||[]});
 }
 function _norm(d,names){
   if(!d||!d.length) return [];

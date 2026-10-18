@@ -6,6 +6,10 @@ _archive/
 output/
 __pycache__/
 .cache/
+# ===== 各技能运行产物目录（一次性分析脚本/中间数据/报告正文；可再生，勿入库；2026-10-19 补） =====
+_runs/
+analysis-report-template/_runs/
+predictions-ledger/_run/
 # ===== 行情数据缓存（tdx/mootdx 拉的原始 K 线，随时可再生；2026-09-18 补） =====
 market-data-cache/
 # ===== 数据/台账备份文件（勿入库；2026-09-18 补） =====
