@@ -46,3 +46,6 @@ capital-three-flow/SKILL.md:91  # 运行时生成的定性/地缘置位文件，
 caisen-10-experts-analyst/references/期货席位基差与期限结构数据层-20260930.md:375  # 专家包内接口契约路径（pandaai-futures-deepview 专家包），未随本仓库分发；第 6.1 节保真原文不改（行号随 2026-09-30 15:0x 接口替代映射扩写由 339 漂移至 375） -> references/pandadata-interface-contracts.md
 caisen-10-experts-analyst/references/期货席位基差与期限结构数据层-20260930.md:864  # 同上（第 6.3 节保真原文内的第二条引用；行号由 828 漂移至 864） -> references/pandadata-interface-contracts.md
 predictions-ledger/README.md:93  # 早期桩文件路径,已被 ledger.jsonl 取代（第 3 处出现，行号随文档增补漂移） -> predictions/ledger.csv
+_runs/briefing/2026-10-20.md:22  # 运行时行情数据文件(本机 crontab fetch_daily 生成, 沙箱未重抓; market-data-cache/ 已 gitignore) -> market-data-cache/cache/2026-10-20.json
+_runs/briefing/2026-10-20.md:160  # 运行时行情数据文件(同上, 沙箱未重抓) -> market-data-cache/cache/2026-10-20.json
+_runs/briefing/2026-10-21.md:17  # 运行时行情数据文件(同上, 沙箱未重抓) -> market-data-cache/cache/2026-10-21.json
