@@ -26,7 +26,13 @@ const helper = blocks.find(b => /function draw(?:Bar|Line|Radar|Doughnut)\b/.tes
 const callBlocks = blocks.filter(b => b !== helper);
 
 const canvases = [...html.matchAll(/<canvas id="(c[\w-]+)"/g)].map(m => m[1]);
-const drawn = callBlocks.flatMap(b => [...b.matchAll(/draw(?:Bar|Line|Radar|Doughnut)\('(c[\w-]+)'/g)].map(m => m[1]));
+// 两种写法都算「已绘制」：
+//   1. helper 路径      drawLine('c1', ...)
+//   2. 手写 Chart 路径  new Chart(document.getElementById('c1'), ...)  ← 价格主图挂 magic13Plugin 时必须走这条
+const drawn = callBlocks.flatMap(b => [
+  ...[...b.matchAll(/draw(?:Bar|Line|Radar|Doughnut)\('(c[\w-]+)'/g)].map(m => m[1]),
+  ...[...b.matchAll(/new Chart\(\s*document\.getElementById\('(c[\w-]+)'\)/g)].map(m => m[1]),
+]);
 
 const charts = [];
 const colorTrap = [];
