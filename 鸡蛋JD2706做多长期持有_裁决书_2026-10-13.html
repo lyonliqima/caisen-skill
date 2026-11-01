@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鸡蛋 JD2706 做多长期持有 · 十二专家裁决书 | 2026-10-13</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#0d1117; --panel:#161b22; --panel2:#1c2128; --line:#30363d;
+  --txt:#e6edf3; --txt2:#8b949e; --txt3:#6e7681;
+  --up:#f85149; --down:#3fb950; --warn:#d29922; --info:#58a6ff; --purple:#bc8cff;
+  --gold:#e3b341;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.75;padding:32px 20px}
+.wrap{max-width:1240px;margin:0 auto}
+h1{font-size:30px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px}
+h2{font-size:21px;font-weight:700;margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--line)}
+h3{font-size:16px;font-weight:700;margin:26px 0 10px;color:var(--info)}
+.sub{color:var(--txt2);font-size:14px;margin-bottom:26px}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
+.tag{background:var(--panel2);border:1px solid var(--line);border-radius:20px;padding:5px 14px;font-size:12.5px;color:var(--txt2)}
+.tag b{color:var(--txt)}
+
+.verdict{background:linear-gradient(135deg,#2d1418 0%,#161b22 100%);border:2px solid var(--up);border-radius:14px;padding:28px 30px;margin:28px 0}
+.verdict .vlabel{font-size:13px;color:var(--up);font-weight:800;letter-spacing:3px;margin-bottom:12px}
+.verdict .vtext{font-size:22px;font-weight:800;line-height:1.55;margin-bottom:16px}
+.verdict .vsub{font-size:15px;color:var(--txt2);line-height:1.85}
+.verdict .vsub b{color:var(--gold)}
+
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.card .k{font-size:12.5px;color:var(--txt2);margin-bottom:8px;letter-spacing:.5px}
+.card .v{font-size:27px;font-weight:800;letter-spacing:-.5px}
+.card .d{font-size:12.5px;color:var(--txt3);margin-top:6px;line-height:1.6}
+.up{color:var(--up)} .down{color:var(--down)} .warn{color:var(--warn)} .info{color:var(--info)} .gold{color:var(--gold)} .purple{color:var(--purple)}
+.card.red{border-color:var(--up)} .card.grn{border-color:var(--down)} .card.yel{border-color:var(--warn)}
+
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:14px 0}
+th{background:var(--panel2);color:var(--txt2);font-weight:700;text-align:left;padding:11px 12px;border-bottom:2px solid var(--line);font-size:12.5px;letter-spacing:.5px}
+td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:hover td{background:rgba(88,166,255,.05)}
+.mono{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:12.5px}
+
+.chartbox{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px;margin:16px 0}
+.chartbox .ct{font-size:15px;font-weight:700;margin-bottom:4px}
+.chartbox .cd{font-size:12.5px;color:var(--txt3);margin-bottom:14px;line-height:1.6}
+.cw{position:relative;height:330px}
+.cw.tall{height:400px}
+
+.box{border-left:4px solid var(--info);background:var(--panel2);padding:16px 20px;margin:16px 0;border-radius:0 10px 10px 0;font-size:14px;line-height:1.8}
+.box.red{border-left-color:var(--up)}
+.box.yel{border-left-color:var(--warn)}
+.box.grn{border-left-color:var(--down)}
+.box .bt{font-weight:800;margin-bottom:8px;font-size:14.5px}
+.box.red .bt{color:var(--up)} .box.yel .bt{color:var(--warn)} .box.grn .bt{color:var(--down)} .box .bt{color:var(--info)}
+
+ol,ul{margin:10px 0 10px 22px} li{margin:7px 0;font-size:14px;line-height:1.8}
+.foot{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:12.5px;color:var(--txt3);line-height:1.9}
+.badge{display:inline-block;padding:2px 9px;border-radius:5px;font-size:11.5px;font-weight:800;margin-right:7px}
+.b-red{background:rgba(248,81,73,.18);color:var(--up)}
+.b-grn{background:rgba(63,185,80,.18);color:var(--down)}
+.b-yel{background:rgba(210,153,34,.18);color:var(--warn)}
+.b-blu{background:rgba(88,166,255,.18);color:var(--info)}
+.hl{background:rgba(227,179,65,.14);padding:2px 7px;border-radius:4px;color:var(--gold);font-weight:700}
+@media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>鸡蛋 JD2706「做多 + 长期持有」裁决书</h1>
+<div class="sub">蔡森十二专家整合分析框架 · 数据日 2026-10-12（周一收盘）· 裁决日 2026-10-13</div>
+
+<div class="meta">
+  <span class="tag">标的 <b>JD2706</b>（大商所鸡蛋 · 5吨/手 · 元/500千克）</span>
+  <span class="tag">现价 <b>2985</b> 元/500kg = <b>2.985</b> 元/斤</span>
+  <span class="tag">提案 <b>做多并持有 8 个月至交割前</b></span>
+  <span class="tag">样本 <b>n=8 年</b>（JD1906–JD2606 单合约口径）</span>
+  <span class="tag">审查 <b>期望值 · 生存 · 流动性</b> 三重</span>
+</div>
+
+<div class="verdict">
+  <div class="vlabel">裁 决 结 论</div>
+  <div class="vtext">否决「JD2706 + 8个月持有 + 常规杠杆 + 无止损」这一组合；<br>但「看多 2027 上半年鸡蛋」的方向保留。</div>
+  <div class="vsub">
+    否决的不是方向，而是 <b>载体、期限、杠杆、无止损</b> 这四项参数的组合。<br>
+    三条实证各自独立成立：<b>① 期望值为负</b>（5 个持有期段中位数与均值全部为负，无一例外）；
+    <b>② 杠杆必死</b>（8.33 倍杠杆下 9 个浮亏情景有 4 个穿仓，历史触及归零线 50%）；
+    <b>③ 流动性必然枯竭</b>（06 合约距摘牌中位 15 个交易日即断流，末日成交 1–27 手）。<br>
+    <span style="color:var(--gold)">改载体、降杠杆、加硬止损、缩期限 → 有条件通过。</span>
+  </div>
+</div>
+
+<div class="grid g4">
+  <div class="card red"><div class="k">期望值审查</div><div class="v down">不通过</div><div class="d">持有到摘牌：中位 <b>-4.60%</b><br>均值 -3.54% · 上涨仅 3/8</div></div>
+  <div class="card red"><div class="k">生存审查（此提案原始参数）</div><div class="v down">不通过</div><div class="d">8.33 倍杠杆<br>盘面跌 <b>12.00%</b> 权益归零</div></div>
+  <div class="card red"><div class="k">流动性审查（决定性否决项）</div><div class="v down">不通过</div><div class="d">退出端不可用<br>摘牌前 <b>15</b> 个交易日断流</div></div>
+  <div class="card grn"><div class="k">方向本身</div><div class="v up">保留</div><div class="d">2026 年末存栏预计 12.34 亿只<br>同比 -8.73%（产能去化中）</div></div>
+</div>
+
+<h2>一、为什么否决：三条实证链</h2>
+
+<h3>1. 期望值为负——不是"没把握"，是"没有任何一个持有期站得住"</h3>
+<p style="font-size:14px;color:var(--txt2);margin-bottom:10px">
+把 2018–2025 共 8 年、每一份 06 合约，都按"上一年 10 月中旬买入、一直持有"来跑，这是一个干净的单合约口径样本，不含任何换月污染：</p>
+
+<table>
+<thead><tr><th>持有期段</th><th>中位数（收益）</th><th>均值（收益）</th><th>上涨年数</th><th>最好</th><th>最差</th></tr></thead>
+<tbody>
+<tr><td><b>持有 60 个交易日</b></td><td class="down mono">-2.51%</td><td class="down mono">-1.96%</td><td class="mono">2 / 8</td><td class="up mono">+9.76%</td><td class="down mono">-10.27%</td></tr>
+<tr><td><b>持有 90 个交易日</b></td><td class="down mono">-3.00%</td><td class="down mono">-1.49%</td><td class="mono">2 / 8</td><td class="up mono">+22.09%</td><td class="down mono">-17.75%</td></tr>
+<tr><td><b>持有 120 个交易日</b></td><td class="down mono">-4.71%</td><td class="down mono">-3.99%</td><td class="mono">2 / 8</td><td class="up mono">+19.80%</td><td class="down mono">-22.93%</td></tr>
+<tr><td><b>持有 150 个交易日</b></td><td class="down mono">-3.63%</td><td class="down mono">-3.82%</td><td class="mono">4 / 8</td><td class="up mono">+15.09%</td><td class="down mono">-23.45%</td></tr>
+<tr style="background:rgba(248,81,73,.06)"><td><b>持有到摘牌</b>（约170日）</td><td class="down mono"><b>-4.60%</b></td><td class="down mono">-3.54%</td><td class="mono">3 / 8</td><td class="up mono">+19.15%</td><td class="down mono">-18.55%</td></tr>
+</tbody>
+</table>
+
+<div class="box red">
+<div class="bt">这张表是全份裁决书的承重墙</div>
+五个持有期段，<b>中位数与均值双双为负，无一例外；上涨比例最高只有 4/8（50%）</b>。
+再扣掉 8 个月资金占用成本（年化 3–5% × 8/12 ≈ 2–3.3%），实际期望约 <b>-4.3%</b>。<br><br>
+举证责任在提案方——<b>样本不支持，即否决</b>。注意：这轮审查修正了我初稿的两处取位错误（偶数样本取了第 5 位而非中间两均值），
+修正后所有期段由"接近打平"变为"明确为负"，<span class="hl">结论方向未变，强度显著上调</span>。
+</div>
+
+<div class="chartbox">
+<div class="ct">图 1 · 历年 06 合约「10 月中旬买入 → 持有到摘牌」到期收益（n=8）</div>
+<div class="cd">8 年中仅 3 年为正。相邻年份结果天差地别（+19.15% 与 -18.55% 相差 37.7 个百分点），说明这是一条<b>方差极大、期望为负</b>的路径</div>
+<div class="cw"><canvas id="c1"></canvas></div>
+</div>
+
+<div class="grid g2">
+<div class="chartbox">
+<div class="ct">图 2 · 持有期间最大浮亏（最致命的一张）</div>
+<div class="cd">即使最终盈利的年份，中途也曾深套。修正后中位最大浮亏 <b>-9.75%</b>，最差 <b>-29.9%</b>（JD2006 疫情年）</div>
+<div class="cw"><canvas id="c2"></canvas></div>
+</div>
+<div class="chartbox">
+<div class="ct">图 3 · 五个持有期段：中位数 vs 均值</div>
+<div class="cd">两条线全程在零轴下方——<b>没有任何一个退出时点能让中位数转正</b>，"扛得久就能赚"在样本内不成立</div>
+<div class="cw"><canvas id="c3"></canvas></div>
+</div>
+</div>
+
+<div class="chartbox">
+<div class="ct">图 4 · 五个持有期段的胜率（上涨年数 / 8）</div>
+<div class="cd">最高仅 4/8。掷硬币都不如——且硬币不会让你在等待的过程中追加保证金</div>
+<div class="cw"><canvas id="c4"></canvas></div>
+</div>
+
+<h3>2. 生存审查——提案的最大杀手是杠杆，不是方向</h3>
+<p style="font-size:14px;color:var(--txt2);margin-bottom:10px">
+按期货公司常见的 12% 保证金（8.33 倍杠杆），从 2985 入场：<b>盘面下跌 12.00%（跌到 2627）权益即归零</b>。
+而历史 9 个最大浮亏情景中，有 4 个达到或超过这条线。</p>
+
+<div class="chartbox">
+<div class="ct">图 5 · 不同杠杆下，遭遇历史各档浮亏时的账户权益</div>
+<div class="cd">横轴为历史最大浮亏幅度（含修正后的中位情景 -9.75%），纵轴为账户权益剩余。跌破 0 即穿仓。<b>8.33 倍（12%保证金）下 4/9 情景穿仓；降至 3.03 倍（33%保证金）才归零</b></div>
+<div class="cw tall"><canvas id="c5"></canvas></div>
+</div>
+
+<table>
+<thead><tr><th>保证金比例</th><th>实际杠杆</th><th>归零所需跌幅</th><th>历史最差 -29.9% 时的权益</th><th>中位情景 -9.75% 时的权益</th><th>穿仓情景数</th></tr></thead>
+<tbody>
+<tr style="background:rgba(248,81,73,.06)"><td class="mono"><b>12%（用户常见）</b></td><td class="mono">8.33×</td><td class="mono">-12.00%</td><td class="down mono">穿仓</td><td class="down mono"><b>-81%</b></td><td class="down mono">4 / 9</td></tr>
+<tr><td class="mono">15%</td><td class="mono">6.67×</td><td class="mono">-15.00%</td><td class="down mono">穿仓</td><td class="down mono">-65%</td><td class="down mono">3 / 9</td></tr>
+<tr><td class="mono">20%</td><td class="mono">5.00×</td><td class="mono">-20.00%</td><td class="down mono">穿仓</td><td class="down mono">-49%</td><td class="down mono">2 / 9</td></tr>
+<tr><td class="mono">25%</td><td class="mono">4.00×</td><td class="mono">-25.00%</td><td class="down mono">穿仓</td><td class="down mono">-39%</td><td class="down mono">2 / 9</td></tr>
+<tr style="background:rgba(63,185,80,.06)"><td class="mono"><b>33%（最低可接受）</b></td><td class="mono">3.03×</td><td class="mono">-33.00%</td><td class="down mono">-91%</td><td class="down mono">-30%</td><td class="up mono"><b>0 / 9</b></td></tr>
+<tr style="background:rgba(63,185,80,.06)"><td class="mono"><b>40%（建议）</b></td><td class="mono">2.50×</td><td class="mono">-40.00%</td><td class="down mono">-75%</td><td class="down mono">-24%</td><td class="up mono"><b>0 / 9</b></td></tr>
+<tr><td class="mono">50%</td><td class="mono">2.00×</td><td class="mono">-50.00%</td><td class="down mono">-60%</td><td class="down mono">-20%</td><td class="up mono">0 / 9</td></tr>
+</tbody>
+</table>
+
+<div class="box red">
+<div class="bt">最可能导致爆仓的完整路径（结合用户"越跌越买"习惯）</div>
+<ol>
+<li><b>入场</b>：2985，保证金 3,582 元/手，8.33 倍杠杆。</li>
+<li><b>成本自身下移</b>：玉米 2135 元/吨已连 4 周走弱，饲料占完全成本约 74%。玉米再跌 10% → 现金成本 3050 下移至约 2870。<span class="hl">"已跌破现金成本"这根唯一的支柱，会被成本自身下移抽掉</span>。</li>
+<li><b>现货补跌</b>：节后淡季 + 产蛋率回升至 91.5–92.5% + 延淘（淘汰日龄 497 天），主产区现货 3950 向 3400–3500 回归。</li>
+<li><b>触发</b>：盘面跟随下移 -12% → 2627，<b>权益精确归零</b>。</li>
+<li><b>时间窗</b>：60/90/120 日中位收益全负、上涨仅 2/8，深幅浮亏最可能出现在 <b>2026-12 至 2027-02</b>。</li>
+<li><b>放大器</b>：若在 2920 / 2860 补仓，归零点上移至 -6%~-8%，历史触及率由 50% 升至 <b>62.5%</b>。</li>
+<li><b>收割</b>：即便扛过浮亏，摘牌前 3 周流动性消失，最后 20% 仓位可能根本无法按标价平出。</li>
+</ol>
+</div>
+
+<h3>3. 流动性审查——入场的流动性 ≠ 退出的流动性（决定性否决项）</h3>
+<p style="font-size:14px;color:var(--txt2);margin-bottom:10px">
+JD2706 当前成交 4,883 手、持仓 21,788 手，看起来"够用"。但所有 8 份历史 06 合约证实：这个数字会在接近摘牌时崩塌。</p>
+
+<div class="grid g2">
+<div class="chartbox">
+<div class="ct">图 6 · 流动性枯竭：成交量跌破阈值的最后一日，距摘牌还剩多少交易日</div>
+<div class="cd">8 年无一例外。阈值 500 手中位 15 日、50 手中位 10 日——<b>摘牌前三周基本失去平仓能力</b></div>
+<div class="cw"><canvas id="c6"></canvas></div>
+</div>
+<div class="chartbox">
+<div class="ct">图 7 · 各年 06 合约摘牌前最后一日的成交量（手）</div>
+<div class="cd">JD2006 末日 1 手、JD2406 末日 4 手、JD2506 末日 7 手、JD2606 末日 27 手。<b>这就是"长期持有到交割前平仓"的真实出口宽度</b></div>
+<div class="cw"><canvas id="c7"></canvas></div>
+</div>
+</div>
+
+<div class="box yel">
+<div class="bt">日历推演</div>
+JD2706 预计最后交易日约 <b>2027-06-14</b>（合约月份第 10 个交易日），自然人须在进入交割月前清零，且交割月前保证金大幅提高。
+按"距摘牌 15 个交易日断流"的中位数推算，<b>有效平仓窗口约在 2027-05-20 前后关闭</b>；
+叠加保证金提高与自然人限仓，实务上应不晚于 <b>2027-05-25</b> 完全离场。
+</div>
+
+<h2>二、被否决项与被采纳项</h2>
+
+<div class="chartbox">
+<div class="ct">图 8 · JD2706 自身走势（上市 2026-06-26 至今，71 根 K 线）</div>
+<div class="cd">今日收盘 2985 = 上市以来最低收盘，MA5/10/20/60 = 3040/3076/3099/3134 全线空头排列。仓储持续攀升至 21,788 手而价格创新低</div>
+<div class="cw tall"><canvas id="c8"></canvas></div>
+</div>
+
+<h3>4. 一个必须点破的关键事实：這份 24.43% 的贴水，大部分是合理的季节性定价</h3>
+
+<div class="chartbox">
+<div class="ct">图 9 · 鸡蛋期货期限曲线（2026-10-12 收盘）</div>
+<div class="cd">注意这是<b>非单调</b>结构：2702(3004) &lt; 2703(3009) &lt; 2704(3101) &lt; 2705(3142) &gt; <b>2706(2985)</b> &lt; 2709(3515)。呈"季节性 V 型"，2706 处于局部季节性谷底</div>
+<div class="cw tall"><canvas id="c9"></canvas></div>
+</div>
+
+<div class="box yel">
+<div class="bt">为什么这一点直接抽掉提案的论据</div>
+标准 Backwardation（远月单调贴水）中，远月多头享有正的收敛收益——这本是支持做多远月的逻辑。<br>
+但本表<b>不是单调结构</b>：JD2709 比 JD2706 高出 <b>530 点（+17.76%）</b>。同为 2027 年的相邻合约，9 月（中秋旺季）对 6 月（端午后 + 梅雨 + 学校放假）溢价近 18%。<br><br>
+这说明 JD2706 的 -24.43% 贴水中，<b>很大一块是市场对"6 月是季节性淡季"的正常定价，而不是错杀</b>。
+换句话说——<span class="hl">便宜是有理由的，不能把季节性折价当成安全边际</span>。
+</div>
+
+<h3>5. 利润口径核查：行业根本没有那么惨</h3>
+
+<div class="chartbox">
+<div class="ct">图 10 · 成本层定位：JD2706 到底便宜在哪一层</div>
+<div class="cd">单位换算：元/500kg ÷ 1000 = 元/斤。主产区现货 3.95 元/斤、完全成本 3.55、现金成本 3.05、JD2706 = 2.985</div>
+<div class="cw"><canvas id="c10"></canvas></div>
+</div>
+
+<div class="box red">
+<div class="bt">「10 月单斤毛利约 1.0 元」是现金口径，不是完全成本口径</div>
+<table style="margin-top:10px">
+<thead><tr><th>口径</th><th>算式</th><th>当前毛利</th></tr></thead>
+<tbody>
+<tr><td>现金成本口径</td><td class="mono">3.95 − 3.05</td><td class="mono">0.90 元/斤 → 与公开"约 1.0 元"吻合</td></tr>
+<tr style="background:rgba(248,81,73,.06)"><td><b>完全成本口径</b></td><td class="mono">3.95 − 3.55</td><td class="mono"><b>0.40 元/斤</b></td></tr>
+</tbody>
+</table>
+<br>
+两个推论：<br>
+<b>①</b> 按完全成本口径，行业仍在盈利，<b>远未触及亏损去产能</b>——"跌破成本＝底部"的论据被削弱。<br>
+<b>②</b> 更关键的是行为副作用：养殖户看着账面上还有"1 元毛利"，因而选择<b>延淘</b>（淘汰日龄已达 497 天）。<span class="hl">公开的现金口径利润，恰恰是供给迟迟不退出的原因</span>——而供给不退出，价格就跌不到真正出清的位置。这是一个自我延缓的负循环。
+</div>
+
+<h2>三、替代方案（若坚持做多鸡蛋）</h2>
+
+<table>
+<thead><tr><th>项目</th><th>参数</th><th>依据</th></tr></thead>
+<tbody>
+<tr style="background:rgba(63,185,80,.07)"><td><b>首选载体</b></td><td class="mono"><b>JD2701</b>（现价 3308）</td><td>成交 38,881 / 持仓 83,323，流动性是 JD2706 的 <b>8.0 倍</b>；贴水 -16.25%；覆盖春节前备货旺季（季节性最强）；持有期仅约 2.5 个月；2026-12-31 前清仓，<b>完全避开枯竭实证区间</b></td></tr>
+<tr><td>次选</td><td class="mono">JD2702（3004）</td><td>成交 17,305 / 持仓 70,977；贴水 <b>-23.95%，与 2706 的 -24.43% 几乎等价，但流动性 3.5 倍</b>；2027-01-31 前清仓。风险：2 月为节后最淡季</td></tr>
+<tr><td>第三选择</td><td class="mono">JD2705（3142）</td><td>贴水 -20.46%；成交 3,545 / 持仓 11,646（偏弱但可用）；若坚持覆盖上半年存栏去化逻辑，<b>优于 2706</b>（早 1 个月退出）；2027-04-30 前清仓</td></tr>
+<tr class="down"><td><b>明确否决</b></td><td class="mono">JD2706 / JD2709 / JD2704 / JD2611 / JD2612</td><td>2706：8 个月跨度必穿越枯竭区；2709：成交仅 634 手且贴水仅 -11.01%（入不了、出不来、安全边际最薄）；2704：成交 1,377 手；2611/2612：持有期不足 1–1.5 个月，不符合"长期"诉求</td></tr>
+<tr><td><b>最大杠杆</b></td><td class="mono"><b>≤ 3.0 倍</b>（初始保证金 ≥33%，≥9,950 元/手）<br><span class="gold">建议 ≤ 2.5 倍</span></td><td>3.03 倍 → 归零需跌 33.3%，历史最差 -29.9% 下权益剩 9%；5 倍 → 2/9 穿仓；8.33 倍 → 4/9 穿仓</td></tr>
+<tr><td><b>现金缓冲</b></td><td class="mono">权益 <b>≥ 40%</b> 不用于开仓</td><td>专作追保。3 倍 + 40% 缓冲 → 有效风险杠杆 ≈1.8 倍，极端情景下仍有资金，避免被强平砸在最低点</td></tr>
+<tr><td><b>单笔风险上限</b></td><td class="mono">≤ 账户权益 <b>12%</b></td><td>对应 3 倍杠杆下盘面 -4.0%</td></tr>
+<tr><td><b>硬止损</b></td><td class="mono"><b>2880</b> 元/500kg（自 2985 −3.52%）</td><td>① 现金成本下沿 3000 下方 4%，容纳玉米弱势导致的成本自身下移；② 3 倍杠杆下权益 -10.6%，落在 12% 上限内；③ 2985 已为上市新低，下方无历史支撑可依</td></tr>
+<tr><td><b>预警 / 减仓</b></td><td class="mono"><b>2950</b> 减半仓，<span class="down">禁止加仓</span></td><td>确认现金成本 3000 失守</td></tr>
+<tr class="down"><td><b>绝对禁止</b></td><td class="mono">任何形式的「越跌越买」补仓</td><td>补一次仓，归零点从 -12% 上移至 -6%~-8%，历史触及率由 50%(4/8) 升至 <b>62.5%(5/8)</b></td></tr>
+<tr><td><b>建仓规则</b></td><td class="mono">三批：2985 附近 <b>30%</b> ／ 回踩 2920（未破 2880）<b>30%</b> ／ <b>反弹站上 MA20=3099 后 40%</b></td><td>最大一仓放在"右侧确认"而非"抄底"，对冲左侧风险；每批间隔 ≥5 个交易日；任一时点总仓位不超 3 倍名义杠杆</td></tr>
+<tr><td><b>时间止损</b></td><td class="mono">建仓后 <b>60 个交易日</b> 名义收益 &lt;0 且未站上 MA20(3099) → 无条件平掉一半</td><td>60/90/120 日中位收益全为负（-2.51%/-3.00%/-4.71%），上涨仅 2/8</td></tr>
+<tr class="warn"><td><b>若仍持 2706 的死线</b></td><td class="mono"><b>2027-05-25</b>（摘牌前 15–17 个交易日）<br>2027-04-30 起分批 40%/40%/20%<br><b>绝对禁止留仓过 2027-06-01</b></td><td>流动性实证 + 保证金提高 + 自然人限仓</td></tr>
+</tbody>
+</table>
+
+<h2>四、证伪条件（推翻本否决的可观测指标）</h2>
+<div class="box grn">
+<div class="bt">需同时满足 5 条中的 ≥3 条</div>
+<ol>
+<li><b>现货止跌</b>：主产区现货在 2026-11-15 前止跌于 <b>3600</b> 元/500kg 以上（不破完全成本下沿 3500），且 11 月下旬起周度环比回升。</li>
+<li><b>产能实质去化</b>：在产蛋鸡存栏<b>连续 2 个月环比降幅 ≥1.5%</b>（10 月、11 月），<b>且平均淘汰日龄由 497 天降至 480 天以下</b>（由"延淘"转为"加速淘汰"）。</li>
+<li><b>结构修复</b>：JD2706（或替代合约）<b>收复 MA20 并站稳 5 个交易日以上</b>，且 MA5 上穿 MA10。</li>
+<li><b>饲料成本止跌</b>：玉米结束"连 4 周弱"，周线<b>连续 2 周上涨且回到 2200 元/吨以上</b>（玉米继续弱 = 成本继续下移 = 核心逻辑被证伪）。</li>
+<li><b>资金验证</b>：持仓增加的同时价格上涨（<b>增仓上涨</b>，而非当前的增仓下跌）。</li>
+</ol>
+<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line)">
+<b style="color:var(--gold)">附加条款</b>：若 2026 年末存栏 12.34 亿只、同比 -8.73% 经官方数据确认为<b>近 8 年最大去化幅度</b>（即样本外情形），
+则 n=8 历史统计的外推力下降，本裁决可由"否决"下调为"有条件通过"。
+</div>
+</div>
+
+<h2>五、口径核验与自我纠错记录</h2>
+<div class="box">
+<div class="bt">本轮审查修正的 4 处问题（按用户「事实核查铁律」留痕）</div>
+<table>
+<thead><tr><th>事项</th><th>出处</th><th>判定</th><th>修正</th></tr></thead>
+<tbody>
+<tr><td>到期收益中位数</td><td class="mono">初稿 sorted[len//2]，偶数样本取了第 5 位</td><td class="down">❌</td><td>改为标准中位（中间两均值）：-1.77% → <b>-4.60%</b></td></tr>
+<tr><td>最大浮亏中位数</td><td class="mono">同上</td><td class="down">❌</td><td>-6.41% → <b>-9.75%</b>（此修正在 8.33 倍杠杆下使权益损失从 -53% 恶化至 -81%）</td></tr>
+<tr><td>150 日持有期"中位数为正"</td><td class="mono">同一取位错误的下游结论</td><td class="down">❌</td><td>+2.79% → <b>-3.63%</b>。修正后五段中位数<b>全部为负</b>，原"（150日）扛住能赚"的说法被推翻</td></tr>
+<tr><td>期限结构标签"深度 Contango"</td><td class="mono">近月3629 &gt; 远月2985</td><td class="down">❌</td><td>应为 <b>Backwardation</b>；进一步核实为<b>非单调的季节性 V 型</b>（2709 反高于 2706 达 530 点），标准术语均不适用</td></tr>
+<tr><td>利润口径"单斤毛利 1.0 元"</td><td class="mono">3.95 − 3.05 = 0.90</td><td class="warn">⚠️</td><td>确认为<b>现金成本口径</b>；完全成本口径仅 <b>0.40 元/斤</b>。属口径未标注，非数据错误，但足以改变对"是否亏损去产能"的判断</td></tr>
+<tr><td>n=8 样本的统计效力</td><td class="mono">二项检验</td><td class="warn">⚠️</td><td>3/8 = 37.5%，对"真实胜率 = 50%"的检验 p ≈ 0.73，<b>无法拒绝原假设</b>。严格表述应为"样本不支持"，而非"证明亏损"——风控上足以否决，但不应夸大为统计显著</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="box yel">
+<div class="bt">样本量诚实声明</div>
+n=8 是小样本。中位数在 n=8 时仅由 1–2 个样本决定，<b>均值才是期望的更稳健估计</b>。
+本报告的核心结论并非依赖"历史收益率中位为负"这一条，而是依赖三条互相独立的证据：
+<b>期望值全线为负</b>（五期段一致）、<b>杠杆下 4/9 情景穿仓</b>（纯算式，无统计推断）、<b>8/8 年份流动性枯竭</b>（完全一致的现象，非抽样差异）。
+后两条不依赖样本推断，是本裁决的真正承重结构。
+</div>
+
+<div class="foot">
+<b>数据来源与口径</b>：期货日 K 为新浪期货接口单合约数据（2026-10-12 收盘），已与大商所鸡蛋合约规则核对（5 吨/手，报价单位元/500 千克，最后交易日为合约月份第 10 个交易日）；
+现货/存栏/成本为卓创、钢联、山东省畜牧总站口径；元/500kg 与元/斤换算按 500kg = 1000 斤。<br>
+<b>样本区间</b>：JD1906–JD2606 共 8 份 06 合约，起点为各合约自身 K 线中"上一年 10 月中旬"首个交易日，终点为摘牌日，单合约口径无换月污染。<br>
+<b>审查环节</b>：期望值审查 · 生存（杠杆）审查 · 流动性审查 · 口径核验（含 4 处自我纠错）。<br>
+<b>免责</b>：本文件为基于历史数据的风控推演，不构成投资建议。期货交易具有高杠杆风险，历史统计不代表未来收益。
+</div>
+
+</div>
+
+<script>
+const T={color:'#8b949e',font:{size:11}};
+const AX={grid:{color:'#30363d'},ticks:{color:'#8b949e',font:{size:11}},border:{color:'#30363d'}};
+const base={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},};
+const UP='#f85149',DOWN='#3fb950',WARN='#d29922',INFO='#58a6ff',PURPLE='#bc8cff',GOLD='#e3b341';
+
+const yrs=['JD1906','JD2006','JD2106','JD2206','JD2306','JD2406','JD2506','JD2606'];
+const rets=[4.57,-18.55,3.49,-1.77,-10.80,-7.43,-17.00,19.15];
+const maxdd=[-6.4,-29.9,-2.1,-4.8,-13.1,-27.9,-18.9,-3.1];
+
+// 图1
+new Chart(document.getElementById('c1'),{type:'bar',options:{...base,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>(c.raw>0?'+':'')+c.raw.toFixed(2)+'%'}}}},
+data:{labels:yrs,datasets:[{data:rets,backgroundColor:rets.map(v=>v>0?UP:DOWN),borderRadius:4}]}});
+
+// 图2
+new Chart(document.getElementById('c2'),{type:'bar',options:{...base,scales:{y:{...AX,title:{...T,text:'持有期间最大浮亏 %',display:true}}}},
+data:{labels:yrs,datasets:[{data:maxdd,backgroundColor:maxdd.map(v=>v<-20?'#8b1a1a':(v<-10?'#c93c36':DOWN)),borderRadius:4}]}});
+
+// 图3
+new Chart(document.getElementById('c3'),{type:'line',options:{...base,scales:{y:{...AX,title:{...T,text:'收益率 %',display:true}},x:{...AX}},
+plugins:{legend:{display:true,labels:{color:'#e6edf3',boxWidth:14,font:{size:11}}}}},
+data:{labels:['持有60日','持有90日','持有120日','持有150日','持有到摘牌'],
+datasets:[{label:'中位数',data:[-2.51,-3.00,-4.71,-3.63,-4.60],borderColor:DOWN,backgroundColor:DOWN,tension:.3,pointRadius:5,borderWidth:2.5},
+{label:'均值',data:[-1.96,-1.49,-3.99,-3.82,-3.54],borderColor:GOLD,backgroundColor:GOLD,tension:.3,pointRadius:5,borderWidth:2.5,borderDash:[6,3]},
+{label:'零轴',data:[0,0,0,0,0],borderColor:'#6e7681',borderWidth:1,borderDash:[3,3],pointRadius:0}]}});
+
+// 图4
+new Chart(document.getElementById('c4'),{type:'bar',options:{...base,scales:{y:{...AX,max:8,title:{...T,text:'上涨年数（共8年）',display:true}}}},
+data:{labels:['持有60日','持有90日','持有120日','持有150日','持有到摘牌'],
+datasets:[{data:[2,2,2,4,3],backgroundColor:[DOWN,DOWN,DOWN,WARN,WARN],borderRadius:4}]}});
+
+// 图5 杠杆情景
+const dds=[-29.9,-27.9,-18.9,-13.1,-9.75,-6.4,-4.8,-3.1,-2.1];
+const ddlab=['-29.9%\n最差','-27.9%','-18.9%','-13.1%','-9.75%\n中位','-6.4%','-4.8%','-3.1%','-2.1%'];
+new Chart(document.getElementById('c5'),{type:'line',options:{...base,scales:{y:{...AX,min:-120,max:20,title:{...T,text:'账户权益剩余 %',display:true},grid:{color:c=>c.tick.value===0?'#8b949e':'#30363d'}},x:{...AX}},
+plugins:{legend:{display:true,labels:{color:'#e6edf3',boxWidth:14,font:{size:11}}}}},
+data:{labels:ddlab,datasets:[
+{label:'8.33×（12%保证金）',data:dds.map(d=>Math.max((1+d/100*8.333)*100,-110)),borderColor:UP,backgroundColor:UP,tension:.25,pointRadius:4,borderWidth:2.5},
+{label:'5.00×（20%保证金）',data:dds.map(d=>Math.max((1+d/100*5)*100,-110)),borderColor:WARN,backgroundColor:WARN,tension:.25,pointRadius:4,borderWidth:2.5},
+{label:'3.03×（33%保证金）',data:dds.map(d=>Math.max((1+d/100*3.03)*100,-110)),borderColor:DOWN,backgroundColor:DOWN,tension:.25,pointRadius:4,borderWidth:2.5},
+{label:'2.50×（40%保证金）',data:dds.map(d=>Math.max((1+d/100*2.5)*100,-110)),borderColor:INFO,backgroundColor:INFO,tension:.25,pointRadius:4,borderWidth:2.5},
+]}});
+
+// 图6 流动性枯竭
+new Chart(document.getElementById('c6'),{type:'bar',options:{...base,scales:{y:{...AX,title:{...T,text:'距摘牌交易日数',display:true},min:0}},
+plugins:{legend:{display:true,labels:{color:'#e6edf3',boxWidth:14,font:{size:11}}}}},
+data:{labels:yrs,datasets:[
+{label:'>500手 最后一日',data:[16,15,17,11,15,15,13,17],backgroundColor:INFO},
+{label:'>200手 最后一日',data:[16,15,16,11,15,9,12,17],backgroundColor:PURPLE},
+{label:'>100手 最后一日',data:[2,15,12,10,9,3,12,15],backgroundColor:WARN},
+{label:'>50手 最后一日',data:[2,10,12,10,9,3,12,3],backgroundColor:UP}]}});
+
+// 图7 末日成交量
+new Chart(document.getElementById('c7'),{type:'bar',options:{...base,scales:{y:{...AX,type:'logarithmic',title:{...T,text:'最后一日成交量（手，对数轴）',display:true}}}},
+data:{labels:yrs,datasets:[{data:[20,1,21,23,9,4,7,27],backgroundColor:yrs.map((v,i)=>[20,1,21,23,9,4,7,27][i]>15?WARN:UP),borderRadius:4}]}});
+
+// 图8 JD2706 K线
+const DATES=["06-26","06-29","06-30","07-01","07-02","07-03","07-06","07-07","07-08","07-09","07-10","07-13","07-14","07-15","07-16","07-17","07-20","07-21","07-22","07-23","07-24","07-27","07-28","07-29","07-30","07-31","08-03","08-04","08-05","08-06","08-07","08-10","08-11","08-12","08-13","08-14","08-17","08-18","08-19","08-20","08-21","08-24","08-25","08-26","08-27","08-28","08-31","09-01","09-02","09-03","09-04","09-07","09-08","09-09","09-10","09-11","09-14","09-15","09-16","09-17","09-18","09-21","09-22","09-23","09-24","09-28","09-29","09-30","10-08","10-09","10-12"];
+const CLOSE=[3286,3297,3275,3276,3274,3282,3281,3275,3284,3275,3276,3252,3232,3247,3235,3217,3211,3227,3225,3218,3218,3199,3161,3119,3098,3115,3120,3116,3115,3124,3145,3134,3136,3149,3155,3137,3122,3123,3126,3117,3124,3120,3105,3106,3106,3111,3119,3114,3113,3127,3125,3140,3128,3130,3124,3119,3113,3088,3123,3123,3125,3122,3119,3118,3114,3092,3056,3073,3063,3023,2985];
+const OI=[692,1204,1633,1871,2150,2313,2537,2760,2981,3044,3419,4342,4635,4685,4865,5190,5416,5844,6017,6171,6190,7133,8279,9278,9682,9704,9659,9573,9565,9711,9628,9809,10154,10523,10583,10908,11759,11956,11983,12254,12197,12540,13309,14058,14410,14576,14937,16742,17152,17611,18044,20264,20376,20476,21287,21457,21662,21466,21484,21435,21529,21564,22319,22220,22193,22065,19874,19969,20273,20866,21788];
+new Chart(document.getElementById('c8'),{options:{...base,scales:{y:{...AX,position:'left',title:{...T,text:'收盘价 元/500kg',display:true}},y2:{display:true,position:'right',grid:{drawOnChartArea:false},ticks:{color:PURPLE,font:{size:11}},title:{...T,text:'持仓量（手）',display:true,color:PURPLE}},x:{...AX,ticks:{color:'#8b949e',font:{size:9},maxTicksLimit:16}}},
+plugins:{legend:{display:true,labels:{color:'#e6edf3',boxWidth:14,font:{size:11}}}}},
+data:{labels:DATES,datasets:[
+{type:'line',label:'JD2706 收盘价',data:CLOSE,borderColor:DOWN,backgroundColor:'rgba(63,185,80,.06)',fill:true,tension:.15,pointRadius:0,borderWidth:2.2,yAxisID:'y'},
+{type:'line',label:'持仓量',data:OI,borderColor:PURPLE,backgroundColor:PURPLE,tension:.15,pointRadius:0,borderWidth:1.6,borderDash:[4,2],yAxisID:'y2'}]}});
+
+// 图9 期限曲线
+const csym=['JD2611','JD2612','JD2701','JD2702','JD2703','JD2704','JD2705','JD2706','JD2709'];
+const cpx=[3629,3570,3308,3004,3009,3101,3142,2985,3515];
+new Chart(document.getElementById('c9'),{type:'line',options:{...base,scales:{y:{...AX,title:{...T,text:'元/500kg',display:true},min:2800},x:{...AX}},
+plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+' 元/500kg'}}}},
+data:{labels:csym,datasets:[{data:cpx,borderColor:INFO,backgroundColor:c=>{const g=c.chart.ctx.createLinearGradient(0,0,0,300);g.addColorStop(0,'rgba(88,166,255,.25)');g.addColorStop(1,'rgba(88,166,255,0)');return g;},fill:true,tension:.25,pointRadius:5,borderWidth:2.5,pointBackgroundColor:csym.map((s,i)=>s==='JD2706'?UP:(s==='JD2709'?GOLD:INFO))}]}});
+
+// 图10 成本层
+new Chart(document.getElementById('c10'),{type:'bar',options:{...base,indexAxis:'y',scales:{x:{...AX,title:{...T,text:'元/500kg',display:true},min:2700},y:{...AX}},
+plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.x+' 元/500kg'}}}},
+data:{labels:['JD2706 期货','完全成本 3.55元/斤','现金成本 3.05元/斤','主产区现货 3.95元/斤'],
+datasets:[{data:[2985,3550,3050,3950],backgroundColor:[DOWN,GOLD,WARN,UP],borderRadius:4}]}});
+</script>
+</body>
+</html>

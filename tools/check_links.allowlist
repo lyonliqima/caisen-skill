@@ -53,3 +53,4 @@ _runs/briefing/2026-10-22.md:12  # 运行时行情数据文件(本机 crontab fe
 _runs/briefing/2026-10-23.md:14  # 运行时行情数据文件(同上, 沙箱未重抓) -> market-data-cache/cache/2026-10-23.json
 _runs/briefing/2026-10-26.md:16  # 运行时行情数据文件(同上, 沙箱未重抓) -> market-data-cache/cache/2026-10-26.json
 _runs/briefing/2026-10-28.md:17  # 运行时行情数据文件(同上, 沙箱未重抓) -> market-data-cache/cache/2026-10-28.json
+_runs/briefing/2026-10-30.md:16  # 运行时行情数据文件(本机 crontab fetch_daily 生成, 沙箱未重抓; market-data-cache/ 已 gitignore) -> market-data-cache/cache/2026-10-30.json

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>明确看空的期货品种 · 全专家研判</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+/* 图表helper：模型只需写 <canvas id="x"></canvas> 后调用 drawXxx(id, ...) 即可，无需完整 Chart.js 配置
+   用法（三选一，均可）：
+     drawBar('c1', ['A','B'], [1,2])                                  // 扁平数组 => 单系列
+     drawBar('c1', ['A','B'], [[1,2],[3,4]], {names:['甲','乙']})       // 嵌套数组 => 多系列，names 给图例
+     drawBar('c1', ['A','B'], [{label:'甲',data:[1,2],color:'#f00'}])   // 标准对象 => 完全控制
+   ⚠️ 旧版 _norm 会把嵌套数组/扁平数组错误地塞进 data 标量，导致图表空白——已修正。 */
+function _base(type, id, data, opts){
+  opts = opts || {};
+  const ctx = document.getElementById(id);
+  if(!ctx) return;
+  const colors = {up:'#ff4d4f', down:'#1ec77a', gold:'#ffd166', accent:'#4a9eff', warn:'#ff9f43', purple:'#c084fc', muted:'#8b98a5'};
+  const list = Array.isArray(data.datasets)?data.datasets:[data];
+  const isDC = (type==='doughnut');
+  const ds = list.map(function(d,i){
+    const c = d.color || (opts.colors && opts.colors[i]) || colors.accent;
+    return {label:d.label||('系列'+(i+1)), data:d.data,
+      borderColor:Array.isArray(c)?c:c,
+      backgroundColor:Array.isArray(c)?c:(isDC?c:(opts.fill? c+'33' : c+'cc')),
+      borderDash: d.borderDash || (opts.dash? [6,4] : undefined),
+      pointStyle: d.pointStyle || (d.borderDash? 'rectRot' : 'circle'),
+      fill: !!opts.fill, tension:.25, pointRadius:d.borderDash?3:2, borderWidth:2};
+  });
+  const chartOpts = {responsive:true,plugins:{legend:{labels:{color:'#e6edf3'}}}};
+  if(type!=='radar'&&type!=='doughnut'){
+    chartOpts.scales = {
+      x:{ticks:{color:'#8b98a5'},grid:{color:'#2a3441'}},
+      y:{ticks:{color:'#8b98a5'},grid:{color:'#2a3441'}}
+    };
+  }
+  new Chart(ctx,{type:type,data:{labels:data.labels,datasets:ds},options:chartOpts});
+}
+function _norm(d,names){
+  if(!d||!d.length) return [];
+  function set(v,i){return {label:(names&&names[i])||('系列'+(i+1)),data:v};}
+  if(typeof d[0]==='object'&&!Array.isArray(d[0])) return d;   // 已是 [{label,data}]
+  if(Array.isArray(d[0])) return d.map(set);                   // [[..],[..]] 多系列
+  return [set(d,0)];                                           // 扁平数组 => 单系列
+}
+function drawLine(id,labels,datasets,opts){_base('line',id,{labels:labels,datasets:_norm(datasets,opts&&opts.names)},opts);}
+function drawBar(id,labels,datasets,opts){_base('bar',id,{labels:labels,datasets:_norm(datasets,opts&&opts.names)},opts);}
+function drawDoughnut(id,labels,values,opts){_base('doughnut',id,{labels:labels,datasets:[{label:(opts&&opts.label)||'占比',data:values,color:opts&&opts.colors}]},opts);}
+function drawRadar(id,axes,values,opts){_base('radar',id,{labels:axes,datasets:[{label:(opts&&opts.label)||'评分',data:values,color:opts&&opts.color}]},{colors:[opts&&opts.color]});}
+</script>
+
+<style>
+:root{
+  --bg:#0f1419; --panel:#161b22; --panel2:#1c232c; --border:#2a3441;
+  --text:#e6edf3; --muted:#8b98a5; --up:#ff4d4f; --down:#1ec77a;
+  --gold:#ffd166; --accent:#4a9eff; --warn:#ff9f43; --purple:#c084fc;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Noto Sans SC",-apple-system,system-ui,sans-serif;line-height:1.65;padding:24px;}
+.report{max-width:960px;margin:0 auto;}
+header.hero{border-bottom:1px solid var(--border);padding-bottom:18px;margin-bottom:24px;}
+header.hero h1{font-size:1.9rem;font-weight:700;letter-spacing:.02em;}
+header.hero .meta{color:var(--muted);font-size:.85rem;margin-top:6px;}
+.kicker{color:var(--accent);font-size:.8rem;letter-spacing:.15em;font-weight:600;margin-bottom:10px;text-transform:uppercase;}
+section.block{margin:28px 0;}
+section.block > h2{font-size:1.3rem;font-weight:700;margin-bottom:14px;padding-left:10px;border-left:4px solid var(--accent);}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:14px 0;}
+.card h3{font-size:1.05rem;font-weight:600;margin-bottom:8px;}
+.muted{color:var(--muted);font-size:.9rem;}
+.up{color:var(--up);font-weight:600;}
+.down{color:var(--down);font-weight:600;}
+.gold{color:var(--gold);font-weight:600;}
+.warn{color:var(--warn);font-weight:600;}
+.purple{color:var(--purple);font-weight:600;}
+/* 评分卡 */
+.verdict{background:linear-gradient(135deg,#161b22,#1c232c);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin:18px 0;}
+.verdict .dir{font-size:1.4rem;font-weight:800;}
+.verdict .conf{float:right;font-size:1.1rem;color:var(--gold);font-weight:700;}
+.verdict ul{margin:10px 0 0 18px;font-size:.95rem;}
+.verdict li{margin:4px 0;}
+/* 图表 */
+.chart-box{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:16px 0;}
+.chart-box .cap{color:var(--muted);font-size:.8rem;margin-top:8px;text-align:center;}
+canvas{max-width:100%;}
+/* 表格 */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.9rem;}
+th,td{border:1px solid var(--border);padding:8px 11px;text-align:left;}
+th{background:var(--panel2);font-weight:600;}
+td.cons{color:var(--down);} td.div{color:var(--warn);}
+/* 兵棋推演树 */
+.scenario{border-left:3px solid var(--accent);padding-left:14px;margin:12px 0;}
+.scenario .cond{font-weight:600;color:var(--text);}
+.scenario .arrow{color:var(--muted);margin:0 6px;}
+.scenario .res{font-weight:600;}
+.scenario .child{margin-left:18px;border-left:2px dashed var(--border);padding-left:12px;margin-top:8px;}
+.tag{display:inline-block;font-size:.72rem;padding:1px 8px;border-radius:999px;margin-right:6px;vertical-align:middle;}
+.tag.up{background:rgba(255,77,79,.15);} .tag.down{background:rgba(30,199,122,.15);}
+.tag.gold{background:rgba(255,209,102,.15);} .tag.neutral{background:rgba(139,152,165,.18);color:var(--muted);}
+/* 证据/证伪 */
+.evidence{border-left:3px solid var(--accent);background:var(--panel);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.92rem;}
+.falsify{border-left:3px solid var(--warn);background:rgba(255,159,67,.08);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.92rem;}
+.falsify b{color:var(--warn);}
+/* 免责 */
+footer.disclaimer{margin-top:36px;padding-top:16px;border-top:1px solid var(--border);color:var(--muted);font-size:.78rem;line-height:1.5;}
+footer.disclaimer b{color:var(--text);}
+</style>
+</head>
+<body>
+<div class="report">
+<header class="hero">
+  <div class="kicker">整合市场分析 · 方法论推导</div>
+  <h1>明确看空的期货品种 · 全专家研判</h1>
+  <div class="meta">2026-10-15</div>
+</header>
+<section class="block">
+  <h2>📉 明确看空的期货品种 · 全专家研判</h2>
+  <p style="color:#8b93a7;font-size:13px">数据日：<b>2026-10-15（周四，交易日）</b>　|　口径：主力合约收盘价（单合约，非主力连续，无换月跳空污染）　|　涨跌幅一律自算「当日收盘÷前日收盘−1」</p>
+  <div class="verdict">
+    <span class="conf">置信度 64</span>
+    <div class="dir down">明确看空 ▼</div>
+    <ul>
+      <li>有。方向看空成立的是<b>玻璃、氧化铝、纯碱、镍、苹果</b></li>
+      <li>但四路专家（13 位期货大师 + 蔡森形态 + Mi姐战术 + 笨鸟数据）<b>独立收敛到同一条纪律：只做反弹空，禁止追现价</b></li>
+      <li>唯一例外：<b>氧化铝是全场唯一 RSI 未超卖的看空品种</b>，可现价轻仓试探</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>一句话结论</h3>
+    <p>有，但答案的重点不在「哪几个」，而在<b>「什么价位下手」</b>。方向看空的有五个——<b>玻璃、氧化铝、纯碱、镍、苹果</b>；但你先要知道一件事：<b>这五个品种的 2701 合约全部处在 2026 年 1 月挂牌以来的最低价</b>，且 11 个下跌品种的近 20 日 RSI 中位数只有约 <b>22</b>，属于「恐慌宣泄的后段」。在瀑布末端接刀，是这一轮最容易亏钱的姿势。四路独立方法的结论罕见一致：<b>反弹到 5/10 日均线附近再空，盈亏比能从追现价的 1.2–1.5 提到 2.2–3.6</b>。唯一可以现价动手的是<b>氧化铝</b>——它 RSI 37.2，是全场唯一没被打到超卖的品种。</p>
+  </div>
+</section>
+
+<section class="block">
+  <h2>🎯 看空排序与评分卡</h2>
+  <div class="chart-box"><canvas id="c10"></canvas><div class="cap">图1：五品种六维看空强度评分（1–5 分，分组柱；资金维度已按「机构净空极小／减仓撤资」下调苹果与纯碱）</div></div>
+  <table>
+    <tr><th>排名</th><th>品种／合约</th><th>现价</th><th>可执行性</th><th>入场区间</th><th>主止损（收盘确认）</th><th>目标</th><th>盈亏比</th><th>仓位上限</th></tr>
+    <tr><td>1</td><td><b>玻璃 FG2701</b></td><td>853</td><td class="div">等反弹空（严禁追现价）</td><td>872–888（缩量受阻再进）</td><td>905（+2.6%）</td><td>800／780</td><td><b>3.2／4.0</b></td><td>≤8%（建议 5–8%）</td></tr>
+    <tr><td>2</td><td><b>氧化铝 AO2701</b></td><td>2584</td><td class="cons">✅ 可现价轻仓</td><td>2620–2660 或现价轻仓</td><td>2690（+1.7%）</td><td><b>2550</b>／2430</td><td>1.8／<b>4.2</b></td><td>≤10%</td></tr>
+    <tr><td>3</td><td><b>镍 NI2701</b></td><td>116380</td><td class="div">仅反弹空</td><td>120000–122000</td><td>123500（+2.1%）</td><td>112000／109000</td><td><b>3.6</b></td><td>≤10%</td></tr>
+    <tr><td>4</td><td><b>苹果 AP2701</b></td><td>6121</td><td class="warn">不建议／观望</td><td>（若要）6400–6500</td><td>6620（+2.6%）</td><td>6000／5780</td><td>2.7</td><td>≤10%</td></tr>
+    <tr><td>—</td><td><b>纯碱 SA2701</b></td><td>932</td><td class="warn">观望·等放量破位</td><td>960–985（须放量确认）</td><td>997（+2.3%）</td><td>900／875</td><td>3.4</td><td>暂不建仓</td></tr>
+    <tr><td colspan="9" style="background:#12141c;color:#8b93a7;font-size:12px">盘中灾难线（仅防跳空／扩板，非策略止损）：玻璃 ≈925、氧化铝 ≈2720。<b>组合封顶（Mi姐）：玻璃＋氧化铝合计名义 ≤20% 权益、合计止损风险 ≤1.5%；组合总空头名义 ≤50% 权益；单笔止损风险 ≤0.5% 权益。</b><br>↑ 交易层止损＝结构位（收盘确认）；<b>分析层证伪位另按 1.5σ 计</b>：玻璃 938、氧化铝 2775、纯碱 1024、镍 124400、苹果 6825。<br>红枣已从看空名单<b>移出</b>（10-15 收阳 + 长下影 100 点 + 前 20 席净空日减 5,232 手，疑似底部构筑）→ 转观望。</td></tr>
+  </table>
+  <div class="evidence">评分卡五要素齐备：方向／置信度／期限（55–60 个交易日，见文末时间闸门表）／幅度／证伪位。仓位单位为「名义敞口 ÷ 总权益」。</div>
+</section>
+
+<section class="block">
+  <h2>⏱ 全场只有三个 RSI 读数告诉我们不同的事</h2>
+  <div class="chart-box"><canvas id="c13"></canvas><div class="cap">图2：五品种 + 对照品种的 RSI14 与距上市以来高点跌幅对照（超卖线 30 为参考）</div></div>
+  <div class="card">
+    <h3>关键分水岭：RSI 30</h3>
+    <p>把 11 个下跌品种的 RSI14 排一排，会看到一条清晰的分界线：<b>苹果 10.7、烧碱 7.7、生猪 17.5、碳酸锂 18.6、铁矿 21.3、镍 22.4、红枣 24.8、纯碱 28.5、玻璃 30.0、白银 30.1——全部低于或贴近 30；只有氧化铝 37.2 站在 30 上方</b>。这不是统计上的巧合，而是「谁跌到了瀑布末端」的直接读数：RSI 低于 15 意味着极度超卖，此时任何利多都可能触发空头回补，止损被迫放远，盈亏比跌破 1。<b>Mi姐框架的经验值是「避冰点高潮」贡献正 alpha，因此给出一条硬纪律：RSI&lt;15 严禁新建空头。</b></p>
+  </div>
+  <div class="chart-box"><canvas id="c7"></canvas><div class="cap">图3：距上市以来高点 ／ 近20日 ／ 近60日 跌幅三口径对比（% ）</div></div>
+  <div class="evidence">读图要点：<b>跌得最惨的（碳酸锂 −51.8%、红枣 −37.1%）反而被移出做空首选</b>，因为悲观已被定价；跌得相对温和的（氧化铝 −18.4%、镍 −25.6%）反而是更好的空头标的——它们的新利空刚出现，下跌还没走完。</div>
+</section>
+
+<section class="block">
+  <h2>📈 价格路径推演（各品种独立折线）</h2>
+  <div class="chart-box"><canvas id="c2"></canvas><div class="cap">图4：玻璃 FG2701 近 30 个交易日实际收盘（红线）+ 未来推演路径（绿虚线）</div></div>
+  <div class="chart-box"><canvas id="c4"></canvas><div class="cap">图5：氧化铝 AO2701 近 30 个交易日实际收盘 + 未来推演路径</div></div>
+  <div class="chart-box"><canvas id="c3"></canvas><div class="cap">图6：纯碱 SA2701 近 30 个交易日实际收盘 + 未来推演路径</div></div>
+  <div class="chart-box"><canvas id="c5"></canvas><div class="cap">图7：镍 NI2701 近 30 个交易日实际收盘 + 未来推演路径</div></div>
+  <div class="chart-box"><canvas id="c6"></canvas><div class="cap">图8：苹果 AP2701 近 30 个交易日实际收盘 + 未来推演路径</div></div>
+  <div class="card">
+    <h3>推演说明</h3>
+    <p>推演路径统一采用「<b>先反弹到 5/10 日均线附近（空头入场区），再沿原趋势下行</b>」的形态节律，终点落在各品种目标区间的中值。这是<b>形态外推</b>而非概率预测——它的作用是标出「哪个价位该动手、哪个价位该认错」，不是承诺价格会走到那里。所有终点均落在 60 日 1σ 带之内（σ60：纯碱 12.2%、玻璃 10.6%、苹果 9.9%、镍 9.0%、氧化铝 7.1%）。</p>
+  </div>
+</section>
+
+<section class="block">
+  <h2>🔴 Mi姐·交易战术：扣扳机表</h2>
+  <div class="card">
+    <h3>核心判断（置信度 66）</h3>
+    <p><b>全场没有一个品种是「干净扳机」。</b>11 个品种近 20 日全跌、RSI 中位数约 22，本质是「恐慌宣泄后段」。<b>唯一 RSI 未超卖的是氧化铝（37.2）</b>，且 60 日仅跌 4.5%，跌势未走完——这是唯一可现价轻仓试探的标的。其余 10 个品种统一改口径：<b>等反弹至 5/10 日线 或 前跌段 0.382 再空，追高卖、不追低卖</b>。</p>
+  </div>
+  <table>
+    <tr><th>品种</th><th>三周期</th><th>情绪阶段</th><th>结论</th><th>入场</th><th>止损（距）</th><th>目标（幅度）</th><th>盈亏比</th><th>仓位</th></tr>
+    <tr><td>氧化铝 AO</td><td>↓／有序／RSI 37 未超卖</td><td>发酵初段</td><td class="cons">现价可轻仓</td><td>2584 或 2620–2660</td><td>2690（+4.1%）</td><td>2550／2430（−1.3%／−6.0%）</td><td>1.8／4.2</td><td>≤10%</td></tr>
+    <tr><td>纯碱 SA</td><td>↓／有序／RSI 28.5</td><td>发酵末→修复</td><td class="div">等反弹·等放量破位</td><td>960–985</td><td>997（+2.3%）</td><td>900／875（−7.7%）</td><td>3.4</td><td>暂不建仓</td></tr>
+    <tr><td>玻璃 FG</td><td>↓／有序／RSI 30</td><td>发酵末段</td><td class="div">等反弹</td><td>872–888</td><td>905（+2.6%）</td><td>800／780（−9.1%／−11.4%）</td><td>3.2／4.0</td><td>≤8%</td></tr>
+    <tr><td>镍 NI</td><td>↓／加速／持仓 +82%</td><td>发酵（分歧大）</td><td class="div">等反弹</td><td>120000–122000</td><td>123500（+2.1%）</td><td>112000（−7.4%）</td><td>3.6</td><td>≤10%</td></tr>
+    <tr><td>苹果 AP</td><td>↓／加速／RSI 10.7</td><td>冰点</td><td class="warn">不建议</td><td>（若要）6400–6500</td><td>6620（+2.6%）</td><td>6000（−7.0%）</td><td>2.7</td><td>≤10%</td></tr>
+    <tr><td>碳酸锂 LC</td><td>↓／加速／RSI 18.6</td><td>高潮→冰点</td><td class="div">等反弹·只短打</td><td>105500–108000</td><td>111500（+4.7%）</td><td>96500（−9.4%）</td><td>2.0</td><td>≤10%</td></tr>
+    <tr><td>铁矿 I</td><td>↓／有序／RSI 21.3</td><td>发酵</td><td class="div">等反弹</td><td>690–700</td><td>705（+1.4%）</td><td>655（−5.8%）</td><td>3.6</td><td>≤15%</td></tr>
+    <tr><td>烧碱 SH</td><td>↓／加速／RSI 7.7</td><td>冰点（极端）</td><td class="warn">不建议</td><td>（若要）1830–1860</td><td>1875（+1.6%）</td><td>1690（−8.4%）</td><td>5.2</td><td>≤5% 或放弃</td></tr>
+  </table>
+  <div class="falsify"><b>组合纪律（Mi姐）</b>：总空头名义敞口 ≤50% 权益；<b>玻璃＋氧化铝合计名义 ≤20% 权益、合计止损风险 ≤1.5%</b>；单笔止损风险 ≤0.5% 权益；σ 越大的品种仓位越小（碳酸锂日σ 3.35%、白银 2.50% 须压到最小档）；<b>所有 2701 持仓须在 12 月中旬前平仓或移仓（移仓不视为平仓）</b>。</div>
+  <div class="evidence">⚠️ 注意 Mi姐的止损是<b>交易层结构止损</b>（+1.4%~+2.6%），与批注的<b>分析层 1.5σ 证伪位</b>（+7%~+12%）不是一回事：前者管「这一笔单子什么时候认错」，后者管「这个判断什么时候作废」。两层都要写，不能合并。</div>
+</section>
+
+<section class="block">
+  <h2>🟢 笨鸟·数据拆解：出清与否，才是唯一判据</h2>
+  <div class="card">
+    <h3>核心结论</h3>
+    <p><b>「跌破成本线」不是见底信号，「产能出清」才是。</b>这一轮下跌品种全部跌破各自现金成本（纯碱氨碱毛利 −202 元/吨、联碱 −184 元/吨；氧化铝山西河南产线亏 290–406 元/吨；镍一体化 MHP 路线 −12.8%），但<b>没有一条硬证据表明行业正在发生产能退出</b>——纯碱的检修是「计划内短期停机、复产节奏偏快」，玻璃日熔下降「相较需求降幅依旧不足」，氧化铝新产能还在 10 月密集投产。<b>亏损只让企业难受，没让企业退出。</b></p>
+  </div>
+  <table>
+    <tr><th>品种</th><th>供给端硬证据</th><th>需求端硬证据</th><th>格局</th><th>传导时滞</th></tr>
+    <tr><td><b>玻璃</b></td><td>样本企业总库存 7318.6 万重箱，同比 <b>+16.49%</b>；在产日熔 14.23 万吨</td><td>1–8 月房屋竣工面积同比 <b>−23.7%</b>；深加工订单天数同比 −9.2%</td><td class="down">确定性过剩</td><td>已兑现</td></tr>
+    <tr><td><b>纯碱</b></td><td>厂库 179.26 万吨（同比 <b>+8.62%</b>），年内高位；开工率回升至 76.2%，周产量 75.16 万吨<br><span style="color:#e8b84b;font-size:12px">⚠️ 另有口径：隆众 10-12 厂库 171.02 万吨、环比 −3.85%（去库中）</span></td><td>浮法玻璃开工 67.24%（偏低）；重碱补库不及预期</td><td class="down">确定性过剩</td><td>天然碱新产能 12–18 个月</td></tr>
+    <tr><td><b>氧化铝</b></td><td>8 月产量 823 万吨（同比 +4.47%）；10 月广西 200 万吨提产 ＋ 防城港 120 万吨 ＋ 广西临港 100 万吨 ＋ 北海 200 万吨待投产；社会总库存 701.4 万吨（9 月以来累库 35.3 万吨）</td><td>电解铝运行产能 4537 万吨、开工率 <b>98.41%</b>（已满，无增量空间）</td><td class="down">确定性过剩</td><td>新产能即期投放</td></tr>
+    <tr><td><b>镍</b></td><td>INSG 2026-10-14 将 2026 年全球镍平衡<b>由短缺修正为小幅过剩</b>、2027 年过剩扩至 7 万吨；印尼全年镍矿产量预计 2.9 亿吨（高于配额 2.6–2.7 亿吨）</td><td>9 月三元材料产量环比 <b>−10.7%</b>；不锈钢钢厂 10 月集中检修减产</td><td class="down">确定性过剩</td><td>平衡表已修正，即时</td></tr>
+    <tr><td><b>苹果</b></td><td>新季产量预计约 <b>4000 万吨</b>（恢复性增产）；晚富士摘袋上色期无重大灾害，果个偏大、优果率好于预期</td><td>国庆备货小单采购、礼盒需求不及往年；节后销区走货放缓；柑橘梨分流</td><td class="down">供应压力主导</td><td>10 月下树季即期</td></tr>
+    <tr><td>烧碱</td><td>厂库 56.25 万吨（环比 +5.68%、同比 <b>+33.54%</b>）；利用率 78.8%；上半年大量投产抬高供给基数</td><td>山东 32% 主流均价 616 元/吨、鲁西南降至 590–645</td><td class="down">确定性过剩</td><td>即期</td></tr>
+  </table>
+  <div class="chart-box"><canvas id="c9"></canvas><div class="cap">图9：库存同比压力对比（%，烧碱 +33.54／玻璃 +16.49／纯碱 +8.62／PVC +2.76）</div></div>
+  <div class="falsify"><b>证伪条件（产业侧）</b>：出现「产能退出」硬证据则看空逻辑失效——观测点：纯碱连续两周开工率低于 65%；玻璃在产日熔跌破 13.5 万吨；氧化铝山西河南高成本产线出现实质停产公告；镍出现印尼 NPI／MHP 新建产能被正式叫停的文件。任一项落地，本报告看空判断立即作废。</div>
+</section>
+
+<section class="block">
+  <h2>🟠 蔡森·技术形态：把「下跌」分成两种</h2>
+  <div class="card">
+    <h3>核心结论</h3>
+    <p>同样是下跌，<b>缩量 + 减仓的下跌是空头动能衰竭（赔率变差），平量/放量 + 增仓的下跌才是趋势延续</b>。按全合约合计口径核对 20 日持仓后：<b>符合「缩量阴跌 + 持仓增」的只有玻璃（量比 0.8、20 日持仓 +8.7%）与氧化铝（量比 0.8–1.3、20 日持仓 +9.4%）</b>——这两个才是可顺势等的标的；而<b>纯碱（缩量 + 减仓 + 净空日减 31,343 手）、生猪（10-15 收阳）处于空头回补中，红枣（10-15 收阳 + 长下影 100 点 + 净空日减 5,232 手）疑似底部构筑，均须移出或降级</b>。</p>
+  </div>
+  <table>
+    <tr><th>品种</th><th>上市以来分位</th><th>RSI14</th><th>形态判定</th><th>压力位</th><th>目标位</th><th>结论</th></tr>
+    <tr><td>氧化铝</td><td>0.0%（新低）</td><td><b>37.2</b></td><td>破位下跌中继，乖离仅 −3.8% 未超跌</td><td>2630／2680</td><td>2550／2430</td><td class="cons">可即时空</td></tr>
+    <tr><td>玻璃</td><td>0.0%（新低）</td><td>30.0</td><td>缩量阴跌，近 3 日实体 0.0%（阴跌十字星）</td><td>872／888</td><td>800／780</td><td class="cons">可即时空</td></tr>
+    <tr><td>镍</td><td>0.0%（新低）</td><td>22.4</td><td>10-15 −2.0%、量比 2.6 放量破位</td><td>—</td><td>—</td><td class="div">仅反弹空</td></tr>
+    <tr><td>苹果</td><td>0.0%（新低）</td><td><b>10.7</b></td><td>10-14 −7.4%、量比 3.1 巨量大阴，瀑布加速段</td><td>—</td><td>—</td><td class="div">仅反弹空</td></tr>
+    <tr><td>碳酸锂</td><td>0.0%（新低）</td><td>18.6</td><td>10-12 单日 −10.5% 加速柱，期货深度贴水现货</td><td>—</td><td>—</td><td class="div">只等反弹</td></tr>
+    <tr><td>烧碱</td><td>0.0%（新低）</td><td><b>7.7</b></td><td>极端超卖 + 加速柱，动能衰竭</td><td>—</td><td>—</td><td class="warn">不建议</td></tr>
+    <tr><td>红枣</td><td>2.4%</td><td>24.8</td><td><b>10-15 收阳 + 长下影 100 点</b></td><td>—</td><td>—</td><td class="cons">移出·观望</td></tr>
+  </table>
+  <div class="falsify"><b>证伪条件（技术侧）</b>：价格重新站上 20 日均线且持仓转降，则「下跌中继」形态失效；或出现「破底翻」（创新低后 3 日内收回前低上方）——后者是最直接的看空终止信号。</div>
+</section>
+
+<section class="block">
+  <h2>📡 期货团·十三位大师圆桌</h2>
+  <div class="card">
+    <h3>修订后排序（叠加技术面与时机后收敛）</h3>
+    <p>13 席按「宏观对冲／产业基本面／单品深耕／趋势跟踪／系统化」五流派独立打分后，<b>可即时空池收敛为 2 个：玻璃、氧化铝（优先级：玻璃 ＞ 氧化铝）</b>；镍与苹果降为「仅反弹空」；碳酸锂降为「条件空」（须等 Back 转 Contango）；<b>纯碱因减仓 + 空头回补移出即时空池（逻辑仍可空、时机不宜，转「等放量破位」观望）</b>。圆桌分数：玻璃 −1.60、氧化铝 −1.60、镍 −1.35、纯碱 −1.18（下调）、苹果 −1.00、碳酸锂 −0.40。</p>
+  </div>
+  <table>
+    <tr><th>大师视角</th><th>对排序的贡献</th></tr>
+    <tr><td>傅海棠（产业基本面）</td><td>成本动态收缩修正后认定「低价格」成立，但「低到没产能退出」不算 → <b>明确否定「跌破成本就追空」</b>，也否定「跌破成本就抄底」</td></tr>
+    <tr><td>叶庆均／葛卫东（宏观对冲）</td><td>美元指数 102 + 美债 10Y 5.0% 高位压制有色估值，氧化铝／镍首当其冲</td></tr>
+    <tr><td>林广袤／刘福厚（单品深耕）</td><td>氧化铝新产能 600 万吨级投放 + 电解铝开工 98.41% 无增量 → 供需剪刀差最确定</td></tr>
+    <tr><td>利弗莫尔／克罗（趋势跟踪）</td><td>「最小阻力线」向下，玻璃／镍／氧化铝均在新低后无有效反弹</td></tr>
+    <tr><td>青泽／徐长波（临界点）</td><td>玻璃「缩量阴跌 + 持仓增」是最典型的下跌中继结构，卖压枯竭但未反转</td></tr>
+    <tr><td>保罗·都铎·琼斯／索罗斯（系统化）</td><td>反身性提示：全在历史最低位，任何供给端政策扰动都会引发逼空 → <b>必须轻仓 + 硬止损 + 不追加</b></td></tr>
+  </table>
+  <div class="chart-box"><canvas id="c11"></canvas><div class="cap">图10：期限结构对比（近月／主力 2701／远月）</div></div>
+  <div class="falsify" style="background:rgba(232,184,75,.08);border-color:#e8b84b"><b>⚠️ 期限结构与做空持有成本（本条已修订）</b>：<b>Contango（远月&gt;近月）对空头是正 carry，时间站在空头一边，适合持有待跌；Back（近月&gt;远月）对空头是负 carry，移仓要贴钱，只适合短打快撤。</b>按此：<b>Contango → 纯碱、玻璃、烧碱、红枣、氧化铝、镍、白银（可持有）；Back → 碳酸锂、铁矿（只能短打）</b>。<br>⚠️ <b>carry 符号只决定持有成本，不决定方向。</b>Back 有两种成因：近端真紧张（不该空）与<b>「看跌式 Back」（远月压得更低＝定价未来过剩）</b>——碳酸锂属后者：现货升水来自抢出口备库，远月更低是定价未来过剩，<b>方向仍利空，但空头要付负 carry，且低库存 −6.2% 意味着逼空容错「低」</b>，故其仓位上限被压到 ≤10% 且禁止长持。</div>
+</section>
+
+<section class="block">
+  <h2>💹 资金结构：谁在做空，谁在撤退</h2>
+  <div class="chart-box"><canvas id="c8"></canvas><div class="cap">图11：活跃合约总持仓 20 日变化（%）与前 20 席净空日增（千手）</div></div>
+  <table>
+    <tr><th>品种</th><th>前20席净空</th><th>净空日增</th><th>活跃合约总持仓20日Δ</th><th>读法</th></tr>
+    <tr><td>玻璃</td><td>271,815 手（最大）</td><td class="cons">−16,135</td><td>+8.7%</td><td>空头部分兑现，增量资金仍在进 → 双向换手，趋势未破</td></tr>
+    <tr><td>纯碱</td><td>211,092 手</td><td class="cons">−31,343（大幅）</td><td class="cons">−10.7%</td><td>空头主动撤退 + 资金离场 → <b>下跌动能衰减，移出做空池</b></td></tr>
+    <tr><td>烧碱</td><td>27,993 手</td><td class="cons">−8,694</td><td>+3.9%</td><td>净空不大、持仓未拥挤 → 无空头可挤，但价格极端超卖</td></tr>
+    <tr><td>红枣</td><td>22,429 手</td><td class="cons">−5,232</td><td>+23.7%</td><td>空头兑现 + 10-15 收阳长下影 → 疑似底部</td></tr>
+    <tr><td>苹果</td><td><b>仅 3,207 手</b></td><td>−2,045</td><td><b>+17.0%</b></td><td>机构净空极小、总持仓温和增 → 下跌非机构主导</td></tr>
+    <tr><td>锰硅</td><td>25,279 手</td><td class="div">+4,248（加空）</td><td>−10.9%</td><td>空头逆势加码而价格不跌 → 需警惕反弹</td></tr>
+  </table>
+  <div class="evidence"><b>持仓口径声明（本报告统一采用）</b>：总持仓 20 日变化 = <b>「当前日与 20 个交易日前均有报价的活跃合约」合计</b>（基准日 2026-09-09，剔除新挂牌合约的基数失真）。跨口径稳健性已做双向验算：玻璃 +7.5%／+8.7%、氧化铝 +8.6%／+9.4%、纯碱 −12.2%／−10.7%、镍 +82.1%／+82.2%、红枣 +23.7%／+26.2% —— <b>方向全部一致，结论稳健</b>；<b>唯一不稳健的是碳酸锂</b>（含远月 +0.8% vs 近次主 −8.6%，符号翻转），故其持仓<b>不作论据</b>，仅保留定性判断。<br>口径声明：郑商所持仓排名表会员简称统一带「（代客）」后缀 →「机构席位净空」应读作「机构<b>客户</b>的代理持仓」，不等于该机构自营看空。大商所（生猪/铁矿/焦煤）与上期所（镍/氧化铝/白银/螺纹）无官方席位通道，该维度留空，<b>这是本次看空结论的最大盲区</b>——因此镍／氧化铝／白银的仓位上限统一压在 ≤10%，不因基本面容错好而上调。</div>
+</section>
+
+<section class="block">
+  <h2>🔵 宏观与制度视角：为什么是这几个</h2>
+  <div class="card">
+    <h3>三条驱动线</h3>
+    <p><b>第一，地产链需求塌方（玻璃／纯碱／氧化铝的共同上游）。</b>ocmacro 取数：70 城二手房同比 −5.4%、新房同比 −3.4%，<b>同比上涨城市 0/70</b>；30 城高频成交四周均同比 −5.2%，其中二线 −11.7%、三线 −16.3%（一线 +16.0% 是唯一亮点，属结构性不是总量性）。BIS 实际房价口径下中国回撤 −24.65%、距峰 18 季；同类周期（n=46）跌幅中位 −28.6%、下跌季数中位 21.5 季、<b>收复用时中位 54.5 季（约 13.6 年）</b>。含义：竣工端的拖累是<b>中期变量而非短期扰动</b>，玻璃／纯碱需求侧没有快速反转的基础。</p>
+    <p><b>第二，美元与利率压制（氧化铝／镍的外生逆风）。</b>美国 9 月 CPI 同比 3.7%（预期 3.6%）、核心 2.6%（预期 2.5%）双双超预期，10 月加息概率由 22% 升至 50%、12 月 93%；美债 10Y 收益率 5.0%，是 TACO 指数本轮变化的主导因子（占正向贡献 68.8%）。美元指数维持 102 附近高位 → 有色板块估值整体承压。</p>
+    <p><b>第三，人民币升值对进口依赖品的成本通道压制。</b>人民币已在 6.69 附近。按「汇率每升 1%、美元标价商品的人民币进口成本同步降约 1%」的传导，进口依存度高的品种（铁矿 80%+、大豆油脂 85%、铜/原油 70%+）承受持续的成本中枢下移。这解释了铁矿近 60 日 −11.9% 且创上市以来新低。<b>但这条线对能化链失效</b>——原油／燃油／液化石油气全在涨（液化石油气距 MA250 +44.2%、分位 100%），因为地缘溢价压过了汇率成本通道。</p>
+  </div>
+  <div class="falsify"><b>需显式标注的分歧（与框架旧结论冲突）</b>：框架历史上有一条「化债期看空黑色系（螺纹/铁矿/焦煤）」的判断，但当前盘面与之相悖——焦煤近 60 日 <b>+18.1%</b>、距 MA250 +19.2%，螺纹仅 −1.4%。原因是焦煤走的是「安监收缩 + 蒙煤通关腰斩（甘其毛都 623 车 vs 上半年日均 1200–1300 车）+ 大秦线检修 + 冬储补库」的<b>供给端逻辑</b>，且期货 1503 对蒙煤仓单成本（约 2100）呈深度贴水。<b>本报告据此不将黑色系列入看空名单</b>，保留该分歧待复核。</div>
+</section>
+
+<section class="block">
+  <h2>🚫 明确不宜做空的品种</h2>
+  <table>
+    <tr><th>品种</th><th>为什么不能空</th></tr>
+    <tr><td><b>碳酸锂 LC</b></td><td>① 期货对现货呈<b>深度贴水</b>（期货 98820 vs 现货 108500–115000），悲观已被定价；② 库存仍在去化（10-08 为 139517 吨，较节前 −6.2%）；③ 低库存 + 矿端刚性 → <b>逼空容错「低」</b>；④ 已跌 51.8%（距高点）、RSI 18.6。属「看跌式 Back」——方向仍利空，但<b>负 carry + 逼空风险双重不利</b>，仓位上限被压到 ≤10% 且禁止长持。</td></tr>
+    <tr><td><b>烧碱 SH</b></td><td>RSI14 <b>7.7</b>（全样本最低），极度超卖；净空仅 2.8 万手、持仓未拥挤 → 基本面无支撑但也没有拥挤空头可挤。<b>方向可空，价位不可追</b>。</td></tr>
+    <tr><td><b>红枣 CJ</b></td><td>10-15 <b>收阳 + 长下影 100 点</b>，前 20 席净空日减 5,232 手 → 疑似底部构筑（注：基本面仍偏空——旧作结转超 30 万吨 + 新季估产 50–60 万吨 = 总供超 80 万吨，明显压过年度消费 50–55 万吨；<b>方向与时机背离，故转观望</b>）。</td></tr>
+    <tr><td><b>白银 AG</b></td><td>下跌源于 10-14 美国 CPI 超预期的事件冲击（沪银 2612 收 13523、−6.29%），而 <b>10-15 亚盘现货金银已基本收复跌幅</b>。且 20 日 −15.8% 但 60 日仅 −4.1% → 更像「上涨后回调」而非趋势性下跌，<b>做空性质与其余品种不同</b>，不应混在同一策略里。</td></tr>
+    <tr><td><b>焦煤 JM</b></td><td>期货 1503 对蒙煤仓单成本约 2100 呈<b>深度贴水</b>，做空缺乏底气；供给端安监收缩仍在发挥作用。</td></tr>
+    <tr><td><b>生猪 LH</b></td><td>总持仓 20 日 <b>−12.5%</b>，资金在离场；RSI 17.5 超卖；10-15 收阳。属「多头投降型下跌」，接近阶段尾声。</td></tr>
+    <tr><td><b>螺纹 RB</b></td><td>上市以来分位 19.1%（唯一不在最低位的品种）、近 60 日仅 −1.4%、RSI 35.4 —— 既没跌到位也没趋势，无交易价值。</td></tr>
+  </table>
+</section>
+
+<section class="block">
+  <h2>⏱ 时间闸门：做空同样有「死线」</h2>
+  <div class="card">
+    <h3>自然人平仓规则（做空与做多同样受约束）</h3>
+    <p>很多人以为只有做多要跑交割，其实<b>自然人空头同样不得持仓进入交割月</b>：大商所／郑商所／广期所需在<b>交割月前一月最后一个交易日</b>收盘前平至 0 手；上期所（除 FU）／能源中心可进交割月，但须在<b>最后交易日前第 5 个交易日</b>清零。期货公司通常再提前 1 个交易日，实操按规则日 −1 日处理。</p>
+  </div>
+  <table>
+    <tr><th>合约</th><th>交易所</th><th>自然人规则死线</th><th>距 10-15 的交易日</th><th>闸门判定</th></tr>
+    <tr><td>玻璃 FG2701／纯碱 SA2701／苹果 AP2701</td><td>郑商所</td><td>2026-12-31</td><td><b>55 个</b>（77 自然日）</td><td class="div">平仓 <b>或</b>移仓至 2705（二选一；移仓不视为平仓）</td></tr>
+    <tr><td>镍 NI2701／氧化铝 AO2701</td><td>上期所</td><td>约 2027-01-08（T−5）</td><td>约 <b>60 个</b></td><td class="warn">可进交割月，但<b>不建议</b>持仓进入（挤仓风险高）→ 提前平仓</td></tr>
+    <tr><td>镍 NI2611（成交最活跃）</td><td>上期所</td><td>约 2026-11-08（T−5）</td><td>约 <b>17 个</b></td><td class="warn">禁止新建（属「倒计时负债」）</td></tr>
+    <tr><td>镍 NI2612</td><td>上期所</td><td>约 2026-12-08（T−5）</td><td>约 <b>38 个</b></td><td class="warn">仅短打</td></tr>
+  </table>
+  <div class="evidence">⚠️ 镍的实际约束：成交最活跃的是 NI2611（161,562 手），但它的自然人死线只剩约 17 个交易日——<b>用 NI2611 做空等于给自己上一个 17 天的倒计时</b>。要拿到 60 个交易日窗口须用 NI2701（成交 26,220 手，流动性明显偏低、滑点成本上升）。这是镍做空最容易被忽略的成本。</div>
+  <div class="evidence"><b>移仓＝续期，不是平仓（Mi姐补充）</b>：郑商所 2701 三品种（玻璃／纯碱／苹果）在 2026-12-31 前可把头寸从 2701 <b>移仓</b>到 2705，移仓本身不视为平仓、可继续持有看空逻辑。<b>其中玻璃移仓至 2705／2709 的正 carry（≈6.1%）是额外收益</b>——这正是「Contango 对空头是正 carry」在本品种上的直接体现。相反，上期所 2701（镍／氧化铝）虽允许进交割月，但<b>挤仓风险高（镍 2611 已现减仓迹象）</b>，不建议持仓进入交割月，应提前平仓了结。</div>
+</section>
+
+<section class="block">
+  <h2>🔁 二次思考与事实核查（第 5.8 步 · 每轮必跑）</h2>
+  <div class="card">
+    <h3>A. 再思考一轮</h3>
+    <p><b>① 冷冻重读。</b>初稿的推理链是「跌幅榜 → 筛出五个 → 给目标位」，重读发现一个跳跃：我用「跌幅」排序，却用「基本面过剩」做理由——这两个排序得到的名单并不一致（跌最惨的碳酸锂反而不该空）。已改为按「<b>跌幅相对温和 + 新利空刚出现 + 资金仍在加码</b>」三条重排。</p>
+    <p><b>② 换轴重推。</b>上一轮自上而下（宏观地产链 → 品种）；这一轮自下而上（持仓/席位/期限结构 → 反推资金意图）。两条路径同向指向「玻璃、氧化铝最抗跌不住」，但对苹果发生<b>分叉</b>：自上而下看它基本面最差，自下而上看它 RSI 10.7 极度超卖。<b>已按分歧处理：苹果从「轻仓」降为「观察/不建议」。</b></p>
+    <p><b>③ 反问三句。</b>若结论错，第一个崩塌的假设是「低价格不会自己反转」——我假设了「跌破成本线后仍会继续跌」，但历史上商品在深度亏损后常因减产或政策扰动快速反转。有没有只挑顺眼的数据？有：初稿刻意忽略了「纯碱厂库环比 −6.85 万吨（−3.85%）」这个去库数据，只引用了同比 +8.62%，已补入；且纯碱最终因资金撤退被移出做空首选。措辞里有没有别人的话？已剔除全部券商目标价与机构判断，正文只保留价格、库存、开工率、持仓、基差等事实数据。</p>
+    <p><b>④ 这一轮改变了什么（五处，其中一处是实质性错误）。</b>（1）<b>更正了期限结构 carry 符号的写法错误</b>——初稿写「Back 做空移仓有正收益／Contango 贴钱」，实为标准理论的反面（正确：空头 roll yield =（远月−近月）÷ 远月，Contango 为正、Back 为负）；该错误由 Mi姐提出、笨鸟独立复核确认，影响「哪些品种适合持有」的结论。（2）纯碱从第 3 位降为「等反弹 + 移出即时空池」（缩量 + 减仓 + 空头回补三重信号）。（3）红枣移出看空名单转观望（收阳 + 长下影 + 净空回补）。（4）碳酸锂仓位上限由 ≤15% 压到 ≤10% 且禁止长持（负 carry + 低库存逼空容错低）。（5）<b>持仓口径不统一</b>——苹果原用「主力+次主」集合致数值虚高（+51.5%），已统一为「当前日与 20 个交易日前均有报价的活跃合约」合计（+17.0%），并做跨口径双向验算证明方向不变。</p>
+    <p><b>⑤ 分层方法论（笨鸟 REV-3）。</b>本轮刻意区分两类变量的<b>时间尺度</b>：<b>基本面是慢变量</b>（产能、库存、开工率——决定方向的「势」），<b>持仓与情绪是快变量</b>（持仓增减、席位、RSI——决定时机的「机」）。两者背离时以基本面定方向、以持仓定节奏，绝不因短期持仓变化反转中期方向。这解释了为什么纯碱「基本面仍过剩」却「时机不宜做空」——方向不变，只是扣扳机的时点未到。</p>
+  </div>
+  <div class="card">
+    <h3>B. 事实核查表（五类抽检）</h3>
+    <table>
+      <tr><th>#</th><th>核查项</th><th>事项 → 出处 → 结论</th></tr>
+      <tr><td>1</td><td>数字复核</td><td>红枣 CJ2701 10-14 收盘 6375（−4.14%）→ 本机新浪日K ＋ 华闻期货 10-14 日报，双源一致 <b>✅</b><br>镍 NI2611 10-15 收盘 115910 → 本机数据 ＋ 北方有色网日报「115910 元/吨」，价格 <b>✅</b>（其报 −2.14%、本报告 −2.04%，差异源于口径：该报用结算价 117410/118450−1 = −0.88%；已标注）<br>碳酸锂 10-12 收 104740 → 本机数据 ＋ 央广网一致 <b>✅</b>（其 −11.79% 为结算价口径；收盘价口径 104740/117000−1 = −10.47%）</td></tr>
+      <tr><td>2</td><td>算式复核</td><td>当日涨跌幅一律以「收盘÷前日收盘−1」自算，未抄第三方百分数 <b>✅</b><br>σ20 = 日σ×√20：玻璃 1.49%×4.472 = 6.64%、纯碱 1.48%×4.472 = 6.61%、镍 1.02%×4.472 = 4.56% → 复算一致 <b>✅</b><br>盈亏比 (入场−目标)÷(止损−入场)：纯碱 (970−900)÷(997−970) = 2.59；报告引 Mi姐口径 3.4（其入场取 985、目标 900）→ 差异已标为「入场区间不同」 <b>⚠️ 已标注</b></td></tr>
+      <tr><td>3</td><td>时效复核</td><td>行情数据日 = 2026-10-15（周四，交易日），在保鲜期内 <b>✅</b>；ocmacro 快照 2026-10-14（日频，3 个交易日内）<b>✅</b>；70 城房价数据期 2026-07、BIS 2026-Q1（月/季频最新期）<b>✅</b>；新闻类证据均为 10-10~10-15 <b>✅</b></td></tr>
+      <tr><td>4</td><td>口径复核</td><td><b>❌ 发现并更正一处实质错误</b>：初稿「Back 做空移仓有正收益／Contango 做空贴钱」与标准理论<b>符号相反</b>（空头 roll yield =（远月−近月）÷远月）→ 已全篇更正。<br><b>❌ 发现并更正第二处</b>：给下级专家的「持仓变化」栏中，烧碱标注 −39.3%（<b>单合约口径</b>，SH2701 于 2025-12 才挂牌、基数极低导致百分比失真），按全合约合计应为 <b>+3.1%</b>，方向相反 → 已更正。<br><b>❌ 发现并更正第三处</b>：<b>持仓口径不统一</b>——初稿苹果用「主力+次主」集合（+51.5%）、其余品种用「近月+次月+主力+次主」集合，集合不一致使苹果数值虚高 → 已全篇统一为「<b>当前日与 20 个交易日前均有报价的活跃合约</b>合计」（苹果 +17.0%、红枣 +23.7%）。跨口径双向验算：玻璃 +7.5%／+8.7%、氧化铝 +8.6%／+9.4%、纯碱 −12.2%／−10.7%、镍 +82.1%／+82.2% <b>方向全部一致，结论不受影响</b>；<b>唯一不稳健的是碳酸锂</b>（含远月 +0.8% vs 近次主 −8.6%，符号翻转）→ 其持仓不作论据。<br>另确认：现货与期货口径未混用；「前 20 席净空」已标注为「机构<b>客户</b>代理持仓」而非机构自营</td></tr>
+      <tr><td>5</td><td>来源复核</td><td>推理链中凡带「预计／认为／目标价／建议」的外部判断（中信期货「偏空思路」、方正中期「支撑 6500–6600」、广发期货「不宜追空」、混沌天成「底部宽幅震荡」、高盛「2027 均价 10 万」等）→ 已<b>全部剔除</b>，不作为本报告论据；仅保留其披露的事实数据（价格、库存、开工率、产量、进出口、平衡表修正）。外部结论不作为判断依据 <b>✅</b></td></tr>
+    </table>
+    <p style="margin-top:10px"><b>未通过项清单：3 项</b> —— ① 期限结构 carry 符号写反（实质错误，影响「可持有 vs 只能短打」的品种分类）；② 烧碱持仓口径错误（单合约当全合约，方向相反）；③ 苹果与其余品种的持仓口径不统一（苹果虚高至 +51.5%，更正为 +17.0%）。<b>置信度调整：</b>综合置信度由 72 → 68（烧碱口径） → 64（carry 符号） → <b>62</b>（持仓口径不一致）。三处均涉及给下级专家的输入切片，影响面覆盖全部 5 个看空品种的持有成本与仓位判断，故不再上修。<b>但核心结论的稳健性已验证</b>：玻璃／氧化铝「增仓下跌＝空头主动」的判断在两种口径下方向一致，未因上述更正而翻转。</p>
+  </div>
+</section>
+
+<section class="block">
+  <h2>📋 先行指标跟踪清单</h2>
+  <ul>
+    <li><b>玻璃</b>：样本企业总库存周度变化（当前 7318.6 万重箱、同比 +16.49%）；在产日熔（当前 14.23 万吨，<b>跌破 13.5 万吨则供给出清启动、看空失效</b>）</li>
+    <li><b>纯碱</b>：厂库周度变化（当前 179.26 万吨，另口径 171.02 万吨环比 −3.85%）；行业开工率（当前 76.2%，<b>连续两周低于 65% 则看空失效</b>）；氨碱/联碱毛利（当前 −202／−184 元/吨）</li>
+    <li><b>氧化铝</b>：10 月新产能实际投产进度（广西 200 万吨提产、防城港 120 万吨、北海 200 万吨）；社会总库存（当前 701.4 万吨）；山西河南高成本产线是否出现停产公告</li>
+    <li><b>镍</b>：印尼 RKAB 配额释放节奏与 ESDM 对 NPI/MHP 新建产能的收紧表态；LME 镍库存（28.2 万吨）与上期所仓单（9.4 万吨）；不锈钢 10 月检修执行率</li>
+    <li><b>苹果</b>：山东晚富士实际开秤价与入库进度（栖霞 80# 一二级 2.8–3.3 元/斤）；新季入库总量；<b>2027 年 4 月花期是否遭遇倒春寒（远月方向的最大变量）</b></li>
+    <li><b>共同外生变量</b>：美国 10 月议息（市场定价加息概率 50%）及后续 PPI／零售数据；美元指数能否站稳 102；中东地缘（霍尔木兹／伊朗）是否升级</li>
+  </ul>
+</section>
+
+<section class="block">
+  <h2>🔗 base-logic 关联（待验证假说）</h2>
+  <div class="card">
+    <p><b>「人民币升值 → 进口依赖型商品偏空」</b>在本轮得到部分验证：铁矿（进口依存 80%+）近 60 日 −11.9% 且创上市以来新低、镍创年内新低——成本中枢下移方向 <b>✅ 数据支持</b>。但<b>该假说对能化链失效</b>（原油/燃油/液化石油气全在涨，液化石油气距 MA250 +44.2%、分位 100%），因为地缘溢价压过汇率成本通道。<b>结论：该假说在「无地缘溢价的品种」上有效，不能作单因子下注依据。</b></p>
+    <p><b>「化债期看空黑色系」</b>本报告<b>未采纳</b>——焦煤近 60 日 +18.1%、距 MA250 +19.2%，走的是供给端逻辑而非需求端逻辑。该假说标记为 ⚠️ 证据不足／需重新界定适用范围。</p>
+  </div>
+</section>
+
+<script>
+drawBar('c10', ['趋势','基本面','资金','位置','结构','时机'],
+  [{label:'玻璃', data:[4.5,4.5,4.0,4.5,3.5,3.0], color:'#ff9f43'},
+   {label:'氧化铝', data:[4.0,4.5,4.5,3.5,3.5,4.5], color:'#00d4aa'},
+   {label:'镍', data:[4.0,4.5,3.5,3.5,3.0,2.5], color:'#e8b84b'},
+   {label:'苹果', data:[4.0,4.5,2.0,3.5,3.0,2.5], color:'#1ec77a'},
+   {label:'纯碱', data:[4.5,4.5,2.5,3.0,4.0,3.0], color:'#ff5fa2'}],
+  {names:['玻璃','氧化铝','镍','苹果','纯碱']});
+
+drawBar('c13', ['烧碱','苹果','生猪','碳酸锂','铁矿','镍','红枣','纯碱','玻璃','白银','氧化铝'],
+  [{label:'RSI14', data:[7.7,10.7,17.5,18.6,21.3,22.4,24.8,28.5,30.0,30.1,37.2],
+    color:['#7f1d1d','#7f1d1d','#ff4d4f','#ff4d4f','#ff4d4f','#ff4d4f','#ff4d4f','#ff4d4f','#e8b84b','#e8b84b','#1ec77a']}]);
+
+drawBar('c7', ['碳酸锂','苹果','红枣','纯碱','玻璃','烧碱','镍','氧化铝','铁矿','生猪'],
+  [{label:'距上市以来高点', data:[-51.8,-29.4,-37.1,-32.5,-34.5,-33.1,-25.6,-18.4,-16.5,-24.5], color:'#7f1d1d'},
+   {label:'近20日', data:[-30.4,-18.9,-18.6,-13.5,-12.0,-11.7,-8.9,-6.8,-9.0,-10.9], color:'#ff4d4f'},
+   {label:'近60日', data:[-33.8,-18.7,-21.0,-11.3,-10.1,-8.8,-9.4,-4.5,-11.9,-12.6], color:'#e8b84b'}],
+  {names:['距上市以来高点','近20日','近60日']});
+
+drawLine('c2', ['08-27','09-10','09-17','09-24','10-08','10-15','11月中','11月底','12月中','12月底'],
+  [{label:'玻璃·实际', data:[909,964,905,914,868,853,null,null,null,null], color:'#ff4d4f'},
+   {label:'玻璃·推演', data:[909,964,905,914,868,853,880,845,812,800], color:'#1ec77a', borderDash:[0,6,6]}],
+  {fill:false});
+
+drawLine('c4', ['08-27','09-10','09-17','09-24','10-08','10-15','11月中','11月底','12月中','12月底'],
+  [{label:'氧化铝·实际', data:[2666,2758,2682,2687,2685,2584,null,null,null,null], color:'#ff4d4f'},
+   {label:'氧化铝·推演', data:[2666,2758,2682,2687,2685,2584,2615,2560,2490,2460], color:'#1ec77a', borderDash:[0,6,6]}],
+  {fill:false});
+
+drawLine('c3', ['08-27','09-10','09-17','09-24','10-08','10-15','11月中','11月底','12月中','12月底'],
+  [{label:'纯碱·实际', data:[1011,1075,1006,1004,983,932,null,null,null,null], color:'#ff4d4f'},
+   {label:'纯碱·推演', data:[1011,1075,1006,1004,983,932,958,930,900,885], color:'#1ec77a', borderDash:[0,6,6]}],
+  {fill:false});
+
+drawLine('c5', ['08-27','09-10','09-17','09-24','10-08','10-15','11月中','11月底','12月中','12月底'],
+  [{label:'镍·实际', data:[129460,129020,124320,125830,119180,116380,null,null,null,null], color:'#ff4d4f'},
+   {label:'镍·推演', data:[129460,129020,124320,125830,119180,116380,115500,113000,111000,110000], color:'#1ec77a', borderDash:[0,6,6]}],
+  {fill:false});
+
+drawLine('c6', ['08-27','09-10','09-17','09-24','10-08','10-15','11月中','11月底','12月中','12月底'],
+  [{label:'苹果·实际', data:[7314,7520,7150,7076,6898,6121,null,null,null,null], color:'#ff4d4f'},
+   {label:'苹果·推演', data:[7314,7520,7150,7076,6898,6121,6260,6100,5900,5820], color:'#1ec77a', borderDash:[0,6,6]}],
+  {fill:false});
+
+drawBar('c8', ['玻璃','纯碱','烧碱','红枣','苹果'],
+  [{label:'活跃合约总持仓20日Δ%', data:[8.7,-10.7,3.9,23.7,17.0], color:'#4a9eff'},
+   {label:'前20席净空日增(千手)', data:[-16.1,-31.3,-8.7,-5.2,-2.0], color:'#1ec77a'}],
+  {names:['活跃合约总持仓20日Δ%','前20席净空日增(千手)']});
+
+drawBar('c9', ['烧碱','玻璃','纯碱','PVC'],
+  [{label:'库存同比%', data:[33.54,16.49,8.62,2.76], color:['#7f1d1d','#ff4d4f','#ff4d4f','#e8b84b']}]);
+
+drawBar('c11', ['玻璃FG','纯碱SA','烧碱SH','红枣CJ','氧化铝AO','镍NI','碳酸锂LC','铁矿I'],
+  [{label:'近月', data:[863,901,1740,6470,2566,115910,100400,677], color:'#4a9eff'},
+   {label:'主力2701', data:[853,932,1746,6470,2584,116380,98820,672], color:'#e8b84b'},
+   {label:'远月', data:[957,1045,1892,6915,2721,118640,96780,654], color:'#ff9f43'}],
+  {names:['近月','主力2701','远月']});
+</script>
+
+<footer class="disclaimer">
+  <b>风险提示与免责声明</b>：本报告所有结论均由方法论工具独立推导，非对任何机构或个人的投资建议。市场有风险，决策须自行承担后果。专家观点仅作待验证假说，已用当前数据独立检验。
+</footer>
+</div>
+
+</body>
+</html>

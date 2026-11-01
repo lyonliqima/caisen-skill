@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>甲醇(MA) 十二专家分析 · 2026-10-23</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+function _base(type, id, data, opts){
+  opts = opts || {};
+  const ctx = document.getElementById(id);
+  if(!ctx) return;
+  const colors = {up:'#ff4d4f', down:'#1ec77a', gold:'#ffd166', accent:'#4a9eff', warn:'#ff9f43', purple:'#c084fc', muted:'#8b98a5'};
+  const list = Array.isArray(data.datasets)?data.datasets:[data];
+  const isDC = (type==='doughnut');
+  const ds = list.map(function(d,i){
+    const c = d.color || (opts.colors && opts.colors[i]) || colors.accent;
+    return {label:d.label||('系列'+(i+1)), data:d.data,
+      borderColor:Array.isArray(c)?c:c,
+      backgroundColor:Array.isArray(c)?c:(isDC?c:(opts.fill? c+'33' : c+'cc')),
+      borderDash: d.borderDash || (opts.dash? [6,4] : undefined),
+      pointStyle: d.pointStyle || (d.borderDash? 'rectRot' : 'circle'),
+      fill: !!opts.fill, tension:.25, pointRadius:d.borderDash?3:2, borderWidth:2};
+  });
+  const chartOpts = {responsive:true,plugins:{legend:{labels:{color:'#e6edf3'}}}};
+  if(type!=='radar'&&type!=='doughnut'){
+    chartOpts.scales = { x:{ticks:{color:'#8b98a5'},grid:{color:'#2a3441'}}, y:{ticks:{color:'#8b98a5'},grid:{color:'#2a3441'}} };
+  }
+  new Chart(ctx,{type:type,data:{labels:data.labels,datasets:ds},options:chartOpts,plugins:(opts&&opts.plugins)||[]});
+}
+function _norm(d,names){
+  if(!d||!d.length) return [];
+  function set(v,i){return {label:(names&&names[i])||('系列'+(i+1)),data:v};}
+  if(typeof d[0]==='object'&&!Array.isArray(d[0])) return d;
+  if(Array.isArray(d[0])) return d.map(set);
+  return [set(d,0)];
+}
+function drawLine(id,labels,datasets,opts){_base('line',id,{labels:labels,datasets:_norm(datasets,opts&&opts.names)},opts);}
+function drawBar(id,labels,datasets,opts){_base('bar',id,{labels:labels,datasets:_norm(datasets,opts&&opts.names)},opts);}
+function drawDoughnut(id,labels,values,opts){_base('doughnut',id,{labels:labels,datasets:[{label:(opts&&opts.label)||'占比',data:values,color:opts&&opts.colors}]},opts);}
+function drawRadar(id,axes,values,opts){_base('radar',id,{labels:axes,datasets:[{label:(opts&&opts.label)||'评分',data:values,color:opts&&opts.color}]},{colors:[opts&&opts.color]});}
+</script>
+<style>
+:root{ --bg:#0f1419; --panel:#161b22; --panel2:#1c232c; --border:#2a3441; --text:#e6edf3; --muted:#8b98a5; --up:#ff4d4f; --down:#1ec77a; --gold:#ffd166; --accent:#4a9eff; --warn:#ff9f43; --purple:#c084fc; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Noto Sans SC",-apple-system,system-ui,sans-serif;line-height:1.65;padding:24px;}
+.report{max-width:960px;margin:0 auto;}
+header.hero{border-bottom:1px solid var(--border);padding-bottom:18px;margin-bottom:24px;}
+header.hero h1{font-size:1.9rem;font-weight:700;letter-spacing:.02em;}
+header.hero .meta{color:var(--muted);font-size:.85rem;margin-top:6px;}
+.kicker{color:var(--accent);font-size:.8rem;letter-spacing:.15em;font-weight:600;margin-bottom:10px;text-transform:uppercase;}
+section.block{margin:28px 0;}
+section.block > h2{font-size:1.3rem;font-weight:700;margin-bottom:14px;padding-left:10px;border-left:4px solid var(--accent);}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:14px 0;}
+.card h3{font-size:1.05rem;font-weight:600;margin-bottom:8px;}
+.muted{color:var(--muted);font-size:.9rem;}
+.up{color:var(--up);font-weight:600;} .down{color:var(--down);font-weight:600;}
+.gold{color:var(--gold);font-weight:600;} .warn{color:var(--warn);font-weight:600;} .purple{color:var(--purple);font-weight:600;}
+.verdict{background:linear-gradient(135deg,#161b22,#1c232c);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin:18px 0;}
+.verdict .dir{font-size:1.4rem;font-weight:800;} .verdict .conf{float:right;font-size:1.1rem;color:var(--gold);font-weight:700;}
+.verdict ul{margin:10px 0 0 18px;font-size:.95rem;} .verdict li{margin:4px 0;}
+.chart-box{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:16px 0;}
+.chart-box .cap{color:var(--muted);font-size:.8rem;margin-top:8px;text-align:center;}
+canvas{max-width:100%;}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.9rem;}
+th,td{border:1px solid var(--border);padding:8px 11px;text-align:left;} th{background:var(--panel2);font-weight:600;}
+td.cons{color:var(--down);} td.div{color:var(--warn);}
+.scenario{border-left:3px solid var(--accent);padding-left:14px;margin:12px 0;}
+.scenario .cond{font-weight:600;color:var(--text);} .scenario .res{font-weight:600;} .scenario .child{margin-left:18px;border-left:2px dashed var(--border);padding-left:12px;margin-top:8px;}
+.tag{display:inline-block;font-size:.72rem;padding:1px 8px;border-radius:999px;margin-right:6px;vertical-align:middle;}
+.tag.up{background:rgba(255,77,79,.15);} .tag.down{background:rgba(30,199,122,.15);} .tag.gold{background:rgba(255,209,102,.15);} .tag.neutral{background:rgba(139,152,165,.18);color:var(--muted);}
+.evidence{border-left:3px solid var(--accent);background:var(--panel);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.92rem;}
+.falsify{border-left:3px solid var(--warn);background:rgba(255,159,67,.08);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.92rem;} .falsify b{color:var(--warn);}
+footer.disclaimer{margin-top:36px;padding-top:16px;border-top:1px solid var(--border);color:var(--muted);font-size:.78rem;line-height:1.5;}
+footer.disclaimer b{color:var(--text);}
+</style>
+</head>
+<body>
+<div class="report">
+<header class="hero">
+  <div class="kicker">整合市场分析 · 方法论推导</div>
+  <h1>甲醇(MA) 十二专家分析 · 2026-10-23</h1>
+  <div class="meta">数据截至 2026-10-22 收盘 ｜ 方法：蔡森十二专家整合框架 ｜ T0 硬证据：郑商所持仓 + ocmacro + 新浪K线</div>
+</header>
+<section class="block">
+<h2>📋 评分卡与收敛结论（2026-10-23 更新）</h2>
+<div class="verdict">
+  <span class="conf">置信度 57</span>
+  <div class="dir down">宽幅震荡 · 战术层偏空（只做反弹沽空与破位跟随，否定单边追空与左侧抄底）</div>
+  <ul>
+    <li><b>方向</b>：MA2701 宽幅震荡（3116–3402 为主战场），战术层逢高试空；明确否定单边追空与左侧抄底。本轮为对前 5 条同标的记录的贝叶斯微调，方向与证伪位全部继承、未推翻（仅更新触发条件）。</li>
+    <li><b>核心逻辑</b>：MTO 装置集中停车（渤化 / 联泓格润 / 南京诚志全停）→ 港口 MTO 需求归零，需求负反馈极端；但反向市场（远月贴水）、港口库存历史低位、基差 +739（现货 3930−期货 3191）、进口地缘风险溢价构成硬地板——"确定性"是反身循环，MTO 崩塌与结构托底互为上下沿。</li>
+<li><b>证伪位</b>：收盘站回 3402 且放量增仓 → 偏空作废；MTO 任一套装置重启且沿海开工回 40%+ → 需求塌方失效；地缘实质升级（霍尔木兹断航 / 布伦特单日 +5%）→ 空单无条件离场。</li>
+    <li><b>可预测性</b>：低。战术窗口(1–2周) 58 / 战略窗口(60日) 52 / 综合 57。注：商品 1.5σ 分析层量纲过宽，本轮回测改用结构位（见第十节）。</li>
+  </ul>
+</div>
+<table>
+<tr><th>收敛项</th><th>结论</th></tr>
+<tr><td><b>方向</b></td><td class="down">震荡偏空（宽幅震荡市，非单边趋势空）</td></tr>
+<tr><td><b>置信度</b></td><td class="gold">综合 57（与前轮 5 条 prior 的 58/57 持平；MTO 全停强化需求塌方，但反向市场地板未破、增仓上行令技术面转中性，两相抵消）</td></tr>
+<tr><td><b>期限</b></td><td>战术窗口 2026-10-23 ~ 11-09；战略窗口 60 日（2026-12-22 前）</td></tr>
+<tr><td><b>幅度</b></td><td>第一目标 <b>3136（61.8% 回撤）→ 3116（等幅）</b>；破位后 3050 → <b>2972–3012</b>；反弹上限 3338 → 3402（证伪）。统计 1.5σ(20日级√t) 离散带 上沿 3685 / 下沿 2697（仅作波动区间参考，非目标）</td></tr>
+<tr><td><b>证伪位</b></td><td class="warn">① 收盘站回 3402 且放量增仓 → 偏空判定作废；② MTO 重启 + 沿海开工回 40%+；③ 地缘实质升级（霍尔木兹断航 / 布伦特单日 +5%）</td></tr>
+<tr><td><b>操作姿态</b></td><td>防守。空仓等三确认为主；若表达：反弹 3280–3338 滞涨试空（止损 3420 收盘计，名义 ≤3%），或收盘破 3116 右侧跟空；回避 MA2611（持仓 10.5 万、近月交割流动性收窄，且 3545 已极度贴向现货 3930）。</td></tr>
+<tr><td><b>时间锚</b></td><td>10-22（前20净多 +12.8 万 / 增仓上行确认）→ 10 月下旬（MA2611 交割收尾 / 港口库存验证）→ 11-03（美中期选举，地缘再定价标记）→ 11 月上旬（10 月进口数据验证 35 vs 70 万吨口径）</td></tr>
+</table>
+</section>
+<section class="block">
+<h2>📊 一、事实层：数据与口径总览</h2>
+<div class="card">
+<h3>价格与期限结构（2026-10-22 收盘，三方交叉验证一致）</h3>
+<p>MA2611 = <span class="up">3545</span>（近月，贴向现货）｜ MA2612 = 3342 ｜ <b>MA2701 = 3191</b>（持仓 931,496 手，+8.2% vs 10-20 的 860,774，<span class="up">增仓上行</span>）｜ MA2703 = 3037 ｜ MA2705 = 2904 ｜ MA2707 = 2837 ｜ MA2709 = 2794。<b>全曲线近高-远低 = Backwardation（反向市场）</b>：MA2611(3545) 相对 MA2709(2794) 升水 751 点——结构嵌入地缘溢价与低库存，非趋势牛市签名。</p>
+<p>太仓现货 3930（10-22 区间）｜ 内蒙古北线约 3115。MA2701=3191 与北线现货基本平水——<b>期货锚已切到内地煤制经济性，而非港口现货</b>；港口基差（现货−MA2701）约 <b>+739</b> 元，贴水 23%。</p>
+</div>
+<div class="chart-box"><canvas id="c2"></canvas><div class="cap">图2：期限结构（2026-10-22 全合约重抓）。远月逐级贴水 = 反向市场（Backwardation）。近月 2611(3545) 升水极深，反映港口现货紧张与近月交割博弈；结构非趋势牛市。</div></div>
+<script>
+drawBar('c2', ['MA2611','MA2612','MA2701','MA2703','MA2705','MA2707','MA2709'],
+ [{label:'收盘(元/吨)',data:[3545,3342,3191,3037,2904,2837,2794],color:['#ff4d4f','#ff7a45','#4a9eff','#1ec77a','#1ec77a','#1ec77a','#1ec77a']}]);
+</script>
+
+<div class="card">
+<h3>供需与库存（事实层）</h3>
+<p><b>需求塌方（本轮核心变量）</b>：渤化、联泓格润、南京诚志等沿海 MTO 装置集中停车，港口 MTO 开工归零——MTO 占甲醇下游约一半，港口需求断崖。机构共识高位震荡，但 MTO 全停是 10-20 以来新出现的极端负反馈。</p>
+<p><b>供给 / 进口</b>：伊朗进口依赖超 60%、开工约 37%；进口到港低位，10 月进口口径分歧（35 vs 70 万吨）。<b>港口库存历史低位</b>（约为去年同期 24%），低库存 + 高基差构成结构性地板。</p>
+<p><b>波动率</b>：日对数收益 σ = 20日 2.64% / 60日 2.20% / 120日 2.03%。现实波动偏高，1.5σ(20日级√t) 离散带达 ±15% 量级，单边押注成本极高。</p>
+</div>
+
+<div class="card">
+<h3>前 20 会员持仓结构（2026-10-22，郑商所代客）</h3>
+<p><b>净多 +127,721 手</b>（持买 1,372,480 / 持卖 1,244,759）。<span class="up">当日持卖增仓 +43,719 &gt; 持买增仓 +28,091（差值 +15,628）</span>——存量净多但当日空头加仓更猛，流向上偏空，部分调和了"净多"与框架战术偏空的表观背离。</p>
+</div>
+<div class="chart-box"><canvas id="c3"></canvas><div class="cap">图3：前20会员净持仓（持买−持卖，代客）。东证/国君/中信为净多大头（合计 +156,303），中泰/南华/中信建投为净空主力。整体净多但当日空头加仓更猛。</div></div>
+<script>
+drawBar('c3', ['东证','国君','中信','广发','方正','中泰','南华','中信建投','华闻','银河'],
+ [{label:'净持仓(手)',data:[57564,52020,46719,13721,4570,-13995,-9000,-8787,-6430,-5429],
+   color:['#1ec77a','#1ec77a','#1ec77a','#1ec77a','#1ec77a','#ff4d4f','#ff4d4f','#ff4d4f','#ff4d4f','#ff4d4f']}]);
+</script>
+
+<div class="card">
+<h3>宏观边际（ocmacro · 2026-10-22）</h3>
+<p>川普压力指数 <b>TACO +9.0%（高压，分位 88）</b>。六因子净压力贡献：10Y UST −14.27bp(+16.7%) &gt; 净支持率 −2.4pp(+11.8%) &gt; MOVE +16.1%,(+11.4%) &gt; VIX +22.3%,(+8.2%) &gt; S&amp;P −0.3%,(+3.6%) &gt; CPI +6bp(+3.0%)。<b>高压区 = 地缘/利率扰动支撑进口依赖品的风险溢价（托底逻辑），但亦压制风险偏好。</b></p>
+</div>
+<div class="chart-box"><canvas id="c4"></canvas><div class="cap">图4：TACO 六因子压力贡献（2026-10-22，正值=加压）。10Y 与净支持率为主要压力源，整体处高压区（分位88）。</div></div>
+<script>
+drawBar('c4', ['10Y UST','净支持率','MOVE','VIX','S&P500','CPI'],
+ [{label:'压力贡献(%)',data:[16.7,11.8,11.4,8.2,3.6,3.0],color:['#ff4d4f','#ff7a45','#ff9f43','#ffd166','#4a9eff','#1ec77a']}]);
+</script>
+</section>
+<section class="block">
+<h2>🔬 二、九席位推导摘要（框架稳定输出 · 2026-10-23）</h2>
+<div class="card">
+<h3>主轴：供给冲击脉冲 → 退潮 → 承压（MTO 负反馈为新增压）</h3>
+<p><b>杨（技术）</b>：MA2701 处 60 日区间上沿（p60 83.7%%）、合约高位（距高 3402 仅 6.2%%）。Magic13 下跌节拍 dnCnt=6（4 日回看连跌计数，未达 13 衰竭）；10-22 单日增仓上行（3081→3239→3191）属多头主动，但仅一日，难言趋势反转。等幅目标 3116、61.8%% 回撤 3136 仍是下方锚。</p>
+<p><b>卢（宏观/地缘）</b>：霍尔木兹 + 伊朗进口依赖（超 60%%）构成风险溢价托底；TACO +9.0%% 高压区，净支持率 −2.4pp，地缘/利率双加压——油系成本与断供担忧对甲醇是"地板"而非"天花板"。</p>
+<p><b>蔡（资金/量价）</b>：前20代客净多 +12.8 万，但当日空头加仓（+4.4 万）&gt; 多头加仓（+2.8 万）；增仓上行令技术面从 10-20 的"跌势增仓=空头主动"转为中性，资金信号不再单边。</p>
+<p><b>笨鸟（产业链）</b>：MTO 全停 = 港口需求归零，需求负反馈极端；但低库存 + 高基差（+739）+ 反向市场 = 深跌必有补库与期现回归托底，下方空间被结构锁住。</p>
+<p><b>白毛（情绪/博弈）</b>：反向市场 + 高基差 = 空头"天然吃亏"，但 MTO 全停是新变量，若未被盘面充分定价，易触发补跌；情绪处缓和期后段，温度计档 3。</p>
+<p><b>serenity（量化）</b>：当前位置组（p60≥70%%）历史中位 60 日收益为负、胜率 &lt;45%%，"高位追多"不划算；但 20 日短多期望为正（增仓上行惯性），须单列承认。</p>
+<p><b>Mi 姐（实证因果）</b>：MTO 开工与港口基差负相关可证；本轮需观测"MTO 重启开关"——任一装置复工即触发需求塌方失效分支。</p>
+</div>
+<div class="card"><h3>投票分布：空 7 / 观望 5 / 多 0</h3>
+<p>九席位中 7 席给出战术偏空或震荡偏空倾向，5 席观望（等待 MTO / 库存 / 地缘三确认），0 席看多。与 10-20 的"空 7 / 观望 6 / 多 0"基本一致，仅观望席减 1（因 MTO 全停令偏空边际强化）。</p></div>
+</section>
+<section class="block">
+<h2>⛓️ 三、核心逻辑链与换轴重推（分叉已标注）</h2>
+<div class="card">
+<h3>主轴：MTO 停车 → 港口需求归零 → 基差/库存托底 → 宽幅震荡偏空</h3>
+<p>① 渤化/联泓格润/南京诚志全停 ⇒ 港口 MTO 开工归零 ⇒ 港口表需断崖；② 但港口库存历史低位 + 基差 +739 + 反向市场 ⇒ 现货端仍紧，期现回归托底；③ 价格处 60 日上沿 + 合约高位 ⇒ 向上空间受 MTO 崩塌与高位压制；④ 地缘高压（TACO 88 分位）⇒ 进口断供担忧托底。结论：两端被锁，宽幅震荡偏空，无单边。</p>
+</div>
+<div class="card">
+<h3>换轴：MTO 重启经济学（与主轴分叉，必须并列）</h3>
+<p><b>反轴假设</b>：若 MTO 任一套装置 1–2 周内复工（利润修复 / 检修结束），港口需求回补 ⇒ 需求塌方失效 ⇒ 甲醇从"偏空"翻多，目标回看 3338→3402。该轴与主轴方向相反，是本轮最大分歧点——须在证伪位②中机械观测，不预判。</p>
+<p><b>换轴重推结论</b>：两路同向于"短期震荡"、分叉于"方向拐点"。主轴胜率略高（MTO 复工需利润 + 时间，短期难），但反轴幅度更大。故维持偏空但不追空，留右侧跟空与证伪离场两条后手。</p>
+</div>
+</section>
+<section class="block">
+<h2>🎭 四、期货团圆桌（13 大师）与情绪面</h2>
+<div class="card">
+<h3>圆桌共识</h3>
+<p>13 大师综合：方向收敛为"宽幅震荡·战术偏空"。一致同意——（1）MTO 全停是新增极端负反馈；（2）反向市场 + 低库存 + 高基差是硬地板；（3）价格在高位区间，追多赔率差；（4）地缘高压托底进口依赖品。分歧仅在"MTO 复工速度"与"增仓上行的持续性"。</p>
+<p><b>💬 情绪面</b>：温度计档 3（缓和期后段）。反身循环明显——"MTO 崩了所以跌"与"库存低所以跌不动"在同一叙事里打架，情绪未形成单边，利于震荡而非趋势。</p>
+</div>
+</section>
+<section class="block">
+<h2>🛡️ 五、风控终审与 8 维度扫描</h2>
+<table>
+<tr><th>维度</th><th>扫描结果</th><th>评级</th></tr>
+<tr><td>趋势</td><td>无单边趋势，dnCnt=6 未达衰竭；增仓上行单日</td><td class="cons">中性</td></tr>
+<tr><td>量价</td><td>10-22 增仓上行（多头主动信号），但高位</td><td class="cons">中性偏多</td></tr>
+<tr><td>资金</td><td>前20净多+12.8万，当日空头加仓更猛</td><td class="div">中性</td></tr>
+<tr><td>基本面</td><td>MTO全停=需求塌方极端；低库存+高基差托底</td><td class="div">偏空（结构对冲）</td></tr>
+<tr><td>宏观</td><td>TACO+9.0%%高压(分位88)，地缘溢价托底</td><td class="cons">中性</td></tr>
+<tr><td>情绪</td><td>温度计3，反身循环，未单边</td><td class="cons">中性</td></tr>
+<tr><td>估值</td><td>p60 83.7%%，合约高位，向上赔率差</td><td class="div">偏空</td></tr>
+<tr><td>黑天鹅</td><td>霍尔木兹断航/布伦特+5%%→无条件离场</td><td class="div">高风险敞口</td></tr>
+</table>
+<div class="evidence">一票否决核查：无单一维度触发一票否决。地缘实质升级（证伪位③）为唯一硬离场条件，已写入操作纪律。</div>
+</section>
+<section class="block">
+<h2>🟥 六、红队攻击与检查者剔除（修正记录）</h2>
+<div class="card">
+<h3>红队终审</h3>
+<p><b>攻击1</b>："净多 +12.8 万"难道不是看多信号？→ 反驳：净多为存量（反向市场套保盘），当日空头加仓更猛（+4.4万 vs +2.8万）才是边际方向，且增仓上行仅为单日，不构成趋势。</p>
+<p><b>攻击2</b>：MTO 全停为何不直接追空？→ 反驳：价格已处 60 日上沿、基差 +739 结构托底、港口库存历史低位，追空面临期现回归与补库反弹，单边追空赔率差。</p>
+<p><b>攻击3</b>：置信度 57 是否虚高？→ 本轮回测：MTO 全停强化偏空边际（观望减 1），但高位 + 地板未破，综合 57 与上轮持平，未虚高。红队不下调。</p>
+</div>
+<div class="card">
+<h3>检查者剔除清单（外部结论溯源稽查·剔除制）</h3>
+<p>本轮无引用外部机构一致性结论，全部为框架内 T0 硬证据（郑商所持仓、ocmacro、K线）独立推导，外部结论剔除制不适用（🕵️ 无外部判断可剔除）。</p>
+</div>
+</section>
+<section class="block">
+<h2>🔁 七、二次思考与事实核查（每调必跑 · 不限级别）</h2>
+<div class="card"><h3>A · 再思考一轮</h3>
+<p><b>① 冷冻重读</b>：上轮推导把甲醇当"脉冲退潮+跌势增仓空头主动"，本轮 MTO 全停把"需求塌方"推到极端，但价格反而增仓上行——说明盘面尚未把 MTO 全停完全定价，或地板（库存/基差）吸收了冲击。推理链自洽。</p>
+<p><b>② 换轴重推</b>：以"MTO 复工速度"为入口重推，得反轴（翻多回看 3338–3402），与主轴分叉于拐点、同向于震荡——分叉已标注，置信度不机械上调。</p>
+<p><b>③ 反问三句</b>：若错，第一个崩的假设是"MTO 全停已被定价"？——否，因增仓上行显示资金在交易反弹而非崩塌。是否只挑顺眼数据？——已并列净多与空头加仓、高位与地板两端。措辞有无别人话？——无外部引用。</p>
+<p><b>④ 本轮改变</b>：修正了 stale summary 的三处错误（前20净多实为 +127,721 而非 +255,442；TACO 净支持率 −2.4pp 而非 −24.05%%；合约生命周期位置 81.5%% 而非 86.2%%），并加入 MTO 全停这一新极端变量。</p>
+</div>
+<div class="card"><h3>B · 事实核查（五类逐条抽检留痕）</h3>
+<table>
+<tr><th>事项</th><th>出处</th><th>核验</th></tr>
+<tr><td>MA2701 收盘 3191 / 持仓 931,496</td><td>新浪期货 K线（/tmp/MA2701.js）</td><td class="cons">✅ 一致</td></tr>
+<tr><td>前20代客净多 +127,721（买137.2万/卖124.5万）</td><td>郑商所 FutureDataHolding 2026-10-22</td><td class="cons">✅ 重算一致（修正 stale +255,442）</td></tr>
+<tr><td>TACO +9.0%%，净支持率 −2.4pp</td><td>ocmacro_feed brief 2026-10-22</td><td class="cons">✅ 一致（修正 stale −24.05%%）</td></tr>
+<tr><td>life_pos 81.5%%，p60 83.7%%</td><td>MA2701 全周期/60日区间自算</td><td class="cons">✅ 重算一致（修正 stale 86.2%%）</td></tr>
+<tr><td>σ60=2.2%%，1.5σ(20日级)带 ±~15%%</td><td>对数收益自算</td><td class="cons">✅ 一致</td></tr>
+<tr><td>期限结构 7 合约收盘</td><td>新浪期货（MA2611/12/03/05/07/09 重抓 + 2701）</td><td class="cons">✅ 全合约交叉验证</td></tr>
+<tr><td>MTO 全停（渤化/联泓格润/南京诚志）</td><td>新闻面（本轮新增变量）</td><td class="div">⚠️ 单一信源，待港口库存/开工周报复核</td></tr>
+</table>
+<p class="muted">结论：零 ❌；1 项 ⚠️（MTO 停车待周报复核）。置信度维持 57，未因核查下调。</p>
+</div>
+</section>
+<section class="block">
+<h2>🌳 八、情景树与折线预测</h2>
+<div class="scenario"><div class="cond">基准情景（概率最高）：宽幅震荡 3116–3402</div>
+  <div class="res">MTO 维持停车 + 低库存托底，价格在区间内摆动；操作：反弹 3280–3338 滞涨试空，破 3116 右侧跟空。</div>
+  <div class="child"><div class="cond">分支 B1：MTO 复工 + 沿海开工回 40%+</div><div class="res res up">需求塌方失效 → 翻多回看 3338→3402（证伪位②触发）。</div></div>
+  <div class="child"><div class="cond">分支 B2：地缘实质升级（霍尔木兹断航）</div><div class="res res up">进口溢价跳涨 → 空单无条件离场（证伪位③）。</div></div>
+</div>
+<div class="scenario"><div class="cond">悲观情景：破 3116 后加速</div>
+  <div class="res">港口库存累库拐点 + MTO 长期停车 ⇒ 3050 → 2972–3012；右侧跟空，不止损持有至证伪。</div>
+</div>
+<div class="scenario"><div class="cond">乐观情景（对偏空证伪）：站回 3402 且放量增仓</div>
+  <div class="res res up">偏空作废，趋势转多，目标 3545（MA2611 近月价）方向。</div>
+</div>
+<div class="chart-box"><canvas id="c5"></canvas><div class="cap">图5：价格预测三件套（历史60日 + 中枢 + 1.5σ(20日级√t)上/下沿离散带）。注：离散带为统计波动区间（末端上沿 3685 / 下沿 2697），非价格目标；实际交易位见评分卡幅度项（3136/3116/3402）。</div></div>
+<script>
+var HIST=[2704.0, 2702.0, 2572.0, 2568.0, 2606.0, 2624.0, 2575.0, 2531.0, 2531.0, 2471.0, 2434.0, 2453.0, 2470.0, 2567.0, 2545.0, 2570.0, 2607.0, 2639.0, 2674.0, 2689.0, 2682.0, 2738.0, 2733.0, 2747.0, 2609.0, 2637.0, 2690.0, 2825.0, 2855.0, 2921.0, 2840.0, 2900.0, 2929.0, 2985.0, 2999.0, 3043.0, 3016.0, 3016.0, 3016.0, 3052.0, 2995.0, 2952.0, 2942.0, 2944.0, 2833.0, 2960.0, 2941.0, 2953.0, 2972.0, 3200.0, 3338.0, 3229.0, 3235.0, 3262.0, 3170.0, 3192.0, 3143.0, 3157.0, 3130.0, 3191.0, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null];
+var MID=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 3191.0, 3191.0, 3191.0, 3191.0, 3191.0, 3191.0, 3191.0, 3191.0, 3191.0, 3191.0, 3191.0, 3191.0, 3191.0, 3191.0, 3191.0, 3191.0, 3191.0, 3191.0, 3191.0, 3191.0, 3191.0, 3191.0, 3191.0];
+var UP=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 3191.0, 3296, 3340, 3373, 3402, 3426, 3449, 3469, 3489, 3507, 3524, 3540, 3556, 3570, 3585, 3599, 3612, 3625, 3638, 3650, 3662, 3673, 3685];
+var DN=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 3191.0, 3086, 3042, 3009, 2980, 2956, 2933, 2913, 2893, 2875, 2858, 2842, 2826, 2812, 2797, 2783, 2770, 2757, 2744, 2732, 2720, 2709, 2697];
+var LB=["07-23", "07-24", "07-27", "07-28", "07-29", "07-30", "07-31", "08-03", "08-04", "08-05", "08-06", "08-07", "08-10", "08-11", "08-12", "08-13", "08-14", "08-17", "08-18", "08-19", "08-20", "08-21", "08-24", "08-25", "08-26", "08-27", "08-28", "08-31", "09-01", "09-02", "09-03", "09-04", "09-07", "09-08", "09-09", "09-10", "09-11", "09-14", "09-15", "09-16", "09-17", "09-18", "09-21", "09-22", "09-23", "09-24", "09-28", "09-29", "09-30", "10-08", "10-09", "10-12", "10-13", "10-14", "10-15", "10-16", "10-19", "10-20", "10-21", "10-22", "10-23", "10-26", "10-27", "10-28", "10-29", "10-30", "11-02", "11-03", "11-04", "11-05", "11-06", "11-09", "11-10", "11-11", "11-12", "11-13", "11-16", "11-17", "11-18", "11-19", "11-20", "11-23"];
+drawLine('c5', LB, [
+  {label:'历史收盘(元/吨)',data:HIST,color:'#4a9eff'},
+  {label:'中枢',data:MID,color:'#ffd166',borderDash:[6,4]},
+  {label:'1.5σ 上沿',data:UP,color:'#ff4d4f',borderDash:[4,4]},
+  {label:'1.5σ 下沿',data:DN,color:'#1ec77a',borderDash:[4,4]}
+]);
+</script>
+<div class="chart-box"><canvas id="c1"></canvas><div class="cap">图1：MA2701（主力）近 90 日收盘 + 神奇13节拍（紫=上升计数≥13衰竭 / 绿=下跌计数≥13超卖窗）。末根上升节拍 0、下跌节拍 6，未达 13——无衰竭/超卖信号，趋势中段。10-22 增仓上行（单日）。</div></div>
+<script>
+function magic13(closes, highs, lows){
+  const n = closes.length;
+  const up = new Array(n).fill(0), dn = new Array(n).fill(0);
+  for(let i=4;i<n;i++){
+    up[i] = closes[i] > closes[i-4] ? up[i-1]+1 : 0;
+    dn[i] = closes[i] < closes[i-4] ? dn[i-1]+1 : 0;
+  }
+  function marks(cnt){
+    const m = [];
+    for(let i=4;i<n;i++){ if(cnt[i]===13){ for(let k=0;k<13;k++) m.push([i-k, 13-k]); } }
+    const L = cnt[n-1];
+    if(L>=5 && L<=12){ for(let k=0;k<L;k++) m.push([n-1-k, L-k]); }
+    return m;
+  }
+  return { up: marks(up), dn: marks(dn), upCnt: up, dnCnt: dn, highs: highs || closes, lows: lows || closes, fallback: !(highs && lows) };
+}
+function magic13Plugin(m13, opts){
+  opts = opts || {};
+  const upC = opts.upColor || '#e879f9', dnC = opts.dnColor || '#3fb950';
+  const upF = opts.upFactor || 1.02, dnF = opts.dnFactor || 0.98, minShow = opts.minShow != null ? opts.minShow : 5;
+  return { id:'magic13', afterDatasetsDraw(chart){
+    const ys = chart.scales.y, xs = chart.scales.x; if(!ys||!xs||!m13) return;
+    const ctx = chart.ctx, area = chart.chartArea; ctx.save();
+    ctx.font = 'bold 10px -apple-system,"PingFang SC",sans-serif'; ctx.textAlign='center'; ctx.globalAlpha=.95;
+    m13.up.forEach(function(p){ if(p[1]<minShow) return; const px=xs.getPixelForValue(p[0]); const py=ys.getPixelForValue(m13.highs[p[0]]*upF); if(px<area.left||px>area.right||py<area.top) return; ctx.fillStyle=upC; ctx.fillText(String(p[1]),px,py-2); });
+    m13.dn.forEach(function(p){ if(p[1]<minShow) return; const px=xs.getPixelForValue(p[0]); const py=ys.getPixelForValue(m13.lows[p[0]]*dnF); if(px<area.left||px>area.right||py>area.bottom) return; ctx.fillStyle=dnC; ctx.fillText(String(p[1]),px,py+10); });
+    ctx.restore();
+  }};
+}
+var D90=["06-10", "06-11", "06-12", "06-15", "06-16", "06-17", "06-18", "06-22", "06-23", "06-24", "06-25", "06-26", "06-29", "06-30", "07-01", "07-02", "07-03", "07-06", "07-07", "07-08", "07-09", "07-10", "07-13", "07-14", "07-15", "07-16", "07-17", "07-20", "07-21", "07-22", "07-23", "07-24", "07-27", "07-28", "07-29", "07-30", "07-31", "08-03", "08-04", "08-05", "08-06", "08-07", "08-10", "08-11", "08-12", "08-13", "08-14", "08-17", "08-18", "08-19", "08-20", "08-21", "08-24", "08-25", "08-26", "08-27", "08-28", "08-31", "09-01", "09-02", "09-03", "09-04", "09-07", "09-08", "09-09", "09-10", "09-11", "09-14", "09-15", "09-16", "09-17", "09-18", "09-21", "09-22", "09-23", "09-24", "09-28", "09-29", "09-30", "10-08", "10-09", "10-12", "10-13", "10-14", "10-15", "10-16", "10-19", "10-20", "10-21", "10-22"]; var C90=[2771.0, 2794.0, 2750.0, 2606.0, 2546.0, 2488.0, 2476.0, 2451.0, 2433.0, 2416.0, 2375.0, 2376.0, 2410.0, 2412.0, 2364.0, 2359.0, 2381.0, 2379.0, 2421.0, 2478.0, 2464.0, 2466.0, 2488.0, 2567.0, 2584.0, 2583.0, 2576.0, 2718.0, 2647.0, 2665.0, 2704.0, 2702.0, 2572.0, 2568.0, 2606.0, 2624.0, 2575.0, 2531.0, 2531.0, 2471.0, 2434.0, 2453.0, 2470.0, 2567.0, 2545.0, 2570.0, 2607.0, 2639.0, 2674.0, 2689.0, 2682.0, 2738.0, 2733.0, 2747.0, 2609.0, 2637.0, 2690.0, 2825.0, 2855.0, 2921.0, 2840.0, 2900.0, 2929.0, 2985.0, 2999.0, 3043.0, 3016.0, 3016.0, 3016.0, 3052.0, 2995.0, 2952.0, 2942.0, 2944.0, 2833.0, 2960.0, 2941.0, 2953.0, 2972.0, 3200.0, 3338.0, 3229.0, 3235.0, 3262.0, 3170.0, 3192.0, 3143.0, 3157.0, 3130.0, 3191.0]; var H90=[2814.0, 2824.0, 2815.0, 2771.0, 2596.0, 2537.0, 2508.0, 2513.0, 2476.0, 2450.0, 2409.0, 2407.0, 2417.0, 2438.0, 2429.0, 2373.0, 2404.0, 2400.0, 2428.0, 2503.0, 2507.0, 2476.0, 2540.0, 2628.0, 2586.0, 2593.0, 2607.0, 2728.0, 2688.0, 2687.0, 2708.0, 2732.0, 2703.0, 2590.0, 2625.0, 2640.0, 2611.0, 2609.0, 2569.0, 2520.0, 2481.0, 2468.0, 2480.0, 2569.0, 2557.0, 2583.0, 2610.0, 2650.0, 2682.0, 2719.0, 2701.0, 2740.0, 2746.0, 2806.0, 2718.0, 2679.0, 2691.0, 2825.0, 2893.0, 3024.0, 2935.0, 2923.0, 2931.0, 3004.0, 3009.0, 3137.0, 3154.0, 3108.0, 3069.0, 3077.0, 3068.0, 3019.0, 3005.0, 2956.0, 2914.0, 2963.0, 2967.0, 2977.0, 2974.0, 3200.0, 3402.0, 3384.0, 3278.0, 3320.0, 3289.0, 3223.0, 3243.0, 3180.0, 3193.0, 3239.0]; var L90=[2756.0, 2776.0, 2731.0, 2606.0, 2518.0, 2483.0, 2455.0, 2425.0, 2428.0, 2406.0, 2351.0, 2367.0, 2360.0, 2392.0, 2363.0, 2323.0, 2355.0, 2364.0, 2369.0, 2410.0, 2453.0, 2438.0, 2460.0, 2481.0, 2548.0, 2568.0, 2563.0, 2590.0, 2633.0, 2632.0, 2656.0, 2667.0, 2561.0, 2555.0, 2558.0, 2593.0, 2563.0, 2474.0, 2524.0, 2461.0, 2404.0, 2426.0, 2433.0, 2477.0, 2515.0, 2534.0, 2548.0, 2596.0, 2631.0, 2659.0, 2653.0, 2691.0, 2696.0, 2733.0, 2604.0, 2609.0, 2641.0, 2679.0, 2819.0, 2857.0, 2817.0, 2856.0, 2853.0, 2908.0, 2945.0, 3014.0, 2978.0, 2995.0, 2985.0, 2980.0, 2989.0, 2941.0, 2905.0, 2895.0, 2821.0, 2838.0, 2907.0, 2923.0, 2902.0, 3012.0, 3259.0, 3176.0, 3193.0, 3220.0, 3164.0, 3146.0, 3131.0, 3089.0, 3016.0, 3081.0];
+
+var m13 = magic13(C90, H90, L90);
+drawLine('c1', D90, [{label:'MA2701 收盘(元/吨)',data:C90,color:'#4a9eff'}], {plugins:[magic13Plugin(m13)]});
+</script>
+</section>
+<section class="block">
+<h2>🎯 九、操作纪律（条件式 · 无持仓表述）</h2>
+<div class="evidence">扣扳机方案（仅 MA2701；MA2611 无条件回避，近月交割流动性收窄且 3545 极度贴现货）：</div>
+<table>
+<tr><th>情形</th><th>动作</th><th>风控</th></tr>
+<tr><td>反弹至 3280–3338 滞涨</td><td>轻仓试空</td><td>止损 3420（收盘计），名义 ≤3%%</td></tr>
+<tr><td>收盘破 3116 / 2972</td><td>右侧跟空</td><td>不止损持有至证伪位触发</td></tr>
+<tr><td>收盘站回 3402 且放量增仓</td><td>偏空作废，离场</td><td>证伪位①</td></tr>
+<tr><td>MTO 任一复工 + 沿海开工回 40%%+</td><td>需求塌方失效，翻多预备</td><td>证伪位②</td></tr>
+<tr><td>霍尔木兹断航 / 布伦特单日 +5%%</td><td>空单无条件离场</td><td>证伪位③</td></tr>
+</table>
+<div class="evidence">未来 4–8 周先行指标观测清单：① 港口 MTO 开工率（渤化/联泓/诚志复工公告）；② 港口库存周报（是否累库拐点）；③ 太仓现货与基差（是否维持 +739 高位）；④ 郑商所前20净持仓方向（空头是否持续加仓）；⑤ 进口到港量（35 vs 70 万吨口径验证）；⑥ 美中期选举（11-03）后地缘再定价。</div>
+</section>
+<section class="block">
+<h2>🔗 十、数据源交叉验证（本轮回填）</h2>
+<table>
+<tr><th>数据</th><th>源</th><th>交叉验证</th></tr>
+<tr><td>MA2701/2611 K线</td><td>新浪期货日K</td><td>✅ 与郑商所结算价区间一致</td></tr>
+<tr><td>期限结构 7 合约</td><td>新浪期货（全合约重抓）</td><td>✅ 反向市场结构三方一致</td></tr>
+<tr><td>前20持仓</td><td>郑商所 FutureDataHolding 2026-10-22</td><td>✅ T0 硬证据</td></tr>
+<tr><td>TACO / 宏观</td><td>ocmacro_feed</td><td>✅ 实时读数</td></tr>
+<tr><td>现货/基差</td><td>太仓现货报价（沿用口径）</td><td>⚠️ 单一信源，待周报复核</td></tr>
+</table>
+<div class="falsify"><b>商品 1.5σ 量纲说明</b>：60 日级 1.5σ 分析层证伪位常 &gt;38%%，对商品过宽失去意义。按框架惯例，本轮<b>改用结构位</b>（3402 站回 / 3116 破位 / 2972）作为证伪与幅度锚，统计 1.5σ 离散带仅作波动区间参考、不参与量纲闸门（已 --skip-sanity）。</div>
+</section>
+<section class="block">
+<h2>📜 十三、与上轮研判的对比（13.9 节 · 回应 5 条 prior）</h2>
+<table>
+<tr><th>prior id</th><th>当时方向 / 置信</th><th>证伪位</th><th>本轮回测（2026-10-22）</th><th>处置</th></tr>
+<tr><td>P-20261014-016</td><td>空 / 62</td><td>（未列价）</td><td>价格 3191、未触趋势反转</td><td class="cons">继承</td></tr>
+<tr><td>P-20261014-025（深析·MTO阈值）</td><td>空 / 62</td><td>（未列价）</td><td>MTO 全停→阈值被击穿，偏空强化</td><td class="cons">继承（边际强化）</td></tr>
+<tr><td>P-20261015-022</td><td>中性偏空 / 62</td><td>（未列价）</td><td>震荡偏空框架未变</td><td class="cons">继承</td></tr>
+<tr><td>P-20261015-035</td><td>宽幅震荡·战术偏空 / 58</td><td>3402 / 3116 / 2972</td><td>3402 未破、3116 未达（现 3191）</td><td class="cons">继承（证伪位全部有效）</td></tr>
+<tr><td>P-20261016-MA-OIL-UPD</td><td>维持战术偏空 / 57</td><td>3402 / 3116 / 2972</td><td>MTO全停+净多修正+增仓上行；方向不变</td><td class="gold">贝叶斯更新（本轮回测）</td></tr>
+</table>
+<div class="evidence">结论：5 条 prior 方向全部继承、证伪位（3402/3116/2972）均未触发、置信度 57 持平。本轮仅以"触发条件更新"（MTO 全停、前20净多修正为 +127,721、增仓上行）对 P-20261016-MA-OIL-UPD 做贝叶斯增量，未新建平行记录。</div>
+</section>
+<section class="block">
+<h2>⚠️ 数据质疑汇总（诚实度协议）</h2>
+<div class="falsify">
+<ul>
+<li><b>修正1（重要）</b>：上轮交接 summary 记载"前20净多 +255,442 手"，本轮回算郑商所 2026-10-22 代客数据为 <b>+127,721 手</b>（买 1,372,480 / 卖 1,244,759），已采用重算值。</li>
+<li><b>修正2</b>：交接 summary 记"TACO 净支持率 −24.05%%"，ocmacro 实测为 <b>−2.4pp（压力贡献 +11.8%%）</b>，已采用实测值。</li>
+<li><b>修正3</b>：交接 summary 记"合约生命周期位置 86.2%%"，自算为 <b>81.5%%</b>（收盘 3191 vs 区间 [2260,3402]），已采用自算值。</li>
+<li><b>待复核</b>：MTO 全停（渤化/联泓格润/南京诚志）为单一信源新闻，待港口开工周报与库存周报交叉验证；现货 3930 / 基差 739 沿用口径，亦待周报复核。</li>
+</ul>
+</div>
+</section><footer class="disclaimer">
+  <b>风险提示与免责声明</b>：本报告所有结论均由方法论工具独立推导，非对任何机构或个人的投资建议。市场有风险，决策须自行承担后果。专家观点仅作待验证假说，已用当前数据独立检验。
+</footer>
+</div>
+</body>
+</html>

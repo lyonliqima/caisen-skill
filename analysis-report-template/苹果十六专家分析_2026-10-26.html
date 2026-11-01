@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>郑商所苹果期货 AP · 十六专家整合深度分析（2026-10-26）</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+/* 图表helper：模型只需写 <canvas id="x"></canvas> 后调用 drawXxx(id, ...) 即可，无需完整 Chart.js 配置
+   用法（三选一，均可）：
+     drawBar('c1', ['A','B'], [1,2])                                  // 扁平数组 => 单系列
+     drawBar('c1', ['A','B'], [[1,2],[3,4]], {names:['甲','乙']})       // 嵌套数组 => 多系列，names 给图例
+     drawBar('c1', ['A','B'], [{label:'甲',data:[1,2],color:'#f00'}])   // 标准对象 => 完全控制
+   ⚠️ 旧版 _norm 会把嵌套数组/扁平数组错误地塞进 data 标量，导致图表空白——已修正。 */
+function _base(type, id, data, opts){
+  opts = opts || {};
+  const ctx = document.getElementById(id);
+  if(!ctx) return;
+  const colors = {up:'#ff4d4f', down:'#1ec77a', gold:'#ffd166', accent:'#4a9eff', warn:'#ff9f43', purple:'#c084fc', muted:'#8b98a5'};
+  const list = Array.isArray(data.datasets)?data.datasets:[data];
+  const isDC = (type==='doughnut');
+  const ds = list.map(function(d,i){
+    const c = d.color || (opts.colors && opts.colors[i]) || colors.accent;
+    return {label:d.label||('系列'+(i+1)), data:d.data,
+      borderColor:Array.isArray(c)?c:c,
+      backgroundColor:Array.isArray(c)?c:(isDC?c:(opts.fill? c+'33' : c+'cc')),
+      borderDash: d.borderDash || (opts.dash? [6,4] : undefined),
+      pointStyle: d.pointStyle || (d.borderDash? 'rectRot' : 'circle'),
+      fill: !!opts.fill, tension:.25, pointRadius:d.borderDash?3:2, borderWidth:2};
+  });
+  const chartOpts = {responsive:true,plugins:{legend:{labels:{color:'#e6edf3'}}}};
+  if(type!=='radar'&&type!=='doughnut'){
+    chartOpts.scales = {
+      x:{ticks:{color:'#8b98a5'},grid:{color:'#2a3441'}},
+      y:{ticks:{color:'#8b98a5'},grid:{color:'#2a3441'}}
+    };
+  }
+  // opts.plugins：透传 Chart.js 插件（如价格主图挂 magic13Plugin）；不传则为空数组
+  new Chart(ctx,{type:type,data:{labels:data.labels,datasets:ds},options:chartOpts,plugins:(opts&&opts.plugins)||[]});
+}
+function _norm(d,names){
+  if(!d||!d.length) return [];
+  function set(v,i){return {label:(names&&names[i])||('系列'+(i+1)),data:v};}
+  if(typeof d[0]==='object'&&!Array.isArray(d[0])) return d;   // 已是 [{label,data}]
+  if(Array.isArray(d[0])) return d.map(set);                   // [[..],[..]] 多系列
+  return [set(d,0)];                                           // 扁平数组 => 单系列
+}
+function drawLine(id,labels,datasets,opts){_base('line',id,{labels:labels,datasets:_norm(datasets,opts&&opts.names)},opts);}
+function drawBar(id,labels,datasets,opts){_base('bar',id,{labels:labels,datasets:_norm(datasets,opts&&opts.names)},opts);}
+function drawDoughnut(id,labels,values,opts){_base('doughnut',id,{labels:labels,datasets:[{label:(opts&&opts.label)||'占比',data:values,color:opts&&opts.colors}]},opts);}
+function drawRadar(id,axes,values,opts){_base('radar',id,{labels:axes,datasets:[{label:(opts&&opts.label)||'评分',data:values,color:opts&&opts.color}]},{colors:[opts&&opts.color]});}
+</script>
+
+<style>
+:root{
+  --bg:#0f1419; --panel:#161b22; --panel2:#1c232c; --border:#2a3441;
+  --text:#e6edf3; --muted:#8b98a5; --up:#ff4d4f; --down:#1ec77a;
+  --gold:#ffd166; --accent:#4a9eff; --warn:#ff9f43; --purple:#c084fc;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Noto Sans SC",-apple-system,system-ui,sans-serif;line-height:1.65;padding:24px;}
+.report{max-width:960px;margin:0 auto;}
+header.hero{border-bottom:1px solid var(--border);padding-bottom:18px;margin-bottom:24px;}
+header.hero h1{font-size:1.9rem;font-weight:700;letter-spacing:.02em;}
+header.hero .meta{color:var(--muted);font-size:.85rem;margin-top:6px;}
+.kicker{color:var(--accent);font-size:.8rem;letter-spacing:.15em;font-weight:600;margin-bottom:10px;text-transform:uppercase;}
+section.block{margin:28px 0;}
+section.block > h2{font-size:1.3rem;font-weight:700;margin-bottom:14px;padding-left:10px;border-left:4px solid var(--accent);}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:14px 0;}
+.card h3{font-size:1.05rem;font-weight:600;margin-bottom:8px;}
+.muted{color:var(--muted);font-size:.9rem;}
+.up{color:var(--up);font-weight:600;}
+.down{color:var(--down);font-weight:600;}
+.gold{color:var(--gold);font-weight:600;}
+.warn{color:var(--warn);font-weight:600;}
+.purple{color:var(--purple);font-weight:600;}
+/* 评分卡 */
+.verdict{background:linear-gradient(135deg,#161b22,#1c232c);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin:18px 0;}
+.verdict .dir{font-size:1.4rem;font-weight:800;}
+.verdict .conf{float:right;font-size:1.1rem;color:var(--gold);font-weight:700;}
+.verdict ul{margin:10px 0 0 18px;font-size:.95rem;}
+.verdict li{margin:4px 0;}
+/* 图表 */
+.chart-box{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:16px 0;}
+.chart-box .cap{color:var(--muted);font-size:.8rem;margin-top:8px;text-align:center;}
+canvas{max-width:100%;}
+/* 表格 */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.9rem;}
+th,td{border:1px solid var(--border);padding:8px 11px;text-align:left;}
+th{background:var(--panel2);font-weight:600;}
+td.cons{color:var(--down);} td.div{color:var(--warn);}
+/* 兵棋推演树 */
+.scenario{border-left:3px solid var(--accent);padding-left:14px;margin:12px 0;}
+.scenario .cond{font-weight:600;color:var(--text);}
+.scenario .arrow{color:var(--muted);margin:0 6px;}
+.scenario .res{font-weight:600;}
+.scenario .child{margin-left:18px;border-left:2px dashed var(--border);padding-left:12px;margin-top:8px;}
+.tag{display:inline-block;font-size:.72rem;padding:1px 8px;border-radius:999px;margin-right:6px;vertical-align:middle;}
+.tag.up{background:rgba(255,77,79,.15);} .tag.down{background:rgba(30,199,122,.15);}
+.tag.gold{background:rgba(255,209,102,.15);} .tag.neutral{background:rgba(139,152,165,.18);color:var(--muted);}
+/* 证据/证伪 */
+.evidence{border-left:3px solid var(--accent);background:var(--panel);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.92rem;}
+.falsify{border-left:3px solid var(--warn);background:rgba(255,159,67,.08);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.92rem;}
+.falsify b{color:var(--warn);}
+/* 免责 */
+footer.disclaimer{margin-top:36px;padding-top:16px;border-top:1px solid var(--border);color:var(--muted);font-size:.78rem;line-height:1.5;}
+footer.disclaimer b{color:var(--text);}
+</style>
+</head>
+<body>
+<div class="report">
+<header class="hero">
+  <div class="kicker">整合市场分析 · 方法论推导</div>
+  <h1>郑商所苹果期货 AP · 十六专家整合深度分析（2026-10-26）</h1>
+  <div class="meta">2026-10-26</div>
+</header>
+<section class="block">
+<h2>📊 综合研判评分卡（收敛铁律）</h2>
+<div class="verdict">
+  <span class="conf">置信度 62</span>
+  <div class="dir down">🔻 偏空（方向）／⏸ 不做（执行）· 标的改 AP2705</div>
+  <ul>
+    <li><b>方向</b>：AP 系整体<b>偏空</b>——新季产量同比 <span class="down">+18.37%</span>（Mysteel）／<span class="down">+14.8%</span>（卓创），入库量自算 <span class="gold">825–877 万吨</span> vs 上年 698.42 万吨，<b>冷库压力为近三年最大</b>。</li>
+    <li><b>执行</b>：<span class="warn">AP2701 不做、只减不加</span>。距自然人离场 66 日历天（≈47 交易日），01–03 价差 <span class="gold">+322</span> 已是 12 月中位跌幅的 1.77 倍，<b>制度性折价已被定价，做空无剩余空间</b>。</li>
+    <li><b>标的</b>：<span class="gold">AP2705</span>（5241，持仓 34,943，132 交易日，2703→2705 换月租 +2.4%/年，三问全过）。</li>
+    <li><b>窗口</b>：<span class="gold">2027 年 1 月中下旬</span>建仓（果农现金流抛售期 + 01 合约自然人出清后），不押 12 月。</li>
+    <li><b>目标</b>：AP2705 <span class="gold">4850–5150</span>（自 5241 起 −1.7%～−7.5%）；极端 4600。</li>
+    <li><b>证伪</b>：AP2705 收盘站上 <span class="warn">5357</span>（1.5σ60=2.21%）连续 3 日；或入库量实测 <span class="warn">&lt;800 万吨</span>；或 12 月现货不跌反涨。</li>
+    <li><b>落账</b>：<span class="gold">P-20261026-003</span>（AP2705 空·conf 62·expiry 2027-03-31）；同时 <span class="gold">P-20261022-010</span> 更新 conf 50→62、<span class="gold">P-20260829-003</span> 结算 miss。</li>
+  </ul>
+</div>
+<div class="verdict">
+  <span class="conf">置信度 55</span>
+  <div class="dir" style="color:#ffd166">➡️ 短期（20D·至 2026-11-25）中性偏空，但<b>不给交易</b></div>
+  <ul>
+    <li><b>区间</b>：AP2701 <span class="gold">5250–5760</span>（下沿=2703 现价 5220 上方；上沿=MA5 5760）——<b>区间本身即"已定价"的证明</b>。</li>
+    <li><b>逻辑</b>：<b>基差口径双列后无单边结论</b>——口径 A（期货≈现货折算，经验关系）5542÷2000=<span class="gold">2.77 元/斤</span>，正处 2.70–3.00 报价中枢，<b>基差中性</b>；口径 B（1 月冷库货交割成本=新果价+冷库费+损耗+资金）<span class="gold">6,000–6,600</span>，<b>贴水 7.6%–16.0%</b>。两口径差 8pct，<b>不足以支撑"贴水必收敛"或"贴水已充分定价"任一结论</b>。同时日线 5 连阴、距 MA20 −14.4%、距 MA60 −22.2%，<b>超卖但无企稳信号</b>。</li>
+    <li><b>为什么给区间不给方向</b>：实证因果裁定——"12 月做空"数据不足（H3 季节性 Bonferroni p=0.352，95%CI [−7.60%,+0.42%] 含 0）；20D 窗口内唯一确定的事是<b>换月与制度折价</b>，不是供需。<b>做空的 alpha 只来自"1 月现货跌破 2.70 元/斤"，不来自"贴水收敛"——而前者正是实证专家裁定"无法识别"的那条因果（H2）。</b></li>
+    <li><b>证伪</b>：AP2701 收盘站上 <b>5942</b>（上轮 P-20261022-010 设定的认错位，≈10-21 收盘 5984 上方）→ 短期空头结构瓦解；跌破 5220（2703 现价）→ 曲线整体下移，需重估。</li>
+  </ul>
+</div>
+
+<div class="card"><h3>共识矩阵定位（第 5 步五问）</h3>
+<p><b>①可预测性=低</b>（商品 60 日方向评级"低"→置信度硬上限 65；本轮 62 未触顶）。<b>②regime=弱势市</b>（MA5&lt;MA10&lt;MA20&lt;MA60&lt;MA120 空头排列，单合约分位 0.54%，连续 5 阴）。<b>③方向一致性</b>=本框架"偏空"与外部机构共识（"新季增产、弱势寻底"）<b>高度一致 → 方向已被定价 → 无 alpha</b>，故仓位从"标准仓"降至<b>"零仓（AP2701）+ 条件仓（AP2705 待 1 月）"</b>。<b>④反三情景</b>=主情景"阴跌至 1 月"、次情景"11 月超跌反弹至 5760-5942"、尾部"入库不及预期→V 型修复 6000+"。<b>⑤独立性</b>=核心增量全部来自框架自算：入库率法 825–877 万吨、交割成本双口径（A 2.77 元/斤／B 6,444–7,544）、年化租 +2.4%／−35.9%、01-03 制度价差 322 点、σ 与分位重算。<b>外部只取事实数字，不取结论</b>。</p></div>
+
+<div class="card"><h3>数据说明（机读声明）</h3>
+<p>数据日=<b>2026-10-26</b>（周一·交易日·<b>已收盘</b>）。时效六查=6/6；准确五校=5/5；<b>口径修正=7 项</b>；<b>剔除点=9 条</b>；<b>作废结论=2 条</b> → 置信度上限 100（实际受"可预测性=低"约束于 65）。</p>
+<p><b>口径双列/三列</b>：①AP2701 收盘 5542（新浪日 K，单源 T1；东财昨收 5725 与之衔接一致）；②产量 Mysteel 4062 万吨（+18.37%）vs 卓创 4008 万吨（+14.8%），<b>两口径并列不混用</b>，入库量两种口径分别算出 825／814 万吨；③<b>AP0 连续合约 2026 年高点 10753 为换月拼接伪值，已作废</b>，单合约真实高点为 AP2701 8672（2026-03-19）。</p>
+<p><b>证据分级</b>：T1=交易所日 K／新浪期货日线／郑商所合约规则；T2=席位排名（郑商所官网 412 反爬，为东财转述）／现货报价行业媒体／Mysteel 产量预估；T3=自媒体定性词（"崩盘""抄底"）→ 一律进剔除制，<b>不作支点</b>。</p>
+<p><b>数据缺口（如实登记）</b>：①郑商所注册仓单张数未获 T0 实测（官网 404/412，WebFetch 返回"当日无数据"）→ 交割压力只能用持仓与价差间接推断；②冷库入库量为 2 个年度实测点（2023 950.37／2024 813.44／2025 698.42 万吨），2026 为自算估计；③无产区天气 T0 数据，天气叙事仅作舆情。</p></div>
+</section>
+
+<section class="block">
+<h2>👥 散户/大户持仓比例（前 20 席位·期货必含）</h2>
+<table>
+<tr><th>项目</th><th>数值</th><th>口径与读法</th></tr>
+<tr><td>AP2701 前 20 席位空单</td><td class="down">110,016 手</td><td>占主力持仓 164,206 的 <span class="warn">67.0%</span>；占全品种总持仓 246,255 的 <span class="warn">44.7%</span>——<b>两个口径必须分开说</b></td></tr>
+<tr><td>前 20 净空</td><td class="down">−2,732 手</td><td>占前 20 双边总量 216,825 手的 <span class="gold">1.26%</span></td></tr>
+<tr><td>净空/双边总量判据</td><td class="gold">&lt;2% → 无方向性押注</td><td><b>闸门 6 触发</b>：不得把"空头占 63%"当利空证据</td></tr>
+<tr><td>主力合约持仓</td><td>164,206 手</td><td>10-22 175,876 → 10-23 159,769 → 10-26 164,206，<b>减仓下跌后小幅回补</b></td></tr>
+<tr><td>主力成交/持仓</td><td class="warn">1.98</td><td>投机度极高（&gt;1.5 即日内主导）；10-22 曾达 2.59</td></tr>
+<tr><td>AP2701 占全品种持仓</td><td>66.7%</td><td>单合约吸走三分之二资金，2703/2705 流动性被抽干</td></tr>
+</table>
+<p class="muted"><b>结构判读（红队核心修正）</b>：空头高度集中于前 20（67%），多头分散在散户——这是<b>挤压结构（squeeze-prone）</b>而非趋势结构。趋势结构的特征是"多空同步增仓、净空扩大"；本轮净空仅 1.26%，且 10-23 减仓 1.6 万手伴随价格下跌 = <b>多头止损离场、空头同步兑现</b>，不是空头建仓。因此席位数据<b>不能作为方向证据</b>，只能作为"若反弹则挤压风险高"的风险提示。上轮"空头占 63%"的表述口径有误（63% 应为主力合约口径 62.6%，而非全品种），本轮已双列。</p>
+
+<div class="chart-box"><canvas id="c8"></canvas><div class="cap">图 8：AP2701 持仓量与收盘价（10-15～10-26）｜10-22 放量 45.5 万手、持仓冲至 175,876 后 10-23 骤降至 159,769（−1.6 万手）——多头止损离场；10-26 价格再跌 3.20% 但持仓回升 4,437 手，空头未加仓、多头试探</div></div>
+<script>drawBar('c8', ["10-15","10-16","10-19","10-20","10-21","10-22","10-23","10-26"], [{label:'持仓量(万手)',data:[16.10,16.94,17.12,16.77,16.94,17.59,15.98,16.42],color:'#4a9eff'},{label:'成交量(万手)',data:[22.02,24.62,27.84,24.63,33.70,45.54,27.48,32.49],color:'#ff9f43'}]);</script>
+</section>
+
+<section class="block">
+<h2>📰 新闻背景与舆情（舆情样本·非支点）</h2>
+<div class="card">
+<h3>三条主线（数据日 2026-10-26）</h3>
+<p><b>①新季增产已从"预估"进入"上市验证"</b>：Mysteel 10 月预估全国产量同比 <span class="down">+18.37%</span>、卓创 <span class="down">+14.8%</span>，两口径均指向"恢复性大年"。10 月新果集中下树，山东栖霞 80# 一二级现货报价 2.70–3.00 元/斤，同比偏低。<b>②入库进度是唯一还没落地的变量</b>：入库高峰在 10 月下旬–11 月中旬，当前入库率尚未公布；上年入库 698.42 万吨为近三年最低，本年若回到 20.3–21.6% 的历史中枢，对应 <span class="gold">825–877 万吨</span>——<b>这是本报告唯一自算的核心数字</b>。③<b>期货已提前定价</b>：AP2701 自 9-09 的 7546 跌至 5542（−26.6%），10 月单月 −19.1%，跌速快于现货，基差走正（期货贴水现货折盘面）。</p>
+<p><b>行业定性词按剔除制处理</b>："崩盘""见底""政策托市""果农惜售"等表述一律<b>不作分析支点</b>，仅由情绪面第 14 席采样计温。可机械验证的事实只有：产量预估、入库量、现货报价、持仓、价差。</p>
+</div>
+
+<div class="chart-box"><canvas id="c3"></canvas><div class="cap">图 3：AP2701 单合约月末收盘（2026-01～10）｜1 月 8157 → 3 月 8603（盘中高 8672，3-19）→ 10 月 5542，<b>自高点 −36.1%</b>（单合约口径，剔除换月污染）。4-9 月横盘 7,400-7,700，<b>9 月起破位，10 月单月 −19.1%</b></div></div>
+<script>drawLine('c3', ["01-30","02-27","03-31","04-30","05-29","06-30","07-31","08-31","09-30","10-26"], [{label:'AP2701 月末收盘',data:[8157,8316,8603,7603,7540,7708,7614,7401,6854,5542],color:'#ff4d4f'}]);</script>
+</section>
+
+<section class="block">
+<h2>📈 蔡森·技术形态（A/B/K 三招）</h2>
+<div class="card"><h3>结论（置信度 72）｜上轮回应：<span class="gold">修正</span></h3>
+<p><b>空头结构完整，但已进入"最后一跌"区，做空的赔率不再支持。</b></p>
+<p><b>A 招·形态</b>：9-09 的 7546 为下跌起点。<b>关键事实修正：10 月没有任何跳空缺口</b>——10-14 单日 <span class="down">−7.44%</span>（开 6744 = 昨收，盘中崩至 6240）、10-22 单日 <span class="down">−4.68%</span>（开 5984 = 昨收，盘中至 5585）、10-26 <span class="down">−3.20%</span>，<b>三次暴跌全部是"平开+盘中崩塌"，说明是持续抛压而非恐慌跳空</b>。全合约 183 个交易日中真实跳空仅 <b>6 次</b>（5 次在 1-2 月上市初期流动性不足时，1 次 2026-09-17 向下 26 点），<b>对形态判读无意义——本席初稿曾把"10-14/10-22 的暴跌"误写成"跳空缺口"，已撤回</b>。均线：MA5 5760 &gt; 现价 5542，MA5&lt;MA10&lt;MA20&lt;MA60&lt;MA120 <b>完全空头排列</b>，现价距 MA20 <span class="warn">−14.4%</span>、距 MA60 <span class="warn">−22.2%</span>、距 MA120 <span class="warn">−24.5%</span>——<b>偏离度已达 2026 年极值</b>。</p>
+<p><b>B 招·位置</b>：单合约区间 8672（3-19）→ 5542（今日），<b>区间分位 0.00%、排名分位 1/184=0.54%</b>——<b>今日即为上市以来最低收盘</b>。位置轴 M-H3 三口径：AP2701 单合约 0.0%／AP0 连续（已修正换月）22.2%／5 年历史 21.7%。<b>三个口径给出完全不同的"便宜程度"</b>，故位置不能单独作为做多理由（M-H17 位置三口径闸门：三口径不一致→位置论据作废）。</p>
+<p><b>K 招·神奇 13 节拍</b>：下跌节拍在 <span class="gold">09-30</span> 完成 13 计数（衰竭信号），此后价格<b>再跌 19.1%</b>（6854→5542），计数延续至 <b>25</b> 未重置。<b>13 节拍在本轮是反指——这是必须写进报告的方法论失效记录</b>，不能拿"13 已到=该反弹"当买点依据。向上节拍当前为 <b>0</b>（5 连阴），闯关阈值：10-27 收 &gt;5585、10-28 收 &gt;5656、10-29 收 &gt;5789。</p>
+<p><b>量价仓</b>：10-22 放量 <b>45.5 万手（前 20 日均量 17.0 万手的 2.68 倍）</b>下破 5704，且持仓冲至 <b>175,876 手（合约上市以来最高）</b>——<b>放量 + 增仓 + 破位 = 有效破位</b>；10-23 缩量 27.5 万手小反弹至 5725（未过 5789）为<b>反抽确认压力</b>，持仓骤降 1.6 万手；10-26 再放量 32.5 万手跌 3.20%，<b>持仓仅 +4,437 手</b>——空头未加仓、多头砍仓，<b>被动下跌而非主动做空</b>。这是"空头趋势成立但空头动能衰竭"的典型组合。</p>
+</div>
+
+<div class="chart-box"><canvas id="c1"></canvas><div class="cap">图 1：AP2701 收盘价实际线（红）＋ 预测路径三件套（中枢金虚线／上下界灰虚线）＋ 上轮证伪位 5942（橙点线）｜<b>叠加神奇 13 节拍</b>（绿=下跌计数，紫=上涨计数，仅显示 ≥5）｜2026-08-17～10-26 实际 ＋ 10-27～2027-01-08 预测</div></div>
+<script>
+function magic13(closes, highs, lows){
+  const n = closes.length;
+  const up = new Array(n).fill(0), dn = new Array(n).fill(0);
+  for(let i=4;i<n;i++){
+    up[i] = closes[i] > closes[i-4] ? up[i-1]+1 : 0;
+    dn[i] = closes[i] < closes[i-4] ? dn[i-1]+1 : 0;
+  }
+  function marks(cnt){
+    const m = [];
+    for(let i=4;i<n;i++){
+      if(cnt[i]===13){ for(let k=0;k<13;k++) m.push([i-k, 13-k]); }
+    }
+    const L = cnt[n-1];
+    if(L>=5 && L<=12){ for(let k=0;k<L;k++) m.push([n-1-k, L-k]); }
+    return m;
+  }
+  return {up: marks(up), dn: marks(dn), upCnt: up, dnCnt: dn, highs: highs || closes, lows: lows || closes};
+}
+function magic13Plugin(m13, opts){
+  opts = opts || {};
+  const upC = opts.upColor || '#e879f9';
+  const dnC = opts.dnColor || '#3fb950';
+  const upF = opts.upFactor || 1.02;
+  const dnF = opts.dnFactor || 0.98;
+  const minShow = opts.minShow != null ? opts.minShow : 5;
+  return {id:'magic13', afterDatasetsDraw(chart){
+    const ys = chart.scales.y, xs = chart.scales.x;
+    if(!ys || !xs || !m13) return;
+    const ctx = chart.ctx, area = chart.chartArea;
+    ctx.save();
+    ctx.font = 'bold 10px -apple-system,"PingFang SC",sans-serif';
+    ctx.textAlign = 'center';
+    ctx.globalAlpha = .95;
+    m13.up.forEach(function(p){
+      if(p[1] < minShow) return;
+      const px = xs.getPixelForValue(p[0]);
+      const py = ys.getPixelForValue(m13.highs[p[0]] * upF);
+      if(px < area.left || px > area.right || py < area.top) return;
+      ctx.fillStyle = upC; ctx.fillText(String(p[1]), px, py - 2);
+    });
+    m13.dn.forEach(function(p){
+      if(p[1] < minShow) return;
+      const px = xs.getPixelForValue(p[0]);
+      const py = ys.getPixelForValue(m13.lows[p[0]] * dnF);
+      if(px < area.left || px > area.right || py > area.bottom) return;
+      ctx.fillStyle = dnC; ctx.fillText(String(p[1]), px, py + 10);
+    });
+    ctx.restore();
+  }};
+}
+var C1D = ["08-17","08-18","08-19","08-20","08-21","08-24","08-25","08-26","08-27","08-28","08-31","09-01","09-02","09-03","09-04","09-07","09-08","09-09","09-10","09-11","09-14","09-15","09-16","09-17","09-18","09-21","09-22","09-23","09-24","09-28","09-29","09-30","10-08","10-09","10-12","10-13","10-14","10-15","10-16","10-19","10-20","10-21","10-22","10-23","10-26"];
+var C1C = [7576,7519,7478,7452,7400,7351,7330,7321,7314,7505,7401,7398,7367,7396,7375,7433,7475,7546,7520,7465,7436,7388,7286,7150,7183,7104,7084,7112,7076,6986,6952,6854,6898,6929,6740,6744,6242,6121,5998,5881,5846,5984,5704,5725,5542];
+var C1H = [7595,7609,7550,7508,7455,7465,7380,7377,7398,7515,7549,7460,7428,7418,7425,7478,7498,7631,7571,7550,7535,7451,7424,7260,7288,7199,7100,7144,7182,7096,7003,6952,6927,6997,6979,6773,6744,6280,6184,6065,5967,6050,5996,5789,5747];
+var C1L = [7548,7506,7461,7445,7350,7331,7290,7295,7307,7311,7388,7342,7344,7336,7369,7362,7438,7478,7504,7443,7419,7362,7275,7046,7127,7083,7004,7063,7060,6918,6891,6765,6724,6810,6719,6626,6240,6113,5992,5827,5811,5847,5585,5656,5503];
+var C1F = ["10-27","11-03","11-10","11-17","11-24","12-01","12-08","12-15","12-22","12-29","01-08"];
+var C1FC = [5520,5480,5450,5420,5400,5370,5340,5320,5300,5290,5280];
+var C1FU = [5620,5650,5660,5670,5680,5690,5700,5710,5720,5730,5740];
+var C1FL = [5420,5330,5270,5230,5210,5190,5170,5160,5150,5140,5130];
+(function(){
+  var labels = C1D.concat(C1F);
+  var pad = function(n){ var a=[]; for(var i=0;i<n;i++) a.push(null); return a; };
+  var n = C1C.length;
+  var actual = C1C.concat(pad(C1F.length));
+  var center = pad(n-1).concat([C1C[n-1]]).concat(C1FC);
+  var upper  = pad(n-1).concat([C1C[n-1]]).concat(C1FU);
+  var lower  = pad(n-1).concat([C1C[n-1]]).concat(C1FL);
+  var fals   = labels.map(function(){ return 5942; });
+  var m13 = magic13(C1C.concat(C1FC), C1H.concat(C1FU), C1L.concat(C1FL));
+  drawLine('c1', labels, [
+    {label:'AP2701 实际收盘', data:actual, color:'#ff4d4f'},
+    {label:'预测中枢', data:center, color:'#ffd166', borderDash:[6,4]},
+    {label:'预测上界', data:upper, color:'#8b98a5', borderDash:[3,3]},
+    {label:'预测下界', data:lower, color:'#8b98a5', borderDash:[3,3]},
+    {label:'证伪位 5942', data:fals, color:'#ff9f43', borderDash:[2,4]}
+  ], {plugins:[magic13Plugin(m13)]});
+})();
+</script>
+<p class="muted"><b>图 1 读法</b>：预测路径给的是<b>"阴跌到 1 月"的中枢</b>（5542 → 5280），上界 5740 对应"11 月超跌反弹"，下界 5130 对应"12 月抛售加速"。<b>中枢斜率为 −0.4%/月，明显缓于 10 月的 −19.1%</b>——即本框架认为<b>主跌段已完成，剩下的是磨</b>。绿字为下跌节拍计数：09-30 完成 13 后继续数到 25，说明强趋势中 13 计数失效；紫字（上涨计数）本轮未出现 ≥5。</p>
+</section>
+<section class="block">
+<h2>🐦 笨鸟·数据拆解（四层：数据→传导链→反常信号→结论）</h2>
+<div class="card"><h3>结论（置信度 72）｜上轮回应：<span class="gold">修正</span></h3>
+<p><b>供给端是"确定性利空"，需求端是"不可测"，两者相加不等于"继续暴跌"。</b></p>
+<p><b>第一层·数据</b>：产量 Mysteel 4062 万吨（+18.37%）／卓创 4008 万吨（+14.8%）；上年定产 3431.6 万吨。两源<b>对上年基数的差异仅 0.2%</b>，对增量的差异来自本年估产口径（Mysteel 更激进）——<b>这是本框架唯一可以自证的交叉验证</b>。入库：2023 950.37／2024 813.44／2025 698.42 万吨，<b>入库率 20.35%–21.6% 高度稳定</b>。</p>
+<p><b>第二层·传导链</b>：增产 18% → 入库量 698→825-877 万吨（+18%～+26%）→ 冷库容容载率上升 → 12 月至次年 1 月<b>果农/贸易商现金流抛售</b> → 现货跌 → 期货贴水收敛或跟跌。链条每一环都有历史对应，<b>但时滞 2-3 个月</b>（M-T2 一年生作物时滞）。</p>
+<p><b>第三层·M4 数据反常信号（三条）</b>：</p>
+<p>①<b>期货跌速远快于现货</b>。10 月期货 −19.1%，同期栖霞现货 2.70–3.00 元/斤（折盘面 5400–6000）几无变动 → <b>期货已从升水转深贴水 −6.1%～−14.7%</b>。反常点：<b>若是"现货要跌"，期货贴水现货是合理的；但贴水 14.7% 意味着市场已把"现货跌 15%"提前定价</b>——继续做空等于赌"现货跌得比 15% 更多"。</p>
+<p>②<b>持仓不增反降</b>。10-22 放量破位时持仓 175,876（历史高位），10-23 骤降至 159,769（−9.2%）。<b>破位下跌伴随持仓大减 = 多头认输离场，不是空头建仓</b>。真正的趋势下跌应"价跌仓增"。</p>
+<p>③<b>01-03 价差已达 322 点</b>，而 12 月中位月度跌幅仅 −3.28%（≈182 点）。<b>制度性折价（01 合约自然人不能交割）已经是季节性跌幅的 1.77 倍</b>——两个因素在同一方向叠加且被分别定价，<b>无法再分离归因</b>。</p>
+<p><b>第四层·结论</b>：供给利空<b>确定但已定价</b>；需求不可测；期货深贴水 + 持仓减少 + 制度折价三重信号共同指向"<b>主跌段结束、进入磨底</b>"。<b>偏空方向保留，做空赔率不保留</b>。</p>
+</div>
+<div class="evidence">关键证据：双源上年基数差 0.2%（自证交叉验证）；入库率 20.35%–21.6% 稳定 3 年；期货贴水现货 6.1%–14.7%；10-23 持仓 −9.2%；01-03 价差 322 = 12 月中位跌幅 1.77 倍。</div>
+<div class="falsify"><b>证伪条件</b>：①11 月中旬入库量实测 &gt;950 万吨（入库率 &gt;23.4%，历史新高）→ 供给压力超预期，贴水合理、继续看空；②入库量 &lt;800 万吨（入库率 &lt;19.7%）→ 供给利空被高估，贴水过度，<b>翻多</b>；③12 月现货报价跌破 2.50 元/斤 → 贴水被证明是"先知"，目标下移 4800。</div>
+</section>
+
+<section class="block">
+<h2>🔗 白毛（serenity）·供应链瓶颈五步法</h2>
+<div class="card"><h3>结论（置信度 58）｜上轮回应：<span class="purple">推翻</span>（原"冷库爆库→逼仓下跌"叙事不成立）</h3>
+<p><b>苹果没有"卡点"，所以没有"瓶颈交易"。</b>五步法逐条检验：</p>
+<p><b>①找卡点</b>：苹果是<b>可储存、可替代、无技术壁垒</b>的农产品，冷库是通用资产（全国容载率常年 60-70%，非稀缺），不存在"某环节产能刚性"的卡点。<b>唯一硬约束是"冷库货 5 月必须清库"</b>（气调库最长存到次年 5-6 月），这是<b>时间约束</b>而非产能约束。</p>
+<p><b>②证据等级</b>：入库量 T2（行业机构预估，非实测）；冷库容载率 T3（无 T0 数据）；仓单 T0 <b>缺失</b>（郑商所官网 404/412）。<b>三步证据等级均未达 T1，故本席置信度最低（58）</b>。</p>
+<p><b>③Buffett 质量门</b>：<b>不通过</b>。苹果种植极度分散（数百万农户）、无定价权、无品牌溢价、产品同质——<b>不具备"护城河"型做多标的特征</b>；作为做空标的也缺少"财务恶化→被迫抛售"的强制机制（农户可自存、可转销、可加工）。</p>
+<p><b>④时间窗</b>：<b>这是本席唯一有价值的输出</b>。冷库货的强制清库窗口 = <b>次年 1 月至 4 月</b>；其中<b>1 月中下旬是果农现金流最紧的时点</b>（春节前备货结束、还贷、下一季农资采购）——<b>真实抛售压力在 1 月，不在 12 月</b>。12 月是"春节备货"旺季，现货往往抗跌。</p>
+<p><b>⑤反向验证</b>：若"爆库"叙事为真，应看到 ①仓单激增 ②近月大幅贴水远月 ③现货恐慌报价。实际：①仓单数据缺失；②<b>近月 2611（6780）远高于远月 2701（5542），是 backwardation 不是 contango</b>；③现货 2.70–3.00 元/斤平稳。<b>三条反向验证全部不支持"爆库逼仓"，故推翻该叙事</b>。</p>
+</div>
+<div class="evidence">关键证据：冷库为通用资产、非稀缺卡点；清库硬约束 5 月；近月 2611 6780 &gt; 远月 2701 5542（backwardation）；现货平稳。</div>
+<div class="falsify"><b>证伪条件</b>：①仓单实测单周增 &gt;5,000 张 → 交割压力真实，backwardation 将转 contango，做空逻辑重新成立；②1 月中旬现货跌破 2.40 元/斤 → 清库压力兑现，目标下移 4700；③冷库容载率公布 &gt;85% → 爆库叙事复活。</div>
+</section>
+
+<section class="block">
+<h2>🎯 Mi姐·交易战术（三周期共振 × 资金筹码 × 情绪 × 仓位矩阵）</h2>
+<div class="card"><h3>结论（置信度 80）｜上轮回应：<span class="gold">修正</span></h3>
+<p><b>三周期全部向下，共振成立——但共振的是"下跌趋势"，不是"做空机会"。</b></p>
+<p><b>①三周期</b>：日线 5 连阴、空头排列、跌破所有均线 → <b>空</b>；周线 10-16 5998 → 10-23 5725（<span class="down">−4.55%</span>）→ 10-26 5542（<span class="down">−3.20%</span>），两周累计 <span class="down">−7.60%</span>，<b>周线三连阴</b> → <b>空</b>；月线 10 月 −19.1%，为 2026 年最大单月跌幅 → <b>空</b>。<b>三周期同向 → 共振做空？不。因为共振已在末端。</b></p>
+<p><b>②资金筹码</b>：持仓 164,206（10-22 峰值 175,876），<b>减仓 6.6%</b>；成交/持仓 1.98（投机度极高）；前 20 净空仅 1.26%（无方向押注）。<b>筹码结构 = "多头砍仓离场 + 空头兑现"，不是"空头建仓"</b>。</p>
+<p><b>③情绪</b>：第 14 席采样 65%（偏悲观但未极端），<b>未达 80% 的极端反转阈值</b>，也无"恐慌抛售"特征。</p>
+<p><b>④仓位决策矩阵</b>：</p>
+<table>
+<tr><th>维度</th><th>状态</th><th>矩阵输出</th></tr>
+<tr><td>趋势</td><td class="down">三周期空</td><td>方向：空</td></tr>
+<tr><td>位置</td><td class="warn">分位 0.54%（极低）</td><td>赔率：差（下方空间被压缩）</td></tr>
+<tr><td>波动</td><td>σ20 2.136% / σ60 1.505%</td><td>止损需 &gt;1.5σ = 3.2%（否则被噪声打掉）</td></tr>
+<tr><td>时间</td><td class="warn">AP2701 距死线 47 交易日</td><td><b>只减不加</b></td></tr>
+<tr><td>制度</td><td class="warn">01-03 价差 +322</td><td>做空已收 322 点预付租金</td></tr>
+</table>
+<p><b>⑤M-H21 死线闸门</b>：AP2701 自然人最后交易日约 <b>2026-12-31（66 日历天 / 47 交易日）</b>→ 落入"<b>只减不加</b>"区间；AP2705 死线 <b>2027-04-30（132 交易日）</b>→ <b>可新建</b>。</p>
+<p><b>⑥结论</b>：<b>方向 80 分，执行 0 分</b>。Mi姐原话：「<b>趋势对了，但你在一个赔率 0.5:1、时间只剩 47 天、还预付了 322 点租金的标的上做空——这是把 80 分的判断做成 20 分的交易。</b>」<b>操作：AP2701 零仓；AP2705 等 1 月中下旬右侧信号。</b></p>
+</div>
+<div class="evidence">关键证据：三周期共振（日/周/月均空）；减仓 6.6%；净空 1.26%；分位 0.54%；死线 47 交易日；01-03 价差 322。</div>
+<div class="falsify"><b>证伪条件</b>：①AP2705 收盘站上 5357（1.5σ60）连续 3 日 → 空头结构瓦解，放弃做空；②1 月中旬 AP2705 持仓 &lt;2 万手 → 流动性不足，换 2707；③建仓后 10 日内价格未创新低且持仓转增 → 时间止损。</div>
+</section>
+
+<section class="block">
+<h2>🌡️ 情绪面·大众情绪采集（第 14 席）</h2>
+<div class="card"><h3>结论（置信度 65%）｜上轮回应：<span class="gold">修正</span></h3>
+<p><b>情绪温度 65%（7 档中的"偏冷"档），净情绪分 −1.2，未达极端。</b></p>
+<p><b>①采样</b>：行业媒体标题 32 条、期货公司日评 9 篇、股吧/论坛帖 200+（10-20～10-26）。<b>②温度计</b>：看空表述占比 58%、看多 21%、中性 21% → 净情绪 −37%（映射为温度 65%）。<b>③五阶段定位</b>：<b>"下跌—悲观"阶段</b>，尚未进入"绝望/投降"（投降特征：看多占比 &lt;10%、成交骤降、媒体停止报道）。<b>④情绪—行为背离检验</b>：<b>存在背离</b>——情绪偏空但持仓仅减 6.6%、成交反而放大（32.5 万手），说明<b>空头情绪尚未转化为空头仓位</b>，多数是"嘴空手不空"。<b>⑤结论</b>：情绪面<b>不支持"底部已到"</b>（未极端），也<b>不支持"加速下跌"</b>（未恐慌）。中性，仅作温度参考，<b>不作方向支点</b>。</p>
+</div>
+<div class="falsify"><b>证伪条件</b>：①看多占比跌破 10% + 成交骤降至 15 万手以下 → 进入投降阶段，反向做多信号；②看空占比破 75% + 论坛出现"抄底"帖激增 → 情绪极端，警惕反弹。</div>
+</section>
+
+<section class="block">
+<h2>🔵 杨世光·宏观六步法推导</h2>
+<div class="card"><h3>结论（置信度 80）｜上轮回应：<span class="gold">修正</span></h3>
+<p><b>苹果是"汇率免疫 + 宏观绝缘"品种，宏观六步法在本品种上只能给"无外部推力"的结论——这本身就是重要结论。</b></p>
+<p><b>①汇率通道</b>：苹果<b>几乎不进出口</b>（出口量占产量 &lt;2%，且以鲜果边贸为主），人民币升值/贬值对 AP 无实质传导。按《人民币升值对国内商品期货的传导与品种清单》分类，苹果属<b>"国内定价、汇率中性"</b>池，与动力煤/螺纹钢同组。<b>→ 汇率维度：中性，权重 0</b>。</p>
+<p><b>②美元/大宗通道</b>：苹果不是美元计价商品，与 CRB 指数相关性历史 &lt;0.15。<b>→ 外盘维度：中性，权重 0</b>。</p>
+<p><b>③财政/信用脉冲</b>：化债期居民消费收缩 → 鲜果消费降级（高价果替代为低价果）→ <b>对优果（交割品）需求偏空，但幅度不可测</b>。卢麒元席已从制度角度覆盖，本席不重复计票。</p>
+<p><b>④季节性/天气</b>：<b>这是苹果唯一有效的宏观变量</b>。10 月新果下树期天气决定优果率；本年无极端天气报道（舆情层面），优果率正常 → <b>供给质量无意外</b>。</p>
+<p><b>⑤政策</b>：无收储、无补贴、无进口配额 → <b>政策维度空白</b>（对比玉米有中储粮）。这是苹果与玉米最大的结构差异：<b>苹果没有政策底</b>。</p>
+<p><b>⑥结论</b>：<b>宏观六步法在苹果上"六步皆空"——没有外部推力，价格完全由自身供需与制度（交割规则）决定。</b>因此本席<b>不为方向计票</b>，但给出一个关键判断：<b>没有政策底意味着下跌没有"硬地板"，同时也意味着不存在"政策托市"的向上期权</b>——波动率应低于有政策底的品种，事实上 σ60=1.505% 确实低于玉米（1.9%）。</p>
+</div>
+<div class="evidence">关键证据：出口占比 &lt;2%；与 CRB 相关性 &lt;0.15；无收储/无补贴/无配额；σ60 1.505% 低于玉米 1.9%。</div>
+<div class="falsify"><b>证伪条件</b>：①中国对苹果实施临时收储或出口补贴 → 政策底出现，逻辑重估；②人民币大幅贬值（&gt;8%）+ 出口订单激增 → 汇率通道打开；③主产区出现大范围霜冻/冰雹 → 供给质量冲击。</div>
+</section>
+
+<section class="block">
+<h2>🟣 卢麒元·制度结构推导（广义财政论 / 资本三流 / 明斯基）</h2>
+<div class="card"><h3>结论（置信度 68）｜上轮回应：<span class="gold">修正</span></h3>
+<p><b>苹果的核心制度矛盾不是"财政"，而是"交割制度"——这是本席对原框架的扩展。</b></p>
+<p><b>①广义财政论</b>：苹果不进入财政收支循环（无补贴、无收储），<b>财政脉冲对 AP 传导为 0</b>。但<b>农村现金流</b>是广义财政的末端：化债期地方财政收缩 → 农村基础设施与涉农补贴减少 → 农户现金流更依赖卖果收入 → <b>抛售更急、更早</b>。这是"财政→农户行为→抛压"的间接通道，<b>方向偏空</b>。</p>
+<p><b>②资本三流</b>：AP2701 持仓 164,206 手（单边 164 万吨，占产量 4.0%），<b>投机资金占比高</b>（成交/持仓 1.98）；但 10-23 减仓 1.6 万手说明<b>资金正在流出而非淤积</b>。<b>资本三流判读：不是"淤积型泡沫"，是"退潮型下跌"</b>——退潮型下跌的特点是"跌得快、止得也快"，不支持长期单边。</p>
+<p><b>③明斯基定位</b>：苹果是<b>现货融资</b>（冷库货质押）而非"投机融资"。冷库质押的现金流来自卖果，一旦价格跌破质押线，<b>银行会要求补保证金或强制出货</b>——这是<b>明斯基第二阶段（投机融资）的典型脆弱点</b>。若现货跌至 2.40 元/斤以下（质押线附近），可能出现<b>强制出货→现货加速下跌→期货跟跌</b>的正反馈。<b>这是本席唯一给出的下行加速情景</b>。</p>
+<p><b>④制度性折价（本席核心增量）</b>：郑商所苹果<b>自然人客户不能交割</b>，01 合约自然人须在最后交易日前平仓 → <b>01 合约天然带"多头被迫离场"折价</b>。当前 01-03 价差 +322 点（2701 高于 2703）正是这个折价的量化：<b>持多头到 12 月底必须平仓，所以 2701 相对 2703 有 322 点的"制度性溢价"（对多头是成本，对空头是收益前置）</b>。<b>做空 2701 的人，已经在入场时收下了这 322 点</b>——这正是"目标位 5220 无 alpha"的制度根源。</p>
+<p><b>⑤结论</b>：<b>方向偏空（财政末端 + 冷库质押脆弱性），但 01 合约的制度折价已被做空方提前收取，故 AP2701 做空无剩余收益</b>。下行加速的唯一触发是"现货跌破 2.40 元/斤引发质押强平"——<b>这是尾部情景，不是基准情景</b>。</p>
+</div>
+<div class="evidence">关键证据：单边持仓 164 万吨 = 产量 4.0%；成交/持仓 1.98；减仓 1.6 万手；01-03 价差 +322；自然人不可交割制度。</div>
+<div class="falsify"><b>证伪条件</b>：①郑商所调整苹果交割规则（放宽自然人限制或降低交割标准）→ 制度折价消失，价差收敛，做空逻辑重估；②现货跌破 2.40 元/斤 + 冷库质押强平传闻 → 下行加速情景启动，目标 4700；③涉农补贴大幅加码 → 农户现金流改善，抛压后移。</div>
+</section>
+<section class="block">
+<h2>🎪 期货团·13 位大师圆桌（第 11 席·三道闸门铁律）</h2>
+<div class="card"><h3>闸门一：一算账（A4 五层成本法 + A10 成本底四问）｜置信度 60｜上轮回应：<span class="purple">推翻</span></h3>
+<p><b>原"交割成本 5400–6000"被检查者裁定为"现货 ×2000 未含费用，与栖霞报价精确重合"→ 整条剔除。本席改用自列参数重算，并<b>双口径并列</b>。</b></p>
+<p><b>口径 A（经验关系：期货 ≈ 现货折算）</b>：历史上 AP 主力与栖霞 80# 一二级报价长期近似满足 <b>期货 = 现货元/斤 × 2000</b>（2026 年 8-9 月 AP2610 报 7,500-8,000，同期现货 3.5-4.0 元/斤，吻合）。按此口径，5,542 ÷ 2000 = <b>2.77 元/斤</b>，正处于 2.70–3.00 报价中枢 → <b>基差中性，既无贴水也无升水</b>。</p>
+<p><b>口径 B（1 月冷库货卖方交割成本，A4 五层）</b>：</p>
+<table>
+<tr><th>层</th><th>项目</th><th>自列参数</th><th>元/吨</th></tr>
+<tr><td>L1</td><td>新果收购价（10 月下树，80# 一二级）</td><td>2.70–3.00 元/斤 × 2000</td><td class="gold">5,400–6,000</td></tr>
+<tr><td>L2</td><td>冷库费（10 月入至 1 月出，0.08–0.12 元/斤·月 × 3）</td><td>0.24–0.36 元/斤</td><td>480–720</td></tr>
+<tr><td>L3</td><td>分选/包装/自然损耗（损耗率 8-12%）</td><td>0.20–0.30 元/斤</td><td>400–600</td></tr>
+<tr><td>L4</td><td>运输/入库/检验</td><td>0.05–0.08 元/斤</td><td>100–160</td></tr>
+<tr><td>L5</td><td>资金成本（3 个月，年化 4.5%，按 5,700 计）</td><td>—</td><td>64</td></tr>
+<tr><td colspan="3"><b>1 月冷库货交割成本合计</b></td><td class="gold"><b>6,444–7,544</b>（中值 6,994）</td></tr>
+</table>
+<p>AP2701 收 5542 → <b>贴水 −14.1%～−26.5%</b>（对中值 −20.7%）。</p>
+<p><b>两口径相差 8～11 个百分点，这个差值本身就是结论</b>：口径 A 说"价格公允"，口径 B 说"价格便宜 20%"。<b>无法判断哪个口径对，所以成本底既不能当买点、也不能当"贴水必收敛"的做多理由。</b></p>
+<p><b>A10 成本底有效性四问</b>：①<b>口径</b> ✗（两口径差 20pct，未收敛）；②<b>时间</b> ✗（1 月冷库货成本不适用于 10 月新果定价）；③<b>方向</b> ✗（若 1 月现货跌 20%，成本同步下移，成本底随之下降）；④<b>行为</b> ✗（无贸易商在 5,542 大量接货或仓单激增的证据）。<b>四问 0/4 通过 → 成本底不作买点，也不作做空障碍，仅作"区间参考"。</b></p>
+</div>
+
+<div class="chart-box"><canvas id="c4"></canvas><div class="cap">图 4：期限结构（2026-10-26 收盘）｜2611 6780（旧作尾、持仓仅 1,658 手）→ 2612 6091（17,965）→ 2701 5542（164,206）→ 2703 5220（27,025）→ 2705 5241（34,943）。<b>2701 处有明显制度凸起（比 2703 贵 322 点），2703-2705 近平价</b>。AP2704 报 5669 但持仓仅 458 手、非主力交割月，<b>按数据纪律剔除，不进曲线</b>（持仓量为另一量纲，已在括号内单列，不与价格同轴）</div></div>
+<script>drawBar('c4', ["AP2611","AP2612","AP2701","AP2703","AP2705"], [{label:'收盘价(元/吨)',data:[6780,6091,5542,5220,5241],color:['#8b98a5','#8b98a5','#ff4d4f','#1ec77a','#1ec77a']}]);</script>
+
+<div class="card"><h3>年化换月租（自算，含天数）</h3>
+<table>
+<tr><th>价差</th><th>价差点数</th><th>幅度</th><th>间隔</th><th>年化租</th><th>判读</th></tr>
+<tr><td>2612 → 2701</td><td class="down">−549</td><td class="down">−9.01%</td><td>46 天</td><td class="down">−71.4%/年</td><td>极陡 backwardation，新旧作断层</td></tr>
+<tr><td>2701 → 2703</td><td class="down">−322</td><td class="down">−5.81%</td><td>59 天</td><td class="down">−35.9%/年</td><td><b>01 制度性折价集中体现</b></td></tr>
+<tr><td>2703 → 2705</td><td class="up">+21</td><td class="up">+0.40%</td><td>61 天</td><td class="up">+2.4%/年</td><td><b>接近平价，做空无租金成本</b></td></tr>
+<tr><td>2701 → 2705</td><td class="down">−301</td><td class="down">−5.43%</td><td>120 天</td><td class="down">−16.5%/年</td><td>跨过 01 死线后的价值回归</td></tr>
+</table>
+<p class="muted"><b>读法</b>：曲线在 2701 处有<b>明显的"制度凸起"</b>——2701 比 2703 贵 322 点，而 2703 与 2705 几乎平价。<b>这个凸起不是供需，是交割规则</b>。做空 2701 的人在 5542 入场，但 2703 只值 5220，意味着<b>他要赚的 322 点已经"预支"给了多头（多头愿意为"不用交割"付溢价）</b>。<b>做空 2705 则没有这个问题：2705 与 2703 平价，租金成本仅 +2.4%/年，可忽略。</b></p>
+</div>
+
+<div class="card"><h3>闸门二：二查合约能不能做（M-H21 死线闸门 + 流动性门槛）</h3>
+<table>
+<tr><th>合约</th><th>收盘</th><th>持仓</th><th>成交</th><th>成交/持仓</th><th>距自然人死线</th><th>三问结论</th></tr>
+<tr><td>AP2701</td><td>5542</td><td>164,206</td><td>324,897</td><td>1.98</td><td class="warn">66 日历天 / 47 交易日</td><td class="warn">✗ 只减不加</td></tr>
+<tr><td>AP2703</td><td>5220</td><td>27,025</td><td>16,076</td><td>0.59</td><td>约 108 交易日</td><td class="warn">△ 流动性偏薄（成交仅主力的 4.9%）</td></tr>
+<tr><td>AP2705</td><td>5241</td><td>34,943</td><td>31,853</td><td>0.91</td><td class="cons">132 交易日</td><td class="cons">✓ 三问全过</td></tr>
+</table>
+<p><b>三问</b>：①<b>时间够不够</b>——AP2705 132 交易日，足够容纳"1 月建仓 → 3 月了结"；②<b>流动性够不够</b>——持仓 34,943、成交 31,853，日均成交为主力的 9.8%，<b>建 500 手以内无冲击成本</b>；③<b>租金贵不贵</b>——2703→2705 年化 +2.4%，<b>做空收租、成本可忽略</b>。<b>AP2701 三问 0/3 通过，AP2705 三问 3/3 通过。</b></p>
+</div>
+
+<div class="card"><h3>闸门三：三才谈方向（M-T1~M-T8 传导时滞与流动性门槛）</h3>
+<p><b>M-T2 时滞</b>：一年生作物，<b>供给冲击→价格 1 个作物年度内消化</b>；本年 10 月下树，冲击在 2027 年 1-4 月完全体现。<b>M-T7 投机度</b>：1.98（极高），价格由资金主导，<b>基本面信号需 2-3 个月才能压过资金噪声</b>。<b>M-T8 交割制度</b>：苹果交割标准品为 80# 一二级、色泽/硬度有硬性指标，<b>替代品升贴水复杂</b>——这是"期现价差不能用简单 ×2000 换算"的根本原因（本报告已按 L1-L5 五层重算）。</p>
+<p><b>三闸门全部通过后，方向才可谈</b>：闸门一（成本底四问 0/4 → <b>成本底不作支撑</b>）、闸门二（AP2701 0/3、AP2705 3/3 → <b>标的必须换</b>）、闸门三（时滞 2-3 月 → <b>窗口必须在 1 月后</b>）。<b>三道闸门联合输出的唯一可行方案：AP2705，2027 年 1 月中下旬建仓，方向空。</b></p>
+</div>
+
+<div class="chart-box"><canvas id="c5"></canvas><div class="cap">图 5：入库量三情景自算（万吨）｜入库率 20.3%／20.8%／21.6%（近三年区间）→ Mysteel 口径 825／845／877，卓创口径 814／834／867。<b>上年 698.42，前高 950.37</b>。红线 1000 万吨需入库率 24.6%，历史从未达到 → <b>"入库破千万吨"的看空阈值落在历史死区</b></div></div>
+<script>drawBar('c5', ["2023实测","2024实测","2025实测","2026E(20.3%)","2026E(20.8%)","2026E(21.6%)","1000万吨阈值"], [{label:'入库量(万吨)',data:[950.4,813.4,698.4,825,845,877,1000],color:['#8b98a5','#8b98a5','#8b98a5','#ff9f43','#ff9f43','#ff9f43','#ff4d4f']}]);</script>
+</section>
+
+<section class="block">
+<h2>🛡️ 风控终审·合约可用性与杠杆纪律</h2>
+<div class="card"><h3>结论（置信度 85）</h3>
+<table>
+<tr><th>项目</th><th>数值</th><th>纪律判定</th></tr>
+<tr><td>AP2701 单手保证金（按 12%）</td><td>约 6,650 元</td><td>—</td></tr>
+<tr><td>止损距离（1.5σ20）</td><td class="warn">3.20% = 178 点</td><td>止损 5720 已被 10-23 收盘 5725 擦过 → <b>2% 止损无效</b></td></tr>
+<tr><td>止损距离（1.5σ60）</td><td class="warn">2.26% = 125 点</td><td>在噪声带内（σ20 2.136%）→ <b>必被打掉</b></td></tr>
+<tr><td>红队复核的止损带宽</td><td class="warn">0.91σ～1.76σ</td><td><b>全部落在噪声带</b>——这是"方案不可执行"的技术证据</td></tr>
+<tr><td>AP2705 1.5σ60</td><td>2.21% = 116 点 → 5357</td><td class="cons">止损带宽 2.5σ = 193 点，可执行</td></tr>
+<tr><td>单笔风险预算（2% 账户）</td><td>止损 193 点 × 10 吨/手 = 1,930 元/手</td><td>可建 10 手/百万账户，<b>仓位合规</b></td></tr>
+<tr><td>流动性门槛</td><td>AP2705 日成交 31,853 手</td><td class="cons">建仓量 &lt;1% 日成交（318 手）无冲击</td></tr>
+</table>
+<p><b>风控裁定</b>：<b>AP2701 任何止损方案都不可执行</b>（止损带宽小于噪声带宽）；<b>AP2705 方案可执行</b>（止损 2.5σ、流动性充足、时间充裕）。<b>这不是"看空不做空"的托辞，是硬约束。</b></p>
+</div>
+</section>
+
+<section class="block">
+<h2>🔬 实证因果·因果链验证（E1–E9）</h2>
+<div class="card"><h3>结论：四条声称，<span class="warn">无一条达"中等因果"</span></h3>
+<table>
+<tr><th>假说</th><th>因果等级</th><th>关键检验</th><th>裁定</th></tr>
+<tr><td><b>H1</b> 增产 18.37% → 价格 −36%</td><td class="warn">弱因果</td><td>剔除换月后经济跌幅仅 <span class="gold">−23.7%</span>（8672→5542 为 −36.1%，其中 01 制度折价与换月贡献 −12.4pct）；隐含弹性 <span class="gold">−0.78</span>（产量 +18.37% → 价格 −23.7% 的经济跌幅需弹性 −1.29，实际 −0.78 <b>偏低</b>）</td><td><b>方向可信、量级不可信</b>；属"一致性检验"非"因果估计"</td></tr>
+<tr><td><b>H2</b> 入库量 → 12 月现货跌</td><td class="warn">数据不足</td><td>入库量实测仅 <b>3 个年度点</b>（950/813/698），且与产量<b>共线</b>（入库 = 产量 × 入库率，入库率内生于价格预期）</td><td><b>无法识别</b>；入库率不是外生变量</td></tr>
+<tr><td><b>H3</b> 12 月季节性下跌</td><td class="warn">不显著</td><td>n=8，均值 −3.59%，95%CI <span class="gold">[−7.60%, +0.42%]</span> <b>含 0</b>；1/8 上涨，双侧 p=0.070；Bonferroni×5 校正后 <span class="warn">p=0.352</span>；剔除 2023/2024 两年后均值 −1.48%、p=0.32</td><td><b>效应由两年驱动，不稳健</b>；不得作为做空依据</td></tr>
+<tr><td><b>H4</b> 冷库爆库 → 逼仓下跌</td><td class="warn">仅相关且算术矛盾</td><td>65%／−34%／300 万吨三者不能同时成立；一致解为 <b>349 万吨</b>（或上年占比 55.9%）</td><td><b>自相矛盾，整条作废</b></td></tr>
+</table>
+<p><b>多重检验校正</b>：本轮检验 5 个季节性假说（11/12/01/02/03 月），Bonferroni 阈值 α=0.01；12 月 p=0.070 <b>未过</b>，BH-FDR 亦未过。<b>统计功效</b>：n=8、效应量 d=0.75，功效仅 <b>0.42</b>——即使效应真实存在，也有 58% 概率检测不到。</p>
+<p><b>明确裁定</b>：「<b>12 月做空</b>」<span class="warn">数据不足（NO）</span>，降级为「<b>12 月不做多</b>」——后者只需"季节性不显著"，前者需要"季节性显著为负"，二者证据要求不同。<b>更干净的替代方案：1 月上旬 01 合约自然人出清后，在 AP2705 上按基本面方向建仓。</b>这样既避开换月污染，又避开流动性折价，还保留了基本面判断。</p>
+</div>
+<div class="evidence">关键证据：经济跌幅 −23.7%（剔除换月）；隐含弹性 −0.78；12 月 95%CI 含 0；Bonferroni p=0.352；统计功效 0.42；入库量仅 3 个年度点且与产量共线。</div>
+<div class="falsify"><b>证伪条件</b>：①2026 年入库量实测公布且 &lt;800 万吨 → H2 被否，供给利空高估；②2027 年 1 月 AP2705 与现货同步下跌（非期货单边）→ H1 升级为强因果；③再积累 3 年以上样本后 12 月季节性 p&lt;0.01 → H3 复活。</div>
+</section>
+
+<section class="block">
+<h2>🧮 全专家综合结论</h2>
+<div class="card"><h3>证据类型计票（置信度聚合）</h3>
+<table>
+<tr><th>证据类型</th><th>方向</th><th>关键依据</th><th>权重</th></tr>
+<tr><td>价量（蔡森）</td><td class="div">偏空但赔率耗尽</td><td>空头排列+5 连阴 vs 分位 0.54%+深贴水 15%；13 节拍失效</td><td>−1</td></tr>
+<tr><td>资金（席位+Mi姐）</td><td class="div">中性</td><td>净空 1.26%＜2% → 无方向押注；减仓 6.6% 而非增仓</td><td>0</td></tr>
+<tr><td>基本面（笨鸟+白毛）</td><td class="down">偏空</td><td>增产 18.37% 确定；入库 825–877 万吨；但基差中性（口径 A 2.77 元/斤）／贴水 14-27%（口径 B）</td><td>−1</td></tr>
+<tr><td>制度（卢麒元+期货团）</td><td class="div">偏空但已预支</td><td>01 制度折价 322 点已被做空方收取；成本底四问 0/4</td><td>0</td></tr>
+<tr><td>宏观（杨世光）</td><td>中性</td><td>六步皆空，汇率/外盘/政策全绝缘；无政策底</td><td>0</td></tr>
+<tr><td>情绪（第 14 席）</td><td>中性</td><td>65% 偏冷未极端；情绪-行为背离（嘴空手不空）</td><td>0</td></tr>
+<tr><td>实证因果</td><td class="warn">降级</td><td>四假说无一达中等因果；12 月做空 NO</td><td>−1（反向）</td></tr>
+</table>
+<p><b>合成</b>：7 类证据中 <b>4 类中性/降级、3 类偏空</b> → <b>方向偏空（置信度 62），但"偏空"与"可做空"是两件事</b>。<b>偏空的理由是基本面（增产+入库高）；不可做空的理由是价格已跌 36%、贴水 15%、制度折价被预支、止损带宽小于噪声带宽。</b></p>
+</div>
+
+<div class="chart-box"><canvas id="c11"></canvas><div class="cap">图 11：七类证据方向强度（<b>0-10 刻度，5=中性，&lt;5 偏空，&gt;5 偏多</b>）｜基本面 2（最强空：增产 18.37%+入库 825-877 万吨）／价量 3（趋势空但赔率耗尽）／制度 4（空但 322 点已预支）／资金 5（净空 1.26% 无押注）／宏观 5（六步皆空）／情绪 5（65% 未极端）／实证 6（对看空方向的反向修正）→ 合成"偏空但不可执行"</div></div>
+<script>drawRadar('c11', ['价量','资金','基本面','制度','宏观','情绪','实证'], [3,5,2,4,5,5,6], {color:'#ff9f43',label:'方向强度(5=中性)'});</script>
+
+<div class="card"><h3>核心矛盾与胜负手</h3>
+<p><b>核心矛盾</b>：<b>基本面的空（增产 18%）与价格的空（已跌 36%）不是同一个空。</b>前者是"应该跌"，后者是"已经跌了"。当价格跌幅（−36%）超过产量增幅（+18%）的 2 倍时，<b>做空的边际收益已接近零</b>。而做空 AP2705 到 4,850–5,150，等价于赌<b>"1 月现货跌至 2.43–2.58 元/斤"</b>（较当前中枢 2.85 跌 9.5–14.7%）——<b>这是一个需要基本面判断、而实证专家已裁定"无法识别"的判断</b>，故置信度只能给 62，不能给 75。</p>
+<p><b>三个胜负手</b>：①<b>入库量实测</b>（11 月中旬公布）——&lt;800 万吨则翻多，&gt;950 万吨则继续看空，800-950 之间无信号；②<b>现货是否跟随下跌</b>——若 12 月现货跌至 2.40-2.50 元/斤，贴水被证明是"先知"，AP2705 目标下移 4700；若现货抗跌至 2.70 以上，贴水收敛，反弹至 5700+；③<b>01 合约 12 月底的离场节奏</b>——若自然人集中平仓导致 2701 加速下跌，2703/2705 会被拖累（这是唯一"做空 2705 有 alpha"的路径）。</p>
+</div>
+
+<div class="card"><h3>操作时间表（含节点·可机械判定）</h3>
+<table>
+<tr><th>时段</th><th>动作</th><th>触发条件</th></tr>
+<tr><td>10-27 ～ 11-15</td><td class="warn"><b>零仓·观察</b></td><td>AP2701 不新建、不加仓；已有空单持有至 12 月中旬前了结</td></tr>
+<tr><td>11 月中旬</td><td>入库量首次实测 → 定方向</td><td>&lt;800 万吨→翻多；800-950→无信号；&gt;950→维持空</td></tr>
+<tr><td>11-15 ～ 12-15</td><td>观察 AP2701 能否站上 5942</td><td>收盘站上 5942 → 短期空头结构瓦解，放弃做空</td></tr>
+<tr><td>12 月中旬前</td><td class="warn">AP2701 老仓清零</td><td>自然人死线 2026-12-31 前 2 周必须离场</td></tr>
+<tr><td>2026-12-31 ～ 2027-01-08</td><td class="gold"><b>01 合约自然人出清窗口</b></td><td>观察 2701 是否出现"离场踩踏"；记录 01-03 价差是否收敛</td></tr>
+<tr><td>2027-01 中下旬</td><td class="gold"><b>AP2705 建仓（若条件成立）</b></td><td>①入库量 ≥825 万吨 ②AP2705 收盘 &lt;5357 ③现货跌破 2.60 元/斤 ④持仓 &gt;3 万手</td></tr>
+<tr><td>2027-02 ～ 03</td><td>持有 / 加仓</td><td>目标 4850-5150；每跌 100 点减 1/3</td></tr>
+<tr><td>2027-04-15 前</td><td>全部了结</td><td>AP2705 死线 2027-04-30，提前 2 周离场</td></tr>
+</table>
+</div>
+</section>
+<section class="block">
+<h2>🕵️ 检查者·外部结论剔除清单（第 15 席）</h2>
+<p><b>稽查口径</b>：把本报告所有"非本框架自算"的结论逐条溯源，标注 <b>保留（事实数据）／剔除（外部结论）／作废（推不出或自相矛盾）</b>。目标是回答一个问题：<b>删掉所有外部结论后，结论还站得住吗？</b></p>
+<table>
+<tr><th>#</th><th>外部表述</th><th>来源</th><th>处置</th><th>理由</th></tr>
+<tr><td>1</td><td>"新季增产 18.37%，价格将跌至 5000 以下"</td><td>行业媒体</td><td class="warn">数据保留／结论剔除</td><td>+18.37% 是 T2 事实（保留）；"跌至 5000 以下"是他人推论（剔除）</td></tr>
+<tr><td>2</td><td>"入库量将破 1000 万吨"</td><td>机构预估</td><td class="warn"><b>整条作废</b></td><td><b>预期冒充实测</b>；且方向映射反了——预期已被定价，兑现应中性、落空才利多；850-1000 灰区无定义</td></tr>
+<tr><td>3</td><td>"目标位 4901–4939"</td><td>机构研报</td><td class="warn"><b>无条件作废</b></td><td>建立在第 2 条被作废的预期之上，"推不出"</td></tr>
+<tr><td>4</td><td>"目标位 5220"</td><td>机构研报</td><td class="warn">降级为"参照"</td><td>5220 = AP2703 现价，<b>曲线已隐含，零 alpha</b>；收益封顶 5.81% &lt; σ20 9.81%</td></tr>
+<tr><td>5</td><td>"交割成本 5400–6000"</td><td>行业测算</td><td class="warn">剔除，改自算</td><td>实为现货 ×2000 未含费用，与栖霞报价精确重合；已按 A4 五层重算并双口径并列</td></tr>
+<tr><td>6</td><td>"12 月是主跌月，做空胜率高"</td><td>季节性研究</td><td class="warn">降级为"不做多"</td><td>n=8、95%CI 含 0、Bonferroni p=0.352、效应由 2023/2024 两年驱动</td></tr>
+<tr><td>7</td><td>"空头占 63%，空头主导"</td><td>财经媒体</td><td class="warn">口径作废</td><td>63% 应为主力合约口径 62.6%，非全品种；且净空仅 1.26%＜2% → 无方向押注</td></tr>
+<tr><td>8</td><td>"冷库爆库→逼仓下跌"</td><td>自媒体</td><td class="warn">整条作废</td><td>65%／−34%／300 万吨三者算术不能同时成立；一致解 349 万吨或上年占比 55.9%</td></tr>
+<tr><td>9</td><td>"果农惜售，价格有支撑"</td><td>行业媒体</td><td class="warn">剔除</td><td>无任何可验证数据（无量、无价、无库存）</td></tr>
+<tr><td>10</td><td>"苹果期货要跌破 4000"</td><td>自媒体</td><td class="warn">剔除</td><td>纯观点，无测算</td></tr>
+<tr><td>11</td><td>价格/持仓/成交/期限结构/产量预估/现货报价</td><td>T1/T2 事实源</td><td class="cons">保留</td><td>已附算式与口径复核</td></tr>
+</table>
+<p><b>独立性统计</b>：全部输入条目 <b>17</b> 条 → <b>独立推导 6 条</b>（入库量 825–877、交割成本双口径、年化租 4 档、σ/分位重算、01-03 制度价差 322、经济跌幅 −23.7%）、<b>剔除 9 条</b>、<b>作废 2 条</b>。</p>
+<p><b>回填测试</b>：剔除全部 9 条外部结论后，"<b>方向偏空、AP2701 不可执行、改 AP2705、窗口 1 月</b>"这一主判断仍由 6 路独立支撑（笨鸟入库量自算／期货团三闸门／Mi姐死线矩阵／卢麒元制度折价／白毛时间窗／蔡森赔率测算）→ <b>结论保留成立</b>。</p>
+<p><b>检查者特别提示（未被采纳但须记录）</b>：本报告<b>仍缺 3 项 T0 数据</b>——注册仓单、冷库容载率、产区天气。三项均无法从公开渠道获得（郑商所官网 404/412）。<b>这使"交割压力"与"质量风险"两条线无法闭环，是置信度压在 62 而非 70+ 的直接原因。</b></p>
+</section>
+
+<section class="block">
+<h2>🔴 红队·对抗性终审（第 13 席）</h2>
+<div class="card"><h3>裁定：<span class="down">方向置信度 +10，执行置信度 −40</span></h3>
+<p><b>净效果是"更看空、但更不该用这个方案去做"。</b>逐条攻击如下：</p>
+<p><b>①目标位 5220 = AP2703 现价 = 曲线已隐含 → 零 alpha。</b>从 5542 空到 5220，收益 5.81%；而 σ20 = 2.136%，20 日 1σ 波动 9.81%。<b>风险是收益的 1.7 倍，赔率 0.59:1。</b>这不是交易，是赌博。</p>
+<p><b>②11 月季节性 p=14.5%，纯噪声。</b>8 个样本里 6 个上涨，均值 +0.54%，与"随机"无区别。<b>12 月 1/8 上涨，双侧 p=0.070，Bonferroni 校正后 p=0.352</b>——在 5 个季节性假说里做多重检验，12 月连"名义显著"都算不上。</p>
+<p><b>③分位 0.5% 是 1/184 的算术恒等式，属循环论证。</b>价格创新低 → 分位必然 0% → 用"分位极低"论证"该反弹"是<b>用结论证明前提</b>。而 M-V2 前瞻回测显示"低于 MA60"条件下 20 日胜率 lift 为负——<b>"便宜"没有前瞻 edge</b>。</p>
+<p><b>④12 月"主跌"无法与 01 合约自然人强制离场折价相区分。</b>01-03 价差 −322（2701 高 2703 322 点）已达 12 月中位跌幅（−3.28% ≈ 182 点）的 <b>1.77 倍</b>。<b>12 月若真跌，你无法证明是"季节性"还是"制度折价兑现"——两个机制在同一方向、同一时间、同一合约上，不可识别。</b></p>
+<p><b>⑤决策规则阈值落在历史从未触及的死区。</b>本报告原设"入库 &gt;1000 万吨→看 5000 以下"，但 1000 万吨需入库率 24.6%，历史峰值 950.37 万吨对应 21.6%，<b>从未达到 24.6%</b>。而自算中心估计 825–877 万吨<b>落在 850–1000 的"无信号区"</b>——<b>规则设计出来就是为了永远不触发</b>，这是伪规则。</p>
+<p><b>⑥止损 2.0%–3.87% = 0.91σ–1.76σ，在噪声带内。</b>σ20 已 2.136%，任何小于 2σ 的止损都会被日内噪声打掉。<b>AP2701 的止损带宽物理上不可执行。</b></p>
+<p><b>⑦建议（红队原话）</b>：「<b>标的改为 AP2705（186 天）、窗口改为 2027 年 1 月中下旬果农现金流抛售期。</b>真实供需下跌窗口在 1 月，不在 12 月。AP2701 只作观察、不作交易。」</p>
+</div>
+<div class="falsify"><b>红队自设的证伪条件（若以下成立，红队认错）</b>：①12 月 AP2701 跌幅 &gt;5% 且 01-03 价差走阔 &gt;400 → 证明"季节性"确实独立于制度折价；②AP2705 在 1 月建仓后 10 日内亏损 &gt;2.5σ → 说明"1 月窗口"也是伪信号；③入库量实测 &lt;800 万吨 → 供给利空整体被推翻，红队"更看空"的判断错误。</div>
+</section>
+
+<section class="block">
+<h2>🔁 二次思考与事实核查（铁律·不限级别）</h2>
+<div class="card"><h3>A. 再思考一轮（改变了什么）</h3>
+<p><b>冷冻重读，抓出四处硬伤：</b></p>
+<p><b>①口径不一致（已修正）</b>：我最初对"AP0 2026 高点 10753"做了换月修正（改为单合约 8672），但<b>分位计算仍用未修正的 AP0</b>，得出"500/1000 日分位 0.2%/0.1%"。修正后应为 <b>22.2%/21.7%</b>——<b>差 100 倍</b>。<b>对高点做修正、对分位不做修正，是同一份报告里两套口径，属硬伤。</b>本轮全部改用单合约口径，并三口径并列。</p>
+<p><b>②范畴错误（已撤回）</b>：我曾用 Mysteel「+8.71%（对上年套袋估产）」去"修正"+18.37%，称"真实增产只有 8.7%"。<b>实证专家裁定：+18.37% 是供给同比（决定价格水平），+8.71% 是预测修正 forecast revision（决定价格变动/意外），是两个不同估计量，不可互替。</b>用 +8.71% 质疑 −36% 的"水平效应"属范畴错误。<b>本轮已撤回"真实产量增幅只有 8.7%"的表述。</b></p>
+<p><b>③重复计算（已修正）</b>：曾写"本周自 5998 跌至 5542，−7.6%"与"上周自 5998 起算 −4.6%"，<b>起点重复</b>。实际：上周 5998→5725（−4.55%）、本周 5725→5542（−3.20%），<b>−7.60% 是两周累计</b>。本轮已拆开表述。</p>
+<p><b>④循环论证（已剔除）</b>：曾用"分位 0.5% 极低 → 该反弹"作为做多理由。<b>价格创新低则分位必为 0，这是算术恒等式，不是证据。</b>已按红队裁定剔除。</p>
+<p><b>换轴重推（自下而上）</b>：从期限结构（2611 6780 / 2612 6091 / 2701 5542 / 2703 5220 / 2705 5241）、年化租（−71.4% / −35.9% / +2.4%）、制度折价（01-03 +322）、持仓（164,206，减仓 6.6%）、入库（825–877 万吨）反推 → <b>曲线在 2701 处有制度凸起、2703-2705 近平价</b> → <b>唯一"无租金成本 + 无制度折价 + 流动性充足"的做空标的是 AP2705</b>。与自上而下（增产 + 财政末端抛压 + 冷库质押脆弱 → 1 月抛售）<b>两路同向收敛于"1 月做空 AP2705"</b>。</p>
+<p><b>反问三句</b>：①<b>第一个崩塌的假设</b>="入库量 825–877 万吨"——若 11 月实测 &lt;800 万吨，整条空头逻辑崩塌；②<b>是否只挑顺眼数据</b>=否，同时保留"5 连阴+空头排列"（利空）与"基差中性/贴水 14-27%+减仓"（利多/中性）两组相反证据，并保留红队对自身结论的七条攻击；③<b>措辞里有无别人的话</b>="崩盘""逼仓""爆库"已全部按剔除制处理。</p>
+<p><b>改变了什么</b>：初判（数据刚齐时）为"AP2701 做空、目标 5000-6100、置信度 50"；经红队+检查者+实证三方后改为"<b>AP2701 零仓、改 AP2705、窗口 1 月中下旬、目标 4850-5150、置信度 62</b>"。<b>方向从 50 上调至 62（基本面自算支撑），执行从"可做"降为"不可做"（赔率/死线/止损三重约束）。</b></p>
+</div>
+<div class="card"><h3>B. 事实核查五类抽检</h3>
+<table>
+<tr><th>类型</th><th>抽检项</th><th>结果</th></tr>
+<tr><td>数字</td><td>AP2701 收 5542（新浪日 K，10-26）；持仓 164,206；成交 324,897；期限结构 5 档（2611 6780/2612 6091/2701 5542/2703 5220/2705 5241）；MA20 6476/MA60 7121/MA120 7343；σ20 2.136%/σ60 1.505%；入库 825–877（自算）；前 20 净空 2,732 手（东财转述 T2）</td><td class="cons">✅</td></tr>
+<tr><td>算式</td><td>5542/5725−1=−3.20% ✓；5725/5998−1=−4.55% ✓；5542/8672−1=−36.1% ✓；164,206/246,255=66.7% ✓；110,016/164,206=67.0% ✓；2,732/216,825=1.26% ✓；5542−5220=322 ✓；322/182=1.77× ✓；5241/5220−1=+0.40%，×365/61=+2.4%/年 ✓；5542/2000=2.77 元/斤 ✓；698.42/3431.6=20.35% ✓；1000/4062=24.6% ✓</td><td class="cons">✅</td></tr>
+<tr><td>时效</td><td>行情 10-26 收盘 ✓；期限结构 10-26 ✓；席位 10-22（T2，非当日，已标注）⚠️；产量预估 10 月（月度）✓；现货报价 10 月下旬（周频）✓；仓单<b>缺失</b> ❌</td><td class="warn">⚠️</td></tr>
+<tr><td>口径</td><td>AP2701 单合约 vs AP0 连续（换月污染已剔除，高点 10753 作废）✓；Mysteel 4062 万吨 vs 卓创 4008 万吨并列不混用 ✓；入库量双口径 825/814 万吨并列 ✓；交割成本双口径（A：2.77 元/斤；B：6,444–7,544）并列 ✓；AP2704 报 5669 但持仓仅 458 手，非交割月 → 剔除 ✓；"空头占 63%"改双口径 67.0%/44.7% ✓</td><td class="cons">✅</td></tr>
+<tr><td>来源</td><td>机构目标位（4901-4939/5220）→ 剔除/降级 ✓；"爆库""逼仓""崩盘"→ 剔除 ✓；"入库破千万"→ 作废 ✓；T1/T2 事实数据保留并标级 ✓</td><td class="cons">✅</td></tr>
+</table>
+<p><b>未通过项</b>：❌1 项（仓单缺失）；⚠️1 项（席位为 10-22 转述，非 10-26 当日）。<b>置信度调整：红队建议 75 → 实证专家裁定 H1 仅弱因果、量级不可信 → 检查者作废 2 条外部目标位 → 最终取 62</b>（可预测性"低"硬上限 65，未触顶）。</p>
+</div>
+</section>
+
+<section class="block">
+<h2>📜 与上轮研判的对比（13.9）</h2>
+<table>
+<tr><th>上轮记录</th><th>上轮判断</th><th>证伪位核对（10-26 收 5542）</th><th>本轮处置</th></tr>
+<tr><td>P-20261022-010<br><span class="muted">AP2701 · 空 · 5000-6100 · conf 50</span></td><td>空，目标 5000-6100</td><td class="cons"><b>分析层证伪 6508 未触及</b>（最高 5996，10-22）；<b>交易层止损 6000 未触及</b>；<b>5942 未站上</b>（10-26 最高 5747）→ <b>三条证伪位全部未打穿，判断有效</b></td><td class="gold"><b>继承方向、修正执行</b>：方向"空"被验证（5704→5542，−2.8%）；但<b>执行层推翻</b>——AP2701 改"零仓·只减不加"，新建仓改 AP2705。落账用 <b>update</b>，置信度 50→62</td></tr>
+<tr><td>P-20260829-003<br><span class="muted">AP2610 · 中性偏多 · 7620→7950 · conf 55 · entry 7778</span></td><td>中性偏多，目标 7950</td><td class="warn"><b>证伪位 7350 未触发</b>（窗口内最低 7434，仅差 1.1%）；但<b>到期日 2026-09-18 收 7701，较 entry 7778 = −0.99%，目标 7950 未达</b>（20D 窗口内最高 7788）→ <b>判定 miss</b>。<b>目标 7950 实际在 10-21（到期后 23 个交易日）才达成（末日收 8000）</b></td><td><b>已到期·标记 miss（timing_wrong）</b>：台账已结算 actual_return −0.99%、Brier 0.1024。<b>错因=方向对、时点错</b>——本轮不再引用其结论（标的已换代至 AP2705）</td></tr>
+<tr><td>P-20261024-004<br><span class="muted">AAPL · 中性偏空 · 330-352 · conf 58</span></td><td>中性偏空</td><td>—（<b>非本品种</b>，不在本轮范围）</td><td><b>不适用</b>：美股标的，与郑商所 AP 无关联；本轮不引用、不更新。<b>注：这是上轮"苹果"歧义的遗留，已在开工时澄清为郑商所 AP</b></td></tr>
+</table>
+<p><b>错因传承</b>：上轮 P-20261022-010 给"目标 5000-6100、conf 50"时，<b>未识别 01 合约的制度折价（322 点）</b>——把"制度性下跌"误认为"供需性下跌"，导致目标位定得过于乐观（5000 已接近 2703 的 5220 下方，需现货再跌 10%）。<b>本轮已把制度折价单列为一节（卢麒元席）并量化，目标位改锚在 AP2705 上（4,850-5,150）。</b></p>
+<p><b>方法论套用声明</b>：命中方法论《组合层风控规格（约定 13 · 盲区一修复）》→ <b>本轮套用</b>：①单笔风险预算 2% 账户（止损 193 点 × 10 吨 = 1,930 元/手）；②相关性约束（AP 与玉米/红枣同属农产品，<b>若已有农产品空头则 AP 仓位减半</b>）；③盲区一"同一逻辑链多次计数"→ 本轮已把"增产→入库→抛售→下跌"作为<b>单一逻辑链</b>计 1 票，未拆成 3 票。<b>只学步骤，不抄结论。</b></p>
+<p><b>落账决策</b>：方向/期限/幅度<b>发生实质变化</b>（标的从 AP2701 改 AP2705、窗口从 12 月改 2027 年 1 月、目标从 5000-6100 改 4850-5150）→ <b>新建 1 条平行记录</b>；同时对 P-20261022-010 做 <b>update（贝叶斯更新）</b>记录方向验证与执行推翻。两条并存，不覆盖。</p>
+<div class="card"><h3>本轮台账动作（三笔）</h3>
+<table>
+<tr><th>动作</th><th>ID</th><th>内容</th><th>结果</th></tr>
+<tr><td class="gold"><b>新建</b></td><td><b>P-20261026-003</b></td><td>AP2705 · 空 · 5241→4,850-5,150 · conf 62 · 156D（2027-01 中下旬建仓至 2027-03-31）· 证伪 5,357</td><td class="cons">✓ 已写入，expiry=2027-03-31，基准三字段已自动回填（ma_rule 命中率 85.2%、基准均值收益 −8.77%）</td></tr>
+<tr><td class="gold"><b>更新</b></td><td>P-20261022-010</td><td>AP2701 · 空 · conf <b>50→62</b>；触发条件记录"三条证伪位未触及、方向验证；但 01-03 制度折价 +322 已预支、止损落在噪声带、死线 47 交易日 → 改零仓只减不加"</td><td class="cons">✓ 已追加贝叶斯更新记录（不覆盖原记录）</td></tr>
+<tr><td class="gold"><b>结算</b></td><td>P-20260829-003</td><td>AP2610 · 中性偏多 · entry 7778 → 到期 7701</td><td class="warn">✓ 标记 miss（timing_wrong），actual_return −0.99%，Brier 0.1024</td></tr>
+</table>
+<p class="muted"><b>未处理项（如实登记）</b>：P-20261024-004（AAPL 苹果，美股）与本轮郑商所 AP 无关联，<b>不做更新、不做结算</b>，保持 open 待其自身 20D 窗口到期（2026-11-13）复盘。</p></div>
+</section>
+
+<section class="block">
+<h2>🎯 兵棋推演·三情景</h2>
+<div class="scenario"><span class="tag down">主情景 55%</span><span class="cond">阴跌至 1 月，AP2705 建仓成立</span><span class="arrow">→</span><span class="res">AP2705 5241 → 4,850-5,150（−1.7%～−7.5%）</span>
+<div class="child"><span class="cond">→ 触发：11 月入库实测 825-877 万吨 + 12 月现货跌至 2.50-2.60 + 01 合约离场踩踏拖累 2703/2705</span><span class="arrow">→</span><span class="res">2027-01 中下旬建空，止损 5357，目标 4,950</span></div></div>
+<div class="scenario"><span class="tag neutral">次情景 30%</span><span class="cond">11 月超跌反弹，区间震荡至 12 月</span><span class="arrow">→</span><span class="res">AP2701 反抽 5,760-5,942（补 10-22 缺口），AP2705 跟涨至 5,450-5,550</span>
+<div class="child"><span class="cond">→ 触发：入库量 800-850 万吨（灰区）+ 现货抗跌 2.70+ + 空头回补</span><span class="arrow">→</span><span class="res">放弃做空，等待 1 月重新评估；若站上 5,357 则确认空头结构瓦解</span></div></div>
+<div class="scenario"><span class="tag up">尾部 15%</span><span class="cond">供给利空被高估，V 型修复</span><span class="arrow">→</span><span class="res">AP2705 5,600 → 6,000+</span>
+<div class="child"><span class="cond">→ 触发：入库量 &lt;800 万吨（入库率 &lt;19.7%，近三年最低）+ 优果率下降 + 现货涨至 3.20+</span><span class="arrow">→</span><span class="res">翻多；本报告方向判断整体证伪</span></div></div>
+
+<div class="chart-box"><canvas id="c6"></canvas><div class="cap">图 6：三情景概率分布｜主情景 55%（阴跌至 1 月）/ 次情景 30%（超跌反弹）/ 尾部 15%（V 型修复）。<b>概率分布偏空但不过度集中——这是置信度只能给 62 的直接原因</b></div></div>
+<script>drawDoughnut('c6', ['主情景·阴跌至1月 55%','次情景·超跌反弹 30%','尾部·V型修复 15%'], [55,30,15], {colors:['#1ec77a','#8b98a5','#ff4d4f'],label:'情景概率'});</script>
+</section>
+
+<section class="block">
+<h2>📡 先行指标跟踪清单（可机械判定）</h2>
+<table>
+<tr><th>#</th><th>指标</th><th>阈值（多/空）</th><th>频率/来源</th><th>当前值</th></tr>
+<tr><td>1</td><td><b>全国冷库入库量</b></td><td>&lt;800 万吨=多；800-950=无信号；&gt;950=空</td><td>11 月中旬/行业机构</td><td class="warn">未公布（自算 825-877）</td></tr>
+<tr><td>2</td><td>栖霞 80# 一二级现货价</td><td>跌破 2.50=空确认；站稳 2.80=多</td><td>周频/行业媒体</td><td>2.70-3.00 元/斤</td></tr>
+<tr><td>3</td><td>AP2701 能否站上 5942</td><td>收盘站上 5942=空头结构瓦解</td><td>每日/日 K</td><td>5,542（10-26 最高 5,747）</td></tr>
+<tr><td>4</td><td>01-03 价差（2701−2703）</td><td>走阔 &gt;400=制度折价加深；收敛 &lt;150=折价兑现完毕</td><td>每日/日 K</td><td class="gold">+322</td></tr>
+<tr><td>5</td><td>AP2705 持仓</td><td>&lt;2 万手=流动性不足，换 2707；&gt;5 万手=主力切换</td><td>每日/日 K</td><td>34,943</td></tr>
+<tr><td>6</td><td>AP2705 收盘 vs 5357</td><td>站上 5357（1.5σ60）连续 3 日=放弃做空</td><td>每日/日 K</td><td>5,241</td></tr>
+<tr><td>7</td><td>注册仓单张数</td><td>单周增 &gt;5,000 张=交割压力真实</td><td>每日/郑商所（当前不可得）</td><td class="warn">T0 缺失</td></tr>
+<tr><td>8</td><td>冷库容载率</td><td>&gt;85%=爆库叙事复活</td><td>月度/行业机构</td><td class="warn">T0 缺失</td></tr>
+<tr><td>9</td><td>主产区天气（霜冻/冰雹）</td><td>大范围灾害=供给质量冲击</td><td>每日/气象</td><td>无极端报道</td></tr>
+<tr><td>10</td><td>成交/持仓比（投机度）</td><td>&gt;2.5=日内主导，基本面信号失效</td><td>每日/日 K</td><td class="warn">1.98</td></tr>
+</table>
+</section>
+
+<section class="block">
+<h2>📌 已撤回与作废项（口径修正台账·不得静默删除）</h2>
+<table>
+<tr><th>#</th><th>原表述</th><th>问题</th><th>处置</th></tr>
+<tr><td>1</td><td>"AP0 2026 年高点 10,753、低点 5,542，跌幅 −48.5%"</td><td>换月拼接伪值（2026-03-05 的 10,753 为 2610→2611 换月产物）</td><td class="warn"><b>作废</b>，改用单合约：AP2701 8,672→5,542 = −36.1%</td></tr>
+<tr><td>2</td><td>"500/1000 日分位 0.2%/0.1%"</td><td>用未修正的 AP0 计算，与第 1 条口径不一致</td><td class="warn"><b>作废</b>，修正为 22.2%/21.7%（三口径并列）</td></tr>
+<tr><td>3</td><td>"真实产量增幅只有 8.7%"</td><td>范畴错误：+8.71% 是预测修正，+18.37% 是供给同比，不可互替</td><td class="warn"><b>撤回</b></td></tr>
+<tr><td>4</td><td>"本周自 5,998 跌至 5,542，−7.6%"</td><td>与"上周自 5,998 起算 −4.6%"起点重复</td><td class="warn"><b>修正</b>为上周 −4.55%、本周 −3.20%、两周累计 −7.60%</td></tr>
+<tr><td>5</td><td>"空头占 63%，空头主导"</td><td>口径歧义：110,016/246,255=44.7%（全品种）；63% 应为主力合约口径</td><td class="warn"><b>双列</b> 67.0%（主力）/44.7%（全品种），并补净空 1.26%＜2%</td></tr>
+<tr><td>6</td><td>"入库 &gt;1000 万吨 → 看 5,000 以下"</td><td>预期冒充实测；方向映射反了；阈值落在历史死区（需入库率 24.6%，历史峰值 21.6%）</td><td class="warn"><b>整条作废</b>，改为"入库量仅作验证指标、只调仓位、不映射目标价"</td></tr>
+<tr><td>7</td><td>"目标位 4,901-4,939"</td><td>建立在被作废的入库预期之上</td><td class="warn"><b>无条件作废</b></td></tr>
+<tr><td>8</td><td>"交割成本 5,400-6,000"</td><td>实为现货 ×2000 未含费用，与栖霞报价精确重合</td><td class="warn"><b>剔除</b>，改为 A4 五层双口径（A：2.77 元/斤；B：6,444-7,544）</td></tr>
+<tr><td>9</td><td>"13 节拍到 13 = 该反弹"</td><td>09-30 完成 13 计数后价格再跌 19.1%，13 计数延续至 25</td><td class="warn"><b>方法失效记录</b>：13 节拍在强趋势中不作反转信号</td></tr>
+<tr><td>10</td><td>"AP2704 报 5,669"</td><td>持仓仅 458 手，非苹果交割月，流动性不足</td><td class="warn"><b>剔除</b>，不进期限结构曲线</td></tr>
+<tr><td>11</td><td>"10-13 跳空缺口 6744→6242、10-22 再跳空 5984→5704"</td><td><b>不是跳空</b>：10-14 开盘 6744 = 昨收 6744、10-22 开盘 5984 = 昨收 5984，两次均为"平开+盘中崩塌"；且日期错写（6242 出现在 10-14 而非 10-13）。全期真实跳空仅 6 次，5 次在 1-2 月上市初期</td><td class="warn"><b>撤回</b>，改为"盘中崩塌"，并补入"真实跳空 6 次、对形态无意义"</td></tr>
+<tr><td>12</td><td>"交割成本 5,810–6,530（贴水 4.6%–15.1%）"</td><td>初稿 L2 冷库费误算（0.25 元/斤·月 × 3 只记 150-180 元/吨，实为 1,500 元/吨，量纲错 10 倍）</td><td class="warn"><b>重算</b>为 6,444–7,544，并改为 A/B 双口径并列（差 8-11pct 本身即结论）</td></tr>
+</table>
+<p class="muted"><b>纪律说明</b>：以上 12 项均为本报告生成过程中<b>被专家或终审席抓出</b>的口径/范畴/算术问题，按框架要求<b>全部留痕、不得静默删除</b>。这是本报告置信度从初判 70 降至 62 的直接来源——<b>不是数据变差，是自我审查变严</b>。其中第 12 项（冷库费量纲错 10 倍）与第 11 项（把盘中崩塌写成跳空）为<b>本报告自查发现</b>，非外部指出。</p>
+</section>
+
+<section class="block">
+<h2>🧰 base-logic 关联模块</h2>
+<p><b>M-H3/M-H4 位置轴</b>：AP2701 单合约 0.0%／AP0 连续（换月已修正）22.2%／5 年历史 21.7%——<b>三口径差 22pct，按 M-H17 位置三口径闸门判定：位置论据作废</b>。<b>M-H6 超卖五维</b>：2/5（RSI 低位 ✓、连续阴线 ✓、MACD 未背离 ✗、缩量 ✗、偏离 MA60 &gt;20% ✓）→ <b>超卖但不构成买点</b>。<b>M-H7 见底四要件</b>：<b>0/4</b>（缩量 ✗、持仓转降 ✗、期货转升水 ✗、放量长下影 ✗）→ <b>底部未确认</b>。<b>M-H8 放量增仓</b>：10-22 放量但持仓次日大减 → <b>不成立</b>。<b>M-H18/M-H21 时间闸门</b>：AP2701 47 交易日禁新建；AP2705 132 交易日合规；2703→2705 年化租 +2.4%。<b>M-H20 品种属性分层</b>：苹果属"无政策底、可储存、一年生"组 → 深回撤概率中档（历史 5 年最大回撤 −48%，非低档）。<b>M-V2 分位类论据前瞻回测</b>：未通过（"便宜→反弹"无 edge）→ <b>剔除</b>。<b>M-T2 时滞</b>：一年生作物 1 个作物年度；<b>M-T7 投机度</b>：1.98（极高）；<b>M-T8 交割制度红线</b>：自然人不可交割 + 01 合约强制离场 = 322 点制度折价。<b>A4 五层成本法</b>：L1-L5 已自算并双口径并列。<b>A10 成本底四问</b>：0/4 → <b>成本底不作买点</b>。<b>F1-F9 期货适配</b>：F2 时滞 2-3 月（决定窗口在 1 月）；F7 投机度 1.98 偏高（决定止损需 &gt;2σ）；F9 交割制度红线（决定标的必须换）。<b>《组合层风控规格》约定 13</b>：单笔 2% 风险预算 + 相关性约束 + 同一逻辑链只计 1 票，<b>已套用</b>。</p>
+<p><b>数据纪律八类错误刻度自查</b>：①用极值构造区间——<b>已避免</b>（分位三口径并列并声明作废）；②分布中枢无稳态——<b>已避免</b>（季节性只报描述统计，不作方向）；③用近月推断长期——<b>已避免</b>（2611 持仓 1,658 手，明确标注"不具代表性"）；④跨源拼接——<b>已避免</b>（Mysteel/卓创双列不混用）；⑤跨品种混用——<b>已避免</b>（与玉米仅比 σ，不比价格）；⑥单日极值配月度均值——<b>已避免</b>；⑦跨窗口构成对比——<b>已避免</b>；⑧单腿当双腿用——<b>已避免</b>（净空占比用双边总量 216,825 手为分母）。</p>
+</section>
+
+<footer class="disclaimer">
+  <b>风险提示与免责声明</b>：本报告所有结论均由方法论工具独立推导，非对任何机构或个人的投资建议。市场有风险，决策须自行承担后果。专家观点仅作待验证假说，已用当前数据独立检验。
+</footer>
+</div>
+
+</body>
+</html>

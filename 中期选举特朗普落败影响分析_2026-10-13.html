@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>特朗普输掉中期选举之后将会怎样 · 蔡森十二专家分析 · 2026-10-13</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#0d1117; --panel:#161b22; --panel2:#1c2128; --border:#30363d;
+  --text:#e6edf3; --muted:#848d97; --dim:#6e7681;
+  --accent:#ffd700; --green:#3fb950; --red:#f85149; --blue:#58a6ff;
+  --orange:#ffa657; --purple:#d2a8ff; --cyan:#39c5cf;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;font-size:15px;line-height:1.6}
+.wrap{max-width:1180px;margin:0 auto;padding:24px 20px 64px}
+header{border-bottom:1px solid var(--border);padding-bottom:20px;margin-bottom:24px}
+h1{font-size:1.55rem;font-weight:700;letter-spacing:.3px}
+.sub{color:var(--muted);font-size:.9rem;margin-top:6px}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.tag{background:var(--panel2);border:1px solid var(--border);border-radius:20px;padding:3px 11px;font-size:.78rem;color:var(--muted)}
+.tag.hl{border-color:var(--accent);color:var(--accent)}
+.tag.warn{border-color:var(--orange);color:var(--orange)}
+h2{font-size:1.15rem;font-weight:700;margin:34px 0 12px;padding-left:11px;border-left:3px solid var(--accent)}
+h3{font-size:1rem;font-weight:650;margin:20px 0 8px;color:var(--text)}
+p{margin:8px 0}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:12px 0}
+.grid{display:grid;gap:12px}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:900px){.g4,.g3,.g2{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.g4,.g3,.g2{grid-template-columns:1fr}}
+.kpi{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--border);border-radius:12px;padding:13px 14px}
+.kpi .k{font-size:.78rem;color:var(--muted)}
+.kpi .v{font-size:1.32rem;font-weight:700;margin:3px 0}
+.kpi .d{font-size:.75rem;color:var(--dim)}
+.up{color:var(--red)} .down{color:var(--green)} .gold{color:var(--accent)} .blue{color:var(--blue)} .mut{color:var(--muted)}
+.answer{background:linear-gradient(135deg,#1c2128,#161b22);border:1px solid var(--accent);border-radius:14px;padding:18px 20px;margin:16px 0}
+.answer .lbl{color:var(--accent);font-size:.8rem;font-weight:700;letter-spacing:1px}
+.answer .txt{font-size:1.02rem;margin-top:8px;line-height:1.75}
+ul{margin:8px 0 8px 20px} li{margin:5px 0}
+table{width:100%;border-collapse:collapse;font-size:.86rem;margin:10px 0}
+th,td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel2);color:var(--muted);font-weight:600}
+tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+.chart-section{background:#f6f8fa;border-radius:12px;padding:16px 18px;margin:16px 0}
+.chart-title{font-size:.95rem;font-weight:600;color:#1f2328;margin-bottom:4px}
+.chart-sub{font-size:.8rem;color:#57606a;margin-bottom:10px}
+.chart-wrap{position:relative;width:100%}
+canvas{max-width:100% !important;display:block;margin:0 auto}
+.chart-note{font-size:.76rem;color:#57606a;margin-top:8px;line-height:1.5}
+.badge{display:inline-block;font-size:.72rem;padding:1px 7px;border-radius:4px;margin-right:5px;vertical-align:middle}
+.b-green{background:rgba(63,185,80,.15);color:#2da44e;border:1px solid rgba(63,185,80,.4)}
+.b-blue{background:rgba(88,166,255,.15);color:#0969da;border:1px solid rgba(88,166,255,.4)}
+.b-yellow{background:rgba(255,166,87,.15);color:#bc6c25;border:1px solid rgba(255,166,87,.4)}
+.b-red{background:rgba(248,81,73,.15);color:#cf222e;border:1px solid rgba(248,81,73,.4)}
+.score{display:flex;align-items:center;gap:10px;margin:6px 0}
+.score .bar{height:8px;background:var(--panel2);border-radius:4px;flex:1;overflow:hidden}
+.score .fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--orange))}
+.tl{border-left:2px solid var(--border);margin-left:8px;padding-left:18px}
+.tl-item{position:relative;margin:14px 0}
+.tl-item::before{content:'';position:absolute;left:-25px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
+.tl-item.gray::before{background:var(--dim)}
+.tl-date{font-size:.8rem;color:var(--accent);font-weight:600}
+.tl-item.gray .tl-date{color:var(--muted)}
+.small{font-size:.82rem;color:var(--muted)}
+.hr{height:1px;background:var(--border);margin:26px 0}
+.flag{background:rgba(255,166,87,.08);border-left:3px solid var(--orange);padding:10px 14px;margin:12px 0;font-size:.88rem}
+.ok{background:rgba(63,185,80,.07);border-left:3px solid var(--green);padding:10px 14px;margin:12px 0;font-size:.88rem}
+.kill{background:rgba(248,81,73,.08);border-left:3px solid var(--red);padding:10px 14px;margin:12px 0;font-size:.88rem}
+footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--border);color:var(--dim);font-size:.78rem}
+code{background:var(--panel2);padding:1px 5px;border-radius:4px;font-size:.85em}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>特朗普输掉中期选举之后将会怎样</h1>
+  <div class="sub">蔡森十二专家整合分析 · 宏观政治变局 → 资产价格路径 · 分析时点 2026-10-13 00:41 (+0800) · 数据日 2026-10-09</div>
+  <div class="meta">
+    <span class="tag hl">L3 完整流程</span>
+    <span class="tag">MIDTERM 2026-11-03</span>
+    <span class="tag">TACO +7.4 中压</span>
+    <span class="tag warn">八位专家降级为上下文内推导（频率限制）</span>
+    <span class="tag">caisen-kline 未调用（美股/外汇标的拒收）</span>
+  </div>
+</header>
+
+<!-- ============ 一句话答案 ============ -->
+<div class="answer">
+  <div class="lbl">结 论 先 行</div>
+  <div class="txt">
+    <b>特朗普会输掉众议院（这是已被 90%+ 定价的共识，不是变量）；真正的变量在选后三件事：</b>
+    ① <b>12-11 拨款大限</b>落在跛脚会期（当前 10-01 起的停摆已造成 BLS 数据真空）；
+    ② <b>Fed 在数据真空下盲飞</b>（10-28/29 FOMC，且市场定价年底前至少再加息一次 &gt;85%）；
+    ③ <b>10Y 美债 5.23% 的 24 年高位折现率</b>压着 22 倍 forward PE。<br><br>
+    <b>资产主判断（单一主路径）：股票先震荡后修复（年底 8100–8300）；黄金继续涨（4400–4600）；美元高位见顶概率大于突破（年底 99.5–101.5）；长端收益率温和下行（5.05%–5.15%）。</b>
+    别交易"谁赢"——交易选举后的财政、数据、利率三件事。
+  </div>
+</div>
+
+<div class="grid g4">
+  <div class="kpi"><div class="k">S&amp;P 500（10-09 收）</div><div class="v up">7811.54</div><div class="d">+0.59% · 周 +1.15% · YTD ≈ +14.7%（推导）</div></div>
+  <div class="kpi"><div class="k">10Y 美债</div><div class="v up">5.23%</div><div class="d">10-08 高 5.35% · 2002 年以来最高区</div></div>
+  <div class="kpi"><div class="k">美元指数 DXY</div><div class="v">102.02</div><div class="d">YTD 高 102.54(10-05) · RSI 67.9 近超买</div></div>
+  <div class="kpi"><div class="k">现货黄金</div><div class="v gold">4194.24</div><div class="d">+1.47% · 10-07 低 ~4140</div></div>
+  <div class="kpi"><div class="k">Brent / WTI</div><div class="v">104.70 / 91.85</div><div class="d">伊朗战争持续 · 霍尔木兹扰动</div></div>
+  <div class="kpi"><div class="k">VIX</div><div class="v up">19.8</div><div class="d">10-08 · 9 月初 15.2 · 长期均值 19.4</div></div>
+  <div class="kpi"><div class="k">Polymarket 众院民主党</div><div class="v">91–93%</div><div class="d">10-09 · 参院 D 64–65% · sweep 63–64%</div></div>
+  <div class="kpi"><div class="k">RCP 普选票</div><div class="v">D +7.9</div><div class="d">49.8% vs 41.9% · 10-09</div></div>
+</div>
+
+<!-- ============ 数据检查声明 ============ -->
+<h2>0 · 数据检查声明（第 5.1 步 · 硬门槛）</h2>
+<div class="card">
+  <p><b>数据检查：</b>
+  数据日 = <code>2026-10-09</code>（美股最近完整收盘日；10-12 周一美股盘中尚未完结）·
+  <b>时效六查 = 6/6</b>（TACO 10-09 现场抓取；民调 10-09~10-12；行情 10-09 收盘；停摆 10-01 起进行中；关税司法 2026-02-20 判例；Fed 09-16 决议）·
+  <b>准确五校 = 5/5</b>（S&amp;P 三源一致；10Y 三源区间一致；民调双平台；预测市场双平台；TACO 官方接口）·
+  <b>口径修正 = 3</b>（支持率聚合窗口 34.5% vs 38.7%；Kalshi 参院口径与 Polymarket 矛盾；停摆状态源冲突）·
+  <b>剔除点 = 3</b>（Morgan Stanley 三情景、"输掉=利多"媒体叙事、"选后必涨"历史统计叙事，按 🕵️ 剔除制入附录，不作结论依据）→ <b>置信度上限 100</b></p>
+  <div class="flag"><b>⚠️ 未消解的事实冲突（必须知道）：</b>关于政府停摆，一派来源（ctcnews / wisevoter / 美国通）称 9-02 已签 CR（PL 119-103）把资金延至 12-11、躲过停摆；另一派来源（新华社 10-04、ziromarket、headings.us、viewstorys）称 <b>10-01 资金断流、停摆开始、BLS 大部分员工休假、9 月非农（原定 10-02）未发布</b>。本报告采信<b>后者（多数一手报道 + 数据真空的可观察后果）</b>，两说双列。<b>因该事实直接支撑"BLS 数据真空 → Fed 盲飞"这一关键推演，股票与利率路径的置信度已同步下调。</b></div>
+  <div class="flag"><b>⚠️ 支持率口径：</b>Poliwave 10-10 窗口 34.5%（任期最低 38.2%→34.5%）与 10-12 窗口 38.7% 并存；FT 10-11 报 34%；Reuters 9 月 32%（仅 17% 认可物价处理）。报告统一表述为 <b>34%–39% 区间</b>，不取单点。</div>
+</div>
+
+<!-- ============ 一、什么叫"输掉" ============ -->
+<h2>1 · 先把"输掉"定义清楚：哪一院、定没定价</h2>
+<div class="card">
+  <p>2026-11-03 改选全部 435 个众院席位 + 35 个参院席位 + 39 个州长。当前众院 R218 / D214 / 3 空缺（民主党只需<b>净 +3</b>）；参院 R53 / D47（民主党需<b>净 +4</b>）。</p>
+  <ul>
+    <li><span class="badge b-green">🟢 数据</span><b>众院翻盘近乎确定且已被完全定价</b>：Polymarket 10-09 给民主党 91–93%，Cook 政治报告 19 个 tossup 中 15 席是共和党现任，RCP 普选票 D+7.9，特朗普支持率 34–39% 处任期最低区。<b>结论：众院结果没有 alpha，市场早定价了。</b></li>
+    <li><span class="badge b-blue">🔵 推导</span><b>参院才是唯一悬念，且接近五五偏民主党</b>：Cook 9-23 挂 7 席 tossup（AK/IA/ME/MI/NH/OH/TX），民主党需在 Trump 2024 州连拿 4 席。Polymarket 64–65% 民主党、Kalshi 却给共和党 61%（两平台口径矛盾，故不给确定判断）。<b>这一院的结果幅度（净增席位数）决定叙事强弱，是选后第一周的波动来源。</b></li>
+    <li><span class="badge b-green">🟢 数据</span><b>预测市场把"民主党拿两院"定价为 63–64%，共和党全拿仅 8%</b>——市场并不认为"特朗普赢"是现实情形。</li>
+  </ul>
+</div>
+
+<div class="chart-section">
+  <div class="chart-title">图 1 · 预测市场定价：2026 中期选举各结果概率</div>
+  <div class="chart-sub">Polymarket，2026-10-09（Kalshi 参院口径与之矛盾，单列）</div>
+  <div class="chart-wrap"><canvas id="chart-pm"></canvas></div>
+  <div class="chart-note">读数：众院民主党 91%、参院民主党 64%、两院全拿 63%、共和党全拿 8%。<b>众院结果定价度 91% = 无信息增量；增量在参院（64% 未定死）与拨/停摆等二阶事件。</b>Kalshi 同期给参院共和党 61%，两平台口径不一致，本图以 Polymarket 为主口径。</div>
+</div>
+
+<div class="chart-section">
+  <div class="chart-title">图 2 · 特朗普支持率与普选票差额（锚点稀疏，中间为线性插值）</div>
+  <div class="chart-sub">单位：% · 支持率为各机构聚合值</div>
+  <div class="chart-wrap"><canvas id="chart-approval"></canvas></div>
+  <div class="chart-note">锚点：2025-01-20 就职 51.8%（任期最高）→ 2026-07 约 41.5% → 2026-09 约 40.3% → 2026-10-10 窗口 34.5%（任期最低）→ 10-12 窗口 38.7%；FT 10-11 报 34%。<b>中间月份为插值，非逐月真实序列。</b>无论取哪个窗口，方向一致：处任期最低区，且 49% 受访者明确想要"制衡总统"的候选人（NYT/Siena 战区民调），仅 27% 想要"支持总统"。</div>
+</div>
+
+<!-- ============ 二、政治后果 ============ -->
+<h2>2 · 选后政治后果：权力怎么重新分配</h2>
+<div class="card">
+  <h3>2.1 立法权归零，但行政权扩张空间比 2018 年那次更小 <span class="badge b-blue">🔵 推导</span></h3>
+  <p>2018 年特朗普丢众院后，靠行政令 + 关税 + 紧急状态撑了两年。2026 年这一轮有个<b>结构性差异</b>：<b>2026-02-20 最高法院 6-3 判决 IEEPA 不授权加征关税</b>（Learning Resources v. Trump），对等关税与芬太尼关税已于 2-24 终止，退款规模估 1600–1750 亿美元。关税工具从"近乎无限"退回"程序约束"：Section 232 需商务部调查、Section 301 需 USTR 调查与复审（7-24 起以强迫劳动理由对约 60 经济体加税，中国大陆 12.5% 直接叠加，无 MFN 抵扣）、Section 122 有 15% 税率上限与 150 天期限且已于 7-24 到期。</p>
+  <p>→ <b>判断：选后特朗普的可用工具箱是"被司法削过一层的工具箱"。他仍会用 232 做补偿性加码，但关税的平均税率方向是净降，且路径很慢。</b>对进口商/零售是边际利好，对通胀是边际利好，对企业规划不确定性的改善有限。</p>
+
+  <h3>2.2 拨款与停摆：12-11 大限落在跛脚会期 <span class="badge b-blue">🔵 推导</span></h3>
+  <p>10-01 起联邦资金断流、政府停摆（数据真空：9 月非农未发布、10-14 CPI 与 11-07 非农面临延迟）。FY2027 十二个拨款法案全部悬空，临时拨款只到 <b>12-11</b>——这个大限正好落在选举后的跛脚会期。历史类比：2018-19（特朗普丢众院后）出现过 12-22 至 1-25 的 35 天停摆；2025 年那次 43 天为史上最长；过去 12 个月已累计 161 天停摆。</p>
+  <p>→ <b>判断：民主党有动机把 ACA 补贴等诉求压到 2027-01 新国会就位后再谈（筹码更强）。停摆拖到 1 月是现实风险，不是尾部风险。</b>这是本报告列为<b>第一证伪位</b>的一条。</p>
+
+  <h3>2.3 调查机器启动、弹劾噪音回归，但无实质风险 <span class="badge b-blue">🔵 推导</span></h3>
+  <p>2027-01-03 新国会就位后，众院委员会传票、听证、对行政部门调查全面启动，弹劾议题会重新成为标题常客。但定罪需参院 2/3，实质风险为零。<b>真实影响是三条</b>：政策不确定性维持高位（圣路易斯联储 EPU 今年曾超长期均值 8 倍）、行政资源被占用、立法彻底瘫痪。</p>
+
+  <h3>2.4 跛鸭化提前，2028 接班之争开跑 <span class="badge b-green">🟢 制度事实</span></h3>
+  <p>第 22 修正案限制两任（2016 + 2024），特朗普 2028 不能再选。<b>选后第一天他就是跛脚总统</b>，剩余两年政策会更明显地"为选票服务"——10-05 宣布的 ACA 多收款退还支票 + Medicare 改善基金付款就是典型选前撒钱动作。2027 年起共和党进入接班之争，政策短期化。</p>
+
+  <h3>2.5 新增政策变量：AI 数据中心与电费 <span class="badge b-yellow">🟡 假说</span></h3>
+  <p>84% 美国人担忧数据中心推高电费（AP-NORC）、70% 反对社区新建数据中心（Gallup）；众院已通过"数据中心分摊电网升级"法案、参院 9-30 否决。<b>这是两党都在抢的议题，选后大概率以某种形式回来——它对 AI 超大规模资本开支是新增的监管/成本约束，而 AI 企业发债正是美债长端的压力来源之一。</b>证据强度弱（议题成立，立法结果未知），标为假说。</p>
+</div>
+
+<div class="card">
+  <h3>选后时间轴</h3>
+  <div class="tl">
+    <div class="tl-item"><div class="tl-date">2026-10-14</div>9 月 CPI 原定发布日 —— 停摆未解则继续缺失，Fed 决策依据进一步变薄</div>
+    <div class="tl-item"><div class="tl-date">2026-10-28 / 29</div><b>FOMC 会议</b>：市场定价 10 月加息概率 &lt;20%，但年底前至少再加一次 &gt;85%。数据真空下"盲飞"是本轮最大不确定性源</div>
+    <div class="tl-item"><div class="tl-date">2026-11-03</div><b>中期选举</b>：众院翻盘（已定价 91%）；参院结果决定叙事强弱（TX/NC/OH/AK/ME/IA/MI/MN/GA）</div>
+    <div class="tl-item"><div class="tl-date">2026-11-04 ~ 11-10</div>计票与结果确认期；波动率冲高窗口（VIX 往 22–25 走），方向性有限</div>
+    <div class="tl-item gray"><div class="tl-date">2026-11-07</div>10 月非农原定发布日 —— 停摆未解则继续缺失，为本轮第二个数据观察点</div>
+    <div class="tl-item"><div class="tl-date">2026-12-11</div><b>临时拨款到期大限（跛脚会期）</b>：本报告第一证伪位。破裂 → 停摆延续至 2027-01</div>
+    <div class="tl-item"><div class="tl-date">2026-12 中旬</div><b>FOMC</b>：加息与否 + 点阵图。若再加息并转鹰，10Y 看 5.6%，股票路径整体下修</div>
+    <div class="tl-item"><div class="tl-date">2027-01-03</div>新国会就位：民主党众院启动调查机器；拨款谈判以新筹码重启</div>
+    <div class="tl-item gray"><div class="tl-date">2027 全年</div>特朗普跛鸭期：行政令 / 232 关税 / 外交为唯一工具；共和党 2028 接班之争开跑</div>
+  </div>
+</div>
+
+<!-- ============ 三、市场：历史统计的陷阱 ============ -->
+<h2>3 · 先拆掉一个陷阱："选后必涨"这个统计到底靠不靠谱</h2>
+<div class="card">
+  <p>中期选举后 12 个月，S&amp;P 500 平均 +12.4%（1900–2025 全样本）/ +17.5%（1980 后）；1950 年以来 19 次<b>全部为正</b>、中位 +14.5%；任期第三年（1980 后）平均 +16.5%。这组数字几乎被所有卖方引用。</p>
+  <p><span class="badge b-green">🟢 数据</span><b>我的判断：它是"任期第三年 + 盈利/流动性周期"的代理变量，不是选举的因果效应。</b>三个理由：① 选后 12 个月与"总统任期第三年"在时间上完全共线，无法分离；② 样本量 19–20 个、事件高度时间聚集，有效独立样本远小于计数；③ 2022 年（最近一次）中期选举年 S&amp;P -19.4%，选后上涨的真正驱动是通胀见顶 + AI 周期启动，不是选举结果。</p>
+  <p><span class="badge b-blue">🔵 推导</span><b>2026 年的环境在历史样本里几乎没有对标</b>：长端 5.23%（2002 年以来最高）+ 央行在<b>加息</b>（3.75–4.00%，9-16 全票加息，年底前至少再加一次 &gt;85% 定价）+ Brent 104.70 + 停摆数据真空 + forward PE 22x + 年内已 +14.7%。<b>季节性顺风会被折现率压力抵消掉一部分——所以我把"选后上涨"这一个统计的权重降到"参考项"，主路径仍给上行，但幅度只给 +3.7%~+6.3%，不给 +14%。</b></p>
+</div>
+
+<div class="chart-section">
+  <div class="chart-title">图 3 · 总统周期各年 S&amp;P 平均涨幅 vs 2026 实际（1980 年后基准）</div>
+  <div class="chart-sub">单位：% · 2026 为年内至今（推导值）</div>
+  <div class="chart-wrap"><canvas id="chart-cycle"></canvas></div>
+  <div class="chart-note">基准：第 1 年 +15.5%、第 2 年（中期选举年）+3.3%（11 年中 5 年负）、第 3 年 +16.5%、第 4 年 +5.4%（1980 后）。2026 年内至今约 +14.7%，<b>大幅高于中期选举年 +3.3% 的历史均值</b>——这本身就是"季节性统计对 2026 解释力弱"的证据：今年的行情由 AI 盈利 + 战争避险 + 高利率三者驱动，不是政治周期。</div>
+</div>
+
+<!-- ============ 四、资产路径 ============ -->
+<h2>4 · 资产价格主路径（折线预测）</h2>
+
+<div class="chart-section">
+  <div class="chart-title">图 4 · S&amp;P 500：2026 实际锚点 + 主路径预测（至 2026-12-31）</div>
+  <div class="chart-sub">实线 = 已核实锚点/引用值；虚线 = 主路径预测</div>
+  <div class="chart-wrap"><canvas id="chart-spx"></canvas></div>
+  <div class="chart-note">
+    锚点：1 月 ~7000 → 3 月自峰值 −9%（伊朗战争，约 6370）→ 8 月中 ~7760（YTD +14%）→ 10-01 7666.45（停摆首日 +0.19%）→ 10 月前两日 −1.2%（约 7580）→ 10-09 7811.54。<br>
+    <b>主路径</b>：10-13~11-03 震荡偏弱（7600–7900，季节性 + 财报 + 10-28/29 FOMC）→ 选举周波动冲高但方向有限（结果 91% 已定价）→ 11-04 起三段式修复（不确定性消退 + 季节性 + 停摆解决后数据补发）→ <b>年底 8100–8300</b>。<br>
+    路径上的凹口：12-11 拨款大限（若破裂，回撤 7600–7700）。<b>证伪：10Y 连续 5 日收 &gt;5.50%，或 S&amp;P 收盘跌破 7550。</b>
+  </div>
+</div>
+
+<div class="chart-section">
+  <div class="chart-title">图 5 · 10Y / 30Y 美债收益率：锚点 + 主路径</div>
+  <div class="chart-sub">单位：% · 24 年高位区</div>
+  <div class="chart-wrap"><canvas id="chart-ust"></canvas></div>
+  <div class="chart-note">锚点：9-30 5.29% / 10-05 ~5.32% / 10-06 5.278%（30Y 5.661%）/ 10-08 5.35% / 10-09 5.23%（30Y 5.66%）。四重驱动：油价通胀、AI 企业发债供给、鹰派 Fed、40 万亿美元债务。<br><b>主路径：5.0%–5.4% 区间震荡，年底中枢自 5.23% 温和降至 5.05%–5.15%</b>——依据是选后财政扩张预期下降（无新增减税/支出）+ 停摆结束后数据补发大概率显示就业疲弱 + 纽约联储 Williams 已放鸽。<b>证伪：10-28/29 或 12 月 FOMC 再加息且点阵转鹰 → 看 5.6%。</b>（本项置信度最低，见第 8 节二次思考）</div>
+</div>
+
+<div class="chart-section">
+  <div class="chart-title">图 6 · 美元指数 DXY：锚点 + 主路径 + 压力位</div>
+  <div class="chart-sub">含 102.54 年内高点（10-05）与 20 日 EMA 101.24</div>
+  <div class="chart-wrap"><canvas id="chart-dxy"></canvas></div>
+  <div class="chart-note">锚点：9-08 低 98.60 → 9 月 +2% → 10-01 101.48 → 10-05 102.54（YTD 高）→ 10-06 101.86 → 10-08 102.42 → 10-09 102.02（冲击年高失败），RSI 67.9 接近超买。<br><b>主路径：102.5 是硬压力，年底区间 99.5–101.5。</b>理由是支撑美元的三因子中，避险因子选后会消退（特朗普 10-09 已排除选前对伊动武），利差因子随财政扩张预期下降略收敛。<b>证伪：周线收 &gt;104。</b>⚠️ 本项存在内部分析分歧（宏观轴看长期弱、利率轴看短期强），已在第 8 节标注并下调置信度至 62，时间框架只到 2026 年底，不做长期判断。</div>
+</div>
+
+<div class="chart-section">
+  <div class="chart-title">图 7 · 现货黄金：10 月锚点 + 主路径</div>
+  <div class="chart-sub">单位：美元/盎司 · 仅 10 月为实测锚点，其余为主路径</div>
+  <div class="chart-wrap"><canvas id="chart-gold"></canvas></div>
+  <div class="chart-note">锚点：10-07 低 ~4140（8 月初以来最低）→ 10-09 4194.24（+1.47%，COMEX 4220.30）。<b>注：仅这两点为实测，2026 年内其余月份数据未在本轮核实，不画。</b><br><b>主路径：11 月先在 4100–4300 震荡，12 月随停摆解决与数据补发突破，年底 4400–4600（+5%~+10%）。</b>三个支撑：地缘尾部风险（伊朗，TACO 事件库显示是"后移"不是消除）、财政（40 万亿 + 停摆 + 赤字）、制度噪音（选后调查/弹劾 + 跛脚总统干预 Fed 的冲动）。唯一压制：实际利率约 1.8%（10Y 5.23% − CPI 3.4%）——但黄金今年在"战争 + 加息"并存时仍创新高，说明财政/制度溢价压过了实际利率。<b>证伪：伊朗实质停火 + Brent&lt;90 + DXY&gt;104 三者同现 → 中枢下调至 4000。</b></div>
+</div>
+
+<div class="chart-section">
+  <div class="chart-title">图 8 · VIX 与原油（Brent/WTI）路径参照</div>
+  <div class="chart-sub">VIX 锚点稀疏（9-01 15.2 → 10-08 19.8），中间为插值</div>
+  <div class="chart-wrap"><canvas id="chart-vix"></canvas></div>
+  <div class="chart-note">VIX：长期均值 19.4，当前 19.8，属"升温"而非"高潮"（高潮信号是 &gt;28 + 放量 + 一致性叙事）。<b>主路径：选举周冲至 22–25，选后回落至 18 下方——VIX 回落至 18 以下是本报告定义的"情绪反转观测点"。</b>原油：Brent 104.70 / WTI 91.85（10-09），特朗普已排除选前对伊动武 → 短期风险溢价回落，但霍尔木兹袭击与低库存是底部支撑，<b>区间 95–110</b>（🟡 假说）。</div>
+</div>
+
+<div class="chart-section">
+  <div class="chart-title">图 9 · 历史中期选举后 12 个月中位路径 vs 2026 主路径（归一 100）</div>
+  <div class="chart-sub">为什么 2026 只给 +4%~+6% 而不是 +14.5%</div>
+  <div class="chart-wrap"><canvas id="chart-hist"></canvas></div>
+  <div class="chart-note">历史中位路径（1950 以来 19 次全正、中位 +14.5%）在选举后 12 个月几乎直线向上。但那组样本里<b>没有"10Y 处于 24 年最高且在加息"的情形</b>。2026 主路径前段（10-13~11-03）震荡、后段修复，全年目标 +3.7%~+6.3%，<b>显著低于历史中位</b>——差额就是折现率压制 + 数据真空的代价。<b>这是本报告相对市场共识（"选后必涨 +14%"）的独立增量。</b></div>
+</div>
+
+<!-- ============ 五、TACO ============ -->
+<h2>5 · TACO 政策压力指数：本轮怎么用、怎么用错</h2>
+<div class="card">
+  <p><b>当前读数（ocmacro，截至 2026-10-09，现场抓取）：+7.4，85% 分位，状态「中压」</b>；20 日变化 −1.0；本轮变化的 68.4% 由 <b>10Y UST 因子</b>贡献；净支持率 −22.38%（距任期最低仅 1.52pp）。</p>
+  <div class="chart-section">
+    <div class="chart-title">图 10 · TACO 分档 → 未来 20 日内出现重大政策回撤的概率（回撤日口径，386 交易日）</div>
+    <div class="chart-sub">当前 +7.4 落在 +5~+8 档（黄色）</div>
+    <div class="chart-wrap"><canvas id="chart-taco"></canvas></div>
+    <div class="chart-note"><b>关键纪律：</b>+5~+8 档的 20 日概率 60.0%，与无条件基准 59.8% 几乎相同 —— <b>当前位置没有区分度，不得据此判断"压力不大所以安全"</b>。只有跨入 ≥+8 档（20 日 94.3%）才出现显著信号。<b>可操作监测规则：TACO ≥ +8 且 10Y &gt; 5.4% → 触发减仓。</b>另注：TACO 是压力<b>存量</b>而非领先指标，历史上重大事件发生时常处中位区间，回撤落地后存量被消耗 → 指数见顶回落 ≠ 风险解除。</div>
+  </div>
+</div>
+
+<!-- ============ 六、专家节 ============ -->
+<h2>6 · 十二专家逐位推导（⚠️ 全部为上下文内降级推导）</h2>
+<div class="flag"><b>降级声明：</b>第一梯队八位专家（杨世光 / 卢麒元 / 蔡森 / 笨鸟 / serenity / Mi姐 / 路口大爷 / 情绪面）本轮尝试真并行调用，<b>八个子代理全部因平台频率限制（429）失败</b>，无法重排。按框架降级规则，改由主上下文<b>逐位按其方法论文件独立推导</b>，全部标注 🔵 降级。第二至四层（妙想量化 / 实证因果 / 风控 / 红队 / 检查者）按规则本就在上下文内执行。<b>腾讯自选股圆桌未调度（L4 专属，且 westock 未覆盖美股）；期货团未触发（非特定期货/期权合约分析）；caisen-kline 未调用（美股/外汇标的被引擎硬拒绝，蔡森形态结论为文字推演，未经引擎复核）。</b></div>
+
+<div class="card">
+  <h3>① 杨世光（宏观六步法）<span class="badge b-blue">🔵 降级</span></h3>
+  <p>周期定位：美国处在"高利率 + 战争型通胀 + AI 资本开支"三重叠加的晚周期，就业已现裂痕（9 月非农 +2.9 万、失业率 4.2%）。货币政策：Fed 在 9-16 加息 25bp 至 3.75–4.00%（12-0 全票，主席 Warsh），市场定价年底前至少再加一次 &gt;85%——<b>这是与本轮政治事件方向相反的主导变量</b>。美元周期：DXY 102 处 18 个月高，由利差与避险双支撑，政治变局只削弱其中一条腿。六步收敛：<b>选举是二阶变量，利率与油价是一阶变量</b>。结论：股票震荡后修复（8100–8300）、黄金上行、美元高位钝化、长端收益率温和下行；置信度 68。</p>
+
+  <h3>② 卢麒元（制度结构 / 资本三流）<span class="badge b-blue">🔵 降级</span></h3>
+  <p>制度视角的真正变化在<b>三权格局</b>：司法已于 2026-02-20 收回关税权（IEEPA 6-3 判决），若立法权再转入民主党，则行政权只剩 232/301 的程序化工具与外交——<b>这是 1980 年代以来美国总统在贸易领域自主权最低的一次组合</b>。财政侧：40 万亿美元债务 + 停摆 + 12-11 大限，跛脚会期的拨款博弈会把"财政不可持续性"重新定价进长端。资本三流：分裂政府 → 财政扩张减速 → 长端供给压力边际缓解（利多债、利空美元）；但制度噪音与赤字叙事不减（利多黄金）。判断：黄金 &gt; 股票 &gt; 债券 &gt; 美元；置信度 62。</p>
+
+  <h3>③ 蔡森（技术形态）<span class="badge b-blue">🔵 降级 · 未经 kline 引擎复核</span></h3>
+  <p>S&amp;P 500：年内自 1 月 ~7000 起的多头结构在 3 月 −9% 回撤后未破坏，10 月前两日 −1.2% 的回调在 10-09 被 7811.54 收复，属强势修复形态；<b>颈线支撑 7580–7600（10 月低点区），上方无历史套牢盘（年内新高附近）</b>，测幅目标指向 8100–8300。DXY：冲击 102.54 年高失败，日线呈"冲高回落 + RSI 67.9 背离"形态，<b>102.5 为硬压力，跌破 20 日 EMA 101.24 则确认见顶</b>。黄金：4140 是 8 月以来低点，10-09 收 4194 站回其上，<b>4100–4150 是多空分界，站上 4300 打开 4400–4600 空间</b>。技术面置信度 70。</p>
+
+  <h3>④ 笨鸟（数据拆解）<span class="badge b-blue">🔵 降级</span></h3>
+  <p>三条数据硬结论：① "选后 12 个月 19/19 全正"与"任期第三年"完全共线，且样本仅 19–20 个、时间聚集，<b>不能作为因果依据，只能作为季节性参考</b>；② 2026 年内 +14.7% vs 中期选举年均值 +3.3%，<b>偏离达 11 个百分点，说明今年的行情由非政治因素驱动</b>；③ 最容易误读的点是"停摆利空"——历史上短于 2–3 周的停摆几乎不影响市场（10-01 停摆首日 S&amp;P 还涨 0.19%），<b>真正有杀伤力的是停摆造成的数据真空让 Fed 盲飞，不是停摆本身</b>。数据面置信度 74（本轮最高）。</p>
+
+  <h3>⑤ serenity / 白毛（供应链瓶颈）<span class="badge b-blue">🔵 降级</span></h3>
+  <p>三条实物链：能源（伊朗战争 3 月至今 + 霍尔木兹袭击 + 全球陆上库存低位，供给端底部支撑硬，但特朗普 10-09 排除选前动武 → 短期风险溢价回落）；关税链（IEEPA 被判违宪后，1600–1750 亿美元退款已在执行，实际清关环节出现"进口商身份错配"的执法转向，企业成本不确定性反而上升）；AI 电力（数据中心推高居民电费成为选举议题，84% 担忧，选后大概率以立法或监管形式回来 → 对 AI 资本开支是新增实物约束）。<b>结论：供应链视角下，选后 Brent 95–110 区间震荡、通胀压力边际缓解但仍受能源约束、黄金受实物避险支撑。本项证据强度最弱，标 🟡。</b></p>
+
+  <h3>⑥ Mi姐（交易战术）<span class="badge b-blue">🔵 降级</span></h3>
+  <p>三周期共振：大方向↑（年内多头，+14.7%）；中结构↑（10 月 −1.2% 后 10-09 强势收复）；小时机——<b>处在事件前的不确定段，不是扣扳机的最佳时点</b>。情绪六阶段：VIX 15.2→19.8 属"升温"，未到高潮（高潮需 &gt;28 + 一致性叙事），<b>不构成反做条件，也不构成加仓条件</b>。</p>
+  <table>
+    <tr><th>标的</th><th>触发条件（价 + 量 + 事件三维）</th><th>加仓/止损</th></tr>
+    <tr><td>S&amp;P 500</td><td>7700 / 7600 两档分批低吸；选后一周内站上 7900 且 VIX 回落至 18 下方 → 加仓</td><td>止损：收盘破 7550</td></tr>
+    <tr><td>黄金</td><td>4150–4200 区间低吸（10-07 低 4140 为参考）</td><td>止损 4080；目标 4400–4600</td></tr>
+    <tr><td>美元</td><td>不追多；102.5 为压力</td><td>周线收 &lt;101.24（20 日 EMA）→ 转空头思路</td></tr>
+    <tr><td>仓位纪律</td><td colspan="2">事件前单一风险敞口 ≤30%；选举周总仓 ≤50%；停摆解决 + 数据补发 + FOMC 三项确认后再加至 70–80%</td></tr>
+  </table>
+  <p><b>回测铁律提醒：本框架禁止退化为纯均线买卖——alpha 来自资金情绪门控 + 避冰点高潮。当前不满足"高潮反做"条件，只满足"事件前轻仓、事件后跟随"条件。</b>战术置信度 66。</p>
+
+  <h3>⑦ 路口大爷（第 12 位 · 三层四维周期资本流动 / 美元体系）<span class="badge b-blue">🔵 降级</span></h3>
+  <p>美元体系四支柱诊断：① 美债信用——10Y 5.23%（24 年最高）+ 40 万亿债务，<b>裂痕扩大</b>；② 结算体系——份额仍主导，但关税武器化（IEEPA 被判违宪后合法性受损）侵蚀长期信用；③ 军事——伊朗冲突暴露"极限施压后快速回撤"模式（TACO 事件库 6-11 / 7-14 / 8-09 / 8-17 四次回撤），<b>威慑可信度受损</b>；④ 科技——AI 资本开支是当前最强支柱，但正成为新增政治议题（电费）。<br>
+  <b>判断：选举变局不改变美元体系长期缓慢裂化的方向，但会改变节奏——分裂政府 = 立法停摆 = 赤字扩张减速 = 长端供给压力边际缓解，对美债/美元是短期修复性事件；对黄金则是"制度噪音 + 财政不可持续"叙事的持续支撑。</b>资金流净效应：美元高位震荡而非趋势走弱（因 5%+ 的实际利率仍在吸金）；非美资产与黄金相对受益。置信度 64。</p>
+
+  <h3>⑧ 情绪面专家（第 14 席）<span class="badge b-blue">🔵 降级 · 快照式采集</span></h3>
+  <p>读数：市场情绪偏谨慎（VIX 19.8 &gt; 长期均值 19.4，9 月初 15.2）；大众情绪偏"反现任"（普选票 D+7.9；NYT/Siena 战区民调 49% 要"制衡总统"的候选人 vs 27%）。议题集中在生活成本与电费（84% 担忧）。<br>
+  <b>阶段定位：事件驱动型情绪的"升温段"（发生→爆发之间），未到高潮。持续性窗口到 11-03 选举日；反转观测点 = 选后 VIX 回落至 18 下方 + 停摆解决。</b>与 Mi姐 的 VIX 指标互相印证（19.8 属升温非高潮）。<b>本席不给买卖指令</b>。注：本轮无法接入股吧/Reddit 实时抓取，为搜索快照式采集，标降级。</p>
+</div>
+
+<div class="chart-section">
+  <div class="chart-title">图 11 · 专家对主判断的置信度雷达（八位，降级推导）</div>
+  <div class="chart-sub">0–100 · 越高表示对该专家自身结论的把握越强，不代表方向一致</div>
+  <div class="chart-wrap"><canvas id="chart-radar"></canvas></div>
+  <div class="chart-note">数据面（笨鸟 74）与技术面（蔡森 70）把握最强；供应链（白毛 60）与情绪面（58）最弱 —— 后者受限于本轮无法实时抓取渠道数据。<b>八位专家在"股票震荡后修复、黄金上行"上收敛，在"美元方向"上存在分歧（见第 8 节）。</b></div>
+</div>
+
+<!-- ============ 七、实证因果 + 风控 ============ -->
+<h2>7 · 实证因果验证与风控终审</h2>
+<div class="card">
+  <h3>7.1 因果识别结论 <span class="badge b-green">🟢 数据</span></h3>
+  <p>问题："总统党输掉中期选举 → 股市上涨"是否存在可识别的因果效应？<b>答：不存在可识别的因果效应。</b>① 处理组与"任期第三年"完全共线，无法分离；② 样本 19–20 个且时间聚集，有效独立样本远小于计数；③ 混淆变量（盈利周期、货币政策、战争/通胀）在每个样本中权重远大于选举。<br>
+  <b>可识别的是另一件事：政策不确定性溢价在事件后消退（VIX 回落、EPU 回落）。所以交易依据应是"不确定性消退 + 季节性"，而不是"选举利多"。</b>本结论与图 9 的"低于历史中位路径"一致。</p>
+
+  <h3>7.2 反事实检验 <span class="badge b-blue">🔵 推导</span></h3>
+  <p>若反过来——共和党守住两院（Polymarket 仅 8%）——市场会定价"减税 2.0 + 放松监管"，短期更亢奋，但长端因财政扩张而更高（5.5%+），中期风险更大。<b>这意味着"输掉"对市场的真实含义是：边际利多债券与黄金、边际利空美元、对股票中性偏多（因为折现率压力下降的利多，部分被财政刺激缺席的利空抵消）。</b></p>
+
+  <h3>7.3 风控一票否决项（第九位 · 硬拦）</h3>
+  <div class="kill">
+    <b>① 10Y 美债连续 5 个交易日收 &gt; 5.50% → 取消全部股票加仓计划，仓位降至 50% 以下。</b><br>
+    <b>② 停摆持续至 11-07 之后（10 月非农再度缺失）→ Fed 在 12 月会议仍处盲飞，波动放大，总仓 ≤50%。</b><br>
+    <b>③ Brent 突破 120 → 股票与债券双杀风险启动（黄金除外），风险敞口减半。</b><br>
+    <b>④ 单一标的仓位 &gt;30% 不允许；选举周总仓 ≤50%。</b><br>
+    <b>⑤ 数据质量降级：本轮官方宏观数据因停摆缺失（9 月非农未发布、CPI 10-14 面临延迟），所有依赖官方数据的判断须以私人数据（ADP / Indeed）交叉验证，否则降级为假说。</b>
+  </div>
+</div>
+
+<!-- ============ 八、评分卡 ============ -->
+<h2>8 · 最终评分卡（方向 + 置信度 + 时间框架 + 幅度 + 证伪位）</h2>
+<div class="card">
+  <table>
+    <tr><th>标的</th><th>方向</th><th>置信度</th><th>时间框架</th><th>幅度/目标</th><th>证伪位</th></tr>
+    <tr><td><b>S&amp;P 500</b></td><td class="up">涨（先震荡后修复）</td><td>68</td><td>10-13 → 12-31</td><td>8100–8300（+3.7%~+6.3%）</td><td>10Y 连 5 日收 &gt;5.50%，或收盘破 7550</td></tr>
+    <tr><td><b>黄金</b></td><td class="gold">涨</td><td>70</td><td>10-13 → 12-31</td><td>4400–4600（+5%~+10%）</td><td>伊朗实质停火 + Brent&lt;90 + DXY&gt;104 三者同现</td></tr>
+    <tr><td><b>DXY</b></td><td>高位震荡偏落（见顶概率 &gt; 突破）</td><td>62 ⚠️分歧</td><td>10-13 → 12-31</td><td>99.5–101.5（压力 102.5）</td><td>周线收 &gt;104</td></tr>
+    <tr><td><b>10Y 美债收益率</b></td><td class="down">温和下行（先高后低）</td><td>60</td><td>10-13 → 12-31</td><td>5.05%–5.15%（区间 5.0–5.4）</td><td>10-28/29 或 12 月 FOMC 加息且点阵转鹰 → 5.6%</td></tr>
+    <tr><td><b>Brent</b></td><td>区间震荡偏落 🟡</td><td>55</td><td>10-13 → 12-31</td><td>95–110（现 104.70）</td><td>霍尔木兹封锁事件 → &gt;120</td></tr>
+  </table>
+  <div class="score"><span class="small" style="width:74px">S&amp;P 68</span><div class="bar"><div class="fill" style="width:68%"></div></div></div>
+  <div class="score"><span class="small" style="width:74px">黄金 70</span><div class="bar"><div class="fill" style="width:70%"></div></div></div>
+  <div class="score"><span class="small" style="width:74px">DXY 62</span><div class="bar"><div class="fill" style="width:62%"></div></div></div>
+  <div class="score"><span class="small" style="width:74px">10Y 60</span><div class="bar"><div class="fill" style="width:60%"></div></div></div>
+  <div class="score"><span class="small" style="width:74px">Brent 55</span><div class="bar"><div class="fill" style="width:55%"></div></div></div>
+</div>
+
+<h2>9 · 共识矩阵与市场定价：alpha 在哪</h2>
+<div class="card">
+  <table>
+    <tr><th>判断项</th><th>内部专家</th><th>市场定价 / 外部共识</th><th>是否存在增量</th></tr>
+    <tr><td>民主党拿下众院</td><td>一致</td><td>Polymarket 91–93%</td><td><b>无增量（已完全定价）</b></td></tr>
+    <tr><td>参院归属</td><td>接近五五偏 D（分歧）</td><td>Polymarket D 64–65% / Kalshi R 61%（口径矛盾）</td><td>有小幅增量，但平台分歧大，不重仓押注</td></tr>
+    <tr><td>选后 12 个月股票上涨 +14%</td><td><b>反对（共线性 + 折现率压制）</b></td><td>卖方普遍引用的历史统计</td><td><b>有增量：只给 +3.7%~+6.3%</b></td></tr>
+    <tr><td>停摆时长与 12-11 拨款</td><td>拖到 2027-01 是现实风险</td><td>预测市场无有效定价（数据缺失）</td><td><b>增量最大：这是本报告第一证伪位</b></td></tr>
+    <tr><td>10Y 24 年高位的主导性</td><td>一阶变量（强共识）</td><td>市场定价年底前至少加息一次 &gt;85%</td><td>无增量，但被多数"选举叙事"忽视</td></tr>
+  </table>
+  <p class="small"><b>结论：别交易"谁赢"。alpha 在选后的财政（12-11）、数据（BLS 真空下的 Fed 盲飞）、利率（10Y 5.3%）三件事上。</b></p>
+</div>
+
+<!-- ============ 十、二次思考 + 事实核查 ============ -->
+<h2>10 · 二次思考与事实核查（第 5.8 步 · 不限级别强制）</h2>
+<div class="card">
+  <h3>A · 再思考一轮</h3>
+  <p><b>① 冷冻重读：</b>把上面整份推导当成别人写的报告审查，只看推理链。主链条是「民主党赢 → 立法停摆 → 财政扩张放缓 → 长端供给压力缓解 → 收益率略降 → 股票估值压力缓解 + 黄金靠制度噪音上涨 + 美元支撑减弱」。<b>最薄弱的一环是：长端利率真的会因财政放缓而降吗？</b>美债长端当前有四重驱动——油价通胀、AI 企业发债供给、鹰派 Fed、40 万亿债务，财政供给只是其一，且当前主导因子是油价与 Fed。<b>→ 10Y 那一项的置信度必须低于股票与黄金，已下调至 60。</b></p>
+  <p><b>② 换轴重推：</b>换"美元体系"轴（路口大爷）重推同一问题：体系裂化 → 黄金长期涨、美元长期弱；但短期由 24 年最高的实际利率（约 1.8%）支撑 → 美元短期不弱。<b>两路结论：黄金同向（涨）；美元分叉（宏观轴看长期弱、利率轴看短期强）。→ 美元一项标注分歧，从"看跌"改为"高位震荡偏落"，置信度 62，且明确时间框架只到 2026 年底，不做长期判断。</b></p>
+  <p><b>③ 反问三句：</b><br>
+  · <b>若错，第一个崩的假设是什么？</b>→ "停摆会在 12-11 前解决"。若拖到 2027-01，数据真空持续 + Fed 连续两次会议盲飞，股票路径全面下修至 7500–7800。<br>
+  · <b>是否只挑顺眼的数据？</b>→ 是的风险点在于我引用了"1950 以来 19 次选后 12 个月全正"这个最漂亮的统计。已在第 3 节与第 7 节自我批判其共线性并降权，主路径幅度只给 +3.7%~+6.3%，远低于该统计的 +14.5%。<br>
+  · <b>措辞里有没有别人的话？</b>→ Morgan Stanley 三情景、"输掉=利多"的媒体叙事均未作为结论依据，仅入附录对照。</p>
+  <p><b>④ 这一轮改变了什么（必答）：</b>10Y 置信度 68→60；DXY 从"看跌"改为"高位震荡偏落"并标注分歧（62）；"停摆是否在 12-11 前解决"提为第一证伪位；股票幅度明确压到历史中位之下。</p>
+
+  <h3>B · 事实核查（五类逐条抽检 · 留痕）</h3>
+  <table>
+    <tr><th>类</th><th>事项</th><th>出处</th><th>结论</th></tr>
+    <tr><td>数字</td><td>S&amp;P 500 = 7811.54（10-09 收）</td><td>新华网 / 中新经纬 / 国际金融报 三源</td><td>✅ 三源一致</td></tr>
+    <tr><td>数字</td><td>10Y = 5.23%（10-09）</td><td>wsnext 引 fxstreet；econotimes 10-06 5.278%；vantage 10-05 5.32%</td><td>✅ 区间一致（盘中/收盘口径差）</td></tr>
+    <tr><td>算式</td><td>2025 年收盘 ≈6810（由 7811.54 ÷ 1.1475 反推）</td><td>自算，输入为"8 月中 YTD +14%"</td><td>⚠️ 推导值，图中已标注"推导"</td></tr>
+    <tr><td>时效</td><td>民调 RCP D+7.9 / Polymarket 91%</td><td>10-09 快照，报告时点 10-13</td><td>✅ 滞后 4 天（含周末），可接受</td></tr>
+    <tr><td>时效</td><td>TACO +7.4（85% 分位）</td><td>ocmacro 官方接口，10-13 00:43 现场抓取，数据截至 10-09</td><td>✅</td></tr>
+    <tr><td>口径</td><td>特朗普支持率 34.5% vs 38.7% vs 34%（FT）</td><td>Poliwave 双窗口 / FT 10-11</td><td>⚠️ 聚合口径差异，报告取 34–39% 区间</td></tr>
+    <tr><td>来源</td><td>政府停摆状态（9-02 CR 已签 vs 10-01 停摆开始）</td><td>ctcnews/wisevoter vs 新华社/ziromarket/headings/viewstorys</td><td>❌ <b>未消解，采信多数一手报道（10-01 停摆进行中），双列注明，并已同步下调置信度</b></td></tr>
+    <tr><td>来源</td><td>Kalshi 参院 61%（R）vs Polymarket 64–65%（D）</td><td>USA TODAY / Centre Daily 转述</td><td>⚠️ 两平台口径矛盾，只用 Polymarket 主口径</td></tr>
+    <tr><td>来源</td><td>Morgan Stanley 三情景 / 媒体"输掉=利多"叙事</td><td>外部机构判断</td><td>🕵️ 剔除制：不作为结论依据，入附录</td></tr>
+  </table>
+  <p class="small"><b>检出 1 项 ❌（停摆状态源冲突）→ 置信度同步下调：S&amp;P 68（自 72 下调）、10Y 60（自 64 下调）。零发现不适用（本轮有真检出）。</b></p>
+</div>
+
+<div class="chart-section">
+  <div class="chart-title">图 12 · 证据类型投票（14 项核心判断）</div>
+  <div class="chart-sub">🟢 数据直接支持 / 🔵 框架推导 / 🟡 待验证假说</div>
+  <div class="chart-wrap"><canvas id="chart-evidence"></canvas></div>
+  <div class="chart-note">分布：🟢 数据 4 项（众院翻盘、预测市场定价、因果共线性批判、跛鸭制度事实）；🔵 框架推导 7 项（参院悬念、12-11 停摆拖延、S&amp;P 路径、10Y 路径、DXY 路径、黄金路径、情绪阶段）；🟡 假说 3 项（关税净降、Brent 区间、AI 电力监管）。<b>推导类占比 50%，这是本轮置信度整体不高的原因——用户可按此判断该信多少。</b></div>
+</div>
+
+<!-- ============ 附录 ============ -->
+<h2>11 · 附录：外部观点（🕵️ 剔除制 · 不作为结论依据）</h2>
+<div class="card small">
+  <p><b>Morgan Stanley 三情景（仅作共识对照）：</b>① 统一民主党多数 —— 可用必须通过的立法作筹码，延迟 OBBBA 下的 ACA 削减，对消费与医疗股偏负；② 统一共和党 —— 可通过党派线和解法案，<b>MS 视为对市场最有利</b>；③ 分裂政府 —— 供给侧压力更小、利率波动更低，但对美元支撑更弱、增长下行风险更清晰。<br>
+  <b>本报告的独立判断与之有两处不同：</b>一是我不认为"统一共和党最有利"，因为那意味着更长的财政扩张与更高的长端利率（5.5%+），短期亢奋、中期更险；二是我把"分裂政府"而非"sweep"作为路径中性的基准情形来推演资产（因参院结果未定死）。</p>
+  <p><b>媒体主流叙事"输掉 = 市场利多"：</b>本报告不采用。理由见第 3 节与第 7 节——该叙事建立在与"任期第三年"共线的历史统计上。</p>
+</div>
+
+<h2>12 · 数据源与降级说明</h2>
+<div class="card small">
+  <p><b>数据源：</b>ocmacro（TACO 现场抓取 10-13 00:43）· RealClearPolling / Cook Political Report / 270toWin / Decision Desk（民调）· Polymarket / Kalshi（预测市场，10-09）· 新华网 / 中新经纬 / 国际金融报（行情 10-09）· econotimes / wsnext / vantage（利率汇率）· 法治网 / govfacts / braumillerlaw（IEEPA 判例与关税）· 新华社 / ziromarket / headings.us（停摆）· U.S. Bank / CFRA / Certuity / Yahoo Finance 季节性（历史统计）。</p>
+  <p><b>降级与未执行项：</b>① 八位专家子代理因平台频率限制（429）全部失败，改上下文内按方法论推导（标 🔵）；② 腾讯自选股投研专家团（第 10 位）未调度 —— L4 专属且 westock 数据未覆盖美股；③ 期货团（第 11 位）未触发 —— 本课题非特定期货/期权合约分析；④ caisen-kline 未调用 —— 美股/外汇标的被引擎硬拒绝，蔡森形态结论为文字推演；⑤ 情绪面专家无法接入股吧/Reddit 实时抓取，为搜索快照式采集；⑥ 2026 年内的 S&amp;P、黄金、VIX 逐月序列仅有稀疏锚点，图中段为线性插值并已标注。</p>
+  <p><b>免责：</b>本报告为框架推导，非投资建议。所有路径均已给出证伪位，请按证伪位而非按结论执行。</p>
+</div>
+
+<footer>
+  蔡森十二专家整合分析框架 · 生成于 2026-10-13 00:41 (+0800) · 数据日 2026-10-09 · 图表 12 张 · 全部价格预测均以折线给出并附证伪位<br>
+  ⚠️ 本轮第一梯队八位专家为降级上下文推导（平台频率限制），置信度已相应下调
+</footer>
+
+</div>
+
+<script>
+const F={family:'-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif'};
+const GT={color:'#57606a',font:{size:11}};
+const LEG={labels:{color:'#1f2328',font:{size:11}}};
+const OPT=(extra={})=>Object.assign({responsive:true,maintainAspectRatio:false,plugins:{legend:LEG},scales:{x:{ticks:GT,grid:{color:'#e5e7eb'}},y:{ticks:GT,grid:{color:'#e5e7eb'}}}},extra);
+function drawLine(id,cfg){const c=document.getElementById(id);if(!c)return;if(c.style)c.style.height=(cfg.h||240)+'px';new Chart(c,cfg);}
+const drawBar=drawLine, drawRadar=drawLine, drawDoughnut=drawLine;
+global.OPT=OPT; global.GT=GT; global.LEG=LEG; global.drawLine=drawLine; global.drawBar=drawLine; global.drawRadar=drawLine; global.drawDoughnut=drawLine;
+
+</script>
+<script>
+// 图1 预测市场
+drawBar('chart-pm',{type:'bar',h:230,data:{labels:['众院民主党','参院民主党（Polymarket）','两院全拿（sweep）','参院共和党（Kalshi，矛盾口径）','共和党全拿'],datasets:[{label:'概率 %',data:[91,64,63,61,8],backgroundColor:['#cf222e','#ffa657','#bc6c25','#0969da','#2da44e'],borderColor:'#1f2328',borderWidth:1,borderRadius:5}]},options:OPT({plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:100,ticks:GT,grid:{color:'#e5e7eb'}},x:{ticks:{color:'#57606a',font:{size:10}},grid:{display:false}}}})});
+
+// 图2 支持率
+drawLine('chart-approval',{type:'line',h:240,data:{labels:['2025-01','2025-04','2025-07','2025-10','2026-01','2026-04','2026-07','2026-09','2026-10-10','2026-10-12'],datasets:[{label:'特朗普支持率 %',data:[51.8,null,null,null,null,null,41.5,40.3,34.5,38.7],borderColor:'#cf222e',backgroundColor:'rgba(207,34,46,.08)',tension:.25,spanGaps:true,pointRadius:3,fill:true},{label:'任期最高 51.8% 参照线',data:Array(10).fill(51.8),borderColor:'#8c959f',borderDash:[5,4],pointRadius:0,fill:false}]},options:OPT({plugins:{legend:LEG,tooltip:{mode:'index'}},scales:{y:{min:30,max:56,ticks:GT,grid:{color:'#e5e7eb'}},x:{ticks:GT,grid:{display:false}}}})});
+
+// 图3 总统周期
+drawBar('chart-cycle',{type:'bar',h:230,data:{labels:['第1年','第2年（中期选举年）','第3年','第4年','2026（年内至今，推导）'],datasets:[{label:'S&P 平均涨幅 %',data:[15.5,3.3,16.5,5.4,14.7],backgroundColor:['#8c959f','#57606a','#2da44e','#8c959f','#cf222e'],borderColor:'#1f2328',borderWidth:1,borderRadius:5}]},options:OPT({plugins:{legend:{display:false}},scales:{y:{ticks:GT,grid:{color:'#e5e7eb'}},x:{ticks:{color:'#57606a',font:{size:10}},grid:{display:false}}}})});
+
+// 图4 S&P
+drawLine('chart-spx',{type:'line',h:270,data:{labels:['1月','3月(低)','6月','8月中','10-01','10-03','10-09','11-03','11-30','12-11','12-31'],datasets:[
+ {label:'实际锚点',data:[7000,6370,null,7760,7666.45,7580,7811.54,null,null,null,null],borderColor:'#cf222e',backgroundColor:'rgba(207,34,46,.08)',tension:.2,spanGaps:true,pointRadius:3,fill:true},
+ {label:'主路径预测',data:[null,null,null,null,null,null,7811.54,7750,7950,7900,8200],borderColor:'#0969da',borderDash:[6,4],tension:.2,spanGaps:true,pointRadius:3,fill:false},
+ {label:'证伪下沿 7550',data:Array(11).fill(7550),borderColor:'#2da44e',borderDash:[3,3],pointRadius:0,fill:false}]},
+ options:OPT({plugins:{legend:LEG},scales:{y:{min:6200,max:8500,ticks:GT,grid:{color:'#e5e7eb'}},x:{ticks:GT,grid:{display:false}}}})});
+
+// 图5 美债
+drawLine('chart-ust',{type:'line',h:250,data:{labels:['9-30','10-01','10-05','10-06','10-08','10-09','11-03','11-30','12-31'],datasets:[
+ {label:'10Y 实际',data:[5.29,5.29,5.32,5.278,5.35,5.23,null,null,null],borderColor:'#cf222e',tension:.2,spanGaps:true,pointRadius:3},
+ {label:'30Y 实际',data:[null,null,null,5.661,null,5.66,null,null,null],borderColor:'#8c959f',tension:.2,spanGaps:true,pointRadius:3},
+ {label:'10Y 主路径',data:[null,null,null,null,null,5.23,5.20,5.12,5.10],borderColor:'#0969da',borderDash:[6,4],tension:.2,spanGaps:true,pointRadius:3},
+ {label:'证伪 5.50%',data:Array(9).fill(5.50),borderColor:'#bc6c25',borderDash:[3,3],pointRadius:0}]},
+ options:OPT({plugins:{legend:LEG},scales:{y:{min:4.9,max:5.8,ticks:{...GT,callback:v=>v.toFixed(2)+'%'} ,grid:{color:'#e5e7eb'}},x:{ticks:GT,grid:{display:false}}}})});
+
+// 图6 DXY
+drawLine('chart-dxy',{type:'line',h:250,data:{labels:['9-08','9-30','10-01','10-05','10-06','10-08','10-09','11-03','11-30','12-31'],datasets:[
+ {label:'DXY 实际',data:[98.60,100.48,101.48,102.54,101.86,102.42,102.02,null,null,null],borderColor:'#cf222e',backgroundColor:'rgba(207,34,46,.07)',tension:.2,spanGaps:true,pointRadius:3,fill:true},
+ {label:'主路径',data:[null,null,null,null,null,null,102.02,101.5,100.5,100.0],borderColor:'#0969da',borderDash:[6,4],tension:.2,spanGaps:true,pointRadius:3},
+ {label:'压力 102.54',data:Array(10).fill(102.54),borderColor:'#bc6c25',borderDash:[4,3],pointRadius:0},
+ {label:'20日EMA 101.24',data:Array(10).fill(101.24),borderColor:'#2da44e',borderDash:[4,3],pointRadius:0}]},
+ options:OPT({plugins:{legend:LEG},scales:{y:{min:97,max:104,ticks:GT,grid:{color:'#e5e7eb'}},x:{ticks:GT,grid:{display:false}}}})});
+
+// 图7 黄金
+drawLine('chart-gold',{type:'line',h:250,data:{labels:['10-07','10-09','11-03','11-30','12-31'],datasets:[
+ {label:'现货黄金 实际锚点',data:[4140,4194.24,null,null,null],borderColor:'#bc6c25',backgroundColor:'rgba(188,108,37,.10)',tension:.2,spanGaps:true,pointRadius:4,fill:true},
+ {label:'主路径',data:[null,4194.24,4250,4350,4500],borderColor:'#cf222e',borderDash:[6,4],tension:.2,spanGaps:true,pointRadius:3},
+ {label:'止损参考 4080',data:Array(5).fill(4080),borderColor:'#2da44e',borderDash:[3,3],pointRadius:0}]},
+ options:OPT({plugins:{legend:LEG},scales:{y:{min:4000,max:4700,ticks:GT,grid:{color:'#e5e7eb'}},x:{ticks:GT,grid:{display:false}}}})});
+
+// 图8 VIX + 油
+drawLine('chart-vix',{type:'line',h:250,data:{labels:['9-01','9-15','9-30','10-08','11-03(预测)','11-30(预测)'],datasets:[
+ {label:'VIX',data:[15.2,null,null,19.8,24,17],borderColor:'#cf222e',tension:.2,spanGaps:true,pointRadius:3,yAxisID:'y'},
+ {label:'长期均值 19.4',data:Array(6).fill(19.4),borderColor:'#8c959f',borderDash:[4,3],pointRadius:0,yAxisID:'y'},
+ {label:'Brent',data:[null,null,102.31,104.70,100,98],borderColor:'#0969da',tension:.2,spanGaps:true,pointRadius:3,yAxisID:'y1'},
+ {label:'WTI',data:[null,null,null,91.85,89,87],borderColor:'#2da44e',tension:.2,spanGaps:true,pointRadius:3,yAxisID:'y1'}]},
+ options:OPT({plugins:{legend:LEG},scales:{y:{position:'left',min:10,max:30,ticks:GT,grid:{color:'#e5e7eb'}},y1:{position:'right',min:80,max:115,ticks:GT,grid:{display:false}},x:{ticks:GT,grid:{display:false}}}})});
+
+// 图9 历史 vs 2026
+drawLine('chart-hist',{type:'line',h:250,data:{labels:['选举日','+1月','+3月','+6月','+9月','+12月'],datasets:[
+ {label:'历史中位路径（1950 以来 19 次全正，中位 +14.5%）',data:[100,101.5,104.5,108,111.5,114.5],borderColor:'#2da44e',tension:.15,pointRadius:3},
+ {label:'2026 主路径（本报告）',data:[100,99.2,101.5,103.5,104.5,105.5],borderColor:'#cf222e',borderDash:[6,4],tension:.15,pointRadius:3}]},
+ options:OPT({plugins:{legend:LEG},scales:{y:{min:97,max:118,ticks:GT,grid:{color:'#e5e7eb'}},x:{ticks:GT,grid:{display:false}}}})});
+
+// 图10 TACO
+drawBar('chart-taco',{type:'bar',h:250,data:{labels:['< +2','+2~+5','+5~+8（当前 +7.4）','≥ +8','无条件基准'],datasets:[
+ {label:'5 日内',data:[16.3,27.7,26.7,40.0,21.5],backgroundColor:'#8c959f',borderColor:'#57606a',borderWidth:1,borderRadius:4},
+ {label:'20 日内',data:[56.7,53.0,60.0,94.3,59.8],backgroundColor:'#cf222e',borderColor:'#a40e26',borderWidth:1,borderRadius:4}]},
+ options:OPT({plugins:{legend:LEG},scales:{y:{beginAtZero:true,max:100,ticks:GT,grid:{color:'#e5e7eb'}},x:{ticks:{color:'#57606a',font:{size:10}},grid:{display:false}}}})});
+
+// 图11 雷达
+drawRadar('chart-radar',{type:'radar',h:290,data:{labels:['杨世光','卢麒元','蔡森','笨鸟','serenity','Mi姐','路口大爷','情绪面'],datasets:[{label:'置信度',data:[68,62,70,74,60,66,64,58],borderColor:'#cf222e',backgroundColor:'rgba(207,34,46,.15)',pointRadius:3}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:LEG},scales:{r:{beginAtZero:true,max:100,ticks:{color:'#57606a',font:{size:10},backdropColor:'transparent'},pointLabels:{color:'#1f2328',font:{size:11}},grid:{color:'#e5e7eb'},angleLines:{color:'#e5e7eb'}}}}});
+
+// 图12 证据类型
+drawBar('chart-evidence',{type:'bar',h:220,data:{labels:['🟢 数据直接支持','🔵 框架推导','🟡 待验证假说'],datasets:[{label:'项数',data:[4,7,3],backgroundColor:['#2da44e','#0969da','#bc6c25'],borderColor:'#1f2328',borderWidth:1,borderRadius:5}]},
+ options:OPT({plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{...GT,stepSize:1},grid:{color:'#e5e7eb'}},x:{ticks:{color:'#1f2328',font:{size:11}},grid:{display:false}}}})});
+</script>
+</body>
+</html>

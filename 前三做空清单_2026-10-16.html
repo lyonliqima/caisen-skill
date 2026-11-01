@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>前三做空清单 · 2026-10-16</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  body{font-family:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;background:#FAFAF8;color:#2C2C2A;margin:0;padding:20px;}
+  .wrap{max-width:860px;margin:0 auto;}
+  h1{font-size:17px;font-weight:500;margin:0 0 4px;}
+  .meta{font-size:12px;color:#5F5E5A;margin:0 0 16px;}
+  .legend{display:flex;flex-wrap:wrap;gap:16px;font-size:12px;color:#5F5E5A;margin-bottom:12px;}
+  .legend span{display:flex;align-items:center;gap:5px;}
+  .panel-title{font-size:13px;font-weight:500;margin:0 0 2px;}
+  .panel-sub{font-size:12px;color:#5F5E5A;margin:0 0 6px;}
+  .chart-box{position:relative;width:100%;height:190px;margin-bottom:18px;}
+  .note{font-size:12px;color:#5F5E5A;line-height:1.7;border-top:0.5px solid rgba(0,0,0,0.12);padding-top:12px;margin-top:4px;}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0;}
+  .card{background:#fff;border:0.5px solid rgba(0,0,0,0.12);border-radius:10px;padding:12px 14px;}
+  .card h3{font-size:13px;font-weight:500;margin:0 0 8px;}
+  .card p{font-size:12px;color:#444441;margin:3px 0;line-height:1.5;}
+  .card b{color:#2C2C2A;font-weight:500;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>前三能做空的 · 氧化铝 / 烧碱 / 镍</h1>
+  <p class="meta">数据源：新浪财经期货实时行情 · 抓取于 2026-10-16 01:02 CST（夜盘刚收盘，10-15 夜盘 AO/NI 01:00 收、SH 23:00 收）｜ 日线经本地缓存交叉核对</p>
+  <div class="legend">
+    <span><span style="width:14px;height:2px;background:#A32D2D;display:inline-block;"></span>实际收盘</span>
+    <span><span style="width:14px;border-top:2px dashed #3B6D11;display:inline-block;"></span>推演路径（形态外推，非概率预测）</span>
+    <span><span style="width:14px;border-top:2px dashed #E24B4A;display:inline-block;"></span>交易层止损</span>
+    <span><span style="width:14px;border-top:2px dotted #639922;display:inline-block;"></span>目标位</span>
+  </div>
+
+  <div class="cards">
+    <div class="card"><h3>① 氧化铝 AO2701 ｜ 空</h3>
+      <p>现价 <b>2601</b>（夜盘 +0.66%）</p>
+      <p>入场：现价轻仓 ≤10% 名义，或等反弹 <b>2620–2660</b></p>
+      <p>止损 <b>2695</b>（+3.6%）｜ 证伪位 <b>2859</b></p>
+      <p>目标 <b>2552 → 2480 → 2430</b>（−4.6% 至 −6.6%）</p>
+      <p>三路方法唯一共识：600 万吨新产能 10 月即期投放 vs 电解铝开工 98.41% 封顶</p>
+    </div>
+    <div class="card"><h3>② 烧碱 SH2701 ｜ 空</h3>
+      <p>现价 <b>1731</b>（夜盘 −0.86%，续跌）</p>
+      <p>入场：现价小仓 ≤8% 名义，或等反抽 <b>1760–1790</b></p>
+      <p>止损 <b>1884</b>（+8.8%）｜ 证伪位 <b>1987</b></p>
+      <p>目标 <b>1700 → 1620</b>（−4.0% 至 −6.4%）</p>
+      <p>放量破位（量比 2.00）、厂库同比 +33.54% 全场最高；RSI 口径存疑故只给小仓</p>
+    </div>
+    <div class="card"><h3>③ 镍 NI2701 ｜ 空</h3>
+      <p>现价 <b>115780</b>（夜盘 −0.52%）</p>
+      <p>入场：<b>不追现价</b>，等反弹 <b>120000–121500</b> 再空 ≤5% 名义</p>
+      <p>止损 <b>124400</b>（+7.4%）｜ 证伪位 <b>124433</b></p>
+      <p>目标 <b>112000 → 108000</b>（−3.3% 至 −6.7%）</p>
+      <p>INSG 把 2026 全球镍平衡由短缺修正为过剩；上期所席位数据盲区 → 仓位压最小档</p>
+    </div>
+  </div>
+
+  <p class="panel-title">氧化铝 AO2701</p>
+  <p class="panel-sub">近 10 日实际收盘 + 未来 8 个交易日推演 ｜ 现价 2601 → 反弹至 5/10 日均线（2620–2660 空头入场区）→ 目标 2480</p>
+  <div class="chart-box"><canvas id="ao" role="img" aria-label="氧化铝AO2701近10日收盘与推演路径折线图">氧化铝 AO2701：现价 2601，推演先反弹至 2632 后下行至 2480。</canvas></div>
+
+  <p class="panel-title">烧碱 SH2701</p>
+  <p class="panel-sub">近 10 日实际收盘 + 未来 8 个交易日推演 ｜ 现价 1731 → 反弹至 5 日均线（约 1795）→ 目标 1620</p>
+  <div class="chart-box"><canvas id="sh" role="img" aria-label="烧碱SH2701近10日收盘与推演路径折线图">烧碱 SH2701：现价 1731，推演先反弹至 1795 后下行至 1620。</canvas></div>
+
+  <p class="panel-title">镍 NI2701</p>
+  <p class="panel-sub">近 10 日实际收盘 + 未来 8 个交易日推演 ｜ 现价 115780 → 反弹至 120000–121500（空头入场区）→ 目标 110000</p>
+  <div class="chart-box"><canvas id="ni" role="img" aria-label="镍NI2701近10日收盘与推演路径折线图">镍 NI2701：现价 115780，推演先反弹至 120200 后下行至 110000。</canvas></div>
+
+  <p class="note">
+    推演路径采用「先反弹到 5/10 日均线附近（空头入场区），再沿原趋势下行」的形态节律，终点落在目标区间中值——这是形态外推，不是概率预测，作用是标出「哪个价位动手、哪个价位认错」。<br>
+    组合纪律（Mi姐）：总空头名义敞口 ≤50% 权益；氧化铝＋烧碱合计名义 ≤18% 权益、合计止损风险 ≤1.4%；单笔止损风险 ≤0.5% 权益。<br>
+    时间闸门：所有 2701 合约自然人最晚平仓日 2026-12-31；本轮台账到期日 2026-11-05。<br>
+    数据核查：夜盘快照抓取于 2026-10-16 01:02 CST；前结算字段（AO 2591 / SH 1758 / NI 117680）与本地日线缓存 10-15 结算完全一致；MA20（AO 2685.6）由台账基准模块独立复算一致。东财/腾讯接口当时无响应，双源交叉暂缺，10-16 日盘开盘后以交易所结算价复核。
+  </p>
+</div>
+<script>
+const labels = ['09-29','09-30','10-08','10-09','10-12','10-13','10-14','10-15','10-15夜','10-16','10-19','10-20','10-21','10-22','10-23','10-26','10-27'];
+const C = { actual:'#A32D2D', proj:'#3B6D11', stop:'#E24B4A', target:'#639922', grid:'rgba(0,0,0,0.06)', tick:'#5F5E5A' };
+function mk(id, actual, proj, stop, target, ymin, ymax, fmt) {
+  const n = labels.length, z = new Array(9).fill(null);
+  new Chart(document.getElementById(id), {
+    type: 'line',
+    data: { labels, datasets: [
+      { label:'实际收盘', data: actual, borderColor: C.actual, borderWidth:2, pointRadius:0, pointHoverRadius:4, tension:0.15, spanGaps:false },
+      { label:'推演路径', data: z.concat(proj), borderColor: C.proj, borderWidth:2, borderDash:[6,4], pointRadius:0, pointHoverRadius:4, tension:0.15 },
+      { label:'止损', data: z.concat(new Array(n-9).fill(stop)), borderColor: C.stop, borderWidth:1.5, borderDash:[3,3], pointRadius:0 },
+      { label:'目标', data: z.concat(new Array(n-9).fill(target)), borderColor: C.target, borderWidth:1.5, borderDash:[2,4], pointRadius:0 }
+    ]},
+    options: { responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{ mode:'index', intersect:false,
+        callbacks:{ label: (c)=> c.dataset.label + '：' + (fmt? fmt(c.parsed.y) : c.parsed.y) } } },
+      scales:{
+        x:{ grid:{ color:C.grid }, ticks:{ color:C.tick, font:{size:11}, autoSkip:true, maxRotation:0 } },
+        y:{ min:ymin, max:ymax, grid:{ color:C.grid }, ticks:{ color:C.tick, font:{size:11}, callback:(v)=> fmt? fmt(v) : v } }
+      } }
+  });
+}
+mk('ao', [2656,2723,2685,2699,2689,2639,2626,2584,2601],
+      [2601,2612,2628,2632,2600,2572,2540,2508,2480], 2695, 2480, 2400, 2740);
+mk('sh', [1867,1860,1837,1850,1834,1791,1766,1746,1731],
+      [1731,1745,1760,1785,1795,1750,1715,1670,1620], 1884, 1620, 1560, 1950);
+mk('ni', [123540,122500,119180,119500,118230,118890,118790,116380,115780],
+      [115780,116300,117600,119000,120200,118000,115200,112400,110000], 124400, 110000, 106000, 126000,
+      (v)=> v.toLocaleString('en-US'));
+</script>
+</body>
+</html>

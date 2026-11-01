@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>玉米十二专家整合分析 · 2026-10-22</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+/* 图表helper：模型只需写 <canvas id="x"></canvas> 后调用 drawXxx(id, ...) 即可，无需完整 Chart.js 配置
+   用法（三选一，均可）：
+     drawBar('c1', ['A','B'], [1,2])                                  // 扁平数组 => 单系列
+     drawBar('c1', ['A','B'], [[1,2],[3,4]], {names:['甲','乙']})       // 嵌套数组 => 多系列，names 给图例
+     drawBar('c1', ['A','B'], [{label:'甲',data:[1,2],color:'#f00'}])   // 标准对象 => 完全控制
+   ⚠️ 旧版 _norm 会把嵌套数组/扁平数组错误地塞进 data 标量，导致图表空白——已修正。 */
+function _base(type, id, data, opts){
+  opts = opts || {};
+  const ctx = document.getElementById(id);
+  if(!ctx) return;
+  const colors = {up:'#ff4d4f', down:'#1ec77a', gold:'#ffd166', accent:'#4a9eff', warn:'#ff9f43', purple:'#c084fc', muted:'#8b98a5'};
+  const list = Array.isArray(data.datasets)?data.datasets:[data];
+  const isDC = (type==='doughnut');
+  const ds = list.map(function(d,i){
+    const c = d.color || (opts.colors && opts.colors[i]) || colors.accent;
+    return {label:d.label||('系列'+(i+1)), data:d.data,
+      borderColor:Array.isArray(c)?c:c,
+      backgroundColor:Array.isArray(c)?c:(isDC?c:(opts.fill? c+'33' : c+'cc')),
+      borderDash: d.borderDash || (opts.dash? [6,4] : undefined),
+      pointStyle: d.pointStyle || (d.borderDash? 'rectRot' : 'circle'),
+      fill: !!opts.fill, tension:.25, pointRadius:d.borderDash?3:2, borderWidth:2};
+  });
+  const chartOpts = {responsive:true,plugins:{legend:{labels:{color:'#e6edf3'}}}};
+  if(type!=='radar'&&type!=='doughnut'){
+    chartOpts.scales = {
+      x:{ticks:{color:'#8b98a5'},grid:{color:'#2a3441'}},
+      y:{ticks:{color:'#8b98a5'},grid:{color:'#2a3441'}}
+    };
+  }
+  // opts.plugins：透传 Chart.js 插件（如价格主图挂 magic13Plugin）；不传则为空数组
+  new Chart(ctx,{type:type,data:{labels:data.labels,datasets:ds},options:chartOpts,plugins:(opts&&opts.plugins)||[]});
+}
+function _norm(d,names){
+  if(!d||!d.length) return [];
+  function set(v,i){return {label:(names&&names[i])||('系列'+(i+1)),data:v};}
+  if(typeof d[0]==='object'&&!Array.isArray(d[0])) return d;   // 已是 [{label,data}]
+  if(Array.isArray(d[0])) return d.map(set);                   // [[..],[..]] 多系列
+  return [set(d,0)];                                           // 扁平数组 => 单系列
+}
+function drawLine(id,labels,datasets,opts){_base('line',id,{labels:labels,datasets:_norm(datasets,opts&&opts.names)},opts);}
+function drawBar(id,labels,datasets,opts){_base('bar',id,{labels:labels,datasets:_norm(datasets,opts&&opts.names)},opts);}
+function drawDoughnut(id,labels,values,opts){_base('doughnut',id,{labels:labels,datasets:[{label:(opts&&opts.label)||'占比',data:values,color:opts&&opts.colors}]},opts);}
+function drawRadar(id,axes,values,opts){_base('radar',id,{labels:axes,datasets:[{label:(opts&&opts.label)||'评分',data:values,color:opts&&opts.color}]},{colors:[opts&&opts.color]});}
+</script>
+
+<style>
+:root{
+  --bg:#0f1419; --panel:#161b22; --panel2:#1c232c; --border:#2a3441;
+  --text:#e6edf3; --muted:#8b98a5; --up:#ff4d4f; --down:#1ec77a;
+  --gold:#ffd166; --accent:#4a9eff; --warn:#ff9f43; --purple:#c084fc;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Noto Sans SC",-apple-system,system-ui,sans-serif;line-height:1.65;padding:24px;}
+.report{max-width:960px;margin:0 auto;}
+header.hero{border-bottom:1px solid var(--border);padding-bottom:18px;margin-bottom:24px;}
+header.hero h1{font-size:1.9rem;font-weight:700;letter-spacing:.02em;}
+header.hero .meta{color:var(--muted);font-size:.85rem;margin-top:6px;}
+.kicker{color:var(--accent);font-size:.8rem;letter-spacing:.15em;font-weight:600;margin-bottom:10px;text-transform:uppercase;}
+section.block{margin:28px 0;}
+section.block > h2{font-size:1.3rem;font-weight:700;margin-bottom:14px;padding-left:10px;border-left:4px solid var(--accent);}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:14px 0;}
+.card h3{font-size:1.05rem;font-weight:600;margin-bottom:8px;}
+.muted{color:var(--muted);font-size:.9rem;}
+.up{color:var(--up);font-weight:600;}
+.down{color:var(--down);font-weight:600;}
+.gold{color:var(--gold);font-weight:600;}
+.warn{color:var(--warn);font-weight:600;}
+.purple{color:var(--purple);font-weight:600;}
+/* 评分卡 */
+.verdict{background:linear-gradient(135deg,#161b22,#1c232c);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin:18px 0;}
+.verdict .dir{font-size:1.4rem;font-weight:800;}
+.verdict .conf{float:right;font-size:1.1rem;color:var(--gold);font-weight:700;}
+.verdict ul{margin:10px 0 0 18px;font-size:.95rem;}
+.verdict li{margin:4px 0;}
+/* 图表 */
+.chart-box{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:16px 0;}
+.chart-box .cap{color:var(--muted);font-size:.8rem;margin-top:8px;text-align:center;}
+canvas{max-width:100%;}
+/* 表格 */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.9rem;}
+th,td{border:1px solid var(--border);padding:8px 11px;text-align:left;}
+th{background:var(--panel2);font-weight:600;}
+td.cons{color:var(--down);} td.div{color:var(--warn);}
+/* 兵棋推演树 */
+.scenario{border-left:3px solid var(--accent);padding-left:14px;margin:12px 0;}
+.scenario .cond{font-weight:600;color:var(--text);}
+.scenario .arrow{color:var(--muted);margin:0 6px;}
+.scenario .res{font-weight:600;}
+.scenario .child{margin-left:18px;border-left:2px dashed var(--border);padding-left:12px;margin-top:8px;}
+.tag{display:inline-block;font-size:.72rem;padding:1px 8px;border-radius:999px;margin-right:6px;vertical-align:middle;}
+.tag.up{background:rgba(255,77,79,.15);} .tag.down{background:rgba(30,199,122,.15);}
+.tag.gold{background:rgba(255,209,102,.15);} .tag.neutral{background:rgba(139,152,165,.18);color:var(--muted);}
+/* 证据/证伪 */
+.evidence{border-left:3px solid var(--accent);background:var(--panel);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.92rem;}
+.falsify{border-left:3px solid var(--warn);background:rgba(255,159,67,.08);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.92rem;}
+.falsify b{color:var(--warn);}
+/* 免责 */
+footer.disclaimer{margin-top:36px;padding-top:16px;border-top:1px solid var(--border);color:var(--muted);font-size:.78rem;line-height:1.5;}
+footer.disclaimer b{color:var(--text);}
+</style>
+</head>
+<body>
+<div class="report">
+<header class="hero">
+  <div class="kicker">整合市场分析 · 方法论推导</div>
+  <h1>玉米十二专家整合分析 · 2026-10-22</h1>
+  <div class="meta">2026-10-22</div>
+</header>
+<div class="verdict">
+  <span class="conf">置信度 72 · 中高</span>
+  <div class="dir up">中性偏多 ▲（远月多 / 近月磨底）</div>
+  <ul>
+    <li>方向：远月 C2705 多单优于近月；近月 C0/C2611 仍受新粮上市压制，不宜裸多</li>
+    <li>期限：3–6 个月（持有至 2027 年春季）</li>
+    <li>幅度：C2705 目标 2350–2450（较 2266 修复 +4%~+8%）；C0 区间 2100–2250 磨底</li>
+    <li>证伪位：跌破 2092（52 周低点）且中储粮收储未加码 → 政策底失效，多单止损</li>
+  </ul>
+</div>
+
+<section class="block"><h2>🔰 收敛总览 · 三情景兵棋推演</h2>
+  <table>
+    <tr><th>情景</th><th>触发条件</th><th>C2705 目标</th><th>概率权重</th></tr>
+    <tr><td class="cons">乐观</td><td>收储加码 + 农户惜售 + 季节性回暖 + 全球减产预期</td><td class="up">2450 以上</td><td>30%</td></tr>
+    <tr><td>基准</td><td>震荡磨底后温和回升，政策底守住 2100</td><td class="up">2350–2400</td><td>50%</td></tr>
+    <tr><td class="div">悲观</td><td>售粮超预期集中 + 进口到港放量 + 饲用塌方</td><td class="down">多单止损（破 2090）</td><td>20%</td></tr>
+  </table>
+  <div class="evidence">核心矛盾：期货 C2705（2266）已跌破农业部年度产区均价预测下沿（2300），市场把"丰产+上市压力"定价得比官方平衡表更悲观；政策底（中储粮 2010–2100 挂牌）+ 成本底（黑龙江产区 ~2000–2100）构成双向锚。</div>
+</section>
+
+<section class="block"><h2>① 蔡森技术面 · A/B/K 三招</h2>
+  <div class="chart-box"><canvas id="c1"></canvas><div class="cap">图1：玉米主力连续 C0 近 120 日收盘 + MA20/60 + 神奇13节拍（下跌段绿字 11/12/13 为左侧超跌观察窗）</div></div>
+  <script>
+  function magic13(closes, highs, lows){
+    var n = closes.length;
+    var up = new Array(n).fill(0), dn = new Array(n).fill(0);
+    for(var i=4;i<n;i++){
+      up[i] = closes[i] > closes[i-4] ? up[i-1]+1 : 0;
+      dn[i] = closes[i] < closes[i-4] ? dn[i-1]+1 : 0;
+    }
+    function marks(cnt){
+      var m = [];
+      for(var i=4;i<n;i++){ if(cnt[i]===13){ for(var k=0;k<13;k++) m.push([i-k, 13-k]); } }
+      var L = cnt[n-1];
+      if(L>=5 && L<=12){ for(var k=0;k<L;k++) m.push([n-1-k, L-k]); }
+      return m;
+    }
+    return { up: marks(up), dn: marks(dn), upCnt: up, dnCnt: dn, highs: highs || closes, lows: lows || closes, fallback: !(highs && lows) };
+  }
+  function magic13Plugin(m13, opts){
+    opts = opts || {};
+    var upC = opts.upColor || '#e879f9', dnC = opts.dnColor || '#3fb950';
+    var upF = opts.upFactor || 1.02, dnF = opts.dnFactor || 0.98;
+    var minShow = opts.minShow != null ? opts.minShow : 5;
+    return { id:'magic13', afterDatasetsDraw(chart){
+      var ys = chart.scales.y, xs = chart.scales.x;
+      if(!ys || !xs || !m13) return;
+      var ctx = chart.ctx, area = chart.chartArea;
+      ctx.save(); ctx.font = 'bold 10px sans-serif'; ctx.textAlign='center'; ctx.globalAlpha=.95;
+      m13.up.forEach(function(p){
+        if(p[1] < minShow) return;
+        var px = xs.getPixelForValue(p[0]), py = ys.getPixelForValue(m13.highs[p[0]]*upF);
+        if(px<area.left||px>area.right||py<area.top) return;
+        ctx.fillStyle=upC; ctx.fillText(String(p[1]), px, py-2);
+      });
+      m13.dn.forEach(function(p){
+        if(p[1] < minShow) return;
+        var px = xs.getPixelForValue(p[0]), py = ys.getPixelForValue(m13.lows[p[0]]*dnF);
+        if(px<area.left||px>area.right||py>area.bottom) return;
+        ctx.fillStyle=dnC; ctx.fillText(String(p[1]), px, py+10);
+      });
+      ctx.restore();
+    }};
+  }
+  var D = {"labels": ["2026-04-23", "2026-04-24", "2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30", "2026-05-06", "2026-05-07", "2026-05-08", "2026-05-11", "2026-05-12", "2026-05-13", "2026-05-14", "2026-05-15", "2026-05-18", "2026-05-19", "2026-05-20", "2026-05-21", "2026-05-22", "2026-05-25", "2026-05-26", "2026-05-27", "2026-05-28", "2026-05-29", "2026-06-01", "2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-22", "2026-06-23", "2026-06-24", "2026-06-25", "2026-06-26", "2026-06-29", "2026-06-30", "2026-07-01", "2026-07-02", "2026-07-03", "2026-07-06", "2026-07-07", "2026-07-08", "2026-07-09", "2026-07-10", "2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-17", "2026-07-20", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24", "2026-07-27", "2026-07-28", "2026-07-29", "2026-07-30", "2026-07-31", "2026-08-03", "2026-08-04", "2026-08-05", "2026-08-06", "2026-08-07", "2026-08-10", "2026-08-11", "2026-08-12", "2026-08-13", "2026-08-14", "2026-08-17", "2026-08-18", "2026-08-19", "2026-08-20", "2026-08-21", "2026-08-24", "2026-08-25", "2026-08-26", "2026-08-27", "2026-08-28", "2026-08-31", "2026-09-01", "2026-09-02", "2026-09-03", "2026-09-04", "2026-09-07", "2026-09-08", "2026-09-09", "2026-09-10", "2026-09-11", "2026-09-14", "2026-09-15", "2026-09-16", "2026-09-17", "2026-09-18", "2026-09-21", "2026-09-22", "2026-09-23", "2026-09-24", "2026-09-28", "2026-09-29", "2026-09-30", "2026-10-08", "2026-10-09", "2026-10-12", "2026-10-13", "2026-10-14", "2026-10-15", "2026-10-16", "2026-10-19", "2026-10-20", "2026-10-21"], "c": [2426.0, 2417.0, 2427.0, 2429.0, 2431.0, 2427.0, 2391.0, 2377.0, 2365.0, 2353.0, 2359.0, 2378.0, 2367.0, 2355.0, 2353.0, 2365.0, 2351.0, 2324.0, 2331.0, 2327.0, 2316.0, 2311.0, 2310.0, 2322.0, 2330.0, 2333.0, 2307.0, 2300.0, 2323.0, 2332.0, 2339.0, 2335.0, 2346.0, 2351.0, 2320.0, 2325.0, 2323.0, 2329.0, 2327.0, 2315.0, 2326.0, 2301.0, 2323.0, 2337.0, 2328.0, 2333.0, 2329.0, 2305.0, 2286.0, 2305.0, 2299.0, 2299.0, 2311.0, 2307.0, 2309.0, 2303.0, 2305.0, 2287.0, 2274.0, 2272.0, 2269.0, 2278.0, 2277.0, 2268.0, 2266.0, 2267.0, 2266.0, 2269.0, 2253.0, 2243.0, 2251.0, 2240.0, 2245.0, 2266.0, 2267.0, 2263.0, 2231.0, 2226.0, 2200.0, 2226.0, 2265.0, 2263.0, 2264.0, 2280.0, 2276.0, 2281.0, 2287.0, 2279.0, 2299.0, 2293.0, 2289.0, 2306.0, 2303.0, 2286.0, 2299.0, 2282.0, 2263.0, 2255.0, 2221.0, 2208.0, 2216.0, 2192.0, 2185.0, 2170.0, 2180.0, 2184.0, 2181.0, 2180.0, 2187.0, 2187.0, 2154.0, 2162.0, 2176.0, 2195.0, 2216.0, 2211.0, 2206.0, 2183.0, 2191.0, 2186.0], "h": [2444.0, 2431.0, 2430.0, 2437.0, 2435.0, 2433.0, 2439.0, 2389.0, 2380.0, 2372.0, 2363.0, 2380.0, 2381.0, 2371.0, 2366.0, 2368.0, 2371.0, 2348.0, 2343.0, 2343.0, 2330.0, 2324.0, 2315.0, 2335.0, 2331.0, 2337.0, 2335.0, 2309.0, 2332.0, 2334.0, 2344.0, 2347.0, 2347.0, 2355.0, 2348.0, 2327.0, 2330.0, 2329.0, 2345.0, 2329.0, 2333.0, 2330.0, 2326.0, 2340.0, 2340.0, 2335.0, 2338.0, 2330.0, 2310.0, 2306.0, 2307.0, 2307.0, 2317.0, 2329.0, 2311.0, 2320.0, 2312.0, 2305.0, 2292.0, 2278.0, 2276.0, 2284.0, 2279.0, 2275.0, 2275.0, 2269.0, 2271.0, 2279.0, 2270.0, 2258.0, 2254.0, 2252.0, 2251.0, 2268.0, 2276.0, 2270.0, 2233.0, 2232.0, 2230.0, 2227.0, 2269.0, 2269.0, 2267.0, 2287.0, 2281.0, 2289.0, 2292.0, 2287.0, 2308.0, 2297.0, 2306.0, 2310.0, 2303.0, 2307.0, 2300.0, 2300.0, 2283.0, 2268.0, 2259.0, 2223.0, 2222.0, 2219.0, 2197.0, 2192.0, 2185.0, 2192.0, 2187.0, 2190.0, 2195.0, 2194.0, 2173.0, 2163.0, 2185.0, 2198.0, 2227.0, 2218.0, 2217.0, 2205.0, 2197.0, 2196.0], "l": [2419.0, 2413.0, 2415.0, 2423.0, 2425.0, 2419.0, 2370.0, 2372.0, 2356.0, 2350.0, 2350.0, 2357.0, 2361.0, 2354.0, 2345.0, 2351.0, 2351.0, 2323.0, 2326.0, 2320.0, 2311.0, 2311.0, 2304.0, 2309.0, 2316.0, 2323.0, 2303.0, 2291.0, 2301.0, 2315.0, 2328.0, 2331.0, 2331.0, 2342.0, 2317.0, 2316.0, 2318.0, 2312.0, 2325.0, 2312.0, 2315.0, 2295.0, 2300.0, 2320.0, 2325.0, 2317.0, 2327.0, 2302.0, 2285.0, 2284.0, 2293.0, 2297.0, 2300.0, 2303.0, 2297.0, 2301.0, 2298.0, 2283.0, 2269.0, 2268.0, 2263.0, 2268.0, 2264.0, 2262.0, 2262.0, 2256.0, 2263.0, 2264.0, 2252.0, 2241.0, 2235.0, 2238.0, 2235.0, 2245.0, 2260.0, 2254.0, 2220.0, 2224.0, 2198.0, 2197.0, 2224.0, 2256.0, 2253.0, 2262.0, 2265.0, 2273.0, 2278.0, 2276.0, 2280.0, 2284.0, 2288.0, 2286.0, 2291.0, 2276.0, 2280.0, 2276.0, 2260.0, 2254.0, 2220.0, 2204.0, 2205.0, 2191.0, 2181.0, 2166.0, 2167.0, 2177.0, 2170.0, 2174.0, 2175.0, 2177.0, 2145.0, 2141.0, 2161.0, 2171.0, 2210.0, 2197.0, 2197.0, 2181.0, 2181.0, 2184.0], "ma20": [2378.8, 2380.8, 2383.7, 2387.8, 2391.8, 2395.7, 2397.4, 2399.1, 2400.2, 2400.6, 2400.8, 2400.8, 2400.5, 2398.4, 2396.6, 2395.1, 2392.6, 2388.1, 2383.0, 2377.7, 2372.2, 2366.8, 2361.0, 2355.7, 2350.6, 2345.9, 2341.7, 2337.8, 2335.8, 2334.7, 2333.7, 2331.6, 2330.5, 2330.3, 2328.7, 2326.7, 2325.2, 2325.5, 2325.3, 2324.7, 2325.2, 2324.7, 2325.3, 2326.1, 2326.0, 2326.0, 2327.1, 2327.3, 2325.5, 2324.2, 2322.2, 2320.3, 2318.6, 2316.4, 2315.8, 2314.8, 2313.8, 2311.8, 2309.1, 2306.9, 2304.1, 2302.9, 2300.7, 2297.2, 2294.1, 2290.8, 2287.7, 2285.8, 2284.2, 2281.1, 2278.7, 2275.8, 2272.4, 2270.4, 2268.3, 2266.3, 2262.6, 2259.6, 2255.8, 2253.6, 2253.3, 2252.6, 2251.9, 2252.6, 2253.1, 2253.8, 2254.8, 2255.3, 2257.6, 2260.1, 2262.0, 2265.3, 2268.2, 2269.2, 2270.8, 2271.8, 2273.3, 2274.8, 2275.8, 2274.9, 2272.5, 2268.9, 2265.0, 2259.5, 2254.7, 2249.8, 2244.6, 2239.6, 2234.0, 2228.7, 2221.9, 2214.8, 2208.4, 2203.8, 2199.7, 2196.2, 2193.3, 2189.7, 2188.2, 2187.1], "ma60": [2350.9, 2353.2, 2355.4, 2357.5, 2359.8, 2362.2, 2364.2, 2365.8, 2367.3, 2368.9, 2370.4, 2372.2, 2373.8, 2375.0, 2376.3, 2377.7, 2378.2, 2378.3, 2378.5, 2378.4, 2378.0, 2377.4, 2376.6, 2375.6, 2374.9, 2374.1, 2372.8, 2371.3, 2370.1, 2369.2, 2368.3, 2367.3, 2366.6, 2366.2, 2365.1, 2364.1, 2363.1, 2362.1, 2360.7, 2359.5, 2358.7, 2357.4, 2356.7, 2356.5, 2356.2, 2355.9, 2355.4, 2354.8, 2353.8, 2353.2, 2352.2, 2350.9, 2349.9, 2348.4, 2347.0, 2345.5, 2343.9, 2341.8, 2339.1, 2336.4, 2333.8, 2331.5, 2329.0, 2326.3, 2323.6, 2320.9, 2318.8, 2317.0, 2315.2, 2313.3, 2311.5, 2309.2, 2307.2, 2305.7, 2304.3, 2302.6, 2300.6, 2298.9, 2296.8, 2295.1, 2294.2, 2293.4, 2292.7, 2291.9, 2291.1, 2290.2, 2289.8, 2289.5, 2289.1, 2288.4, 2287.6, 2287.1, 2286.4, 2285.3, 2285.0, 2284.3, 2283.3, 2282.0, 2280.3, 2278.5, 2276.7, 2274.8, 2272.5, 2269.8, 2267.3, 2264.8, 2262.3, 2260.2, 2258.6, 2256.6, 2254.2, 2251.9, 2249.7, 2247.8, 2246.3, 2244.7, 2243.1, 2241.3, 2240.0, 2238.5]};
+  var m13 = magic13(D.c, D.h, D.l);
+  drawLine('c1', D.labels, [D.c, D.ma20, D.ma60],
+    {names:['收盘','MA20','MA60'], colors:['#ffd166','#4a9eff','#c084fc'], plugins:[magic13Plugin(m13)]});
+  </script>
+  <div class="card"><h3>A 招 · 趋势</h3><p>均线空头排列：MA20=2187 &lt; MA60=2239 &lt; MA250=2277，现价 2186 贴 MA20，短期止跌但未转强；需站上 MA60（2239）方可确认趋势修复。BOLL20 中轨 2187、上轨 2219、下轨 2155，现价贴中轨，下轨 2155 为短线支撑。</p></div>
+  <div class="card"><h3>B 招 · 摆动</h3><p>RSI14=50.7、Fast%K(9)=52.3，均处中性区——无超买超卖，典型"磨底"特征，等待方向选择。</p></div>
+  <div class="card"><h3>K 招 · 分位/位置</h3><p>中长期分位偏低：250 日 16.4%、120 日 9.2%、60 日 18.3%——处历史中低位但非极端贴底。52 周区间 2092–2434，现价较低点 +4.5%、较高点 −10.2%。</p></div>
+  <div class="falsify"><b>证伪条件</b>：若跌破 2092（52 周低）且中储粮收储未同步加码，则"政策底+成本底"假设失效，技术面转为破位下行。</div>
+</section>
+
+<section class="block"><h2>② 杨世光 · 宏观六步法</h2>
+  <div class="card"><h3>结论</h3><p>宏观对玉米<b>中性偏多</b>：特朗普政策不确定性（TACO +8.0% 中压、净支持率任期最低 −24.3%）推升对华贸易摩擦风险，强化中国对美谷物加征关税、进口替代国产玉米的逻辑；同时通胀粘性（CPI nowcast +8bp）赋予农产品抗通胀属性。但中国地产深度调整（二手房同比 −5.4%、70 城全跌）压制整体风险偏好与饲用需求恢复。</p></div>
+  <div class="evidence">关键证据：TACO 处于 84.7 分位（中压），≥+8 时 20 日内重大回撤概率 76.7%；10Y UST +5.36bp、美元偏强 → CBOT 玉米承压（美元计价），但进口到岸成本上升反而支撑国内价格。</div>
+  <div class="falsify"><b>证伪条件</b>：若中美贸易阶段性缓和、关税预期落空，则进口替代逻辑削弱，国内玉米失去一道制度性支撑。</div>
+</section>
+
+<section class="block"><h2>③ 卢麒元 · 制度结构</h2>
+  <div class="card"><h3>结论</h3><p>制度结构为玉米提供"<b>政策底 + 成本底</b>"双重.floor。① 2026 中央一号文件延续"市场收购 + 国家托底"框架；② 中储粮轮换+增储在东北挂牌 2010–2100 元/吨，累计采购超 440 万吨，构成底部锚点（高于黑龙江深加工收购价 20–110 元/吨，低于港口报价，托底而不推高）；③ 进口关税配额 720 万吨（实际仅 600 万吨、占产量 &lt;2%）屏蔽国际低价冲击；④ 耕地地力保护补贴 + 玉米大豆生产者补贴锁定种植成本下限。</p></div>
+  <div class="evidence">黑龙江产区基层成本线约 2000–2100 元/吨，与中储粮挂牌价高度吻合——这是期货 2100 下方"跌不动"的硬约束来源。</div>
+  <div class="falsify"><b>证伪条件</b>：若收储力度不及预期（仅轮换无增储）或进口配额/关税出现松动，则制度底失效。</div>
+</section>
+
+<section class="block"><h2>④ 笨鸟 · 产业链供需</h2>
+  <div class="card"><h3>结论</h3><p>需求端"<b>稳中有降</b>"，缺乏强向上驱动但有刚性：饲用消费 20960 万吨（占总消费 67%），生猪产能持续调减（能繁母猪连续下降）使饲用稳中有降；工业消费 8120 万吨（深加工利润不高、开机率偏低）；替代谷物（进口大麦/高粱/定向稻谷）存在饲用替代，压制玉米需求。生猪存栏同比仍 +1.5%，饲料需求未明显减弱，但养殖亏损使补栏谨慎。</p></div>
+  <div class="evidence">农业农村部 CASDE：2026/27 年度消费 31165 万吨，较上年度基本持平；结余变化由 −557 转为 +34 万吨——供给边际转向宽松的关键信号。</div>
+  <div class="falsify"><b>证伪条件</b>：若生猪深度去产能（能繁加速淘汰）导致饲用消费塌方，则需求端支撑崩塌。</div>
+</section>
+
+<section class="block"><h2>⑤ 白毛 · 资金与情绪结构</h2>
+  <div class="chart-box"><canvas id="c2"></canvas><div class="cap">图2：玉米合约月间曲线（正向市场 / contango，远月升水）</div></div>
+  <script>drawBar('c2', ['C2611 近月','C2701 主力','C2705 远月'], [2158,2186,2266], {color:'#ffd166'});</script>
+  <div class="card"><h3>结论</h3><p>月间结构呈正向市场：C2611(2158) &lt; C2701(2186) &lt; C2705(2266)，远月升水 28/80 元/吨，反映"先抑后扬"预期与持仓成本。现货周度均价 2194（10-15），期货 C0 基本平水，C2705 升水现货 72。资金在近月偏空（新粮上市套保）、远月偏多（政策预期驱动多头回补）。</p></div>
+  <div class="evidence">结构含义：contango 下"买远月持有"需承受换月亏损（roll yield 为负），长期持有有摩擦成本——这是远月多单的隐性代价。</div>
+  <div class="falsify"><b>证伪条件</b>：若近月 C2611 逼仓或现货崩塌导致远月升水转贴水（back），则远月多单逻辑逆转。</div>
+</section>
+
+<section class="block"><h2>⑥ Mi 姐 · 量化择时（核心独立发现）</h2>
+  <div class="chart-box"><canvas id="c3"></canvas><div class="cap">图3：玉米主力不同窗口分位定位（越低越便宜）</div></div>
+  <script>drawBar('c3', ['60日','120日','250日','500日','1000日','全样本'], [18.3,9.2,16.4,18.0,9.3,51.6], {color:'#4a9eff'});</script>
+  <div class="chart-box"><canvas id="c4"></canvas><div class="cap">图4：入场位置×持有期限检验（跨 offset 法，规避成簇抽样陷阱）· 中位未来收益 %</div></div>
+  <script>drawBar('c4', ['20日','60日','120日','250日'], [[0.3,1.9,1.2,1.5],[0.2,0.9,1.1,3.0],[0.0,0.9,1.2,3.4]],
+    {names:['低位组(pos≤15%)','高位组(pos≥85%)','全样本'], colors:['#1ec77a','#ff4d4f','#8b98a5']});</script>
+  <div class="card"><h3>结论（与既定叙事相左）</h3><p>玉米"<b>越跌越买</b>"的位置效应<b>明显弱于 PVC / 橡胶</b>。低位组（pos250≤15%，当前同档）H250 中位收益仅 +1.5%、胜率 53%，反而跑输高位组（+3.0%/61%）与全样本（+3.4%/63%）。玉米抄底正期望<b>不来自"便宜"</b>，而来自政策底 + 季节性。60 日窗口低位组 +1.9%/64% 仅显示中期（约 2 个月）弱正期望，非长期优势。</p></div>
+  <div class="evidence">方法：对每个持有期 H，取 h=H 个起点各算一次中位收益，再取中位数的中位数；H250 组独立 offset 数=250，胜率仅作方向参考。成簇问题已通过该跨 offset 法削弱。</div>
+  <div class="falsify"><b>证伪条件</b>：若历史低位区样本在更长窗口（如 500 日）仍无超额收益，则"底部布局"逻辑彻底不成立，应放弃左侧。</div>
+</section>
+
+<section class="block"><h2>⑦ 妙想量化 · 多因子</h2>
+  <div class="card"><h3>结论</h3><p>多因子打分：分位偏低（多）+ 政策底 2100 支撑（多）+ 季节性 11 月后回暖（多）+ 月间升水（远月贵，结构性多） → 综合<b>远月中性偏多</b>。但 contango 升水使 roll yield 为负，长期持有需承担换月成本，故打分上限受抑（不构成强多）。</p></div>
+  <div class="evidence">因子共振点：技术分位低与制度底重合于 2100–2150，提供风险收益不对称的入场区。</div>
+</section>
+
+<section class="block"><h2>⑧ 实证因果 · 因果链</h2>
+  <div class="scenario">
+    <span class="tag neutral">因</span><span class="cond">丰产 +1.6%（30600 万吨）→ 新粮 10–11 月集中上市</span><span class="arrow">→</span><span class="res">供应洪峰</span>
+    <div class="child"><span class="cond">现货承压、期货磨底（C0 区间 2100–2250）</span><span class="arrow">→</span><span class="res">中储粮收储托底 + 11 月后农户惜售 + 下游补库</span></div>
+    <div class="child"><span class="cond">供需再平衡</span><span class="arrow">→</span><span class="res">价格企稳回升（远月 C2705 修复至 2350+）</span></div>
+  </div>
+  <div class="evidence">历史规律：玉米每年 9–10 月收割低点、11–12 月后季节性回升（天气市+政策市），与因果链方向一致。</div>
+  <div class="falsify"><b>证伪条件</b>：若收储力度不足或售粮节奏超预期集中，则季节性低点后移、回升延后。</div>
+</section>
+
+<section class="block"><h2>⑨ 风控终审 · 排雷</h2>
+  <div class="card"><h3>下行风险</h3><p>① 丰产兑现 + 上市高峰延长 → 跌破 2092；② 进口到港放量（配额内节奏冲击）；③ 生猪深度去产能 → 饲用塌方；④ 宏观 TACO≥+8 回撤风险向农产品传导。</p></div>
+  <div class="card"><h3>上行风险</h3><p>① 收储加码（增储扩围）；② 极端天气（ENSO 南美/澳洲减产推升全球谷价）；③ 贸易摩擦升级 → 进口替代强化。</p></div>
+  <div class="evidence">仓位纪律：单品种 ≤10%、分 5 档；远月多单止损 2090（跌破政策底即离场）。当前价格已处 2100–2150 低区，向下空间相对有限、向上修复空间更大——风险收益不对称。</div>
+</section>
+
+<section class="block"><h2>⑩ 腾讯圆桌 · 多空辩论</h2>
+  <div class="scenario"><span class="tag up">多方</span><span class="cond">政策底 + 成本底 + 季节性 + 分位低</span><span class="arrow">→</span><span class="res">逢低布局远月多单</span></div>
+  <div class="scenario"><span class="tag down">空方</span><span class="cond">丰产 + 累库拐点（结余 +34）+ 需求弱 + contango 升水</span><span class="arrow">→</span><span class="res">近月仍偏空</span></div>
+  <div class="evidence">辩论收敛：多空在"近月弱 / 远月强"上分歧收敛，策略倾向"多远月"或"空近月"，不宜裸多近月 C2611。</div>
+</section>
+
+<section class="block"><h2>⑪ 红队第13席 · 反向证伪</h2>
+  <div class="card"><h3>最大反证</h3><p>若 2026/27 实际产量超预期（天气完美）且消费继续下调 → 结余大幅转正 → 价格跌破成本底至 1900–2000；或进口政策放松（配额上调/关税下调）→ 国际低价玉米涌入 → 国内价格中枢下移。</p></div>
+  <div class="evidence">红队结论：当前定价已反映丰产，向下空间取决于政策托底力度；若政策底守住，2000–2100 即底，悲观情景的破坏力有限。</div>
+</section>
+
+<section class="block"><h2>⑫ 第14席 · 情绪面（COT / 持仓情绪）</h2>
+  <div class="card"><h3>结论</h3><p>节后空头主导近月（新粮上市套保盘），远月多头回补（政策预期）；农户连续降价后惜售情绪升温，贸易商谨慎。情绪近月偏空、远月修复，未极端化——尚不构成反转所需的"一致悲观"。</p></div>
+</section>
+
+<section class="block"><h2>⑬ 第15席 · 检查者（一致性核验）</h2>
+  <div class="card"><h3>结论</h3><p>12 专家方向收敛于"近月磨底、远月偏多"，无重大矛盾；技术与基本面共振于 2100–2150 底部区。唯一分歧点：量化（Mi 姐）提示位置效应弱，与"便宜就买"直觉冲突——已采纳并降级"纯位置"逻辑，改为"政策底确认 + 季节性"驱动。</p></div>
+</section>
+
+<section class="block"><h2>⑭ 第16席 · 真实财经（供需平衡表解剖）</h2>
+  <div class="chart-box"><canvas id="c5"></canvas><div class="cap">图5：CASDE 2026年9月玉米平衡表核心项（万吨）</div></div>
+  <script>drawBar('c5', ['产量25/26','产量26/27','消费25/26','消费26/27','进口26/27'], [30124,30600,31280,31165,600], {color:'#4a9eff'});</script>
+  <div class="card"><h3>解剖结论</h3><p>农业农村部 CASDE（2026-09）：2026/27 产量 30600 万吨（+1.6% 丰产）、消费 31165、进口 600（配额内、占比 &lt;2%）、结余变化 +34 万吨（由上年度 −557 转为小幅累库）。<b>关键信号：结余由负转正 = 供给宽松拐点</b>，但进口占比极低 → 国际冲击有限。产区批发均价预测 2300–2600，期货 C2705（2266）已低于下沿 → 市场过度悲观或反映上市压力，远月修复有基本面锚。</p></div>
+  <div class="evidence">数据口径：市场年度为当年 10 月至次年 9 月；平衡表为官方预测，非实产，最终以定产为准。</div>
+</section>
+
+<section class="block"><h2>⑮ ENSO 天气专题</h2>
+  <div class="chart-box"><canvas id="c6"></canvas><div class="cap">图6：Niño3.4 海温指数（℃，厄尔尼诺阈值 +0.5，强事件 ≥+1.5）</div></div>
+  <script>drawLine('c6', ['5月','6月','7月','8月(前5候)'], [0.5,1.60,2.09,2.64], {color:'#ff9f43'});</script>
+  <div class="card"><h3>结论</h3><p>当前为<b>东部型强到超强厄尔尼诺</b>：7 月 Niño3.4 达 2.09℃、8 月前 5 候 2.64℃（1951 年以来同期最高），秋冬达峰值、2027 春夏衰减。对国内玉米：东北灌浆期墒情适宜、初霜冻偏晚 → 实质利好单产（已计入 30600 预估）。全球层面：澳洲小麦、巴西二季玉米（2027 供给故事）受扰，全球库消比近十年新低支撑国际谷价。短期天气利多已定价，中期全球减产预期托底。</p></div>
+</section>
+
+<section class="block"><h2>⑯ 二次思考与事实核查（铁律 · 不限级别）</h2>
+  <div class="card"><h3>A · 再思考一轮</h3>
+    <p><b>冷冻重读</b>：原推导"分位低→底部布局"成立吗？重读发现玉米低位组长期收益跑输全样本，原"便宜就买"直觉不成立，已降级。</p>
+    <p><b>换轴重推</b>：换"供需平衡表"入口重推——结余由 −557 转 +34（宽松拐点），与"底部布局"方向相反；两路分叉 → 必须标注分歧并降置信度（已由 75 降至 72）。</p>
+    <p><b>反问三句</b>：① 若错，第一个崩的假设是"政策底 2100 守得住"；② 是否只挑顺眼数据？——已主动纳入反向证据（位置效应弱、累库拐点）；③ 措辞里有无别人的话？——机构"逢低布局远月"为市场共识，本报告独立结论为"远月多但靠政策+季节、非靠便宜"，与之部分相左。</p>
+    <p><b>本轮改变什么</b>：把入场逻辑从"位置低"改为"政策底确认 + 季节性（11 月后）"，并显式提示 contango 升水对长期持有的侵蚀。</p>
+  </div>
+  <div class="card"><h3>B · 事实核查（五类抽检留痕）</h3>
+    <table>
+      <tr><th>事项</th><th>出处</th><th>核验</th></tr>
+      <tr><td>C0 收盘 2186 / 52周 2092–2434</td><td>新浪财经日线（2026-10-21）</td><td class="cons">✅ 与行情源一致</td></tr>
+      <tr><td>2026/27 产量 30600、消费 31165、结余 +34</td><td>农业农村部 CASDE 2026-09（一手）</td><td class="cons">✅ 已核对原表</td></tr>
+      <tr><td>中储粮挂牌 2010–2100、采购 &gt;440 万吨</td><td>Mysteel 2026-10-19 / 国粮局 10-15 通气会</td><td class="cons">✅ 一手来源</td></tr>
+      <tr><td>Niño3.4 7月 2.09℃ / 8月 2.64℃</td><td>中国气象局 2026-08/09 发布会</td><td class="cons">✅ 一手来源</td></tr>
+      <tr><td>进口配额 720 万吨 / 实际 600 万吨</td><td>CASDE + 关税配额制度</td><td class="cons">✅</td></tr>
+      <tr><td>新作种植成本同比 +18%~32%</td><td>前期机构测算（非本次核验）</td><td class="warn">⚠️ 本次未直接核实，以中储粮挂牌价 2010–2100 作成本底代理，标注不确定性</td></tr>
+      <tr><td>量化检验 H250 低位组 +1.5%/53%</td><td>本报告跨 offset 自算（5297 根）</td><td class="cons">✅ 方法透明可复算</td></tr>
+    </table>
+    <div class="falsify"><b>零发现也须列项</b>：上述 7 项均逐项抽检，无"已核查无误"空话；唯"种植成本 +18%~32%"标 ⚠️ 待一手核实。</div>
+  </div>
+</section>
+
+<section class="block"><h2>⑰ 交叉验证表</h2>
+  <table>
+    <tr><th>维度</th><th>蔡森</th><th>杨/卢</th><th>笨鸟/白毛</th><th>Mi姐/妙想</th><th>结论</th></tr>
+    <tr><td>方向</td><td class="cons">磨底</td><td class="cons">中性偏多</td><td class="div">近弱远强</td><td class="cons">远月偏多</td><td class="cons">共识·远月多</td></tr>
+    <tr><td>底部</td><td>2155 技术支撑</td><td>—</td><td>2100 政策底</td><td>16% 分位低</td><td class="cons">2100–2150 共振底</td></tr>
+    <tr><td>风险</td><td>破 2092</td><td>贸易缓和</td><td>升水转贴水</td><td>位置效应弱</td><td class="div">需政策底守住</td></tr>
+  </table>
+  <div class="evidence">十二专家 + 红队 + 情绪 + 检查者 + 真实财经 共 16 席，方向收敛于"近月磨底、远月偏多"，置信度 72（中高）。最关键的独立发现：玉米抄底正期望来自政策+季节，而非"便宜"——已据实降级纯位置逻辑。</div>
+</section>
+
+<footer class="disclaimer">
+  <b>风险提示与免责声明</b>：本报告所有结论均由方法论工具独立推导，非对任何机构或个人的投资建议。市场有风险，决策须自行承担后果。专家观点仅作待验证假说，已用当前数据独立检验。
+</footer>
+</div>
+
+</body>
+</html>
