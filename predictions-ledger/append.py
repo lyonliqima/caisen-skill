@@ -362,11 +362,14 @@ def _run_baseline(symbol, window, direction, tlow, thigh, asof):
         return {"error": "baseline 调用失败: %s" % e}
 
 
-def _run_sanity(symbol, period, current, tlow, thigh, fals):
+def _run_sanity(symbol, period, current, tlow, thigh, fals, sigma_mode=None):
     cmd = [sys.executable, SANITY, "--symbol", symbol.split()[0],
            "--period-days", str(period), "--current", str(current),
            "--target-low", str(tlow), "--target-high", str(thigh),
            "--falsification", str(fals)]
+    # 报告显式声明 σ 口径时，量纲校验必须按同一口径执行，否则「声明」与「执行」脱节
+    if sigma_mode:
+        cmd += ["--sigma-mode", sigma_mode]
     try:
         out = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
         if out.stdout.strip():
@@ -378,7 +381,7 @@ def _run_sanity(symbol, period, current, tlow, thigh, fals):
 
 def build(rec, ledger_path, lenient=False, auto_baseline=True,
           cur=None, fals_price=None, tlow=None, thigh=None, skip_sanity=False,
-          entry_price=None):
+          entry_price=None, sigma_mode=None):
     now = _now()
     rec.setdefault("id", _next_id(ledger_path))
     rec.setdefault("date", now.strftime("%Y-%m-%d"))
@@ -391,9 +394,12 @@ def build(rec, ledger_path, lenient=False, auto_baseline=True,
     # 量纲校验（PRED 4）：数值齐备则自动校验，❌ 拒绝写入
     if not skip_sanity and None not in (cur, fals_price, tlow, thigh):
         san = _run_sanity(rec.get("symbol", ""), _parse_window(rec.get("time_window")),
-                          cur, tlow, thigh, fals_price)
+                          cur, tlow, thigh, fals_price, sigma_mode)
         rec["sanity"] = {"pass": bool(san.get("ok")), "reason": "；".join(san.get("issues", [])),
-                         "R1": san.get("R1"), "R2": san.get("R2")}
+                         "R1": san.get("R1"), "R2": san.get("R2"),
+                         "sigma_mode": sigma_mode or "match",
+                         "sigma_p_pct": san.get("sigma_p_pct"),
+                         "warnings": san.get("warnings", [])}
         if not san.get("ok"):
             sys.stderr.write("✗ 量纲校验未通过，拒绝写入（先按建议重设幅度/证伪位）：\n")
             sys.stderr.write(json.dumps(san, ensure_ascii=False, indent=2) + "\n")
@@ -669,7 +675,7 @@ def do_append(args):
 
     rec = build(rec, LEDGER, args.lenient, args.auto_baseline,
                 args.current, args.falsification_price, args.target_low, args.target_high,
-                args.skip_sanity, args.entry_price)
+                args.skip_sanity, args.entry_price, args.sigma_mode)
 
     # 约定13 纪律进代码：窗口多样性 + 置信度出界硬校验（写盘前最后一道闸）
     enforce_diversity_discipline(rec, LEDGER, args.force)
@@ -764,6 +770,11 @@ def main():
     ap.add_argument("--target-low", type=float, default=None, help="幅度下界（小数，如0.05）")
     ap.add_argument("--target-high", type=float, default=None, help="幅度上界（小数，如0.15）")
     ap.add_argument("--skip-sanity", action="store_true", help="跳过量纲校验")
+    ap.add_argument("--sigma-mode", default=None,
+                    choices=["match", "ewma", "window", "conservative", "legacy"],
+                    help="量纲校验 σ 估计口径透传给 sanity_check_card.py（默认 None→工具默认 match）。"
+                         "报告已显式声明 σ 口径时用此参数对齐，避免声明与执行脱节；"
+                         "sigma_p_pct / warnings 会一并写入 sanity 字段供复盘审计")
 
     args = ap.parse_args()
 

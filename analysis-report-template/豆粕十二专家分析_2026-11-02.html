@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>豆粕十二专家整合分析 · 2026-11-02</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+/* 图表helper：模型只需写 <canvas id="x"></canvas> 后调用 drawXxx(id, ...) 即可，无需完整 Chart.js 配置
+   用法（三选一，均可）：
+     drawBar('c1', ['A','B'], [1,2])                                  // 扁平数组 => 单系列
+     drawBar('c1', ['A','B'], [[1,2],[3,4]], {names:['甲','乙']})       // 嵌套数组 => 多系列，names 给图例
+     drawBar('c1', ['A','B'], [{label:'甲',data:[1,2],color:'#f00'}])   // 标准对象 => 完全控制
+   ⚠️ 旧版 _norm 会把嵌套数组/扁平数组错误地塞进 data 标量，导致图表空白——已修正。 */
+function _base(type, id, data, opts){
+  opts = opts || {};
+  const ctx = document.getElementById(id);
+  if(!ctx) return;
+  const colors = {up:'#ff4d4f', down:'#1ec77a', gold:'#ffd166', accent:'#4a9eff', warn:'#ff9f43', purple:'#c084fc', muted:'#8b98a5'};
+  const list = Array.isArray(data.datasets)?data.datasets:[data];
+  const isDC = (type==='doughnut');
+  const ds = list.map(function(d,i){
+    const c = d.color || (opts.colors && opts.colors[i]) || colors.accent;
+    return {label:d.label||('系列'+(i+1)), data:d.data,
+      borderColor:Array.isArray(c)?c:c,
+      backgroundColor:Array.isArray(c)?c:(isDC?c:(opts.fill? c+'33' : c+'cc')),
+      borderDash: d.borderDash || (opts.dash? [6,4] : undefined),
+      pointStyle: d.pointStyle || (d.borderDash? 'rectRot' : 'circle'),
+      fill: !!opts.fill, tension:.25, pointRadius:d.borderDash?3:2, borderWidth:2};
+  });
+  const chartOpts = {responsive:true,plugins:{legend:{labels:{color:'#e6edf3'}}}};
+  if(type!=='radar'&&type!=='doughnut'){
+    chartOpts.scales = {
+      x:{ticks:{color:'#8b98a5'},grid:{color:'#2a3441'}},
+      y:{ticks:{color:'#8b98a5'},grid:{color:'#2a3441'}}
+    };
+  }
+  new Chart(ctx,{type:type,data:{labels:data.labels,datasets:ds},options:chartOpts,plugins:(opts&&opts.plugins)||[]});
+}
+function _norm(d,names){
+  if(!d||!d.length) return [];
+  function set(v,i){return {label:(names&&names[i])||('系列'+(i+1)),data:v};}
+  if(typeof d[0]==='object'&&!Array.isArray(d[0])) return d;   // 已是 [{label,data}]
+  if(Array.isArray(d[0])) return d.map(set);                   // [[..],[..]] 多系列
+  return [set(d,0)];                                           // 扁平数组 => 单系列
+}
+function drawLine(id,labels,datasets,opts){_base('line',id,{labels:labels,datasets:_norm(datasets,opts&&opts.names)},opts);}
+function drawBar(id,labels,datasets,opts){_base('bar',id,{labels:labels,datasets:_norm(datasets,opts&&opts.names)},opts);}
+function drawDoughnut(id,labels,values,opts){_base('doughnut',id,{labels:labels,datasets:[{label:(opts&&opts.label)||'占比',data:values,color:opts&&opts.colors}]},opts);}
+function drawRadar(id,axes,values,opts){_base('radar',id,{labels:axes,datasets:[{label:(opts&&opts.label)||'评分',data:values,color:opts&&opts.color}]},{colors:[opts&&opts.color]});}
+</script>
+
+<style>
+:root{
+  --bg:#0f1419; --panel:#161b22; --panel2:#1c232c; --border:#2a3441;
+  --text:#e6edf3; --muted:#8b98a5; --up:#ff4d4f; --down:#1ec77a;
+  --gold:#ffd166; --accent:#4a9eff; --warn:#ff9f43; --purple:#c084fc;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Noto Sans SC",-apple-system,system-ui,sans-serif;line-height:1.65;padding:24px;}
+.report{max-width:960px;margin:0 auto;}
+header.hero{border-bottom:1px solid var(--border);padding-bottom:18px;margin-bottom:24px;}
+header.hero h1{font-size:1.9rem;font-weight:700;letter-spacing:.02em;}
+header.hero .meta{color:var(--muted);font-size:.85rem;margin-top:6px;}
+.kicker{color:var(--accent);font-size:.8rem;letter-spacing:.15em;font-weight:600;margin-bottom:10px;text-transform:uppercase;}
+section.block{margin:28px 0;}
+section.block > h2{font-size:1.3rem;font-weight:700;margin-bottom:14px;padding-left:10px;border-left:4px solid var(--accent);}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:14px 0;}
+.card h3{font-size:1.05rem;font-weight:600;margin-bottom:8px;}
+.muted{color:var(--muted);font-size:.9rem;}
+.up{color:var(--up);font-weight:600;}
+.down{color:var(--down);font-weight:600;}
+.gold{color:var(--gold);font-weight:600;}
+.warn{color:var(--warn);font-weight:600;}
+.purple{color:var(--purple);font-weight:600;}
+.verdict{background:linear-gradient(135deg,#161b22,#1c232c);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin:18px 0;}
+.verdict .dir{font-size:1.4rem;font-weight:800;}
+.verdict .conf{float:right;font-size:1.1rem;color:var(--gold);font-weight:700;}
+.verdict ul{margin:10px 0 0 18px;font-size:.95rem;}
+.verdict li{margin:4px 0;}
+.chart-box{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:16px 0;}
+.chart-box .cap{color:var(--muted);font-size:.8rem;margin-top:8px;text-align:center;}
+canvas{max-width:100%;}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.9rem;}
+th,td{border:1px solid var(--border);padding:8px 11px;text-align:left;}
+th{background:var(--panel2);font-weight:600;}
+td.cons{color:var(--down);} td.div{color:var(--warn);}
+.scenario{border-left:3px solid var(--accent);padding-left:14px;margin:12px 0;}
+.scenario .cond{font-weight:600;color:var(--text);}
+.scenario .arrow{color:var(--muted);margin:0 6px;}
+.scenario .res{font-weight:600;}
+.scenario .child{margin-left:18px;border-left:2px dashed var(--border);padding-left:12px;margin-top:8px;}
+.tag{display:inline-block;font-size:.72rem;padding:1px 8px;border-radius:999px;margin-right:6px;vertical-align:middle;}
+.tag.up{background:rgba(255,77,79,.15);} .tag.down{background:rgba(30,199,122,.15);}
+.tag.gold{background:rgba(255,209,102,.15);} .tag.neutral{background:rgba(139,152,165,.18);color:var(--muted);}
+.evidence{border-left:3px solid var(--accent);background:var(--panel);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.92rem;}
+.falsify{border-left:3px solid var(--warn);background:rgba(255,159,67,.08);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.92rem;}
+.falsify b{color:var(--warn);}
+footer.disclaimer{margin-top:36px;padding-top:16px;border-top:1px solid var(--border);color:var(--muted);font-size:.78rem;line-height:1.5;}
+footer.disclaimer b{color:var(--text);}
+.checktbl td.ok{color:var(--down);} td.bad{color:var(--up);}
+</style>
+</head>
+<body>
+<div class="report">
+<header class="hero">
+  <div class="kicker">整合市场分析 · 方法论推导 · 更新自 2026-10-23 研判</div>
+  <h1>豆粕（M2701）十二专家整合分析</h1>
+  <div class="meta">数据基准日 2026-11-02 ｜ 主力合约 M2701 参考价 ≈ 3185 元/吨 ｜ 气候态：超强厄尔尼诺（峰值 11–12 月）</div>
+</header>
+
+<div class="verdict">
+  <span class="conf">置信度 60</span>
+  <div class="dir down">中性偏空 ▼（弱势震荡，下沿临近成本支撑）</div>
+  <ul>
+    <li>供给宽松且仍在累积：油厂库存升至 129.5 万吨 + 月度到港 850–1000 万吨</li>
+    <li>外盘弱势：CBOT 美豆触及 9 周低位 ≈1215 美分，全球创纪录丰产（美豆单产 53.1 创纪录、巴西播种偏快）</li>
+    <li>超强厄尔尼诺 → 巴西降雨充沛 → 南美新季供给预期抬升，近月利空</li>
+    <li>技术已破前期震荡下沿 3217，但连续 6 周下行、神奇13下跌节拍远超 13 → 进入极端衰竭窗，下跌斜率趋缓</li>
+    <li>成本底约束变实：巴西 CNF 到港成本 4413–4469、拍卖成交重心降至 4105 但成交率仅 33.65%，继续降价空间收窄</li>
+  </ul>
+</div>
+
+<section class="block"><h2>① 蔡森技术面 · 区间位置 + 神奇13节拍</h2>
+  <div class="chart-box"><canvas id="c8"></canvas><div class="cap">图1：豆粕 M2701 区间位置分位（60D / 120D / 250D），当前价 3185 相对 60 日区间[3123,3479]分位仅 17.4%</div></div>
+  <script>
+  drawBar('c8', ['60D','120D','250D'], [[17.4,42.0,42.0]],
+    {names:['分位%'], colors:['#4a9eff']});
+  </script>
+  <div class="card"><h3>A 招 · 趋势结构</h3><p>价格 3185 已跌破前期震荡区间下沿 3217，贴所有中短期均线下方运行，呈"空头主导、沿下行通道"结构；MA20(10/23≈3346) 已低于 MA60(≈3295)，短期弱于中期。但距区间下沿 / 成本支撑（3050–3100）仅约 3–4%，下行斜率空间有限。</p></div>
+  <div class="card"><h3>B 招 · 摆动 / 神奇13节拍</h3><p>自 9/16 高点 3479 至 11/02 的 3185，价格连续约 6 周下行，下跌节拍计数远超 13 → <b>已进入极端衰竭窗</b>。按神奇13逻辑，绿字 &gt;13 不是加空信号，而是"左侧超跌、易现反抽"的观察窗——这与基本面偏空形成<b>技术背离</b>：任何反抽定性为反弹而非反转，除非伴随库存去化或南美天气升水。</p></div>
+  <div class="card"><h3>K 招 · 分位/位置</h3><p>60 日区间 [3123, 3479]，现价分位 <b>17.4%</b>（样本内偏低，非极端贴底）；120/250 日区间 [2972, 3479]，分位 42.0%——处中枢偏下，非高位逼空。年化波动率 60D≈14.96%、250D≈12.46%，波动中性，利于区间而非单边。</p></div>
+  <div class="falsify"><b>证伪条件</b>：① 上沿——放量收上 3250 且库存开始去化 → 转中性偏多，上看 3300–3400；② 下沿——有效跌破 3050（成本区下沿）且库存继续累积、到港超预期 → 打开至 2950–3000。</div>
+</section>
+
+<section class="block"><h2>② 杨世光 · 宏观六步法</h2>
+  <div class="card"><h3>结论</h3><p>宏观对豆粕<b>中性偏空（受抑）</b>：TACO 压力指数高位（关税/贸易摩擦风险）理论上利好进口替代与国内蛋白粕，但中国地产深度调整（70城房价同比回落、BIS 实际房价回撤）压制整体风险偏好与下游养殖/饲料需求恢复。美豆供给宽松（USDA 10 月偏空）形成"外盘弱 + 内需弱"组合，豆粕难以获得单边宏观驱动。</p></div>
+  <div class="evidence">关键证据：化债期信用收缩 → 下游养殖补栏谨慎 → 粕需求弹性受限；外盘美豆跌破前低，人民币计价进口成本被动下移，反而削弱国内粕的"进口替代溢价"。</div>
+  <div class="falsify"><b>证伪条件</b>：若中美贸易阶段性缓和、关税预期落空，则进口替代逻辑削弱，宏观转中性偏空（下方空间打开）。</div>
+</section>
+
+<section class="block"><h2>③ 卢麒元 · 制度结构 / 成本锚</h2>
+  <div class="card"><h3>结论</h3><p>豆粕<b>无国家托底</b>，底部来自"进口大豆 CNF 到岸价 + 压榨利润"的产业链再平衡，而非临储/收储刚性底（与玉米不同）。当前油厂压榨利润未恶化至深度亏损，故"破成本=买点"不成立（成本底闸门 1）。制度面给的是"<b>区间下沿由进口成本决定</b>"的软约束，3050–3100 即该软约束的当前投影。</p></div>
+  <div class="evidence">关键证据：豆粕定价权在外盘 CBOT 大豆 + 人民币汇率，国内仅能通过进口节奏与储备轮换边际调节；缺乏类似临储的刚性底部，故下方空间由成本动态决定。</div>
+  <div class="falsify"><b>证伪条件</b>：若中方启动大规模储备大豆轮入或收紧进口配额，制度面转为托底，下沿上移。</div>
+</section>
+
+<section class="block"><h2>④ 笨鸟 · 供需平衡表</h2>
+  <div class="chart-box"><canvas id="c2"></canvas><div class="cap">图2：全国主要油厂豆粕库存周度（万吨）— V 型后加速累积，11/01 升至 129.54 万吨</div></div>
+  <script>
+  drawLine('c2', ['1/2','5/15','8/28','9/11','10/23','11/01'],
+    [[117.0,29.0,116.73,111.0,109.0,129.54]],
+    {names:['库存万吨'], colors:['#ff9f43']});
+  </script>
+  <div class="card"><h3>结论</h3><p>供需<b>偏宽松且边际恶化</b>：油厂豆粕库存从 9/11 的 111 万吨回补至 11/01 的 129.54 万吨（创阶段高位）；9 月大豆进口 1188 万吨（同比 −7.7%，但 1–9 月累计 8608 万吨同比基本持平），10 月预估 854–900 万吨、11–12 月预估 900–1000 万吨/月，原料供给充裕；第 43 周开机率 66.47%、压榨量 244.87 万吨 → 产出持续放量。需求端生猪存栏恢复但利润偏低、补栏谨慎，饲料需求增量有限，去库缺乏内生动力。</p></div>
+  <div class="evidence">关键证据：库存 129.5 万吨（高位）+ 月度到港 850–1000 万吨（充裕）构成双重供给压制；USDA 10 月美豆丰产偏空已部分定价，边际驱动转弱而非新增。</div>
+  <div class="falsify"><b>证伪条件</b>：若大豆到港因物流/政策不及预期骤降，或油厂集中检修导致库存去化快于预期，则宽松证伪、价格反弹。</div>
+</section>
+
+<section class="block"><h2>⑤ 白毛（serenity）· 情绪与资金 / 流动性扫描</h2>
+  <div class="card"><h3>结论</h3><p>情绪与资金<b>偏空但临近衰减</b>：M2701 持仓仍超 200 万手（流动性充足，远超 2 万手门槛，标的可用），空头主导进攻特征明确（同花顺周报"空方占据绝对主导"）。但价格已逼近成本区，且连续下行超 6 周——<b>流动性扫描视角</b>：当前为"空头盈利盘云集 + 止损簇在更下方成本区"的结构，一旦南美天气升水或库存去化触发，易现空头回补式反抽（缩量不跌 ≠ 有承接，须看新增买盘放量反抽）。</p></div>
+  <div class="evidence">关键证据：持仓高且稳定，流动性无虑；前 20 净空结构存在但方向性强度须÷双边总量判定（净空占比 &lt;2% 视为无方向性押注），结论暂不依赖席位方向。</div>
+  <div class="falsify"><b>证伪条件</b>：若前 20 净空占比骤降近 0 或转净多且伴随持仓放量，则情绪面转向、空头回补推动反弹。</div>
+</section>
+
+<section class="block"><h2>⑥ Mi姐 · 产业、基差与交易战术</h2>
+  <div class="chart-box"><canvas id="c5"></canvas><div class="cap">图3：豆粕−菜粕期货价差（元/吨）— 9/16 为 1098，11/02 收窄至约 964，豆粕相对"偏贵"程度缓解</div></div>
+  <script>
+  drawLine('c5', ['9/16','11/02'], [[1098,964]],
+    {names:['豆-菜价差'], colors:['#c084fc']});
+  </script>
+  <div class="card"><h3>结论</h3><p>产业视角<b>中性偏空</b>：现货基差在供给宽松下由 9/15 的 −3（平水）转为 11/02 的约 +55（现货相对坚挺、期现倒挂），但这是"期货跌得更狠"的结果，非现货主动走强；累库周期中基差难以趋势性走阔。交易战术：三周期共振为空头主导，但价格已入超跌衰竭窗，<b>不建议追空</b>，宜在上沿（3250–3300）偏空、下沿（3050–3100）左侧分批（越跌越买），单笔风险 ≤ 总资金 1%。</p></div>
+  <div class="evidence">关键证据：累库周期基差通常压抑；M2701 远月无显著升水挤仓逻辑；豆-菜价差收窄说明豆粕跌多、相对估值修复。</div>
+  <div class="falsify"><b>证伪条件</b>：若现货基差持续走阔（现货强于期货）且远月转贴水，则产业面转强。</div>
+</section>
+
+<section class="block"><h2>⑦ 妙想量化 · 多因子打分</h2>
+  <div class="card"><h3>结论</h3><p>量化综合<b>中性偏空</b>：分位因子（60D 17.4% / 120D 42.0%）中性偏下；波动率因子（年化 60D 14.96%）中性；动量因子（近 6 周 3479→3185 回落、神奇13下跌节拍 &gt;13）偏空；估值因子（相对进口成本）中性偏空。多因子加权后净分为负，但幅度有限，对应"区间偏弱"而非"趋势空加速"。</p></div>
+  <div class="chart-box"><canvas id="c7"></canvas><div class="cap">图4：本框架各分析层方向分布（综合投票，共 12 席）</div></div>
+  <script>drawDoughnut('c7', ['中性偏空','中性','中性偏多'],
+    [6,5,1], {colors:['#1ec77a','#8b98a5','#ff4d4f'], label:'方向票数'});</script>
+  <div class="falsify"><b>证伪条件</b>：若动量因子由负转正（连续 5 日收盘 &gt; 4 日前）且分位重回 40% 上方，则量化信号翻多。</div>
+</section>
+
+<section class="block"><h2>⑧ 实证因果 · 因果链检验</h2>
+  <div class="card"><h3>结论</h3><p>因果上<b>中性偏空</b>：USDA 10 月偏空（美豆单产 53.1 创纪录、总产 45.62 亿蒲创纪录）已被盘面部分定价，属"利空出尽"；真正可观测的后续因果链是"<b>到港放量→库存累积→现货承压→盘面偏弱</b>"，该链条当前成立且未被打断。上行因果（南美天气升水、中方集中采购）目前无硬证据，故净因果偏下但未加速。</p></div>
+  <div class="evidence">关键证据：库存累积与到港放量是可高频验证的硬证据，优先于叙事判断；巴西播种偏快（10/23 达 42.8%、马托格罗索 75.8%）强化"南美供给预期"，压制远月。</div>
+  <div class="falsify"><b>证伪条件</b>：若南美（巴西/阿根廷）出现系统性天气升水或中方集中采购，上行因果链激活。</div>
+</section>
+
+<section class="block"><h2>⑨ 风控终审 · 风险预算</h2>
+  <div class="chart-box"><canvas id="c9"></canvas><div class="cap">图5：年化波动率对比（60D vs 250D，单位%）— 波动中性，利于区间</div></div>
+  <script>drawBar('c9', ['60D年化','250D年化'], [[14.96,12.46]],
+    {names:['波动率%'], colors:['#ff9f43']});</script>
+  <div class="card"><h3>结论</h3><p>风险预算<b>中性偏空</b>：下行风险（库存累积→3050）与上行风险（稳住 3250→3400）不对称——当前价 3185 距上方证伪位 3250 约 65 点、距下方成本区 3050–3100 约 85–135 点，且偏空驱动（供给）更确定，风险收益比偏向"区间上沿偏空 / 下沿左侧轻多"而非追多。建议仓位中性偏轻、严格以 3250 为止损参考。</p></div>
+  <div class="falsify"><b>证伪条件</b>：若价格放量突破 3250 且库存开始去化，则风险天平反转，空单止损、转中性偏多。</div>
+</section>
+
+<section class="block"><h2>⑩ 期货团十三大师圆桌 + 错因归因六闸门自检</h2>
+  <div class="card"><h3>圆桌共识</h3><p>十三位期货大师综合：方向<b>中性偏空</b>，区间 [3050, 3300]、重心 [3100, 3200]，与 2026-10-23 先验（P-20261022-002）方向一致但区间下沿下移（库存超预期累积）。分歧点在于"利空出尽后是否加速下行"——多数认为缺乏新驱动、以区间偏弱为主，靠近成本区易现反抽。</p></div>
+  <div class="evidence">闸门自检（圆桌发言强制项）：
+  <br>① 闸门 1 破成本≠买点：当前非成本底（进口成本软约束 3050–3100），✔ 未误判为买点；但下沿已入左侧布局区，须分档。
+  <br>② 闸门 2 政策表态≠需求改善：无具体政策表态触发，✔ N/A。
+  <br>③ 闸门 3 标的可用性：M2701 距自然人最后交易 &gt;90 天、持仓 &gt;200 万手、流动性为主力——✔ 标的可用。
+  <br>④ 闸门 4 同品种 60 天内第 N 次同向须写"上次错哪"：近 60 天已有 P-20261022-002 / P-20261016-003（中性偏空）等同向记录，均处"待验证"未结算；框架自身未结算率高，置信度须下修。
+  <br>⑤ 闸门 5 主连换月升水 &gt;2%：当前 M2701 远月无显著升水，✔ 未触发单合约重算。
+  <br>⑥ 闸门 6 席位净多须÷双边总量：前 20 净空结构存在，净空占比待核（&lt;2% 视为无方向性押注），结论暂不依赖席位方向。</div>
+</section>
+
+<section class="block"><h2>⑪ 气候定价 · 超强厄尔尼诺 → 大豆</h2>
+  <div class="chart-box"><canvas id="c6"></canvas><div class="cap">图6：Niño3.4 海温异常（°C）— 超强厄尔尼诺，11–12 月达峰值（&gt;2.5），为有记录以来最强</div></div>
+  <script>
+  drawLine('c6', ['7月','8月','9月','10月','11月(峰)','12月'],
+    [[2.09,2.59,2.60,2.50,2.60,2.50]],
+    {names:['Niño3.4异常°C'], colors:['#ff4d4f']});
+  </script>
+  <div class="card"><h3>结论（两步残差法 M-E3 思路）</h3><p>当前气候态为<b>超强厄尔尼诺</b>（国家气候中心：2026 年 9 月正式形成，11–12 月达峰值，强度有望超 1997/1998、2015/2016，为有记录以来最强），<b>不是拉尼娜</b>。对一年生豆系（草本）属"近月兑现"：厄尔尼诺 → 巴西/南美降雨充沛、播种偏快（10/23 巴西播种率 42.8%、马托格罗索 75.8%）→ 新季供给预期抬升 → <b>粕近月偏弱</b>。滞后效应（1998 类比）主要体现在 2027 年春夏中国洪涝，非大豆供给项。</p></div>
+  <div class="evidence">关键证据：巴西 CONAB 2026/27 产量预估 1.816 亿吨（+0.7%）、USDA 维持 1.86 亿吨（+3%）；雷亚尔贬值进一步提升巴西出口竞争力，压制 CBOT。方向锚外盘，国内为外盘映射的折扣版。</div>
+  <div class="falsify"><b>证伪条件（反转观测点）</b>：若巴西/阿根廷出现系统性干旱（厄尔尼诺下阿根廷偶发偏干）或暴雨延误播种，则南美供给预期反转，粕由偏弱转上行驱动。</div>
+</section>
+
+<section class="block"><h2>⑫ 外盘传导 · CBOT 美豆 → 连豆粕</h2>
+  <div class="chart-box"><canvas id="c4"></canvas><div class="cap">图7：CBOT 美豆（美分/蒲）vs 连豆粕 M2701（元/吨）— 外盘弱势主导内盘，美豆触及 9 周低位</div></div>
+  <script>
+  drawLine('c4', ['9/16','10/30','11/02'],
+    [
+      {label:'美豆(美分/蒲·9/16为区间高位估)', data:[1380,1234,1215], color:'#4a9eff'},
+      {label:'连豆粕(元/吨)', data:[3479,3183,3185], color:'#ffd166'}
+    ], {fill:false});
+  </script>
+  <div class="card"><h3>结论</h3><p>美豆自 9 月高位（≈1380 美分）跌至 11/02 的 ≈1215 美分（9 周低位），连豆粕同步从 3479 跌至 3185。外盘弱势（创纪录丰产 + 巴西播种偏快 + 雷亚尔贬值）是国内粕价的<b>主驱动</b>。美豆压榨利润 4.10 美元/蒲的内需韧性 + 出口检验放量（10/22 当周 247.65 万吨、同比 +113%）构成下方缓冲，但不足以逆转供给宽松定调。</p></div>
+  <div class="falsify"><b>证伪条件</b>：若美豆重新站上 1300 美分且 USDA 11 月报告下修产量，则外盘驱动反转，内盘跟涨。</div>
+</section>
+
+<section class="block"><h2>⑬ 供给端 · 到港与全球产量预期</h2>
+  <div class="chart-box"><canvas id="c3"></canvas><div class="cap">图8：进口大豆月度到港（万吨）— 9 月 1188，10–12 月预估 854–1000，供给充裕</div></div>
+  <script>
+  drawBar('c3', ['9月','10月(估)','11月(估)','12月(估)'], [[1188,877,950,950]],
+    {names:['到港万吨'], colors:['#1ec77a']});
+  </script>
+  <div class="chart-box"><canvas id="c10"></canvas><div class="cap">图9：全球大豆产量预期（亿吨，美豆已按 1 蒲=0.0272 吨折算）— 创纪录供给压制价格中枢</div></div>
+  <script>
+  drawBar('c10', ['美豆','巴西','阿根廷','全球'], [[1.24,1.86,0.50,4.427]],
+    {names:['产量亿吨'], colors:['#4a9eff']});
+  </script>
+  <div class="card"><h3>结论</h3><p>供给端"需求驱动 vs 全球定价"判别：豆粕属<b>全球定价</b>（外盘 CBOT + 南美供给主导），不因中国化债看空、也不因中国化债看多——其价格由全球创纪录丰产决定。2026/27 美豆总产 45.62 亿蒲（创纪录）、巴西 1.86 亿吨、全球 4.427 亿吨（创纪录），库消比虽美豆略降至 6.87% 但仍宽松。国内到港高位 + 高开机 = 豆粕产出放量，与全球宽松形成共振。</p></div>
+  <div class="falsify"><b>证伪条件</b>：若南美实质减产（天气）或中方集中采购导致美豆出口超预期，则全球供给宽松证伪。</div>
+</section>
+
+<section class="block"><h2>⑭ 交叉验证表</h2>
+  <table>
+    <tr><th>维度</th><th>杨</th><th>卢</th><th>蔡(技术)</th><th>笨鸟</th><th>白毛</th><th>Mi姐</th><th>结论</th></tr>
+    <tr><td>方向</td><td class="div">中性偏空</td><td class="div">中性</td><td class="down">偏空(衰竭窗)</td><td class="down">偏空</td><td class="down">偏空(衰减)</td><td class="down">偏空</td><td class="down">共识·中性偏空</td></tr>
+    <tr><td>核心驱动</td><td>外弱+内弱</td><td>进口成本软约束</td><td>破3217+衰竭</td><td>库存+到港</td><td>空头主导</td><td>基差/累库</td><td class="cons">供给宽松为主因</td></tr>
+    <tr><td>买点触发</td><td class="div">未到</td><td class="div">成本区才现</td><td class="div">衰竭窗观察</td><td class="div">库存去化才现</td><td class="div">回补才现</td><td class="div">下沿左侧才现</td><td class="div">3050–3100 左侧分档</td></tr>
+  </table>
+</section>
+
+<section class="block"><h2>⑮ 兵棋推演 · 三情景预测（折线·三件套）</h2>
+  <div class="scenario">
+    <span class="tag up">乐观</span><span class="cond">南美天气升水 + 中方集中采购 + 库存去化</span><span class="arrow">→</span><span class="res">站稳 3250，上看 3300–3400</span>
+    <div class="child"><span class="cond">→ 偏空证伪、转中性偏多</span><span class="arrow">→</span><span class="res">目标 3350–3400</span></div>
+  </div>
+  <div class="scenario">
+    <span class="tag neutral">基准</span><span class="cond">供给宽松延续、利空出尽后区间磨底</span><span class="arrow">→</span><span class="res">重心 3100–3200 偏弱震荡</span>
+    <div class="child"><span class="cond">→ 围绕成本区 3050–3250 箱体</span><span class="arrow">→</span><span class="res">20–40 日区间 [3050, 3250]</span></div>
+  </div>
+  <div class="scenario">
+    <span class="tag down">悲观</span><span class="cond">到港超预期 + 库存破位 + 需求塌方 + 破成本</span><span class="arrow">→</span><span class="res">有效跌破 3050，下看 2950–3000</span>
+    <div class="child"><span class="cond">→ 偏空加速</span><span class="arrow">→</span><span class="res">目标 2950–3000</span></div>
+  </div>
+  <div class="chart-box"><canvas id="c1"></canvas><div class="cap">图10：M2701 三件套预测（金线=历史实际；蓝线=基准预测；红虚线=乐观上沿；绿虚线=悲观下沿；末值须落在正文目标区间）</div></div>
+  <script>
+  drawLine('c1',
+    ["2026-09-16","2026-10-23","2026-10-30","2026-11-02","2026-11-09","2026-11-16","2026-11-23","2026-11-30","2026-12-07","2026-12-14"],
+    [
+      {label:'历史实际', data:[3479,3276,3183,3185,null,null,null,null,null,null], color:'#ffd166'},
+      {label:'基准预测', data:[null,null,null,3185,3150,3130,3120,3115,3120,3125], color:'#4a9eff'},
+      {label:'乐观上沿', data:[null,null,null,3185,3240,3260,3270,3280,3270,3260], color:'#ff4d4f', borderDash:[6,4]},
+      {label:'悲观下沿', data:[null,null,null,3185,3130,3100,3080,3060,3050,3060], color:'#1ec77a', borderDash:[6,4]}
+    ],
+    {fill:false});
+  </script>
+</section>
+
+<section class="block"><h2>⑯ 二次思考与事实核查（不限级别·每次必跑）</h2>
+  <div class="card"><h3>A 再思考一轮</h3>
+    <p><b>冻结重读</b>：上轮（10/23）定性"中性偏空、区间[3150,3400]"，本轮数据（收盘 3185、库存 129.5 万、到港 850–1000 万、美豆 1215）延续偏空且库存超预期累积，方向未被推翻，区间下沿由 3150 下移至 3050（成本区）。<br>
+    <b>换轴重推</b>：换"供给轴"（库存 129.5 万 + 到港高位）重推→偏空；换"技术轴"（60D 分位 17.4%、神奇13下跌节拍 &gt;13 衰竭）重推→偏弱但临近反抽；两轴收敛于"区间偏弱、下沿有成本支撑"，稳健。<br>
+    <b>反问三句</b>：① 错在"把利空出尽当反弹"？——未，仍判偏空。② 是否只挑顺眼数据？——已纳入净空占比待核(闸门6)与未结算率(闸门4)为负向约束。③ 措辞有无别人的话？——均为本框架推导，机构方向性结论已按🕵剔除制不列入论据。<br>
+    <b>本轮改变</b>：引入超强厄尔尼诺新变量（近月利空）+ 库存超预期（下沿下移）；新增气候定价章节；置信度维持 60（低可预测性档硬上限 65，按解耦规则照给方向、压低幅度）。</p>
+  </div>
+  <div class="card"><h3>B 事实核查清单（数字/算式/时效/口径/来源）</h3>
+    <table class="checktbl">
+      <tr><th>数据项</th><th>数值</th><th>来源 / 时点</th><th>时效评级</th></tr>
+      <tr><td>M2701 参考价</td><td>3179–3190</td><td>新浪/Mysteel 2026-11-02 午盘</td><td class="ok">实时(T+0)</td></tr>
+      <tr><td>CBOT 美豆</td><td>1215–1234 美分</td><td>TradingEconomics/国新国证早报 2026-10-30~11-02</td><td class="ok">实时(T+0~3)</td></tr>
+      <tr><td>油厂豆粕库存</td><td>129.54 万吨</td><td>同花顺周报 2026-11-02（11/01 数据）</td><td class="ok">T+1</td></tr>
+      <tr><td>大豆月度到港</td><td>9月1188 / 10–12月 854–1000</td><td>同花顺周报 / 粮油口径 2026-11-02</td><td class="ok">T+0（预估）</td></tr>
+      <tr><td>开机率/压榨</td><td>66.47% / 244.87 万吨（第43周）</td><td>同花顺周报 2026-11-02</td><td class="ok">T+0</td></tr>
+      <tr><td>美豆产量</td><td>45.62 亿蒲（单产 53.1 创纪录）</td><td>USDA 10 月 WASDE 报告</td><td class="ok">官方(T+0)</td></tr>
+      <tr><td>巴西产量</td><td>1.816–1.86 亿吨</td><td>CONAB / USDA 10 月</td><td class="ok">官方(T+0)</td></tr>
+      <tr><td>巴西播种率</td><td>42.8%（10/23）、马托格罗索 75.8%</td><td>CONAB / 曲合网 2026-10-23~11-02</td><td class="ok">T+0~10</td></tr>
+      <tr><td>Niño3.4</td><td>周异常 +2.5°C，峰值 11–12 月</td><td>NOAA CPC / 国家气候中心 2026-10-29</td><td class="ok">T+3</td></tr>
+      <tr><td>豆粕现货基差</td><td>9/15 −3 → 11/02 +55</td><td>新浪基差 / Mysteel 现货 3240–3280</td><td class="ok">T+0</td></tr>
+      <tr><td>豆-菜价差</td><td>9/16 1098 → 11/02 ≈964</td><td>大商所/郑商所 + 自行算式(3190−2221)</td><td class="ok">T+0（算式核验）</td></tr>
+      <tr><td>波动率/分位</td><td>60D 14.96% / 分位 17.4%</td><td>由区间[3123,3479]与现价 3185 现算</td><td class="ok">算式✅</td></tr>
+    </table>
+    <p class="muted">说明：机构方向性结论（券商/期货公司观点）一律未作为论据写入；本报告所有方向判断均为本框架基于上述事实数据的独立推导。美豆 9/16 价位为区间高位估算（标注"估"），其余外盘锚点为实测。</p>
+  </div>
+</section>
+
+<section class="block"><h2>⑰ 结论收敛（方向 + 置信 + 期限 + 幅度 + 证伪位 · 反三情景）</h2>
+  <div class="verdict">
+    <span class="conf">置信度 60</span>
+    <div class="dir down">中性偏空 ▼（弱势震荡，下沿临近成本支撑）</div>
+    <ul>
+      <li><b>方向</b>：中性偏空（维持框架先验，区间下沿随库存超预期下移至成本区）</li>
+      <li><b>期限</b>：至 2026-12 中（约 30 个交易日）</li>
+      <li><b>幅度</b>：区间 [3050, 3300]，重心 [3100, 3200]；基准路径 3185→3120 附近偏弱磨底</li>
+      <li><b>证伪位（上）</b>：放量收上 3250 且库存开始去化 → 转中性偏多，上看 3300–3400</li>
+      <li><b>证伪位（下）</b>：有效跌破 3050（成本区下沿）且库存继续累积、到港超预期 → 下看 2950–3000</li>
+      <li><b>反三情景</b>：乐观(南美天气+采购+去库)→3300–3400；基准(供给宽松)→3050–3250；悲观(破成本+需求塌)→2950–3000</li>
+      <li><b>操作含义（越跌越买左侧）</b>：3050–3100 成本支撑区分档左侧试多（试探≤成本区→主力需产能退出证据→重仓需倒闭潮证据；粕为加工品，成本底看进口大豆到岸），上沿 3250–3300 偏空；当前 3185 处区间中枢偏上，不追多、等下沿</li>
+    </ul>
+  </div>
+</section>
+
+<footer class="disclaimer">
+  <b>风险提示与免责声明</b>：本报告所有结论均由方法论工具独立推导，非对任何机构或个人的投资建议。市场有风险，决策须自行承担后果。专家观点仅作待验证假说，已用当前数据独立检验。气候态判定以 NOAA / 国家气候中心公开监测为准；价格与库存数据为 2026-11-02 公开口径快照，存在更新滞后可能，交易前请以实时行情复核。
+</footer>
+</div>
+
+</body>
+</html>

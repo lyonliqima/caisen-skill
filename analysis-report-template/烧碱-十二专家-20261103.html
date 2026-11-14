@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>烧碱 SH 十二专家整合分析 · 2026-11-03</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+/* 图表helper：模型只需写 <canvas id="x"></canvas> 后调用 drawXxx(id, ...) 即可，无需完整 Chart.js 配置
+   用法（三选一，均可）：
+     drawBar('c1', ['A','B'], [1,2])                                  // 扁平数组 => 单系列
+     drawBar('c1', ['A','B'], [[1,2],[3,4]], {names:['甲','乙']})       // 嵌套数组 => 多系列，names 给图例
+     drawBar('c1', ['A','B'], [{label:'甲',data:[1,2],color:'#f00'}])   // 标准对象 => 完全控制
+   ⚠️ 旧版 _norm 会把嵌套数组/扁平数组错误地塞进 data 标量，导致图表空白——已修正。 */
+function _base(type, id, data, opts){
+  opts = opts || {};
+  const ctx = document.getElementById(id);
+  if(!ctx) return;
+  const colors = {up:'#ff4d4f', down:'#1ec77a', gold:'#ffd166', accent:'#4a9eff', warn:'#ff9f43', purple:'#c084fc', muted:'#8b98a5'};
+  const list = Array.isArray(data.datasets)?data.datasets:[data];
+  const isDC = (type==='doughnut');
+  const ds = list.map(function(d,i){
+    const c = d.color || (opts.colors && opts.colors[i]) || colors.accent;
+    return {label:d.label||('系列'+(i+1)), data:d.data,
+      borderColor:Array.isArray(c)?c:c,
+      backgroundColor:Array.isArray(c)?c:(isDC?c:(opts.fill? c+'33' : c+'cc')),
+      borderDash: d.borderDash || (opts.dash? [6,4] : undefined),
+      pointStyle: d.pointStyle || (d.borderDash? 'rectRot' : 'circle'),
+      fill: !!opts.fill, tension:.25, pointRadius:d.borderDash?3:2, borderWidth:2};
+  });
+  const chartOpts = {responsive:true,plugins:{legend:{labels:{color:'#e6edf3'}}}};
+  if(type!=='radar'&&type!=='doughnut'){
+    chartOpts.scales = {
+      x:{ticks:{color:'#8b98a5'},grid:{color:'#2a3441'}},
+      y:{ticks:{color:'#8b98a5'},grid:{color:'#2a3441'}}
+    };
+  }
+  // opts.plugins：透传 Chart.js 插件（如价格主图挂 magic13Plugin）；不传则为空数组
+  new Chart(ctx,{type:type,data:{labels:data.labels,datasets:ds},options:chartOpts,plugins:(opts&&opts.plugins)||[]});
+}
+function _norm(d,names){
+  if(!d||!d.length) return [];
+  function set(v,i){return {label:(names&&names[i])||('系列'+(i+1)),data:v};}
+  if(typeof d[0]==='object'&&!Array.isArray(d[0])) return d;   // 已是 [{label,data}]
+  if(Array.isArray(d[0])) return d.map(set);                   // [[..],[..]] 多系列
+  return [set(d,0)];                                           // 扁平数组 => 单系列
+}
+function drawLine(id,labels,datasets,opts){_base('line',id,{labels:labels,datasets:_norm(datasets,opts&&opts.names)},opts);}
+function drawBar(id,labels,datasets,opts){_base('bar',id,{labels:labels,datasets:_norm(datasets,opts&&opts.names)},opts);}
+function drawDoughnut(id,labels,values,opts){_base('doughnut',id,{labels:labels,datasets:[{label:(opts&&opts.label)||'占比',data:values,color:opts&&opts.colors}]},opts);}
+function drawRadar(id,axes,values,opts){_base('radar',id,{labels:axes,datasets:[{label:(opts&&opts.label)||'评分',data:values,color:opts&&opts.color}]},{colors:[opts&&opts.color]});}
+</script>
+
+<style>
+:root{
+  --bg:#0f1419; --panel:#161b22; --panel2:#1c232c; --border:#2a3441;
+  --text:#e6edf3; --muted:#8b98a5; --up:#ff4d4f; --down:#1ec77a;
+  --gold:#ffd166; --accent:#4a9eff; --warn:#ff9f43; --purple:#c084fc;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Noto Sans SC",-apple-system,system-ui,sans-serif;line-height:1.65;padding:24px;}
+.report{max-width:960px;margin:0 auto;}
+header.hero{border-bottom:1px solid var(--border);padding-bottom:18px;margin-bottom:24px;}
+header.hero h1{font-size:1.9rem;font-weight:700;letter-spacing:.02em;}
+header.hero .meta{color:var(--muted);font-size:.85rem;margin-top:6px;}
+.kicker{color:var(--accent);font-size:.8rem;letter-spacing:.15em;font-weight:600;margin-bottom:10px;text-transform:uppercase;}
+section.block{margin:28px 0;}
+section.block > h2{font-size:1.3rem;font-weight:700;margin-bottom:14px;padding-left:10px;border-left:4px solid var(--accent);}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:14px 0;}
+.card h3{font-size:1.05rem;font-weight:600;margin-bottom:8px;}
+.muted{color:var(--muted);font-size:.9rem;}
+.up{color:var(--up);font-weight:600;}
+.down{color:var(--down);font-weight:600;}
+.gold{color:var(--gold);font-weight:600;}
+.warn{color:var(--warn);font-weight:600;}
+.purple{color:var(--purple);font-weight:600;}
+/* 评分卡 */
+.verdict{background:linear-gradient(135deg,#161b22,#1c232c);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin:18px 0;}
+.verdict .dir{font-size:1.4rem;font-weight:800;}
+.verdict .conf{float:right;font-size:1.1rem;color:var(--gold);font-weight:700;}
+.verdict ul{margin:10px 0 0 18px;font-size:.95rem;}
+.verdict li{margin:4px 0;}
+/* 图表 */
+.chart-box{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:16px 0;}
+.chart-box .cap{color:var(--muted);font-size:.8rem;margin-top:8px;text-align:center;}
+canvas{max-width:100%;}
+/* 表格 */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.9rem;}
+th,td{border:1px solid var(--border);padding:8px 11px;text-align:left;}
+th{background:var(--panel2);font-weight:600;}
+td.cons{color:var(--down);} td.div{color:var(--warn);}
+/* 兵棋推演树 */
+.scenario{border-left:3px solid var(--accent);padding-left:14px;margin:12px 0;}
+.scenario .cond{font-weight:600;color:var(--text);}
+.scenario .arrow{color:var(--muted);margin:0 6px;}
+.scenario .res{font-weight:600;}
+.scenario .child{margin-left:18px;border-left:2px dashed var(--border);padding-left:12px;margin-top:8px;}
+.tag{display:inline-block;font-size:.72rem;padding:1px 8px;border-radius:999px;margin-right:6px;vertical-align:middle;}
+.tag.up{background:rgba(255,77,79,.15);} .tag.down{background:rgba(30,199,122,.15);}
+.tag.gold{background:rgba(255,209,102,.15);} .tag.neutral{background:rgba(139,152,165,.18);color:var(--muted);}
+/* 证据/证伪 */
+.evidence{border-left:3px solid var(--accent);background:var(--panel);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.92rem;}
+.falsify{border-left:3px solid var(--warn);background:rgba(255,159,67,.08);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.92rem;}
+.falsify b{color:var(--warn);}
+/* 免责 */
+footer.disclaimer{margin-top:36px;padding-top:16px;border-top:1px solid var(--border);color:var(--muted);font-size:.78rem;line-height:1.5;}
+footer.disclaimer b{color:var(--text);}
+</style>
+</head>
+<body>
+<div class="report">
+<header class="hero">
+  <div class="kicker">整合市场分析 · 方法论推导</div>
+  <h1>烧碱 SH 十二专家整合分析 · 2026-11-03</h1>
+  <div class="meta">2026-11-03</div>
+</header>
+<div class="verdict">
+  <span class="conf">置信度 68 · 可预测性：中（上限 75）</span>
+  <div class="dir down">偏空 · 震荡偏弱 ➡️ · SH2701 · 1–2 周（至 2026-11-17）为主，11月整体偏弱</div>
+  <ul>
+    <li><b>方向</b>：偏空（反弹做空优于抄底）—— 当前是趋势性下跌后的低位磨底，<b>不是</b>超跌反弹黄金坑</li>
+    <li><b>幅度区间</b>：SH2701 <span class="gold">[1450, 1550]</span>（±3.3%）；若破1450看 <span class="down">1380–1420</span>（综合成本强支撑区）</li>
+    <li><b>证伪位（转多）</b>：①液氯大跌→综合利润触现金流亏损→集中检修/减产；②厂库连续两周去化至&lt;50万吨；③氧化铝开工回升至85%+且利润修复。任一触发→空单逻辑松动</li>
+    <li><b>与"越跌越买"偏好冲突</b>：烧碱当前无供给收缩、成本非硬支撑、库存累库、顺宏观下跌，左侧抄底=逆势接刀，不满足三档抄底结构</li>
+    <li><b>一句话胜负手</b>：<span class="gold">单碱亏、液氯补，综合利润托着开工不降 → 高库存+复产+弱需求把价格按在底部摩擦，深跌受限但反弹无力。</span></li>
+  </ul>
+</div>
+<section class="block"><h2>0. 数据检查机读声明（第1.5步 Q闸门 + 第-0.4步）</h2>
+<div class="card">
+<p><b>数据日：2026-11-03（周二）收盘 · 行情实时取数（东方财富期货 SH701 日K，抓取于 2026-11-03 21:50 +0800）· ✅ 非缓存</b></p>
+<table>
+<tr><th>检查项</th><th>结论</th><th>处置</th></tr>
+<tr><td>①数据日确认</td><td>最新交易日 2026-11-03（多家交叉验证：曲合网1491、生意社1491、东财龙虎榜1491/持仓289676）</td><td class="cons">✅ 通过</td></tr>
+<tr><td>②频率保鲜期</td><td>日K（1日保鲜）→ 当日取数；现货/库存/开工最新 10-27（华泰）+ 11-03（国泰君安-隆众周度）</td><td class="cons">✅ 通过（标注数据日）</td></tr>
+<tr><td>③绝对时间戳</td><td>全部写 YYYY-MM-DD，无"昨日/近日"</td><td class="cons">✅ 通过</td></tr>
+<tr><td>④数据版本</td><td>SH701 日K n=55 根（自 2026-08-12 上市），本报告取近 39 根（09-02→11-03）</td><td class="cons">✅ 通过</td></tr>
+<tr><td>⑤滞后重抓</td><td>东财日K 末根返回 2026-11-04（1528）属未确认脏数据，已剔除，采用 11-03 收盘 1491</td><td class="cons">✅ 已剔除</td></tr>
+<tr><td>⑥口径核验</td><td>期货 SH 为<b>折百价</b>（元/吨 100%NaOH）；现货 32%液碱为湿吨价，基差计算需÷0.32折算折百。10-27 现货574湿吨→1794折百，期货1512，基差282，与华泰日报一致✓</td><td class="cons">✅ 口径对齐</td></tr>
+<tr><td>准确·交叉</td><td>华泰日报 10-27 收1512 与东财日K 10-27 收1512 完全一致；国泰君安11-03收1491 与曲合网/生意社一致</td><td class="cons">✅ 交叉通过</td></tr>
+<tr><td>准确·独立</td><td>11-03 远月 SH2702=1577/2703=1607/2704=1682/2705=1682/2709=1772（东财）→ contango 结构确认</td><td class="cons">✅ 通过</td></tr>
+</table>
+<p class="muted">ocmacro（第-0.4步·背景引用）：宏观压力面引用前期留存读数——TACO 川普压力指数 +8.9%（中压，分位87.6，数据日2026-10-27）、中国70城0/70城市上涨、BIS实际房价回撤−24.65%（归"小型泡沫"）。<b>本期未实时重抓，仅作背景定位，不构成择时依据</b>；烧碱为国内定价化工，与地产弱相关，化债挤压属系统性背景而非直接定价变量。</p>
+</div></section>
+<section class="block"><h2>1. 盘面事实（自算，非引用）</h2>
+<div class="card">
+<table>
+<tr><th>项目</th><th>读数（2026-11-03 收盘）</th><th>算式 / 来源</th></tr>
+<tr><td>SH2701 主力收盘</td><td class="gold">1491 元/吨（折百，+1.08%，+16）</td><td>东财期货 SH701 日K；日内低1459/高1508</td></tr>
+<tr><td>阶段高低</td><td class="down">09-10 高点 2082 → 11-03 1491，跌幅 −28.4%</td><td>自算（日K）</td></tr>
+<tr><td>近期形态</td><td>10-28 起 1479–1531 区间横盘（6交易日），未创新低也未反转</td><td>自算</td></tr>
+<tr><td>远月结构</td><td class="down">contango：2701 1491 &lt; 2702 1577 &lt; 2703 1607 &lt; 2709 1772</td><td>东财11-03；近端最弱</td></tr>
+<tr><td>基差（折百）</td><td class="down">现货折百~1563 − 期货1491 = 72（现货补跌、基差快速收敛）</td><td>山东氧化铝采购500湿吨÷0.32</td></tr>
+<tr><td>持仓（11-03）</td><td>总持仓 289,676 手（−1,166，减仓上行）；前20净空 23,562 手</td><td>东财龙虎榜</td></tr>
+<tr><td>净空趋势</td><td class="down">前20净持仓长期净空，当日净空较前一交易日 +223 手，多头进场弱于空头</td><td>东财龙虎榜</td></tr>
+</table>
+</div>
+<div class="chart-box"><canvas id="c1"></canvas><div class="cap">图1：SH701 收盘价（折百，近 39 交易日）—— 紫=神奇13上升节拍、绿=下跌节拍，绿11/12/13为左侧超跌观察窗</div></div><script>
+function magic13(closes, highs, lows){
+  var n = closes.length;
+  var up = new Array(n).fill(0), dn = new Array(n).fill(0);
+  for(var i=4;i<n;i++){
+    up[i] = closes[i] > closes[i-4] ? up[i-1]+1 : 0;
+    dn[i] = closes[i] < closes[i-4] ? dn[i-1]+1 : 0;
+  }
+  function marks(cnt){
+    var m=[];
+    for(var i=4;i<n;i++){ if(cnt[i]===13){ for(var k=0;k<13;k++) m.push([i-k,13-k]); } }
+    var L=cnt[n-1];
+    if(L>=5 && L<=12){ for(var k=0;k<L;k++) m.push([n-1-k,L-k]); }
+    return m;
+  }
+  return {up:marks(up), dn:marks(dn), upCnt:up, dnCnt:dn, highs:highs||closes, lows:lows||closes, fallback:!(highs&&lows)};
+}
+function magic13Plugin(m13, opts){
+  opts = opts || {};
+  var upC = opts.upColor || '#e879f9', dnC = opts.dnColor || '#3fb950';
+  var upF = opts.upFactor || 1.02, dnF = opts.dnFactor || 0.98, minShow = opts.minShow!=null?opts.minShow:5;
+  return { id:'magic13', afterDatasetsDraw:function(chart){
+    var ys=chart.scales.y, xs=chart.scales.x; if(!ys||!xs||!m13) return;
+    var ctx=chart.ctx, area=chart.chartArea; ctx.save();
+    ctx.font='bold 10px -apple-system,"PingFang SC",sans-serif'; ctx.textAlign='center'; ctx.globalAlpha=.95;
+    m13.up.forEach(function(p){ if(p[1]<minShow) return;
+      var px=xs.getPixelForValue(p[0]), py=ys.getPixelForValue(m13.highs[p[0]]*upF);
+      if(px<area.left||px>area.right||py<area.top) return;
+      ctx.fillStyle=upC; ctx.fillText(String(p[1]),px,py-2); });
+    m13.dn.forEach(function(p){ if(p[1]<minShow) return;
+      var px=xs.getPixelForValue(p[0]), py=ys.getPixelForValue(m13.lows[p[0]]*dnF);
+      if(px<area.left||px>area.right||py>area.bottom) return;
+      ctx.fillStyle=dnC; ctx.fillText(String(p[1]),px,py+10); });
+    ctx.restore();
+  }};
+}
+var D={labels:["2026-09-02","2026-09-03","2026-09-04","2026-09-07","2026-09-08","2026-09-09","2026-09-10","2026-09-11","2026-09-14","2026-09-15","2026-09-16","2026-09-17","2026-09-18","2026-09-21","2026-09-22","2026-09-23","2026-09-24","2026-09-28","2026-09-29","2026-09-30","2026-10-08","2026-10-09","2026-10-12","2026-10-13","2026-10-14","2026-10-15","2026-10-16","2026-10-19","2026-10-20","2026-10-21","2026-10-22","2026-10-23","2026-10-26","2026-10-27","2026-10-28","2026-10-29","2026-10-30","2026-11-02","2026-11-03"], c:[1944,1945,1992,2021,2059,2056,2082,2034,1997,1970,1985,1966,1962,1961,1951,1917,1924,1890,1867,1860,1837,1850,1834,1791,1766,1746,1726,1737,1707,1682,1610,1579,1512,1486,1448,1460,1495,1479,1491], h:[1991,1959,2004,2048,2061,2078,2103,2107,2038,2012,2006,1990,1976,1985,1966,1956,1927,1930,1895,1881,1866,1860,1861,1835,1805,1781,1748,1740,1742,1715,1679,1628,1593,1524,1505,1492,1522,1497,1508], l:[1940,1935,1945,1995,2001,2034,2034,2027,1991,1967,1955,1960,1956,1953,1948,1916,1910,1880,1865,1856,1833,1836,1827,1787,1756,1739,1726,1704,1703,1679,1596,1577,1511,1477,1446,1438,1473,1456,1459]};
+var m13=magic13(D.c,D.h,D.l);
+new Chart(document.getElementById('c1'),{type:'line',data:{labels:D.labels,datasets:[{label:'SH701收盘(折百)',data:D.c,borderColor:'#4a9eff',backgroundColor:'rgba(74,158,255,.15)',borderWidth:2,pointRadius:1,fill:true,tension:.2}]},options:{responsive:true,plugins:{legend:{labels:{color:'#e6edf3'}}},scales:{x:{ticks:{color:'#8b98a5',maxTicksLimit:12},grid:{color:'#2a3441'}},y:{ticks:{color:'#8b98a5'},grid:{color:'#2a3441'}}}},plugins:[magic13Plugin(m13)]});
+</script>
+<div class="chart-box"><canvas id="c3"></canvas><div class="cap">图2：期货 vs 现货折百 vs 基差（周度）—— 现货补跌加速，基差从282快速收敛至72，期现同向走弱</div></div>
+<script>
+var wk=["10-05","10-09","10-20","10-27","11-03"], fut=[1805,1803,1737,1512,1491], spot=[1941,1941,1913,1794,1563], basis=[136,138,176,282,72];
+drawLine('c3', wk, [{label:'期货SH(折百)',data:fut,color:'#4a9eff'},{label:'现货折百',data:spot,color:'#ffd166'},{label:'基差',data:basis,color:'#ff9f43'}], {fill:false});
+</script>
+</section>
+<section class="block"><h2>2. 期限结构：近端最弱（contango）</h2>
+<div class="card">
+<p>SH2701 <b>1491（主力，全曲线最低）</b> ＜ SH2702 1577 ＜ SH2703 1607 ＜ SH2704/2705 1682 ＜ SH2709 1772。远月逐月升水，是典型 <span class="down">contango</span>：近端过剩、远端预期改善（检修季/新产能消化/需求恢复）。</p>
+<p><b>对抄底者的含义</b>：contango 下做多近端移仓吃亏（每月展期亏损），做空近端反而吃展期收益。<b>结构在奖励空方、惩罚抄底</b>——这与"越跌越买左侧抄底"的赔率环境相悖。近端 1491 已是全曲线最低，若反弹主要靠远月带动，近月上行空间受现货高库存压制。</p>
+</div>
+<div class="chart-box"><canvas id="c7"></canvas><div class="cap">图3：烧碱全合约收盘价（2026-11-03）—— 2701为全曲线最低点，contango结构</div></div>
+<script>
+var ctrt=["SH2701","SH2702","SH2703","SH2704","SH2705","SH2709"], cpr=[1491,1577,1607,1682,1682,1772];
+drawBar('c7', ctrt, [{label:'收盘(折百)',data:cpr,color:'#1ec77a'}], {});
+</script>
+</section>
+<section class="block"><h2>3. 🔵杨世光 · 宏观六步法</h2>
+<div class="card"><h3>周期定位：化工景气低迷段，价格已到位、时间未到</h3>
+<p>烧碱属煤/氯碱化工，上游氧化铝（铝）、造纸、印染、化纤。2021 年能耗双控+铝景气的暴涨后，2022 起进入下行，当前处于<b>低迷段末段但产能出清未完成</b>。价格侧：SH 从 2024 高点 3000+ 折百跌至 1491，已跌破行业完全成本区间。</p>
+<p><b>长线仓位上限</b>：仅 5% 且贴成本线分批、禁杠杆。三条封死重仓：①液碱厂库 55 万吨≈1.5个月消费量且同比+25%；②开工仍 78% 高位（闲置产能有限、复产弹性大）；③氧化铝降负、非铝与出口弱。</p>
+<p>三条外生线：<b>油价弱正</b>（原油11-03跌超6%带动化工链整体偏弱）；<b>地产负、传导长</b>（化债挤压下游开工，但烧碱无地产直接需求，经财政间接施压）；<b>美元非一级变量</b>（出口占比低、国内定价）。</p>
+</div>
+<div class="falsify"><b>证伪条件</b>：若液氯大跌→综合利润转深度亏损→行业集中检修使周产量降至 75 万吨以下并持续 → 长线 5% 上限可上调至 10%。</div></section>
+<section class="block"><h2>4. 🟣卢麒元 · 制度结构</h2>
+<div class="card"><h3>归类：需求驱动 + 中国定价，不是全球定价</h3>
+<p>烧碱出口占比低（液碱+固碱出口占产量约 10% 出头），无国际基准定价权，<b>国内供需与产业政策决定它</b>。化债挤压是系统性的：下游氧化铝（铝）受地产链拖累、造纸/印染受消费与出口拖累，需求端缺乏弹性。</p>
+<p><b>决定性证据来自曲线</b>：远月升水 contango 说明市场预期"近端最差"，但<b>供给端无强制出清</b>（氯碱联产、以氯补碱使综合利润可维持），价格下跌打不垮开工，是"需求驱动"的铁证。化债期做商品须先分需求/全球定价：烧碱明确属<b>需求驱动</b>，看空至财政恢复造血（政府性基金收入同比转正连续3月）前。</p>
+</div>
+<div class="falsify"><b>证伪条件</b>：若 2027 年地产链与氧化铝新产能集中投产使烧碱需求回升 ≥8%/年，且厂库连续去化 → "需求塌方"判断错误。</div></section>
+<section class="block"><h2>5. 🟠蔡森 · 技术形态（含几何验证）</h2>
+<div class="card"><h3>① 下跌趋势明确，低位横盘非反转</h3>
+<p>09-10 高点 2082 → 11-03 1491，主跌浪 −28.4%，均线空头排列。10-28 起 1479–1531 横盘 6 交易日，<b>未形成有效反转形态</b>（无 W 底颈线突破、未收复 MA20）。</p>
+<h3>② 神奇13节拍：下跌段绿11/12/13=左侧观察窗，但趋势未逆转前不抄底</h3>
+<p>主图绿色下跌节拍在 10 月急跌段数到 11/12/13，属左侧超跌观察窗；但<b>节拍数字是"衰竭提示"非"反转信号"</b>，须等价格站稳、放量增仓上行才确认。当前减仓上行、净空增加，更接近"下跌中继喘息"。</p>
+<table>
+<tr><th>几何位</th><th>价位(折百)</th><th>含义</th></tr>
+<tr><td>区间下沿</td><td class="down">1450</td><td>10-28/11-02 低点附近；跌破看 1380–1420</td></tr>
+<tr><td>区间上沿</td><td class="up">1550</td><td>反弹目标/反抽压力</td></tr>
+<tr><td>强支撑</td><td class="gold">1380–1420</td><td>综合现金流成本区</td></tr>
+<tr><td>失效位</td><td class="down">1450</td><td>收盘有效跌破（增仓）→ 下探强支撑</td></tr>
+</table>
+</div>
+<div class="falsify"><b>证伪条件</b>：收盘放量增仓站上 <b>1550</b> 且连续 2 日 → 空头排列破坏，形态由"喘息"升级为"反转"。</div></section>
+<section class="block"><h2>6. 🔴Mi姐 · 三周期共振 × 资金筹码 × 情绪六阶段</h2>
+<div class="card"><h3>三周期不共振 → 不做趋势多单，只做区间单</h3>
+<p>月线=下跌末端（价格破成本）；<b>周线=低位箱体（1450–1550），无方向</b>；日线=横盘。周线缺方向即共振断裂。</p>
+<h3>资金筹码：减仓上行但净空增加 = 养单/派发特征（顺下跌方向）</h3>
+<p>11-03 减仓 1166 手、收涨 1.08%，看似止跌；但前20净空 23,562 手且较前一交易日 +223，<b>多头进场弱于空头</b>。这是"顺宏观方向（下跌）的短暂反弹"，非吸筹（吸筹需逆宏观、放量插针收回）。</p>
+<h3>情绪六阶段：恐慌尾 → 修复初期，未升温</h3>
+<p>10 月急跌为恐慌释放，当前修复第一段；RSI 未入冰点（&lt;30 才冰点反转），反弹级别受限。</p>
+<p><b>可执行价位与赔率（入场 1491）</b></p>
+<table>
+<tr><th>方案</th><th>入场</th><th>止损</th><th>目标</th><th>赔率</th></tr>
+<tr><td><b>空·反抽</b></td><td>1530–1550</td><td class="up">1570</td><td>1470 / 1450</td><td class="down">1.5R / 2.5R</td></tr>
+<tr><td>空·破位</td><td>&lt;1450</td><td>1475</td><td>1420 / 1380</td><td class="down">1.3R / 2.9R</td></tr>
+<tr><td>多·回踩</td><td>1460–1470</td><td class="down">1440</td><td>1520 / 1550</td><td class="up">1.8R / 2.7R（逆势·轻仓）</td></tr>
+</table>
+<p><b>结论：做空（反抽 1530–1550）赔率优于抄底</b>。抄底仅限轻仓回踩、严格 1440 硬止损，且属逆势属性。</p>
+</div>
+<div class="chart-box"><canvas id="c8"></canvas><div class="cap">图4：11-03 前20席位持仓（手）—— 净空23,562手，空头主导</div></div>
+<script>
+var pos_l=["前20多头","前20空头","净空"], pos_v=[166532,190094,23562];
+drawBar('c8', pos_l, [{label:'持仓(手)',data:pos_v,color:['#4a9eff','#ff4d4f','#ff9f43']}], {});
+</script>
+</section>
+<section class="block"><h2>7. 🟢笨鸟 · 数据拆解（库存/成本/时滞，全部自算）</h2>
+<div class="card"><h3>① 库存真实去化速度</h3>
+<p>液碱厂库 55.36 万吨（11-03，环比+0.88%，<b>同比+25.08%</b>），多地库容比上升。按周产量 79 万吨计，<b>静态库存 0.7 个月</b>；但累库趋势下，去化需需求显著回暖，判断窗口内难改定价。</p>
+<h3>② 成本底四问闸门（A10）</h3>
+<table>
+<tr><th>问</th><th>作答</th><th>判定</th></tr>
+<tr><td>口径问</td><td>山东外购电烧碱单体利润 −368.76（10-27），现货折百1794 vs 期货1512 均低于完全成本~2160折百 → 双源一致，误差带小</td><td class="cons">✅ 通过</td></tr>
+<tr><td>时间问</td><td>价格跌破成本已持续（10月全程下跌），期间价格<b>未止跌</b>、10-27再创新低</td><td class="div">⚠️ 不通过</td></tr>
+<tr><td>方向问</td><td>单体利润 −237→−369（亏损<b>扩大</b>），但<b>综合利润靠液氯托底</b>（10-20 +125）→ 成本线随液氯波动，是"地板变低"非需求改善</td><td class="div">⚠️ 不通过</td></tr>
+<tr><td>行为问</td><td>破线后开工不降反升（78.3% 复产）、持仓净空增加 → <b>无减产减仓信号</b></td><td class="div">⚠️ 不通过</td></tr>
+</table>
+<p class="down"><b>A10 判定：成本底是"口头支撑"，不是硬支撑。</b>期货 1491 低于现货折百/完全成本，但综合利润（以氯补碱）使现金流未触极限 → 企业不主动减产 → 成本线不构成强支撑。</p>
+<h3>③ 供给端传导时滞闸门（W vs T）</h3>
+<p>检修/复产：决策 1–2 周、体现 1–2 周 = <b>T≈2–4 周</b>。本期判断窗口 W=1–2 周 &lt; T → <b>不得把"检修尾声复产"作为方向主逻辑</b>（仅作利空边际）。Q4 新产能投放使中期供应宽松。</p>
+</div>
+<div class="chart-box"><canvas id="c4"></canvas><div class="cap">图5：烧碱开工率 vs 液碱厂库（万吨）—— 检修后复产、库存高位累库</div></div>
+<script>
+var wk=["10-05","10-09","10-20","10-27","11-03"], openr=[79.5,78.8,74.8,75.0,78.3], inv=[53.22,56.25,54.86,54.88,55.36];
+drawLine('c4', wk, [{label:'开工率%',data:openr,color:'#4a9eff'},{label:'厂库万吨',data:inv,color:'#ff9f43'}], {fill:false});
+</script>
+<div class="chart-box"><canvas id="c5"></canvas><div class="cap">图6：利润结构(元/吨，折百口径) —— 单碱持续亏损，综合利润靠液氯托底（10-05~10-27真实）</div></div>
+<script>
+var wk4=["10-05","10-09","10-20","10-27"], p_alk=[-237.32,-243.76,-275.01,-368.76], p_mix=[-137.32,6.24,124.99,-68.76];
+drawLine('c5', wk4, [{label:'烧碱单体利润',data:p_alk,color:'#ff4d4f'},{label:'氯碱综合利润',data:p_mix,color:'#1ec77a'}], {fill:false});
+</script>
+</section>
+<section class="block"><h2>8. ⚪白毛（serenity）· 供应链瓶颈</h2>
+<div class="card"><h3>瓶颈不在烧碱自身，在"以氯补碱"的联产锁</h3>
+<p>烧碱与液氯是氯碱工业<b>联产</b>（电解食盐水，1吨烧碱伴生0.886吨液氯）。烧碱单体亏损 −368，但液氯高价使<b>综合利润仍可维持</b>（10-20 +125，11-03据银河/东吴仍靠液氯托底微利）。</p>
+<p><b>价值链稀缺层排序（稀缺→过剩）</b>：① 电力（刚性、占成本40%）→ ② 烧碱（单体亏、但被液氯补）→ ③ <b>液氯（当前最稀缺，撑住综合利润）</b> → ④ 氧化铝/造纸/印染（需求弱）。</p>
+<h3>最大变量是液氯，不是烧碱</h3>
+<p>若液氯价格回落（下游环氧丙烷/环氧氯丙烷降负），综合利润触现金流亏损 → 企业被迫减产 → 烧碱供应实质收缩，这才是反转的真正触发点。<b>当前液氯高位 = 烧碱减产的"刹车"</b>，所以高库存+复产持续。</p>
+</div>
+</section>
+<section class="block"><h2>9. 📡期货团 · 十三位大师圆桌</h2>
+<div class="card"><h3>傅海棠：低价格五维 + 成本动态收缩修正</h3>
+<p>档位：化工加工档（电力占40%刚性），有效下修 ~12%。测算完全成本中枢 ~2160 折百（按现货折百反推），期货 1491 相对 −31% → <b>"低价格"维度部分成立</b>。但三档抄底结构要求：试探仓≤成本线、主力仓≤成本线×0.85且有产能退出证据、重仓需倒闭潮硬证据。<b>当前无产能退出证据（开工反升）→ 不满足任何一档建仓条件。</b></p>
+<h3>利弗莫尔 + 克罗：趋势暂停，非反转</h3>
+<p>11-03 减仓上行、波动率压缩，是下跌趋势中的衰竭早期，但趋势未破坏。操作——<b>持空、禁加空（区间下沿不加码），1450 下方分批止盈；禁新多（价格仍在成本与均线下方）</b>。反手触发 = 收盘站上 1550 且增仓≥3%、连续2日。</p>
+<h3>索罗斯 + PTJ：需求端仍在自我强化</h3>
+<p>氧化铝价格低位、亏损加剧、部分企业降负，采购偏弱；非铝与出口弱 → 需求负反馈未结束。PTJ 立场：<b>不接下落的刀，只在反手信号出现后入场</b>。</p>
+<p class="muted">机构共识（国泰君安/银河/东吴 11-03）：短期承压、反弹乏力、易跌难涨、中长期供需过剩反弹抛空；生产利润转亏开始显现成本支撑、深跌空间受限、盘中或现超跌反复。</p>
+</div>
+<div class="chart-box"><canvas id="c6"></canvas><div class="cap">图7：下游需求开工(%) —— 氧化铝降负、印染持平弱、粘胶持稳，整体刚需</div></div>
+<script>
+var wk=["10-05","10-09","10-20","10-27","11-03"], ao=[83.14,83.05,82.23,82.95,82.0], prnt=[54.22,54.22,54.22,54.22,54.22], visc=[88.84,88.84,88.55,88.84,88.55];
+drawLine('c6', wk, [{label:'氧化铝',data:ao,color:'#4a9eff'},{label:'印染华东',data:prnt,color:'#ff9f43'},{label:'粘胶短纤',data:visc,color:'#1ec77a'}], {fill:false});
+</script>
+</section>
+<section class="block"><h2>10. 🧭路口大爷 · 宏观资金流</h2>
+<div class="card"><h3>化债期 → 需求驱动品种承压</h3>
+<p>卢麒元三条传导链在烧碱上体现为：信用重定价（高息平台债转低息省级债）对化工直接融资影响有限；<b>财政收缩（政府性基金收入塌方）挤压基建与地产链 → 氧化铝/造纸/印染需求弱</b>；资金淤积（M2-M1 剪刀差走阔）只追确定性，不进周期品。判据：剪刀差&gt;3pct 且走阔=结构市只做两端，烧碱属中间承压段。</p>
+<p>美元体系与货币战略：烧碱国内定价、出口占比低，不受美元周期主导；全球定价商品（铜/油/金）的再通胀逻辑<b>不传导到烧碱</b>。黄金受益于化债信用上移，烧碱不享受。</p>
+</div>
+<div class="falsify"><b>证伪条件</b>：政府性基金收入同比转正且连续3月 → 财政恢复造血，需求驱动品种系统性重估。</div></section>
+<section class="block"><h2>11. 💬情绪面专家 · 情绪温度计</h2>
+<div class="card"><h3>散户情绪：恐慌释放后"抄底博弈"升温，但非冰点反转</h3>
+<p>10 月急跌后股吧/雪球出现"跌这么多了该抄底"声音（Duncan 五阶段定位：恐慌高潮→修复初期）。<b>持续性判断</b>：当前情绪属"下跌中继的抄底博弈"，未到冰点（放量绝望）也不到高潮过热；反转需价格与持仓同步确认（增仓上行），目前不满足。情绪温度计读数 <b>−3（偏冷、犹豫）</b>，处修复段，<b>反转观测点 = 放量增仓站上1550</b>。</p>
+</div></section>
+<section class="block"><h2>12. 🎯流动性扫描 + 🕵️检查者 + 🧱红队</h2>
+<div class="card"><h3>流动性扫描（S1–S12）</h3>
+<p><b>A/B/C 三型判别</b>：11-03 减仓上行、净空增加、无放量插针收回 → <b>B 养单（顺宏观下跌方向的派发/喘息）</b>，非 A 吸筹（吸筹需逆宏观放量插针收回）。区间 1450–1550 上下沿外侧分布止损簇，但主力未引爆（缩量反弹）。<b>下一站</b>：若多头在 1550 上沿追多被套，空头止损买单在上沿上方聚集 → 反手做空赔率优。</p>
+<h3>🕵️检查者（外部结论溯源稽查）</h3>
+<p>本报告所有数字（价格/库存/开工/利润/持仓）均来自东财/华泰/国泰君安-隆众等<b>事实数据源</b>，机构"反弹抛空/供需过剩"等<b>观点</b>仅作背景引用、未作为独立推导依据；综合结论全部由本框架自算（跌幅、基差、成本底四问、时滞闸门）得出。</p>
+<h3>🧱红队（对抗性终审）</h3>
+<p><b>最强反面证据</b>：价格已跌破成本 −31%，深跌空间受限，随时可能超跌反弹。→ 已计入：结论为"偏弱震荡非崩跌"，给 1380–1420 强支撑。<b>最脆弱环节</b>：液氯价格若大跌，综合利润转亏→减产→反转（已设为证伪位①）。<b>事后错因预演</b>：若 Q4 检修超预期延长+液氯走弱，空单踏空。→ 以证伪位动态止损应对。</p>
+</div></section>
+<section class="block"><h2>13. 多专家共识矩阵 + 收敛结论</h2>
+<div class="card"><h3>方向投票</h3>
+<table>
+<tr><th>维度</th><th>杨</th><th>卢</th><th>蔡</th><th>笨鸟</th><th>白毛</th><th>Mi姐</th><th>期货团</th><th>路口大爷</th><th>结论</th></tr>
+<tr><td>方向</td><td class="div">偏空</td><td class="div">看空</td><td class="div">观望偏空</td><td class="div">偏空</td><td class="div">偏空</td><td class="div">偏空</td><td class="div">看空</td><td class="div">偏空</td><td class="cons">共识·偏空</td></tr>
+<tr><td>核心理由</td><td>周期末段</td><td>需求驱动</td><td>趋势未反转</td><td>成本非硬支撑</td><td>液氯托底开工</td><td>净空主导</td><td>趋势暂停</td><td>化债承压</td><td class="cons">高库存+复产+弱需求</td></tr>
+</table>
+</div>
+<div class="chart-box"><canvas id="c9"></canvas><div class="cap">图8：各专家方向打分（1=强空 · 5=强多）—— 集体偏空，蔡森/Mi姐给3（技术止跌观察）</div></div>
+<script>
+var rax=["杨","卢","蔡","笨鸟","白毛","Mi姐","期货团","路口大爷"], rav=[2,2,3,2,2,3,2,2];
+drawRadar('c9', rax, rav, {color:'#ff4d4f', label:'方向打分(1空-5多)'});
+</script>
+</section>
+<div class="chart-box"><canvas id="c2"></canvas><div class="cap">图9：SH2701 价格预测（折百）—— 历史实际 + 框架预测虚线（偏弱路径：1491→1450区间下沿→若破看1420/1380）。预测为框架推导、非确定</div></div>
+<script>
+var pl=["09-02","09-03","09-04","09-07","09-08","09-09","09-10","09-11","09-14","09-15","09-16","09-17","09-18","09-21","09-22","09-23","09-24","09-28","09-29","09-30","10-08","10-09","10-12","10-13","10-14","10-15","10-16","10-19","10-20","10-21","10-22","10-23","10-26","10-27","10-28","10-29","10-30","11-02","11-03","11-10","11-17","11-24","12-01","12-08","12-15"], actual=[1944,1945,1992,2021,2059,2056,2082,2034,1997,1970,1985,1966,1962,1961,1951,1917,1924,1890,1867,1860,1837,1850,1834,1791,1766,1746,1726,1737,1707,1682,1610,1579,1512,1486,1448,1460,1495,1479,1491,null,null,null,null,null,null], pred=[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,1491,1485,1470,1455,1440,1425,1410];
+drawLine('c2', pl, [{label:'SH2701实际(折百)',data:actual,color:'#4a9eff'},{label:'框架预测',data:pred,color:'#ff9f43',borderDash:[6,4]}], {fill:false});
+</script>
+<section class="block"><h2>14. 收敛铁律结论（给方向+置信度+期限+幅度+证伪位）</h2>
+<div class="card"><h3>主判断：偏空 · 震荡偏弱，反弹做空优于抄底</h3>
+<p><b>方向</b>：偏空（SH2701）。当前是 09-10 高点 2082 以来趋势性下跌后的<b>低位磨底</b>，不是超跌反弹黄金坑——无供给收缩硬证据、成本非硬支撑、库存高位累库、顺宏观（化工链整体偏弱）下跌。</p>
+<p><b>置信度</b>：68（中偏高）。高确定性部分（高库存+复产+弱需求+净空主导→短期偏弱）权重高；中确定性部分（已破成本、深跌受限→中段）。</p>
+<p><b>期限</b>：1–2 周（至 2026-11-17）弱势震荡为主；11 月整体偏弱；12 月观察液氯/减产兑现。</p>
+<p><b>幅度</b>：SH2701 <span class="gold">1450–1550</span> 区间（±3.3%）；若有效跌破 1450（增仓）→ 看 <span class="down">1380–1420</span>（综合现金流成本强支撑区），对应较当前再跌 −4%~−7.5%。</p>
+<p><b>证伪位（转多，任一触发即空单逻辑松动）</b>：①液氯大跌→综合利润触现金流亏损→集中检修/减产；②厂库连续两周去化至&lt;50万吨；③氧化铝开工回升至85%+且利润修复。</p>
+<p class="warn">⚠️ 与"越跌越买左侧抄底"偏好冲突的显式标注：烧碱当前不满足三档抄底结构（无产能退出证据、开工反升、成本随液氯下沉非硬支撑），左侧抄底=逆势接刀。若坚持左侧，仅限轻仓回踩 1460–1470、1440 硬止损，且属逆势属性。</p>
+</div>
+<div class="evidence">关键证据链：价格 2082→1491(−28.4%)｜现货折百补跌基差282→72｜单体利润−369扩大、综合靠液氯托底｜开工78.3%复产、厂库55万吨同比+25%累库｜前20净空23562且增｜contango结构奖励空方。→ 供需双弱、深跌受限、反弹无力。</div>
+<div class="falsify"><b>证伪条件</b>：收盘放量增仓站上 1550 连续2日 → 空头排列破坏，空单止损；或上述三证伪位任一 → 反手评估。</div>
+</section>
+<footer class="disclaimer">
+  <b>风险提示与免责声明</b>：本报告所有结论均由方法论工具独立推导，非对任何机构或个人的投资建议。市场有风险，决策须自行承担后果。专家观点仅作待验证假说，已用当前数据独立检验。
+</footer>
+</div>
+
+</body>
+</html>

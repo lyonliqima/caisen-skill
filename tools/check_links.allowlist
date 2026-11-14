@@ -54,3 +54,22 @@ _runs/briefing/2026-10-23.md:14  # 运行时行情数据文件(同上, 沙箱未
 _runs/briefing/2026-10-26.md:16  # 运行时行情数据文件(同上, 沙箱未重抓) -> market-data-cache/cache/2026-10-26.json
 _runs/briefing/2026-10-28.md:17  # 运行时行情数据文件(同上, 沙箱未重抓) -> market-data-cache/cache/2026-10-28.json
 _runs/briefing/2026-10-30.md:16  # 运行时行情数据文件(本机 crontab fetch_daily 生成, 沙箱未重抓; market-data-cache/ 已 gitignore) -> market-data-cache/cache/2026-10-30.json
+
+# ===== 2026-11-14 同步补充：运行时生成 / 上游未分发 / 占位 断链基线 =====
+benniao-analysis/examples-1102-central-bank-dual-tools.md:126  # 运行时生成的分析 HTML(output/ 已 gitignore, 不随仓库分发) -> ../caisen-10-experts-analyst/output/央行双工具解读-A股研判-2026-11-02.html
+yang-shiguang-analysis/references/24-合并登记-单一真源.md:15  # 占位引用(待补实际参考文件) -> references/NN-mXX-mYY.md
+output/journal/2026-11-04-有什么能空的期货.md:48  # 运行时生成脚本(_runs/ 已 gitignore) -> _runs/recheck_20261104.py
+_runs/briefing/2026-11-02.md:16  # 运行时行情数据文件(market-data-cache/ 已 gitignore) -> market-data-cache/cache/2026-11-02.json
+_runs/briefing/2026-11-03.md:16  # 同上 -> market-data-cache/cache/2026-11-03.json
+_runs/briefing/2026-11-05.md:16  # 同上 -> market-data-cache/cache/2026-11-05.json
+_runs/briefing/2026-11-06.md:16  # 同上 -> market-data-cache/cache/2026-11-06.json
+_runs/briefing/2026-11-09.md:17  # 同上 -> market-data-cache/cache/2026-11-09.json
+_runs/briefing/2026-11-11.md:14  # 同上 -> market-data-cache/cache/2026-11-11.json
+_runs/briefing/2026-11-12.md:13  # 同上 -> market-data-cache/cache/2026-11-12.json
+_runs/briefing/2026-11-13.md:17  # 同上 -> market-data-cache/cache/2026-11-13.json
+_runs/cmsk_1109/seat16-zhenshi.md:5  # 占位引用(待补实际参考文件, 文件名含省略号) -> references/01-z1-z13-…-20261017.md
+_runs/cmsk_1109/seat16-zhenshi.md:26  # 同上 -> references/01-z1-z13-…-20261017.md
+zhenshi-caijing/references/03-z18-z20-price-transmission-anatomy.md:157  # 外部官网引用(未带 scheme, 本地检查器无法解析; 运行时以 https 访问) -> stats.gov.cn/sj/zxfb/202611/t20261109_1965794.html
+zhenshi-caijing/references/03-z18-z20-price-transmission-anatomy.md:158  # 同上 -> stats.gov.cn/zwfwck/sjfb/202611/t20261109_1965795.html
+zhenshi-caijing/references/03-z18-z20-price-transmission-anatomy.md:160  # 同上 -> economy.caixin.com/m/2026-11-07/102502290.html
+zhenshi-caijing/references/03-z18-z20-price-transmission-anatomy.md:161  # 同上 -> customs.gov.cn/customs/2026-11/10/article_2026111009562190673.html
