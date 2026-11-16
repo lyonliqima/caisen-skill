@@ -73,3 +73,8 @@ zhenshi-caijing/references/03-z18-z20-price-transmission-anatomy.md:157  # 外�
 zhenshi-caijing/references/03-z18-z20-price-transmission-anatomy.md:158  # 同上 -> stats.gov.cn/zwfwck/sjfb/202611/t20261109_1965795.html
 zhenshi-caijing/references/03-z18-z20-price-transmission-anatomy.md:160  # 同上 -> economy.caixin.com/m/2026-11-07/102502290.html
 zhenshi-caijing/references/03-z18-z20-price-transmission-anatomy.md:161  # 同上 -> customs.gov.cn/customs/2026-11/10/article_2026111009562190673.html
+
+# ===== 2026-11-16 同步补充：运行时生成 / 未随包分发的断链基线 =====
+zhenshi-caijing/examples-20261115.md:134  # 运行时生成的分析 HTML(zhenshi-caijing/output/ 未随仓库分发) -> output/159397-信用债ETF广发-分析-2026-11-15.html
+zhenshi-caijing/examples-20261115.md:135  # 同上 -> output/招行-零利率日本经验-观点辨析-2026-11-15.html
+_runs/briefing/2026-11-16.md:15  # 运行时行情数据文件(本机 crontab fetch_daily 生成, market-data-cache/ 已 gitignore) -> market-data-cache/cache/2026-11-16.json

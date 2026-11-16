@@ -54,6 +54,8 @@ BOTTOM_PCT = 30      # 历史分位上限%：只保留过去1年收盘价处于�
 BOTTOM_DROP = 40     # 距年高跌幅下限%：必须距1年高点深跌超此值才算「底部区域」
 HOLD_DAYS = 3       # 「守住前低」最少连续站稳天数（几天稳定在前低上面）
 BT = 0.03           # 破底/守住容忍度（小数，=3%）；收盘价跌破前低×(1-BT) 才算破
+MAX_TURNOVER = 10.0  # 换手率硬闸门%%：当日换手率 > 此值直接剔除（过热=游资短炒/派发，非底部吸筹）
+WARN_TURNOVER = 7.0  # 换手率预警%%：超过此值扣分但保留（温和放量可，过热不可）
 
 H = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)', 'Referer': 'https://finance.sina.com.cn/'}
 
@@ -85,7 +87,9 @@ def get_risers():
             # 只保留沪深主板/创业板/科创板，过滤北交所
             if not (code.startswith(('60', '00', '30', '68'))): continue
             full_code = 'sh' + code if code.startswith('6') else 'sz' + code
-            risers.append({'code': full_code, 'name': name, 'change': chg})
+            try: to = float(item.get('turnoverratio', 0) or 0)
+            except (ValueError, TypeError): to = 0.0
+            risers.append({'code': full_code, 'name': name, 'change': chg, 'turnover': to})
         if stop: break
         time.sleep(0.3)
         if page % 10 == 0: print(f'  已拉取{page}页，{len(risers)}只...')
@@ -113,7 +117,9 @@ def get_all_stocks():
             full_code = 'sh' + code if code.startswith('6') else 'sz' + code
             try: chg = float(item.get('changepercent', 0))
             except: chg = 0.0
-            stocks.append({'code': full_code, 'name': name, 'change': chg})
+            try: to = float(item.get('turnoverratio', 0) or 0)
+            except (ValueError, TypeError): to = 0.0
+            stocks.append({'code': full_code, 'name': name, 'change': chg, 'turnover': to})
         if len(data) < 100: break
         time.sleep(0.3)
         if page % 10 == 0: print(f'  已拉取{page}页，{len(stocks)}只...')
@@ -199,8 +205,15 @@ def get_kline(code):
 # ============================================================
 # 3. 蔡森破底翻量化检测（v8 · 收盘价口径 · 两类入选）
 # ============================================================
-def detect_podifan(kdata, code, name, change_pct):
+def detect_podifan(kdata, code, name, change_pct, turnover=None):
     if not kdata or len(kdata) < 40: return None
+
+    # === 换手率闸门（用户铁律 2026-11-16：换手率不能太高）===
+    # 底部吸筹应温和放量；换手过热多为游资短炒/对倒派发，破底翻可靠性骤降。
+    # turnover 为当日快照换手率(%)，取自新浪列表 turnoverratio；None 表示无数据，不拦截。
+    if turnover is not None:
+        if turnover > MAX_TURNOVER: return None          # 硬闸门：>10% 直接剔除
+    # 换手率评分：1.5%~5% 健康吸筹加分；7%~10% 过热预警扣分；<0.5% 地量不加不扣。
 
     n = len(kdata)
     close = np.array([float(d['close']) for d in kdata])
@@ -319,13 +332,30 @@ def detect_podifan(kdata, code, name, change_pct):
             if pr60 < 0.60: conf += 2
             typ = '守住前低'
 
+        # —— 换手率评分（过热抑制，健康吸筹加分）——
+        turn_note = '-'
+        if turnover is not None:
+            if 1.5 <= turnover <= 5.0:
+                conf += 2; turn_note = '健康'
+            elif 0.5 <= turnover < 1.5:
+                conf += 1; turn_note = '温和'
+            elif turnover < 0.5:
+                turn_note = '地量'
+            elif turnover <= WARN_TURNOVER:      # 5%~7%
+                conf -= 2; turn_note = '偏高'
+            else:                                 # 7%~10%（>10% 已在开头剔除）
+                conf -= 5; turn_note = '过热'
+
         conf = min(conf, 80)
+        conf = max(conf, 0)
 
         if conf > best_conf:
             best_conf = conf
             best = {
                 '代码': code, '名称': name, '类型': typ,
                 '最新价': round(tc, 2), '今日涨幅%': round(change_pct, 2),
+                '换手率%': round(turnover, 2) if turnover is not None else None,
+                '换手评级': turn_note,
                 '前低支撑': round(sprice, 2),
                 '破底最低': round(bl, 2) if is_podi else None,
                 '破底深度%': round(bd, 1) if is_podi else None,
@@ -339,11 +369,11 @@ def detect_podifan(kdata, code, name, change_pct):
     return best
 
 def scan_one(args):
-    code, name, chg = args
+    code, name, chg, turnover = args
     try:
         time.sleep(random.uniform(*REQUEST_DELAY))
         kdata = get_kline(code)
-        return detect_podifan(kdata, code, name, chg)
+        return detect_podifan(kdata, code, name, chg, turnover)
     except:
         return None
 
@@ -358,7 +388,7 @@ def _fmt(cell, kind='f'):
 
 def main():
     global MAX_WORKERS, REQUEST_DELAY, USE_EASTMONEY
-    global BOTTOM_PCT, BOTTOM_DROP, HOLD_DAYS, BT
+    global BOTTOM_PCT, BOTTOM_DROP, HOLD_DAYS, BT, MAX_TURNOVER, WARN_TURNOVER
     ap = argparse.ArgumentParser(description='蔡森破底翻量化筛选器 v8')
     ap.add_argument('--workers', type=int, default=MAX_WORKERS, help='并发线程数（全量扫描建议3）')
     ap.add_argument('--delay', type=float, default=REQUEST_DELAY[1], help='每只股票最大随机延时(秒)')
@@ -369,6 +399,8 @@ def main():
     ap.add_argument('--bottom-drop', type=float, default=BOTTOM_DROP, help='距年高跌幅下限%%(默认40)')
     ap.add_argument('--hold-days', type=int, default=HOLD_DAYS, help='守住前低最少站稳天数(默认3)')
     ap.add_argument('--bt', type=float, default=BT * 100, help='破底/守住容忍度%%(默认3)')
+    ap.add_argument('--max-turnover', type=float, default=MAX_TURNOVER, help='换手率硬闸门%%：当日>此值直接剔除(默认10)')
+    ap.add_argument('--warn-turnover', type=float, default=WARN_TURNOVER, help='换手率预警%%：超过此值扣分保留(默认7)')
     args = ap.parse_args()
 
     MAX_WORKERS = args.workers
@@ -378,11 +410,14 @@ def main():
     BOTTOM_DROP = args.bottom_drop
     HOLD_DAYS = args.hold_days
     BT = args.bt / 100.0
+    MAX_TURNOVER = args.max_turnover
+    WARN_TURNOVER = args.warn_turnover
 
     mode_all = args.all or (not args.risers)   # 默认宽口径
     print('=' * 70)
     print('  蔡森破底翻量化筛选器 v8 — 收盘价口径 · 全市场宽口径')
     print(f'  过滤：历史分位<{BOTTOM_PCT:.0f}% + 距年高跌>{BOTTOM_DROP:.0f}%')
+    print(f'  换手率闸门：>{MAX_TURNOVER:.0f}%直接剔除；{WARN_TURNOVER:.0f}~{MAX_TURNOVER:.0f}%扣分保留；1.5~5%健康加分')
     print(f'  入选：破底翻(收盘破→翻回) 或 守住前低(收盘未破+站稳≥{HOLD_DAYS}天)')
     print(f'  运行模式: 线程={MAX_WORKERS}  延时≤{args.delay}s  东方财富={"开" if USE_EASTMONEY else "关"}'
           f'  口径={"全市场" if mode_all else "仅上涨股"}')
@@ -398,7 +433,7 @@ def main():
         stocks_raw = [r for r in stocks_raw if r['change'] >= 0.5]
         print(f'  涨幅≥0.5%: {len(stocks_raw)}只 ({time.time()-t0:.1f}s)')
 
-    stocks = [(r['code'], r['name'], r['change']) for r in stocks_raw]
+    stocks = [(r['code'], r['name'], r['change'], r.get('turnover', 0.0)) for r in stocks_raw]
 
     print(f'\n[2/3] 扫描{len(stocks)}只 ({MAX_WORKERS}线程)...')
     results = []; done = 0; fails = 0; t1 = time.time()
@@ -431,13 +466,14 @@ def main():
     def pt(sub, title):
         print(f'\n  {title}: {len(sub)}只')
         if len(sub) == 0: return
-        print("  代码          名称      类型     价格     今涨   年高跌  分位  前低     站稳 破底   收回    量比  conf")
-        print("  " + "-" * 100)
+        print("  代码          名称      类型     价格     今涨  换手  评级  年高跌  分位  前低     站稳 破底   收回    量比  conf")
+        print("  " + "-" * 112)
         for _, r in sub.iterrows():
-            print("  {code:12} {name:10} {typ:8} {price:8} {chg:6} {yhd:6}% {pct:4}% "
+            print("  {code:12} {name:10} {typ:8} {price:8} {chg:6} {to:5} {tn:4} {yhd:6}% {pct:4}% "
                   "{sup:7} {hold:4} {bd:5} {rc:6} {vr:5} {cf:3d}".format(
                       code=r['代码'], name=r['名称'], typ=r['类型'],
                       price=_fmt(r['最新价']), chg=_fmt(r['今日涨幅%'], 'p'),
+                      to=_fmt(r.get('换手率%'), 'f'), tn=str(r.get('换手评级', '-')),
                       yhd=_fmt(r['距年高跌幅%'], 'f'), pct=_fmt(r['历史分位%'], 'f'),
                       sup=_fmt(r['前低支撑']), hold=_fmt(r['站稳天数'], 'd'),
                       bd=_fmt(r['破底深度%'], 'f'), rc=_fmt(r['收回幅度%'], 'p'),
